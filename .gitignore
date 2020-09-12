@@ -1,0 +1,20 @@
+__pycache__
+.ipynb_checkpoints
+.DS_Store
+*.ipynb
+!examples/*.ipynb
+examples/*.html
+
+# Icon
+Icon?
+!image/icon
+
+# pytest
+.pytest_cache
+
+# PyPI
+*.egg-info
+dist
+build
+
+MEMO.md
