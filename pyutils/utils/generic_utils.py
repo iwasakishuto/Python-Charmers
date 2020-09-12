@@ -3,13 +3,14 @@ import re
 import argparse
 import datetime
 
-from .coloring_utils import toRED, toBLUE, toGREEN
+from .coloring_utils import toRED, toBLUE, toGREEN, toACCENT
+from ._exceptions import KeyError
 
 def handleKeyError(lst, **kwargs):
     k,v = kwargs.popitem()
     if v not in lst:
-        lst = ', '.join([f"'{e}'" for e in lst])
-        raise KeyError(f"Please choose the argment {toBLUE(k)} from {lst}. you chose {toRED(v)}")
+        lst = ', '.join([f"'{toGREEN(e)}'" for e in lst])
+        raise KeyError(f"Please choose the argment {toBLUE(k)} from [{lst}]. you chose {toRED(v)}")
 
 def handleTypeError(types, **kwargs):
     type2str = lambda t: re.sub(r"<class '(.*?)'>", r"\033[34m\1\033[0m", str(t))
@@ -36,11 +37,11 @@ def mk_class_get(all_classes={}, gummy_abst_class=[], genre=""):
             instance = identifier
         return instance
     get.__doc__ = f"""
-    Retrieves a {{ PACKAGE_NAME }} {genre.capitalize()} instance.
+    Retrieves a Python-Utils {genre.capitalize()} instance.
     @params identifier : {genre.capitalize()} identifier, string name of a {genre}, or
-                         a {{ PACKAGE_NAME }} {genre.capitalize()} instance.
+                         a Python-Utils {genre.capitalize()} instance.
     @params kwargs     : parametes for class initialization.
-    @return {genre:<11}: A {{ PACKAGE_NAME }} {genre.capitalize()} instance.
+    @return {genre:<11}: A Python-Utils {genre.capitalize()} instance.
     """
     return get
 
