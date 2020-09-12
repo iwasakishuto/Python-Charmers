@@ -15,7 +15,7 @@ class ProgressMonitor():
     @params barname : (str)
     ~~~
     examples)
-    >>> from {{ MODULE_NAME }}.utils import ProgressMonitor
+    >>> from pyutils.utils import ProgressMonitor
     >>> max_iter = 100
     >>> monitor = ProgressMonitor(max_iter=max_iter, verbose=1, barname="NAME")
     >>> for it in range(max_iter):

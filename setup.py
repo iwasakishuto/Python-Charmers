@@ -1,9 +1,9 @@
 # coding: utf-8
 import os
 import setuptools
-import {{ MODULE_NAME }}
+import pyutils
 
-DESCRIPTION = "{{ DESCRIPTION }}"
+DESCRIPTION = "A collection of useful python programs."
 
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
@@ -13,8 +13,8 @@ with open("requirements.txt", mode="r") as f:
 
 def setup_package():
     metadata = dict(
-        name="{{ PACKAGE_NAME }}",
-        version={{ MODULE_NAME }}.__version__,
+        name="Python-Utils",
+        version=pyutils.__version__,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",
@@ -22,8 +22,8 @@ def setup_package():
         author_email="cabernet.rock@gmail.com",
         license="MIT",
         project_urls={
-            "Bug Reports" : "https://github.com/iwasakishuto/{{ REPOSITORY_NAME }}/issues",
-            "Source Code" : "https://github.com/iwasakishuto/{{ REPOSITORY_NAME }}",
+            "Bug Reports" : "https://github.com/iwasakishuto/PythonUtils/issues",
+            "Source Code" : "https://github.com/iwasakishuto/PythonUtils",
             "Say Thanks!" : "https://twitter.com/cabernet_rock",
         },
         packages=setuptools.find_packages(),
@@ -43,7 +43,7 @@ def setup_package():
         ],
         entry_points = {
             "console_scripts": [
-                "command=lib.cli:func",
+                "command=pyutils.cli.sample:",
         ],
     },
     )

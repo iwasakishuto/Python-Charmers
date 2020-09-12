@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 TESTS_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
-KERASY_LIB_PATH = os.path.join(os.path.dirname(TESTS_DIR_PATH), "{{ MODULE_NAME }}")
+KERASY_LIB_PATH = os.path.join(os.path.dirname(TESTS_DIR_PATH), "pyutils")
 STOP_FILE = ["__init__.py", "setup.py"] # Files which don't need test.
 STOP_DIR = ["templates", "utils"] # Programs under these directories don't need test.
 
