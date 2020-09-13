@@ -1,7 +1,7 @@
 #coding: utf-8
 import os
 from pathlib import Path
-from .coloring_utils  import toBLUE
+from .print_utils  import toBLUE
 
 __all__ = [
     "UTILS_DIR", "MODULE_DIR", "REPO_DIR",

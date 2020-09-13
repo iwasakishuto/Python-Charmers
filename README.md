@@ -1,6 +1,6 @@
-# python-package-template
+# Python-utils
 
-![header](https://github.com/iwasakishuto/Python-utils/blob/master/image/header.png?raw=true)
+[![header](https://github.com/iwasakishuto/Python-utils/blob/master/image/header.png?raw=true)](https://github.com/iwasakishuto/Python-utils)
 [![PyPI version](https://badge.fury.io/py/PythonUtils.svg)](https://pypi.org/project/PythonUtils/)
 [![GitHub version](https://badge.fury.io/gh/iwasakishuto%2FPythonUtils.svg)](https://github.com/iwasakishuto/PythonUtils)
 ![Python package](https://github.com/iwasakishuto/PythonUtils/workflows/Python%20package/badge.svg)
@@ -11,17 +11,18 @@ A collection of useful python programs.
 
 ## Installation
 
-1. Install **Python-Utils** (There are two ways to install):
-    - **Install from PyPI (recommended):**
-        ```sh
-        $ sudo pip install Python-Utils
-        ```
-   - **Alternatively: install PyGuitar from the GitHub source:**
-       ```sh
-       $ git clone https://github.com/iwasakishuto/PythonUtils.git
-       $ cd PythonUtils
-       $ sudo python setup.py install
-       ```
+There are two ways to install **Python-utils**:
+
+- **Install from PyPI (recommended):**
+    ```sh
+    $ sudo pip install Python-utils
+    ```
+- **Alternatively: install PyGuitar from the GitHub source:**
+    ```sh
+    $ git clone https://github.com/iwasakishuto/Python-utils.git
+    $ cd Python-utils
+    $ sudo python setup.py install
+    ```
 
 ## CLI
 

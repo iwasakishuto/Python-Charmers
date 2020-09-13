@@ -2,7 +2,7 @@
 import sys
 import time
 
-from .coloring_utils import toACCENT, toBLUE
+from .print_utils import toACCENT, toBLUE
 
 class ProgressMonitor():
     """

@@ -2,14 +2,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
 
-def fig_ax_handler_2D(fig=None, ax=None, figsize=(6,4)):
-    if ax is None:
-        if fig is None:
-            fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-    return (fig, ax)
+from ..utils import confusion_matrix
 
 def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, ax=None, bar=False):
     num_data = len(data)

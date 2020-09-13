@@ -9,6 +9,9 @@ examples/*.html
 Icon?
 !image/icon
 
+# docs
+src
+
 # pytest
 .pytest_cache
 

@@ -3,7 +3,6 @@
 from . import plot2d
 from . import plot3d
 
-from .plot2d import fig_ax_handler_2D
 from .plot2d import clear_grid
 from .plot2d import plot_model_cm
 from .plot2d import plot_TF_cm_2Dcond
