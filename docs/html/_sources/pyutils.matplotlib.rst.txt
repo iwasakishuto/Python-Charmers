@@ -1,0 +1,45 @@
+pyutils.matplotlib package
+==========================
+
+Submodules
+----------
+
+pyutils.matplotlib.cmaps module
+-------------------------------
+
+.. automodule:: pyutils.matplotlib.cmaps
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyutils.matplotlib.layout module
+--------------------------------
+
+.. automodule:: pyutils.matplotlib.layout
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyutils.matplotlib.plot2d module
+--------------------------------
+
+.. automodule:: pyutils.matplotlib.plot2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyutils.matplotlib.plot3d module
+--------------------------------
+
+.. automodule:: pyutils.matplotlib.plot3d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pyutils.matplotlib
+   :members:
+   :undoc-members:
+   :show-inheritance:
