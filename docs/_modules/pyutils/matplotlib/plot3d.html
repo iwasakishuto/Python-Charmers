@@ -46,12 +46,7 @@
 <span class="kn">from</span> <span class="nn">mpl_toolkits</span> <span class="kn">import</span> <span class="n">mplot3d</span>
 <span class="kn">from</span> <span class="nn">stl</span> <span class="kn">import</span> <span class="n">mesh</span>
 
-<div class="viewcode-block" id="fig_ax_handler_3D"><a class="viewcode-back" href="../../../pyutils.matplotlib.html#pyutils.matplotlib.plot3d.fig_ax_handler_3D">[docs]</a><span class="k">def</span> <span class="nf">fig_ax_handler_3D</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">mplot3d</span><span class="o">.</span><span class="n">Axes3D</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+<span class="kn">from</span> <span class="nn">.layout</span> <span class="kn">import</span> <span class="n">fig_ax_handler_3D</span>
 
 <div class="viewcode-block" id="stl2mpl_data"><a class="viewcode-back" href="../../../pyutils.matplotlib.html#pyutils.matplotlib.plot3d.stl2mpl_data">[docs]</a><span class="k">def</span> <span class="nf">stl2mpl_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># Load the STL files and add the vectors to the plot</span>

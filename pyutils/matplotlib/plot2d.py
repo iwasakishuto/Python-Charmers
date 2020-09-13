@@ -3,12 +3,56 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from ..utils import confusion_matrix
+from .layout import fig_ax_handler_2D
+from ..utils.numpy_utils import confusion_matrix, take_centers
+
+def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", text_color="green"):
+    """Plot Histogram
+
+    Args:
+        data (array)     : 
+        bins (int)       : 
+        ax (AxesSubplot) : 
+        roffset (float)  :
+        hist_color (str) :
+        text_color (str) :
+
+    Example:
+        >>> data = np.random.normal(size=1000)
+        >>> ax = plot_hist(data)
+        >>> plt.show()
+    """
+    fig, ax = fig_ax_handler_2D(ax=ax)
+    n, bins, a = ax.hist(data, bins=bins, color=hist_color)
+    xs = take_centers(bins)
+    offset_real = max(n) * roffset
+    for x, y in zip(xs, n):
+        ax.text(x, y+offset_real, str(int(y)), horizontalalignment="center", color=text_color, weight="heavy")
+    return ax
 
 def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, ax=None, bar=False):
+    """Plot Cumulative Ration (bar graph / line graph)
+
+    Args:
+        data (array)     : 
+        labels (array)   : 
+        bins (int)       : 
+        reverse (bool)   : 
+        ax (AxesSubplot) : 
+        bar (bool)       : 
+
+    Example:
+        >>> num_data = 1000
+        >>> rnd = np.random.RandomState(123)
+        >>> labels = rnd.randint(low=0, high=4, size=num_data)
+        >>> data   = rnd.normal(size=num_data) + labels*0.25
+        >>> ax = plot_cumulative_ratio(data, labels=labels, bar=True)
+        >>> ax.legend()
+        >>> plt.show()
+    """
     num_data = len(data)
     _, bin_edges = np.histogram(a=data, bins=bins)
-    X = bin_edges[:-1]
+    X = take_centers(bin_edges)
     if reverse: X = X[::-1]
 
     #=== Calcurate each group's plot information. ===
@@ -26,12 +70,16 @@ def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, 
     hists /= num_data # Change number to ratio.
     bottoms = np.cumsum(hists, axis=0)
     cmap = plt.get_cmap("Accent", len(groups)).colors
-    width = (bin_edges[1] - bin_edges[0])*width
+    width = (X[1] - X[0])*width
+    Y_past = 0
     for i,(Y,g) in enumerate(zip(hists[1:], groups)):
         if bar:
             ax.bar(X, Y, bottom=bottoms[i], width=width, label=g, align="center", color=cmap[i])
         else:
-            ax.plot(X, Y+bottoms[i], label=g, color=cmap[i], marker="o")
+            Y_curt = Y+bottoms[i]
+            ax.plot(X, Y_curt, label=g, color=cmap[i], marker="o")
+            ax.fill_between(X, Y_past, Y_curt, color=cmap[i], alpha=0.3)
+            Y_past = Y_curt
     return ax
 
 def plot_model_cm(answer, predict, cmap=plt.cm.RdBu, answer_label="answer", predict_label="predict"):
@@ -46,9 +94,10 @@ def plot_model_cm(answer, predict, cmap=plt.cm.RdBu, answer_label="answer", pred
     return ax
 
 def plot_TF_cm_2Dcond(result, fig=None, ax=None, vmin=0, vmax=1, cmap=plt.cm.RdBu, is_colorbar=False):
-    """
-    Plot the true/false value in 2 variable conditions.
-    @param result: (ndarray) shape=(N, M, 2)
+    """Plot the true/false value in 2 variable conditions.
+
+    Args:
+        result: (ndarray) shape=(N, M, 2)
                    - N: The number of types of the condition 1.
                    - M: The number of types of the condition 2.
                    - 2: True / False vals.

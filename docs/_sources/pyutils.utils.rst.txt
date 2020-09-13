@@ -28,6 +28,14 @@ pyutils.utils.generic\_utils module
    :undoc-members:
    :show-inheritance:
 
+pyutils.utils.json\_utils module
+--------------------------------
+
+.. automodule:: pyutils.utils.json_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyutils.utils.monitor\_utils module
 -----------------------------------
 

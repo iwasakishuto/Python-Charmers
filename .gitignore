@@ -11,6 +11,7 @@ Icon?
 
 # docs
 src
+mkdocs.sh
 
 # pytest
 .pytest_cache

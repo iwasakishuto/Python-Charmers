@@ -4,9 +4,9 @@ from scipy.sparse import coo_matrix
 
 from .generic_utils import handleKeyError
 
-def take_a_between(a):
+def take_centers(a):
     a = np.asarray(a, dtype=np.float64)
-    return a[1:] + a[:-1]
+    return (a[1:] + a[:-1])/2
 
 def confusion_matrix(y_true, y_pred):
     """Compute confusion matrix to evaluate the accuracy of a classification.
@@ -28,9 +28,7 @@ def confusion_matrix(y_true, y_pred):
                     the number of samples with true label being i-th class and prediced label being j-th class.
 
     References:
-    .. [1] `Wikipedia entry for the Confusion matrix
-           <https://en.wikipedia.org/wiki/Confusion_matrix>`_
-           (Wikipedia and other references may use a different convention for axes)
+        `Wikipedia entry for the Confusion matrix <https://en.wikipedia.org/wiki/Confusion_matrix>`_ (Wikipedia and other references may use a different convention for axes)
 
     Examples:
         >>> y_true = [2, 0, 2, 2, 0, 1]

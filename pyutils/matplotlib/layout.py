@@ -3,6 +3,20 @@ import matplotlib.pyplot as plt
 
 from ..utils import calc_rectangle_size
 
+def fig_ax_handler_2D(fig=None, ax=None, figsize=(6,4)):
+    if ax is None:
+        if fig is None:
+            fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot()
+    return (fig, ax)
+
+def fig_ax_handler_3D(fig=None, ax=None, figsize=(6,4)):
+    if ax is None:
+        if fig is None:
+            fig = plt.figure(figsize=figsize)
+        ax = mplot3d.Axes3D(fig)
+    return (fig, ax)
+
 def set_info(ax="", title="", xlabel="", ylabel="", xticklabel=[""], yticklabel=[""]):
     if ax==None:
         fig, ax = plt.subplots()

@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Welcome to Python-utils's documentation :)
-==========================================
+Welcome to Python-utils's documentation
+=======================================
 
 
 |header| |PyPI version| |GitHub version| |Python package| |Upload Python

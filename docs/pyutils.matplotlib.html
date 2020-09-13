@@ -73,6 +73,16 @@
 <div class="section" id="module-pyutils.matplotlib.layout">
 <span id="pyutils-matplotlib-layout-module"></span><h2>pyutils.matplotlib.layout module<a class="headerlink" href="#module-pyutils.matplotlib.layout" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
+<dt id="pyutils.matplotlib.layout.fig_ax_handler_2D">
+<code class="sig-prename descclassname">pyutils.matplotlib.layout.</code><code class="sig-name descname">fig_ax_handler_2D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">6, 4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/layout.html#fig_ax_handler_2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.layout.fig_ax_handler_2D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyutils.matplotlib.layout.fig_ax_handler_3D">
+<code class="sig-prename descclassname">pyutils.matplotlib.layout.</code><code class="sig-name descname">fig_ax_handler_3D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">6, 4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/layout.html#fig_ax_handler_3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.layout.fig_ax_handler_3D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="pyutils.matplotlib.layout.measure_canvas">
 <code class="sig-prename descclassname">pyutils.matplotlib.layout.</code><code class="sig-name descname">measure_canvas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nfigs</span></em>, <em class="sig-param"><span class="n">ncols</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">6, 4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/layout.html#measure_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.layout.measure_canvas" title="Permalink to this definition">¶</a></dt>
 <dd><p>&#64;params nfigs   : (int) Total number of figures.
@@ -96,21 +106,44 @@
 <dl class="py function">
 <dt id="pyutils.matplotlib.plot2d.plot_TF_cm_2Dcond">
 <code class="sig-prename descclassname">pyutils.matplotlib.plot2d.</code><code class="sig-name descname">plot_TF_cm_2Dcond</code><span class="sig-paren">(</span><em class="sig-param">result</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">vmin=0</em>, <em class="sig-param">vmax=1</em>, <em class="sig-param">cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em>, <em class="sig-param">is_colorbar=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/plot2d.html#plot_TF_cm_2Dcond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.plot2d.plot_TF_cm_2Dcond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the true/false value in 2 variable conditions.
-&#64;param result: (ndarray) shape=(N, M, 2)</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>N: The number of types of the condition 1.</p></li>
-<li><p>M: The number of types of the condition 2.</p></li>
-<li><p>2: True / False vals.</p></li>
-</ul>
-</div></blockquote>
+<dd><p>Plot the true/false value in 2 variable conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> – (ndarray) shape=(N, M, 2)
+- N: The number of types of the condition 1.
+- M: The number of types of the condition 2.
+- 2: True / False vals.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pyutils.matplotlib.plot2d.plot_cumulative_ratio">
 <code class="sig-prename descclassname">pyutils.matplotlib.plot2d.</code><code class="sig-name descname">plot_cumulative_ratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">reverse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bar</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/plot2d.html#plot_cumulative_ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.plot2d.plot_cumulative_ratio" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Plot Cumulative Ration (bar graph / line graph)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>array</em>) – </p></li>
+<li><p><strong>bins</strong> (<em>float</em>) – </p></li>
+<li><p><strong>reverse</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>ax</strong> (<em>AxesSubplot</em>) – </p></li>
+<li><p><strong>bar</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">num_data</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>   <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">num_data</span><span class="p">)</span> <span class="o">+</span> <span class="n">labels</span><span class="o">*</span><span class="mf">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cumulative_ratio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyutils.matplotlib.plot2d.plot_model_cm">
@@ -120,11 +153,6 @@
 </div>
 <div class="section" id="module-pyutils.matplotlib.plot3d">
 <span id="pyutils-matplotlib-plot3d-module"></span><h2>pyutils.matplotlib.plot3d module<a class="headerlink" href="#module-pyutils.matplotlib.plot3d" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt id="pyutils.matplotlib.plot3d.fig_ax_handler_3D">
-<code class="sig-prename descclassname">pyutils.matplotlib.plot3d.</code><code class="sig-name descname">fig_ax_handler_3D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">6, 4</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/plot3d.html#fig_ax_handler_3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.plot3d.fig_ax_handler_3D" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt id="pyutils.matplotlib.plot3d.plot_stl_file">
 <code class="sig-prename descclassname">pyutils.matplotlib.plot3d.</code><code class="sig-name descname">plot_stl_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ratio</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/matplotlib/plot3d.html#plot_stl_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.matplotlib.plot3d.plot_stl_file" title="Permalink to this definition">¶</a></dt>

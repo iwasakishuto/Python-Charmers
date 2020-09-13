@@ -26,7 +26,7 @@ There are two ways to install **Python-utils**:
 
 ## CLI
 
-> CLI is a command line program that accepts text input to execute operating system functions.
+**CLI** is a command line program that accepts text input to execute operating system functions.
 
 |Command|Description|
 |:-:|:-|

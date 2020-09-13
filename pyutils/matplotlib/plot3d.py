@@ -4,12 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 from stl import mesh
 
-def fig_ax_handler_3D(fig=None, ax=None, figsize=(6,4)):
-    if ax is None:
-        if fig is None:
-            fig = plt.figure(figsize=figsize)
-        ax = mplot3d.Axes3D(fig)
-    return (fig, ax)
+from .layout import fig_ax_handler_3D
 
 def stl2mpl_data(filename, ratio=1., seed=None):
     # Load the STL files and add the vectors to the plot

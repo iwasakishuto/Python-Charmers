@@ -1,5 +1,6 @@
 # coding: utf-8
 import re
+import json
 import datetime
 
 from .print_utils import toRED, toBLUE, toGREEN, toACCENT
@@ -35,19 +36,16 @@ def flatten_dual(lst):
 def calc_rectangle_size(area, w):
     """Calculate the lengths of the sides of the rectangle from the area and the vertical length (width).
 
-    Args
-    ----
+    Args:
         area (int): The area of the rectangle.
         w (int)   : The length of the vertical line. (width)
 
-    Returns
-    -------
+    Returns:
         size (tuple): (w, h) 
 
         The tuple of the lengths of horizontal, and vertical lines. (width, height)
 
-    Examples
-    --------
+    Examples:
         >>> calc_rectangle(12, 3)
         (3, 4)
         >>> calc_rectangle(12, 18)
