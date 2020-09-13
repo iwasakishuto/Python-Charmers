@@ -4,7 +4,7 @@
 
 SRC_DIRNAME="src"
 DOC_DIRNAME="docs"
-CREATED_DIRNAME="_build"
+CREATED_DIRNAME="_build/html"
 
 here=$(cd $(dirname $0);pwd) 
 cd $here
