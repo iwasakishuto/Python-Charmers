@@ -144,7 +144,13 @@ class Table():
             print("|")
 
     def show(self, head=None, table_width=None, mark="="):
-        """Show a table"""
+        """Show a table
+        
+        Args:
+            head (str)        : Show the first ``head`` rows for the table. 
+            table_width (int) : The table width.
+            mark (str)        : border mark. (default "=")
+        """
         self._disp_title()
         self._disp_border(table_width=table_width, mark=mark)
         self._disp_values(head=head)
@@ -152,7 +158,13 @@ class Table():
     def set_cols(self, values, colname=None, width=None, align=">", sign="",
                  zero_padding=False, grouping_option="", fmt="", color="black",
                  left_margin=0, right_margin=0):
-        """Set values to a table."""
+        """Set values to a table.
+        
+        Args:
+            values (array) : The array-like data.
+            colname (str)  : The colname for ``values``.
+            **kwargs       : See also ``print_func_create``
+        """
         colname = colname or f"col.{self.ncols+1}"
         title_width = len(str(colname))
         if width is None:

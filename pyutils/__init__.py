@@ -8,3 +8,7 @@ __author__          = "Shuto Iwasaki"
 __author_twitter__  = "https://twitter.com/cabernet_rock"
 __author_email__    = "cabernet.rock@gmail.com"
 __url__             = "https://github.com/iwasakishuto/PythonUtils"
+
+from . import matplotlib
+from . import opencv
+from . import utils

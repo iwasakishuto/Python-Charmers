@@ -186,7 +186,13 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pyutils.utils.print_utils.html#pyutils.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Show a table&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Show a table</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
+<span class="sd">            table_width (int) : The table width.</span>
+<span class="sd">            mark (str)        : border mark. (default &quot;=&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disp_title</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disp_border</span><span class="p">(</span><span class="n">table_width</span><span class="o">=</span><span class="n">table_width</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disp_values</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">)</span></div>
@@ -194,7 +200,13 @@
 <div class="viewcode-block" id="Table.set_cols"><a class="viewcode-back" href="../../../pyutils.utils.print_utils.html#pyutils.utils.print_utils.Table.set_cols">[docs]</a>    <span class="k">def</span> <span class="nf">set_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
                  <span class="n">left_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set values to a table.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Set values to a table.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            values (array) : The array-like data.</span>
+<span class="sd">            colname (str)  : The colname for ``values``.</span>
+<span class="sd">            **kwargs       : See also ``print_func_create``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">colname</span> <span class="o">=</span> <span class="n">colname</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;col.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">title_width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">colname</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -237,7 +249,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../../index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pyutils.html">pyutils package</a></li>
 </ul>

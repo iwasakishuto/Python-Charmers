@@ -8,9 +8,9 @@ DESCRIPTION = "A collection of useful python programs."
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
-with open("requirements.txt", mode="r") as f:
+with open(os.path.join(here,"requirements.txt"), mode="r") as f:
     INSTALL_REQUIRES = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
-with open("console_scripts.txt", mode="r") as f:
+with open(os.path.join(here,"console_scripts.txt"), mode="r") as f:
     CONSOLE_SCRIPTS = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
 
 def setup_package():
