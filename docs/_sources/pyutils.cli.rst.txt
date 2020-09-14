@@ -1,0 +1,18 @@
+pyutils.cli package
+===================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyutils.cli.show
+
+Module contents
+---------------
+
+.. automodule:: pyutils.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

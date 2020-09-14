@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyutils.utils package &#8212; Python-utils  documentation</title>
+    <title>pyutils.cli.show module &#8212; Python-utils  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -18,8 +18,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyutils.utils.argparse_utils module" href="pyutils.utils.argparse_utils.html" />
-    <link rel="prev" title="pyutils.opencv package" href="pyutils.opencv.html" /> 
+    <link rel="next" title="pyutils.matplotlib package" href="pyutils.matplotlib.html" />
+    <link rel="prev" title="pyutils.cli package" href="pyutils.cli.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,14 +31,15 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyutils.utils.argparse_utils.html" title="pyutils.utils.argparse_utils module"
+          <a href="pyutils.matplotlib.html" title="pyutils.matplotlib package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pyutils.opencv.html" title="pyutils.opencv package"
+          <a href="pyutils.cli.html" title="pyutils.cli package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="pyutils.html" accesskey="U">pyutils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyutils.utils package</a></li> 
+          <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyutils.cli.html" accesskey="U">pyutils.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.cli.show module</a></li> 
       </ul>
     </div>  
 
@@ -47,25 +48,32 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyutils-utils-package">
-<h1>pyutils.utils package<a class="headerlink" href="#pyutils-utils-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.argparse_utils.html">pyutils.utils.argparse_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.color_utils.html">pyutils.utils.color_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.generic_utils.html">pyutils.utils.generic_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.json_utils.html">pyutils.utils.json_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.monitor_utils.html">pyutils.utils.monitor_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.numpy_utils.html">pyutils.utils.numpy_utils module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyutils.utils.print_utils.html">pyutils.utils.print_utils module</a></li>
+  <div class="section" id="module-pyutils.cli.show">
+<span id="pyutils-cli-show-module"></span><h1>pyutils.cli.show module<a class="headerlink" href="#module-pyutils.cli.show" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pyutils.cli.show.show_">
+<code class="sig-prename descclassname">pyutils.cli.show.</code><code class="sig-name descname">show_</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/cli/show.html#show_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.cli.show.show_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show all Python-utils’s command line programs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-H</strong> (<em>str</em>) – Show the first <code class="docutils literal notranslate"><span class="pre">head</span></code> rows for the table.</p></li>
+<li><p><strong>--head</strong> (<em>str</em>) – Show the first <code class="docutils literal notranslate"><span class="pre">head</span></code> rows for the table.</p></li>
+<li><p><strong>-W</strong> (<em>int</em>) – Table width.</p></li>
+<li><p><strong>--width</strong> (<em>int</em>) – Table width.</p></li>
+<li><p><strong>--mark</strong> (<em>str</em>) – The border mark. (default “=”)</p></li>
 </ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pyutils-show
+</pre></div>
 </div>
 </div>
-<div class="section" id="module-pyutils.utils">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyutils.utils" title="Permalink to this headline">¶</a></h2>
-</div>
+</dd></dl>
+
 </div>
 
 
@@ -79,14 +87,14 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pyutils.html">pyutils package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pyutils.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pyutils.cli.html">pyutils.cli package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyutils.matplotlib.html">pyutils.matplotlib package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyutils.opencv.html">pyutils.opencv package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pyutils.utils package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pyutils.utils">Module contents</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pyutils.cli.html">pyutils.cli package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pyutils.cli.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyutils.cli.html#module-pyutils.cli">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pyutils.matplotlib.html">pyutils.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyutils.opencv.html">pyutils.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyutils.utils.html">pyutils.utils package</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pyutils.html#module-pyutils">Module contents</a></li>
@@ -95,15 +103,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pyutils.opencv.html"
-                        title="previous chapter">pyutils.opencv package</a></p>
+  <p class="topless"><a href="pyutils.cli.html"
+                        title="previous chapter">pyutils.cli package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pyutils.utils.argparse_utils.html"
-                        title="next chapter">pyutils.utils.argparse_utils module</a></p>
+  <p class="topless"><a href="pyutils.matplotlib.html"
+                        title="next chapter">pyutils.matplotlib package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pyutils.utils.rst.txt"
+      <li><a href="_sources/pyutils.cli.show.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -131,14 +139,15 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyutils.utils.argparse_utils.html" title="pyutils.utils.argparse_utils module"
+          <a href="pyutils.matplotlib.html" title="pyutils.matplotlib package"
              >next</a> |</li>
         <li class="right" >
-          <a href="pyutils.opencv.html" title="pyutils.opencv package"
+          <a href="pyutils.cli.html" title="pyutils.cli package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyutils.utils package</a></li> 
+          <li class="nav-item nav-item-2"><a href="pyutils.cli.html" >pyutils.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.cli.show module</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,0 +1,7 @@
+pyutils.cli.show module
+=======================
+
+.. automodule:: pyutils.cli.show
+   :members:
+   :undoc-members:
+   :show-inheritance:
