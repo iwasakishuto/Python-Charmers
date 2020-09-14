@@ -10,6 +10,8 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 with open("requirements.txt", mode="r") as f:
     INSTALL_REQUIRES = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
+with open("console_scripts.txt", mode="r") as f:
+    CONSOLE_SCRIPTS = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
 
 def setup_package():
     metadata = dict(
@@ -42,10 +44,8 @@ def setup_package():
             "Topic :: Software Development :: Libraries :: Python Modules",
         ],
         entry_points = {
-            "console_scripts": [
-                "command=pyutils.cli.sample:",
-        ],
-    },
+            "console_scripts": CONSOLE_SCRIPTS,
+        },
     )
     setuptools.setup(**metadata)
 
