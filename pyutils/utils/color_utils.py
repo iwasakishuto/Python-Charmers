@@ -10,6 +10,7 @@ def detect_color_code_type(color):
         color (tuple / str): color code.
 
     Examples:
+        >>> from pyutils.utils import detect_color_code_type
         >>> detect_color_code_type("#FFFFFF")
         'hex'
         >>> detect_color_code_type((255,255,255))
@@ -72,6 +73,7 @@ def _toColorCode_create(to_color_code):
         color (tuple / str): color code.
         
     Examples:
+        >>> from pyutils.utils import to{to_color_code.upper()}
         >>> to{to_color_code.upper()}("#FFFFFF")
         {toColorCode("#FFFFFF")}
         >>> to{to_color_code.upper()}((255, 255, 255), max_val=255)
@@ -96,6 +98,7 @@ def choose_text_color(color, max_val=1):
         `WCAG <https://www.w3.org/TR/WCAG20/>`_
 
     Examples:
+        >>> from pyutils.utils import choose_text_color
         >>> choose_text_color(color=(  0,   0,   0), max_val=255)
         (255, 255, 255)
         >>> choose_text_color(color=(  0,   0, 255), max_val=255)

@@ -7,6 +7,8 @@ class ListParamProcessor(argparse.Action):
     """Receive List arguments.
     
     Examples:
+        >>> import argparse
+        >>> from pyutils.utils import ListParamProcessor
         >>> parser = argparse.ArgumentParser()
         >>> parser.add_argument("--list_params", action=ListParamProcessor)
         >>> args = parser.parse_args(args=["--list_params", "[あ, い, う]"])
@@ -30,6 +32,8 @@ class DictParamProcessor(argparse.Action):
         ValueError: You must give one argument for each one keyword.
 
     Examples:
+        >>> import argparse
+        >>> from pyutils.utils import DictParamProcessor
         >>> parser = argparse.ArgumentParser()
         >>> parser.add_argument("--dict_params", action=DictParamProcessor)
         >>> args = parser.parse_args(args=["--dict_params", "foo = [a, b, c]", "--dict_params", "bar=d"])
@@ -59,10 +63,13 @@ class KwargsParamProcessor(argparse.Action):
     """Set a new argument.
 
     Examples:
+        >>> import argparse
+        >>> from pyutils.utils import KwargsParamProcessor
         >>> parser = argparse.ArgumentParser()
         >>> parser.add_argument("--kwargs", action=KwargsParamProcessor)
         >>> args = parser.parse_args(args=["--kwargs", "foo=a", "--kwargs", "bar=b"])
-        (args.kwargs, args.foo, args.bar)
+        >>> (args.kwargs, args.foo, args.bar)
+        (None, 'a', 'b')
 
     Note:
         If you run from the command line, execute as follows::

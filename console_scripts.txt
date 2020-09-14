@@ -1,0 +1,1 @@
+pyutils-show = pyutils.cli.show:show

@@ -1,0 +1,7 @@
+pyutils.matplotlib.layout module
+================================
+
+.. automodule:: pyutils.matplotlib.layout
+   :members:
+   :undoc-members:
+   :show-inheritance:

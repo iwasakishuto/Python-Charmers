@@ -78,6 +78,8 @@ def save_json(obj, file, ensure_ascii=False, indent=2, cls=PythonUtilsJSONEncode
         cls (json.JSONEncoder) : To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the ``.default()`` method to serialize additional types), specify it with the ``cls`` kwarg; otherwise ``PythonUtilsJSONEncoder`` is used.
 
     Example:
+        >>> import datetime
+        >>> from pyutils.utils import save_json
         >>> save_json(obj={"date": datetime.datetime.now(), "bool" : True}, file="sample.json")
         >>> with open("sample.json") as f:
         >>>     for line in f.readlines():

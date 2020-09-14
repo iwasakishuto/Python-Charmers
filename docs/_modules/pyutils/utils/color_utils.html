@@ -45,13 +45,14 @@
 
 <span class="n">SUPPORTED_COLOR_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hex&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rgba&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="detect_color_code_type"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.detect_color_code_type">[docs]</a><span class="k">def</span> <span class="nf">detect_color_code_type</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+<div class="viewcode-block" id="detect_color_code_type"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.detect_color_code_type">[docs]</a><span class="k">def</span> <span class="nf">detect_color_code_type</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Detect Color Code type</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        color (tuple / str): color code.</span>
 
 <span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import detect_color_code_type</span>
 <span class="sd">        &gt;&gt;&gt; detect_color_code_type(&quot;#FFFFFF&quot;)</span>
 <span class="sd">        &#39;hex&#39;</span>
 <span class="sd">        &gt;&gt;&gt; detect_color_code_type((255,255,255))</span>
@@ -69,27 +70,27 @@
         <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">color_code</span></div>
 
-<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="hex2rgb"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.hex2rgb">[docs]</a><span class="k">def</span> <span class="nf">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``hex`` to ``rgb``&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:][</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span><span class="o">*</span><span class="n">max_val</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="hex2rgba"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.hex2rgba">[docs]</a><span class="k">def</span> <span class="nf">hex2rgba</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="hex2rgba"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.hex2rgba">[docs]</a><span class="k">def</span> <span class="nf">hex2rgba</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``hex`` to ``rgba``&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">rgb2rgba</span><span class="p">(</span><span class="n">rgb</span><span class="o">=</span><span class="n">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="o">=</span><span class="nb">hex</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:],</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2hex"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.rgb2hex">[docs]</a><span class="k">def</span> <span class="nf">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``rgb`` to ``hex``&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;#&quot;</span><span class="o">+</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">255</span><span class="o">/</span><span class="n">max_val</span><span class="o">*</span><span class="n">e</span><span class="p">),</span> <span class="s1">&#39;02x&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">])</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="rgb2rgba"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.rgb2rgba">[docs]</a><span class="k">def</span> <span class="nf">rgb2rgba</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="rgb2rgba"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.rgb2rgba">[docs]</a><span class="k">def</span> <span class="nf">rgb2rgba</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``rgb`` to ``rgba``&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">rgb</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rgba2hex"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.rgba2hex">[docs]</a><span class="k">def</span> <span class="nf">rgba2hex</span><span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="rgba2hex"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.rgba2hex">[docs]</a><span class="k">def</span> <span class="nf">rgba2hex</span><span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``rgba`` to ``hex``&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">rgb2hex</span><span class="p">(</span><span class="n">rgb</span><span class="o">=</span><span class="n">rgba2rgb</span><span class="p">(</span><span class="n">rgba</span><span class="o">=</span><span class="n">rgba</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rgba2rgb"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.rgba2rgb">[docs]</a><span class="k">def</span> <span class="nf">rgba2rgb</span><span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="rgba2rgb"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.rgba2rgb">[docs]</a><span class="k">def</span> <span class="nf">rgba2rgb</span><span class="p">(</span><span class="n">rgba</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert color code from ``rgba`` to ``rgb``&quot;&quot;&quot;</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="n">rgba</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">rgb</span> <span class="o">=</span> <span class="n">rgba</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -114,6 +115,7 @@
 <span class="s2">        color (tuple / str): color code.</span>
 <span class="s2">        </span>
 <span class="s2">    Examples:</span>
+<span class="s2">        &gt;&gt;&gt; from pyutils.utils import to</span><span class="si">{</span><span class="n">to_color_code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">        &gt;&gt;&gt; to</span><span class="si">{</span><span class="n">to_color_code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(&quot;#FFFFFF&quot;)</span>
 <span class="s2">        </span><span class="si">{</span><span class="n">toColorCode</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">        &gt;&gt;&gt; to</span><span class="si">{</span><span class="n">to_color_code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">((255, 255, 255), max_val=255)</span>
@@ -128,7 +130,7 @@
 <span class="n">toRGB</span>  <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgb&quot;</span><span class="p">)</span>
 <span class="n">toRGBA</span> <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgba&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pyutils.utils.color_utils.html#pyutils.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Select an easy-to-read text color from the given color.</span>
 
 <span class="sd">    Args:</span>
@@ -138,19 +140,20 @@
 <span class="sd">        `WCAG &lt;https://www.w3.org/TR/WCAG20/&gt;`_</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(0,   0,   0),   max_val=255)</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import choose_text_color</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0,   0,   0), max_val=255)</span>
 <span class="sd">        (255, 255, 255)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 0,   0),   max_val=255)</span>
-<span class="sd">        &lt;font color=&quot;red&quot;&gt;da&lt;/font&gt;</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(0,   255, 0),   max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(0,   0,   255), max_val=255)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0,   0, 255), max_val=255)</span>
 <span class="sd">        (255, 255, 255)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255, 0),   max_val=255)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0, 255,   0), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 0,   255), max_val=255)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0, 255, 255), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255, 0),   max_val=255)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255,   0,   0), max_val=255)</span>
+<span class="sd">        (0, 0, 0)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255,   0, 255), max_val=255)</span>
+<span class="sd">        (0, 0, 0)</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255,   0), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
 <span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255, 255), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
@@ -182,6 +185,12 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pyutils.html">pyutils package</a></li>
+</ul>
+
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">

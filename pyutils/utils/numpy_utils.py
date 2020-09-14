@@ -5,8 +5,21 @@ from scipy.sparse import coo_matrix
 from .generic_utils import handleKeyError
 
 def take_centers(a):
+    """Take a center values.
+
+    Args:
+        a (array) : Array
+    
+    Example:
+        >>> from pyutils.utils import take_centers
+        >>> take_centers([0,1,2,3,4,5])
+        array([0.5, 1.5, 2.5, 3.5, 4.5])
+        >>> take_centers([[0,1,2,3,4,5],[1,2,3,4,5,6]])
+        array([[0.5, 1.5, 2.5, 3.5, 4.5],
+            [1.5, 2.5, 3.5, 4.5, 5.5]])
+    """
     a = np.asarray(a, dtype=np.float64)
-    return (a[1:] + a[:-1])/2
+    return (a[Ellipsis,1:] + a[Ellipsis,:-1])/2
 
 def confusion_matrix(y_true, y_pred):
     """Compute confusion matrix to evaluate the accuracy of a classification.
@@ -31,14 +44,14 @@ def confusion_matrix(y_true, y_pred):
         `Wikipedia entry for the Confusion matrix <https://en.wikipedia.org/wiki/Confusion_matrix>`_ (Wikipedia and other references may use a different convention for axes)
 
     Examples:
+        >>> from pyutils import confusion_matrix
         >>> y_true = [2, 0, 2, 2, 0, 1]
         >>> y_pred = [0, 0, 2, 2, 0, 2]
         >>> confusion_matrix(y_true, y_pred)
         array([[2, 0, 0],
             [0, 0, 1],
             [1, 0, 2]])
-
-        In the binary case, we can extract true positives, etc as follows:
+        >>> # In the binary case, we can extract true positives, etc as follows:
         >>> tn, fp, fn, tp = confusion_matrix([0, 1, 0, 1], [1, 1, 1, 0]).ravel()
         >>> (tn, fp, fn, tp)
         (0, 2, 1, 1)

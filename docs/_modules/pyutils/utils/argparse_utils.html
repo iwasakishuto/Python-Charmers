@@ -45,10 +45,12 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span>
 
-<div class="viewcode-block" id="ListParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.argparse_utils.ListParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">ListParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
+<div class="viewcode-block" id="ListParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.argparse_utils.html#pyutils.utils.argparse_utils.ListParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">ListParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Receive List arguments.</span>
 <span class="sd">    </span>
 <span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import argparse</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import ListParamProcessor</span>
 <span class="sd">        &gt;&gt;&gt; parser = argparse.ArgumentParser()</span>
 <span class="sd">        &gt;&gt;&gt; parser.add_argument(&quot;--list_params&quot;, action=ListParamProcessor)</span>
 <span class="sd">        &gt;&gt;&gt; args = parser.parse_args(args=[&quot;--list_params&quot;, &quot;[あ, い, う]&quot;])</span>
@@ -65,13 +67,15 @@
         <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DictParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.argparse_utils.DictParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">DictParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
+<div class="viewcode-block" id="DictParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.argparse_utils.html#pyutils.utils.argparse_utils.DictParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">DictParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Receive an argument as a dictionary.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: You must give one argument for each one keyword.</span>
 
 <span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import argparse</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import DictParamProcessor</span>
 <span class="sd">        &gt;&gt;&gt; parser = argparse.ArgumentParser()</span>
 <span class="sd">        &gt;&gt;&gt; parser.add_argument(&quot;--dict_params&quot;, action=DictParamProcessor)</span>
 <span class="sd">        &gt;&gt;&gt; args = parser.parse_args(args=[&quot;--dict_params&quot;, &quot;foo = [a, b, c]&quot;, &quot;--dict_params&quot;, &quot;bar=d&quot;])</span>
@@ -97,14 +101,17 @@
         <span class="n">param_dict</span><span class="p">[</span><span class="n">str_strip</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="KwargsParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.argparse_utils.KwargsParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">KwargsParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
+<div class="viewcode-block" id="KwargsParamProcessor"><a class="viewcode-back" href="../../../pyutils.utils.argparse_utils.html#pyutils.utils.argparse_utils.KwargsParamProcessor">[docs]</a><span class="k">class</span> <span class="nc">KwargsParamProcessor</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set a new argument.</span>
 
 <span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import argparse</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import KwargsParamProcessor</span>
 <span class="sd">        &gt;&gt;&gt; parser = argparse.ArgumentParser()</span>
 <span class="sd">        &gt;&gt;&gt; parser.add_argument(&quot;--kwargs&quot;, action=KwargsParamProcessor)</span>
 <span class="sd">        &gt;&gt;&gt; args = parser.parse_args(args=[&quot;--kwargs&quot;, &quot;foo=a&quot;, &quot;--kwargs&quot;, &quot;bar=b&quot;])</span>
-<span class="sd">        (args.kwargs, args.foo, args.bar)</span>
+<span class="sd">        &gt;&gt;&gt; (args.kwargs, args.foo, args.bar)</span>
+<span class="sd">        (None, &#39;a&#39;, &#39;b&#39;)</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        If you run from the command line, execute as follows::</span>
@@ -123,6 +130,12 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pyutils.html">pyutils package</a></li>
+</ul>
+
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">

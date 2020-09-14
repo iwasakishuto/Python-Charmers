@@ -2,29 +2,32 @@
 import sys
 import time
 
-from .print_utils import toACCENT, toBLUE
+from ._colorings import toACCENT, toBLUE
 
 class ProgressMonitor():
-    """
-    Monitor the loop progress.
-    @params max_iter: (int) Maximum number of iterations.
-    @params verbose : (int) -1, 0, 1
-        -1 = silent
-        0  = only progress bar
-        1  = progress bar and metrics
-    @params barname : (str)
-    ~~~
-    examples)
-    >>> from pyutils.utils import ProgressMonitor
-    >>> max_iter = 100
-    >>> monitor = ProgressMonitor(max_iter=max_iter, verbose=1, barname="NAME")
-    >>> for it in range(max_iter):
-    >>>     monitor.report(it, loop=it)
-    >>> monitor.remove()
-    NAME 100/100[####################]100.00% - 0.010[s]  loop: 99
+    """Monitor the loop progress.
+
+    Examples:
+        >>> from pyutils.utils import ProgressMonitor
+        >>> max_iter = 100
+        >>> monitor = ProgressMonitor(max_iter=max_iter, verbose=1, barname="NAME")
+        >>> for it in range(max_iter):
+        >>>     monitor.report(it, loop=it+1)
+        >>> monitor.remove()
+        NAME 100/100[####################]100.00% - 0.010[s]  loop: 100
     """
     def __init__(self, max_iter, verbose=1, barname="", **kwargs):
-        self._reset()
+        """
+        Args:
+            max_iter (int) : Maximum number of iterations.
+            verbose (int)  : -1, 0, 1
+                - -1 : silent
+                - 0  : only progress bar
+                - 1  : progress bar and metrics
+                - 2  : progress plot
+            barname (str)  : barname
+        """
+        self._init()
         self.max_iter = max_iter
         self.digit = len(str(max_iter))
         self.verbose = verbose
@@ -36,7 +39,7 @@ class ProgressMonitor():
         }.get(verbose, self._report_progress_bar_and_metrics)
         self.report(it=-1)
 
-    def _reset(self):
+    def _init(self):
         self.histories = {}
         self.iter = 0
         self.initial_seconds_since_epoch = time.time()
@@ -63,6 +66,7 @@ class ProgressMonitor():
         )
 
     def remove(self):
+        """Do the necessary processing at the end."""
         def _pass():
             pass
         {
