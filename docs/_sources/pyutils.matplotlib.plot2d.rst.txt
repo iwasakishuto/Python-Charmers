@@ -1,0 +1,7 @@
+pyutils.matplotlib.plot2d module
+================================
+
+.. automodule:: pyutils.matplotlib.plot2d
+   :members:
+   :undoc-members:
+   :show-inheritance:

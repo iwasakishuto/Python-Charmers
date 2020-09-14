@@ -4,61 +4,16 @@ pyutils.utils package
 Submodules
 ----------
 
-pyutils.utils.argparse\_utils module
-------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyutils.utils.argparse_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.color\_utils module
----------------------------------
-
-.. automodule:: pyutils.utils.color_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.generic\_utils module
------------------------------------
-
-.. automodule:: pyutils.utils.generic_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.json\_utils module
---------------------------------
-
-.. automodule:: pyutils.utils.json_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.monitor\_utils module
------------------------------------
-
-.. automodule:: pyutils.utils.monitor_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.numpy\_utils module
----------------------------------
-
-.. automodule:: pyutils.utils.numpy_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyutils.utils.print\_utils module
----------------------------------
-
-.. automodule:: pyutils.utils.print_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyutils.utils.argparse_utils
+   pyutils.utils.color_utils
+   pyutils.utils.generic_utils
+   pyutils.utils.json_utils
+   pyutils.utils.monitor_utils
+   pyutils.utils.numpy_utils
+   pyutils.utils.print_utils
 
 Module contents
 ---------------

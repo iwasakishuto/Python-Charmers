@@ -1,4 +1,5 @@
 # coding: utf-8
+from ._colorings import *
 from ._exceptions import *
 from ._path import *
 from ._warnings import *
@@ -40,5 +41,6 @@ from .monitor_utils import ProgressMonitor
 from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
 
-from .print_utils import (toGRAY, toRED, toGREEN, toYELLOW, toBLUE, toPURPLE, toCYAN,
-                          toWHITE, toREVERSE, toACCENT, toFLASH, toRED_FLASH)
+from .print_utils import format_spec_create
+from .print_utils import print_func_create
+from .print_utils import Table

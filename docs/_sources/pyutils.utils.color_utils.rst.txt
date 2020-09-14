@@ -1,0 +1,7 @@
+pyutils.utils.color\_utils module
+=================================
+
+.. automodule:: pyutils.utils.color_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyutils.utils.print_utils module &#8212; Python-utils  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pyutils.utils.numpy_utils module" href="pyutils.utils.numpy_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.numpy_utils.html" title="pyutils.utils.numpy_utils module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyutils.utils.html" accesskey="U">pyutils.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.utils.print_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyutils.utils.print_utils">
+<span id="pyutils-utils-print-utils-module"></span><h1>pyutils.utils.print_utils module<a class="headerlink" href="#module-pyutils.utils.print_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pyutils.utils.print_utils.Table">
+<em class="property">class </em><code class="sig-prename descclassname">pyutils.utils.print_utils.</code><code class="sig-name descname">Table</code><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.print_utils.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Create a beautiful table and show.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><p>ncols(int) : the number of columns.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pyutils.utils.print_utils.Table.set_cols">
+<code class="sig-name descname">set_cols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#Table.set_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.print_utils.Table.set_cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set values to a table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyutils.utils.print_utils.Table.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#Table.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.print_utils.Table.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a table.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyutils.utils</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">|id|col.2|</span>
+<span class="go">==========</span>
+<span class="go">| 0|    a|</span>
+<span class="go">| 1|    b|</span>
+<span class="go">| 2|    c|</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pyutils.utils.print_utils.Table.ncols">
+<em class="property">property </em><code class="sig-name descname">ncols</code><a class="headerlink" href="#pyutils.utils.print_utils.Table.ncols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="id0">
+<code class="sig-name descname">set_cols</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">colname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#Table.set_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set values to a table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id1">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">table_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mark</span><span class="o">=</span><span class="default_value">'='</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#Table.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a table</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyutils.utils.print_utils.format_spec_create">
+<code class="sig-prename descclassname">pyutils.utils.print_utils.</code><code class="sig-name descname">format_spec_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#format_spec_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.print_utils.format_spec_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a function which returns a formatted text.</p>
+<p><cite>format_spec = [[fill]align][sign][#][0][width][grouping_option][.precision][type]</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<em>int</em>) – </p></li>
+<li><p><strong>align</strong> (<em>str</em>) – [[fill]align] One of <code class="docutils literal notranslate"><span class="pre">[&quot;&lt;&quot;,</span> <span class="pre">&quot;&gt;&quot;,</span> <span class="pre">&quot;=&quot;,</span> <span class="pre">&quot;^&quot;]</span></code></p></li>
+<li><p><strong>sign</strong> (<em>str</em>) – [sign] One of <code class="docutils literal notranslate"><span class="pre">[&quot;+&quot;,</span> <span class="pre">&quot;-&quot;,</span> <span class="pre">&quot;</span> <span class="pre">&quot;,</span> <span class="pre">&quot;&quot;]</span></code></p></li>
+<li><p><strong>zero_padding</strong> (<em>bool</em>) – [0]</p></li>
+<li><p><strong>width</strong> – [width]</p></li>
+<li><p><strong>grouping_option</strong> (<em>str</em>) – [grouping_option] One of <code class="docutils literal notranslate"><span class="pre">[&quot;_&quot;,</span> <span class="pre">&quot;,&quot;,</span> <span class="pre">&quot;&quot;]</span></code></p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – [.precision][type] One of <code class="docutils literal notranslate"><span class="pre">[&quot;b&quot;,</span> <span class="pre">&quot;c&quot;,</span> <span class="pre">&quot;d&quot;,</span> <span class="pre">&quot;e&quot;,</span> <span class="pre">&quot;E&quot;,</span> <span class="pre">&quot;f&quot;,</span> <span class="pre">&quot;F&quot;,</span> <span class="pre">&quot;g&quot;,</span> <span class="pre">&quot;G&quot;,</span> <span class="pre">&quot;n&quot;,</span> <span class="pre">&quot;o&quot;,</span> <span class="pre">&quot;s&quot;,</span> <span class="pre">&quot;x&quot;,</span> <span class="pre">&quot;X&quot;,</span> <span class="pre">&quot;%&quot;]</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lambda (<cite>&lt;function __main__.&lt;lambda&gt;(fill)&gt;</cite>)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>format_spec</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/python/cpython/blob/3.8/Lib/string.py">Python Source Code</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/string.html#format-specification-mini-language">Python Documentation</a></p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyutils.utils</span> <span class="kn">import</span> <span class="n">format_spec_create</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span><span class="p">(</span><span class="s2">&quot;hoge&quot;</span><span class="p">)</span>
+<span class="go">&#39;   hoge   &#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.1%&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;33.3%&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">format_spec</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">&#39;10100&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyutils.utils.print_utils.print_func_create">
+<code class="sig-prename descclassname">pyutils.utils.print_utils.</code><code class="sig-name descname">print_func_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="n">left_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">right_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/print_utils.html#print_func_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.print_utils.print_func_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a function which prints a formatted text. Please see also the function <cite>format_spec_create</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> (<em>str</em>) – color</p></li>
+<li><p><strong>left</strong> (<em>right</em><em>)</em><em>_margin</em><em> (</em><em>int</em>) – Characters to output to the Left/Right side.</p></li>
+<li><p><strong>left</strong> – Left/Right side margin</p></li>
+<li><p><strong>end</strong> (<em>str</em>) – string appended after the last value, default a newline.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Function that can be used like print</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>print_func</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyutils.utils</span> <span class="kn">import</span> <span class="n">print_func_create</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span><span class="p">(</span><span class="s2">&quot;hoge&quot;</span><span class="p">)</span>
+<span class="go">[  hoge  ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;$ &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span><span class="p">(</span><span class="s2">&quot;git clone https://github.com/iwasakishuto/Python-utils.git&quot;</span><span class="p">)</span>
+<span class="go">$ git clone https://github.com/iwasakishuto/Python-utils.git</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span><span class="p">(</span><span class="s2">&quot;cd Python-utils&quot;</span><span class="p">)</span>
+<span class="go">$ cd Python-utils</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_func</span><span class="p">(</span><span class="s2">&quot;sudo python setup.py install&quot;</span><span class="p">)</span>
+<span class="go">$ sudo python setup.py install</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyutils.html">pyutils package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyutils.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyutils.matplotlib.html">pyutils.matplotlib package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pyutils.utils.html">pyutils.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pyutils.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyutils.utils.html#module-pyutils.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyutils.html#module-pyutils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pyutils.utils.numpy_utils.html"
+                        title="previous chapter">pyutils.utils.numpy_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pyutils.utils.print_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.numpy_utils.html" title="pyutils.utils.numpy_utils module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyutils.utils.html" >pyutils.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.utils.print_utils module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

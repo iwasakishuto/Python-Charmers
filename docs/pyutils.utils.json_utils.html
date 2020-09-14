@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyutils.utils.json_utils module &#8212; Python-utils  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyutils.utils.monitor_utils module" href="pyutils.utils.monitor_utils.html" />
+    <link rel="prev" title="pyutils.utils.generic_utils module" href="pyutils.utils.generic_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.monitor_utils.html" title="pyutils.utils.monitor_utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.generic_utils.html" title="pyutils.utils.generic_utils module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyutils.utils.html" accesskey="U">pyutils.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.utils.json_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyutils.utils.json_utils">
+<span id="pyutils-utils-json-utils-module"></span><h1>pyutils.utils.json_utils module<a class="headerlink" href="#module-pyutils.utils.json_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pyutils.utils.json_utils.PythonUtilsJSONEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">pyutils.utils.json_utils.</code><code class="sig-name descname">PythonUtilsJSONEncoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">skipkeys</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ensure_ascii</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">check_circular</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">allow_nan</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">sort_keys</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">indent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">separators</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/json_utils.html#PythonUtilsJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.json_utils.PythonUtilsJSONEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">json.encoder.JSONEncoder</span></code></p>
+<p>Json encoder for Python data structures.</p>
+<p>Supports the following objects and types by default (<code class="docutils literal notranslate"><span class="pre">json.JSONEncoder</span></code>):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python</p></th>
+<th class="head"><p>JSON</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>dict</p></td>
+<td><p>object</p></td>
+</tr>
+<tr class="row-odd"><td><p>list, tuple</p></td>
+<td><p>array</p></td>
+</tr>
+<tr class="row-even"><td><p>str</p></td>
+<td><p>string</p></td>
+</tr>
+<tr class="row-odd"><td><p>int, float</p></td>
+<td><p>number</p></td>
+</tr>
+<tr class="row-even"><td><p>True</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>False</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>null</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="pyutils.utils.json_utils.PythonUtilsJSONEncoder.default">
+<code class="sig-name descname">default</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/json_utils.html#PythonUtilsJSONEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.json_utils.PythonUtilsJSONEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method to accommodate other types of data structures.</p>
+<p>Currently, supports the following objects and types by overriding.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 61%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python</p></th>
+<th class="head"><p>JSON</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>np.integar</p></td>
+<td><p>number(int)</p></td>
+</tr>
+<tr class="row-odd"><td><p>np.float</p></td>
+<td><p>number(float)</p></td>
+</tr>
+<tr class="row-even"><td><p>np.ndarray</p></td>
+<td><p>array</p></td>
+</tr>
+<tr class="row-odd"><td><p>np.random.RandomState</p></td>
+<td><p>object</p></td>
+</tr>
+<tr class="row-even"><td><p>datetime.datetime</p></td>
+<td><p>string</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyutils.utils.json_utils.save_json">
+<code class="sig-prename descclassname">pyutils.utils.json_utils.</code><code class="sig-name descname">save_json</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">file</em>, <em class="sig-param">ensure_ascii=False</em>, <em class="sig-param">indent=2</em>, <em class="sig-param">cls=&lt;class 'pyutils.utils.json_utils.PythonUtilsJSONEncoder'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyutils/utils/json_utils.html#save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyutils.utils.json_utils.save_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the json file with easy-to-use arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>dict</em>) – Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> as a JSON formatted stream.</p></li>
+<li><p><strong>file</strong> (<em>str</em>) – a text or byte string giving the path of the file to be opened.</p></li>
+<li><p><strong>ensure_ascii</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, then the strings written to <code class="docutils literal notranslate"><span class="pre">fp</span></code> can contain non-ASCII characters if they appear in strings contained in <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</p></li>
+<li><p><strong>indent</strong> (<em>int</em>) – If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact representation.</p></li>
+<li><p><strong>cls</strong> (<em>json.JSONEncoder</em>) – To use a custom <code class="docutils literal notranslate"><span class="pre">JSONEncoder</span></code> subclass (e.g. one that overrides the <code class="docutils literal notranslate"><span class="pre">.default()</span></code> method to serialize additional types), specify it with the <code class="docutils literal notranslate"><span class="pre">cls</span></code> kwarg; otherwise <code class="docutils literal notranslate"><span class="pre">PythonUtilsJSONEncoder</span></code> is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyutils.utils</span> <span class="kn">import</span> <span class="n">save_json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">save_json</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="s2">&quot;bool&quot;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;sample.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sample.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">&quot;date&quot;: &quot;2020-09-13T20:45:56.614838&quot;,</span>
+<span class="go">&quot;bool&quot;: true</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyutils.html">pyutils package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyutils.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyutils.matplotlib.html">pyutils.matplotlib package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pyutils.utils.html">pyutils.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pyutils.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyutils.utils.html#module-pyutils.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyutils.html#module-pyutils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pyutils.utils.generic_utils.html"
+                        title="previous chapter">pyutils.utils.generic_utils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pyutils.utils.monitor_utils.html"
+                        title="next chapter">pyutils.utils.monitor_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pyutils.utils.json_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.monitor_utils.html" title="pyutils.utils.monitor_utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pyutils.utils.generic_utils.html" title="pyutils.utils.generic_utils module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-utils  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pyutils.html" >pyutils package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyutils.utils.html" >pyutils.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyutils.utils.json_utils module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -3,45 +3,52 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from .layout import fig_ax_handler_2D
+from .layout import FigAxes_create, set_ax_info
 from ..utils.numpy_utils import confusion_matrix, take_centers
 
-def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", text_color="green"):
+def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", anno_color="green"):
     """Plot Histogram
 
     Args:
-        data (array)     : 
-        bins (int)       : 
-        ax (AxesSubplot) : 
-        roffset (float)  :
-        hist_color (str) :
-        text_color (str) :
+        data (array)     : Array-like sample data.
+        bins (int)       : Defines the number of equal-width bins in the range.
+        ax (AxesSubplot) : The ``Axes`` instance.
+        roffset (float)  : Offset from histogram to annotation text.
+        hist_color (str) : The histogram color.
+        anno_color (str) : The annotation text color.
 
     Example:
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from pyutils.matplotlib import plot_hist
         >>> data = np.random.normal(size=1000)
         >>> ax = plot_hist(data)
         >>> plt.show()
     """
-    fig, ax = fig_ax_handler_2D(ax=ax)
-    n, bins, a = ax.hist(data, bins=bins, color=hist_color)
-    xs = take_centers(bins)
-    offset_real = max(n) * roffset
-    for x, y in zip(xs, n):
-        ax.text(x, y+offset_real, str(int(y)), horizontalalignment="center", color=text_color, weight="heavy")
+    fig, ax = FigAxes_create(ax=ax)
+    Y, bins, _ = ax.hist(data, bins=bins, color=hist_color)
+    X = take_centers(bins)
+    offset_real = np.max(Y) * roffset
+    for x, y in zip(X, Y):
+        ax.text(x, y+offset_real, str(int(y)), horizontalalignment="center", color=anno_color, weight="heavy")
     return ax
 
-def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, ax=None, bar=False):
+def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, ax=None, bar=False, cmap=None):
     """Plot Cumulative Ration (bar graph / line graph)
 
     Args:
-        data (array)     : 
-        labels (array)   : 
-        bins (int)       : 
-        reverse (bool)   : 
-        ax (AxesSubplot) : 
-        bar (bool)       : 
+        data (array)     : Array-like sample data.
+        labels (array)   : Array-like labels.
+        bins (int)       : Defines the number of equal-width bins in the range.
+        reverse (bool)   : Whether plot Reverse cumulative distribution curve or not.
+        ax (AxesSubplot) : The ``Axes`` instance.
+        bar (bool)       : Whether plot as bar or graph.
+        cmap (str)       : The name of a color map known to ``matplotlib``
 
     Example:
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from pyutils.matplotlib import plot_cumulative_ratio
         >>> num_data = 1000
         >>> rnd = np.random.RandomState(123)
         >>> labels = rnd.randint(low=0, high=4, size=num_data)
@@ -66,61 +73,49 @@ def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, 
         hists = np.r_[hists, np.cumsum(hist).reshape(1,-1)]
 
     # Plot
-    fig, ax = fig_ax_handler_2D(ax=ax)
-    hists /= num_data # Change number to ratio.
+    fig, ax = FigAxes_create(ax=ax)
+    hists /= num_data
     bottoms = np.cumsum(hists, axis=0)
-    cmap = plt.get_cmap("Accent", len(groups)).colors
+    color_arr = plt.get_cmap(name=cmap, lut=len(groups)).colors
     width = (X[1] - X[0])*width
     Y_past = 0
     for i,(Y,g) in enumerate(zip(hists[1:], groups)):
         if bar:
-            ax.bar(X, Y, bottom=bottoms[i], width=width, label=g, align="center", color=cmap[i])
+            ax.bar(X, Y, bottom=bottoms[i], width=width, label=g, align="center", color=color_arr[i])
         else:
             Y_curt = Y+bottoms[i]
-            ax.plot(X, Y_curt, label=g, color=cmap[i], marker="o")
-            ax.fill_between(X, Y_past, Y_curt, color=cmap[i], alpha=0.3)
+            ax.plot(X, Y_curt, label=g, color=color_arr[i], marker="o")
+            ax.fill_between(X, Y_past, Y_curt, color=color_arr[i], alpha=0.3)
             Y_past = Y_curt
     return ax
 
-def plot_model_cm(answer, predict, cmap=plt.cm.RdBu, answer_label="answer", predict_label="predict"):
-    cm = confusion_matrix(answer, predict)
-    fig, ax = plt.subplots(figsize=(5, 5))
-    ax.matshow(confmat, cmap=cmap, alpha=0.3)
-    for i in range(confmat.shape[0]):
-        for j in range(confmat.shape[1]):
-            ax.text(x=j, y=i, s=confmat[i, j], va='center', ha='center')
-    ax.set_title(predict_label)
-    ax.set_ylabel(answer_label)
-    return ax
-
-def plot_TF_cm_2Dcond(result, fig=None, ax=None, vmin=0, vmax=1, cmap=plt.cm.RdBu, is_colorbar=False):
-    """Plot the true/false value in 2 variable conditions.
+def plot_classification_performance(cm=None, y_true=None, y_pred=None, cmap="RdBu", answer_label="answer", predict_label="predict"):
+    """Plot model's classification performance.
 
     Args:
-        result: (ndarray) shape=(N, M, 2)
-                   - N: The number of types of the condition 1.
-                   - M: The number of types of the condition 2.
-                   - 2: True / False vals.
+        cm (array)          : Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and prediced label being j-th class.
+        y_true (array)      : Ground truth (correct) target values.
+        y_pred (array)      : Estimated targets as returned by a classifier.
+        cmap (str)          : The name of a color map known to ``matplotlib``
+        answer_label (str)  : The label name on the correct answer side.
+        predict_label (str) : The label name on the prediction side.
+
+    Examples:
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from pyutils.matplotlib import plot_classification_performance
+        >>> rnd = np.random.RandomState(123)
+        >>> y_true = rnd.randint(low=0, high=4, size=100)
+        >>> y_pred = rnd.randint(low=0, high=4, size=100)
+        >>> plot_classification_performance(y_true=y_true, y_pred=y_pred)
+        >>> plt.show()
     """
-    N,M,_ = result.shape
-    prob_cm = np.array([[result[i][j][0]/(sum(result[i][j])+1e-16) for j in range(M)] for i in range(N)])
-
-    if (fig==None) or (ax==None):
-        fig, ax = plt.subplots(figsize=(5, 5))
-    cax = ax.matshow(prob_cm, cmap=cmap, alpha=0.3, vmin=vmin, vmax=vmax)
-    if is_colorbar: fig.colorbar(cax)
-
-    for i in range(N):
-        for j in range(M):
-            text = f"True:  {result[i][j][0]}\nFalse: {result[i][j][1]}\nProb:  {100*prob_cm[i][j]:.3f}%"
-            ax.text(x=j, y=i, s=text, va='center', ha='center')
-    return ax
-
-def clear_grid(ax, x=True, y=True):
-    if row:
-        ax.tick_params(labelbottom=False, bottom=False)
-        ax.set_xticklabels([])
-    if col:
-        ax.tick_params(labelleft=False, left=False)
-        ax.set_yticklabels([])
+    if cm is None:
+        cm = confusion_matrix(y_true=y_true, y_pred=y_pred)
+    fig, ax = plt.subplots(figsize=(5, 5))
+    ax.matshow(cm, cmap=cmap, alpha=0.3)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(x=j, y=i, s=cm[i, j], va="center", ha="center")
+    ax = set_ax_info(ax, title={"label": predict_label, "fontsize": 16}, ylabel={"ylabel":answer_label, "fontsize": 16})
     return ax

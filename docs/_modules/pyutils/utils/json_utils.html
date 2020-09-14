@@ -45,7 +45,7 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<div class="viewcode-block" id="PythonUtilsJSONEncoder"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.json_utils.PythonUtilsJSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">PythonUtilsJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonUtilsJSONEncoder"><a class="viewcode-back" href="../../../pyutils.utils.json_utils.html#pyutils.utils.json_utils.PythonUtilsJSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">PythonUtilsJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Json encoder for Python data structures.</span>
 
 <span class="sd">        Supports the following objects and types by default (``json.JSONEncoder``):</span>
@@ -69,7 +69,7 @@
 <span class="sd">        +-------------------+---------------+</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="PythonUtilsJSONEncoder.default"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.json_utils.PythonUtilsJSONEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="PythonUtilsJSONEncoder.default"><a class="viewcode-back" href="../../../pyutils.utils.json_utils.html#pyutils.utils.json_utils.PythonUtilsJSONEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Override this method to accommodate other types of data structures.</span>
 
 <span class="sd">        Currently, supports the following objects and types by overriding.</span>
@@ -109,7 +109,7 @@
         
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div></div>
     
-<div class="viewcode-block" id="save_json"><a class="viewcode-back" href="../../../pyutils.utils.html#pyutils.utils.json_utils.save_json">[docs]</a><span class="k">def</span> <span class="nf">save_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PythonUtilsJSONEncoder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="save_json"><a class="viewcode-back" href="../../../pyutils.utils.json_utils.html#pyutils.utils.json_utils.save_json">[docs]</a><span class="k">def</span> <span class="nf">save_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PythonUtilsJSONEncoder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Save the json file with easy-to-use arguments</span>
 
 <span class="sd">    Args:</span>
@@ -120,6 +120,8 @@
 <span class="sd">        cls (json.JSONEncoder) : To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the ``.default()`` method to serialize additional types), specify it with the ``cls`` kwarg; otherwise ``PythonUtilsJSONEncoder`` is used.</span>
 
 <span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import datetime</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import save_json</span>
 <span class="sd">        &gt;&gt;&gt; save_json(obj={&quot;date&quot;: datetime.datetime.now(), &quot;bool&quot; : True}, file=&quot;sample.json&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; with open(&quot;sample.json&quot;) as f:</span>
 <span class="sd">        &gt;&gt;&gt;     for line in f.readlines():</span>
@@ -140,6 +142,12 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pyutils.html">pyutils package</a></li>
+</ul>
+
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
