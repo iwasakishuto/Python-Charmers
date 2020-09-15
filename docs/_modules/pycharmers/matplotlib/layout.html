@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.matplotlib.layout &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.matplotlib.layout</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.matplotlib.layout</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span>
+
+<div class="viewcode-block" id="FigAxes_create"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.FigAxes_create">[docs]</a><span class="k">def</span> <span class="nf">FigAxes_create</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfigs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a figure and a subplot (a set of subplots).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fig (Figure)     : The ``Figure`` instance.</span>
+<span class="sd">        ax (Axes)        : The ``Axes`` instance.</span>
+<span class="sd">        figsize (tuple)  : The figure size for ``1`` plot.</span>
+<span class="sd">        projection (str) : The projection type of the subplot.</span>
+<span class="sd">        nfigs (int)      : Total number of figures.</span>
+<span class="sd">        nrows (int)      : The number of rows</span>
+<span class="sd">        ncols (int)      : The number of columns.</span>
+<span class="sd">        **kwargs         : ``kwargs`` for add_subplot(*args, **kwargs) method of ``matplotlib.figure.Figure`` instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        fig (Figure) : The ``Figure`` instance</span>
+<span class="sd">        ax (Axes)    : ``ax`` can be either a single ``Axes`` object or an array of ``Axes`` objects if more than one subplot was created.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import FigAxes_create</span>
+<span class="sd">        &gt;&gt;&gt; num_data = 10</span>
+<span class="sd">        &gt;&gt;&gt; data = range(num_data)</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = FigAxes_create(nfigs=num_data, ncols=4, figsize=(4,4))</span>
+<span class="sd">        &gt;&gt;&gt; for x,ax in zip(data,axes):</span>
+<span class="sd">        ...     ax.scatter(x,x,s=x+1)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span> <span class="o">=</span> <span class="n">measure_canvas</span><span class="p">(</span><span class="n">nfigs</span><span class="o">=</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="n">ncols</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">total_figsize</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfigs</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">nfigs</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="set_ax_info"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.set_ax_info">[docs]</a><span class="k">def</span> <span class="nf">set_ax_info</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set Axes information</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax (Axes) : The ``Axes`` instance.</span>
+<span class="sd">        kwargs    : ``key`` indicate the method which is start with ``set_``, and the method takes arguments (``val``) according to the type of ``val``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ax (Axes) : The ``Axes`` instance.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import set_ax_info</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots()</span>
+<span class="sd">        &gt;&gt;&gt; ax = set_ax_info(ax, aspect=5, title=&quot;Title&quot;, xlabel=&quot;Xlabel&quot;, ylabel=&quot;Ylabel&quot;, yticks={&quot;ticks&quot;:[]})</span>
+<span class="sd">        &gt;&gt;&gt; ax.scatter(1,1)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show() </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v</span><span class="o">==</span><span class="s2">&quot;_void&quot;</span><span class="p">:</span>
+            <span class="n">method</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">method</span><span class="p">(</span><span class="o">**</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)):</span>
+            <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">method</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="clear_grid"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.clear_grid">[docs]</a><span class="k">def</span> <span class="nf">clear_grid</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">axi</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">axi</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+        <span class="k">elif</span> <span class="n">axi</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+        <span class="k">elif</span> <span class="n">axi</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="measure_canvas"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.measure_canvas">[docs]</a><span class="k">def</span> <span class="nf">measure_canvas</span><span class="p">(</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot; Measure Canvas size.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nfigs (int)     : Total number of figures.</span>
+<span class="sd">        ncols (int)     : The number of columns.</span>
+<span class="sd">        figsize (tuple) : The figure size for ``1`` plot.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ncols (int)           : The number of columns.</span>
+<span class="sd">        nrows (int)           : The number of rows.</span>
+<span class="sd">        total_figsize (tuple) : The total figure size.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import measure_canvas</span>
+<span class="sd">        &gt;&gt;&gt; num_data = 10</span>
+<span class="sd">        &gt;&gt;&gt; data = range(num_data)</span>
+<span class="sd">        &gt;&gt;&gt; ncols, nrows, total_figsize = measure_canvas(nfigs=num_data, ncols=4, figsize=(4,4))</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = plt.subplots(nrows=nrows, ncols=ncols, sharex=&quot;all&quot;, sharey=&quot;all&quot;, figsize=total_figsize)</span>
+<span class="sd">        &gt;&gt;&gt; plot_all = False</span>
+<span class="sd">        &gt;&gt;&gt; for i,ax_row in enumerate(axes):</span>
+<span class="sd">        ...     for j,ax in enumerate(ax_row):</span>
+<span class="sd">        ...         idx = i*ncols+j</span>
+<span class="sd">        ...         if idx&gt;=num_data:</span>
+<span class="sd">        ...             plot_all = True</span>
+<span class="sd">        ...         if plot_all:</span>
+<span class="sd">        ...             fig.delaxes(ax)            </span>
+<span class="sd">        ...         else:            </span>
+<span class="sd">        ...             x = data[idx]+1</span>
+<span class="sd">        ...             ax.scatter(x,x,s=x*10)</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">ncols</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">figsize</span>
+    <span class="n">total_figsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="o">*</span><span class="n">ncols</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="n">nrows</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.matplotlib.layout</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

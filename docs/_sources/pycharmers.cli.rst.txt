@@ -1,0 +1,18 @@
+pycharmers.cli package
+======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.cli.show
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

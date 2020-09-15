@@ -1,0 +1,10 @@
+pycharmers.opencv package
+=========================
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.opencv
+   :members:
+   :undoc-members:
+   :show-inheritance:

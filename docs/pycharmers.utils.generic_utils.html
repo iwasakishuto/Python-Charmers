@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.generic_utils module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.utils.json_utils module" href="pycharmers.utils.json_utils.html" />
+    <link rel="prev" title="pycharmers.utils.color_utils module" href="pycharmers.utils.color_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.generic_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.utils.generic_utils">
+<span id="pycharmers-utils-generic-utils-module"></span><h1>pycharmers.utils.generic_utils module<a class="headerlink" href="#module-pycharmers.utils.generic_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.calc_rectangle_size">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">calc_rectangle_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">area</span></em>, <em class="sig-param"><span class="n">w</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#calc_rectangle_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.calc_rectangle_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the lengths of the sides of the rectangle from the area and the vertical length (width).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>area</strong> (<em>int</em>) – The area of the rectangle.</p></li>
+<li><p><strong>w</strong> (<em>int</em>) – The length of the vertical line. (width)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>(w, h)</p>
+<p>The tuple of the lengths of horizontal, and vertical lines. (width, height)</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>size (tuple)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc_rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">(3, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calc_rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+<span class="go">(12, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calc_rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="go">(7, 2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.flatten_dual">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">flatten_dual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#flatten_dual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.flatten_dual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten double list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lst</strong> (<em>list</em>) – Dual list.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">flatten_dual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flatten_dual</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="go">[1, 2, 3, 4, 5, 6]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flatten_dual</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="go">[[1, 2, 3], 4, 5, 6]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flatten_dual</span><span class="p">(</span><span class="n">flatten_dual</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]]))</span>
+<span class="go">TypeError: &#39;int&#39; object is not iterable</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If list is not a dual list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.handleKeyError">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">handleKeyError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#handleKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.handleKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether all <code class="docutils literal notranslate"><span class="pre">kwargs.values()</span></code> in the <code class="docutils literal notranslate"><span class="pre">lst</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – candidates.</p></li>
+<li><p><strong>kwargs</strong> – <code class="docutils literal notranslate"><span class="pre">key</span></code> is the varname that is easy to understand when an error occurs</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">val</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">val</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">KeyError: Please choose the argment val from [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]. you chose 100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">val1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">val2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">val1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">val2</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">KeyError: Please choose the argment val2 from [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]. you chose 100</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – If <code class="docutils literal notranslate"><span class="pre">kwargs.values()</span></code> not in the <code class="docutils literal notranslate"><span class="pre">lst</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.handleTypeError">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">handleTypeError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">types</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#handleTypeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.handleTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether all types of <code class="docutils literal notranslate"><span class="pre">kwargs.values()</span></code> match any of <code class="docutils literal notranslate"><span class="pre">types</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – candidate types.</p></li>
+<li><p><strong>kwargs</strong> – <code class="docutils literal notranslate"><span class="pre">key</span></code> is the varname that is easy to understand when an error occurs</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">handleTypeError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">val</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">val</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">val</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="go">TypeError: val must be one of [&#39;str&#39;, &#39;int&#39;], not float</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">val1</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">val2</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">val1</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">val2</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="go">TypeError: val2 must be one of [&#39;str&#39;, &#39;int&#39;], not float</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If the types of <code class="docutils literal notranslate"><span class="pre">kwargs.values()</span></code> are none of the <code class="docutils literal notranslate"><span class="pre">types</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.now_str">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">now_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'%Y-%m-%d&#64;%H.%M.%S'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#now_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.now_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns new datetime string representing current time local to tz under the control of an explicit format string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tz</strong> (<em>datetime.timezone</em>) – Timezone object. If no <code class="docutils literal notranslate"><span class="pre">tz</span></code> is specified, uses local timezone.</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – format string. See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">Python Documentation</a></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">now_str</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">()</span>
+<span class="go">&#39;2020-09-14@22.31.17&#39;</span>
+<span class="go">&gt;&gt;&gt;now_str(fmt=&quot;%A, %d. %B %Y %I:%M%p&quot;)</span>
+<span class="go">Monday, 14. September 2020 10:31PM&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<span class="go">&#39;2020-09-14@13.31.17&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.str_strip">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">str_strip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#str_strip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.str_strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all consecutive whitespace  characters to <cite>‘ ‘</cite> (half-width whitespace), then return a copy of the string with leading and trailing whitespace removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – string</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">str_strip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">str_strip</span><span class="p">(</span><span class="s2">&quot; hoge   &quot;</span><span class="p">)</span>
+<span class="go">&#39;hoge&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">str_strip</span><span class="p">(</span><span class="s2">&quot; ho    ge   &quot;</span><span class="p">)</span>
+<span class="go">&#39;ho ge&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">str_strip</span><span class="p">(</span><span class="s2">&quot;  ho    g　e&quot;</span><span class="p">)</span>
+<span class="go">&#39;ho g e&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.utils.color_utils.html"
+                        title="previous chapter">pycharmers.utils.color_utils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.utils.json_utils.html"
+                        title="next chapter">pycharmers.utils.json_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.utils.generic_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.generic_utils module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

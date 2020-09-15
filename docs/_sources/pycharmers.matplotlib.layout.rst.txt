@@ -1,0 +1,7 @@
+pycharmers.matplotlib.layout module
+===================================
+
+.. automodule:: pycharmers.matplotlib.layout
+   :members:
+   :undoc-members:
+   :show-inheritance:

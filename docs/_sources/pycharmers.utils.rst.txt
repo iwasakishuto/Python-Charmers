@@ -1,0 +1,24 @@
+pycharmers.utils package
+========================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.utils.argparse_utils
+   pycharmers.utils.color_utils
+   pycharmers.utils.generic_utils
+   pycharmers.utils.json_utils
+   pycharmers.utils.monitor_utils
+   pycharmers.utils.numpy_utils
+   pycharmers.utils.print_utils
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

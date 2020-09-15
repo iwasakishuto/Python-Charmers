@@ -1,7 +1,0 @@
-pyutils.matplotlib.cmaps module
-===============================
-
-.. automodule:: pyutils.matplotlib.cmaps
-   :members:
-   :undoc-members:
-   :show-inheritance:

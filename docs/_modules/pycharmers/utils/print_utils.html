@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.print_utils &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.print_utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.utils.print_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">_toCOLOR_create</span>
+<span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
+
+<span class="n">f_aligns</span>           <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">]</span>
+<span class="n">f_signs</span>            <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="n">f_grouping_options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="n">f_types</span>            <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="format_spec_create"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.format_spec_create">[docs]</a><span class="k">def</span> <span class="nf">format_spec_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a function which returns a formatted text.</span>
+
+<span class="sd">    `format_spec = [[fill]align][sign][#][0][width][grouping_option][.precision][type]`</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        width</span>
+<span class="sd">        align (str)           : [[fill]align] One of ``[&quot;&lt;&quot;, &quot;&gt;&quot;, &quot;=&quot;, &quot;^&quot;]``</span>
+<span class="sd">        sign (str)            : [sign] One of ``[&quot;+&quot;, &quot;-&quot;, &quot; &quot;, &quot;&quot;]``</span>
+<span class="sd">        zero_padding (bool)   : [0]</span>
+<span class="sd">        width (int)           : [width]</span>
+<span class="sd">        grouping_option (str) : [grouping_option] One of ``[&quot;_&quot;, &quot;,&quot;, &quot;&quot;]``</span>
+<span class="sd">        fmt (str)             : [.precision][type] One of ``[&quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;E&quot;, &quot;f&quot;, &quot;F&quot;, &quot;g&quot;, &quot;G&quot;, &quot;n&quot;, &quot;o&quot;, &quot;s&quot;, &quot;x&quot;, &quot;X&quot;, &quot;%&quot;]``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        format_spec: lambda (`&lt;function __main__.&lt;lambda&gt;(fill)&gt;`)</span>
+<span class="sd">        </span>
+<span class="sd">    References:</span>
+<span class="sd">        - `Python Source Code &lt;https://github.com/python/cpython/blob/3.8/Lib/string.py&gt;`_ </span>
+<span class="sd">        - `Python Documentation &lt;https://docs.python.org/3/library/string.html#format-specification-mini-language&gt;`_</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import format_spec_create</span>
+<span class="sd">        &gt;&gt;&gt; format_spec = format_spec_create(width=10, align=&quot;^&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; format_spec(&quot;hoge&quot;)</span>
+<span class="sd">        &#39;   hoge   &#39;</span>
+<span class="sd">        &gt;&gt;&gt; format_spec = format_spec_create(align=&quot;&lt;&quot;, fmt=&quot;.1%&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; format_spec(1/3)</span>
+<span class="sd">        &#39;33.3%&#39;</span>
+<span class="sd">        &gt;&gt;&gt; format_spec = format_spec_create(align=&quot;&gt;&quot;, zero_padding=True, fmt=&quot;b&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; format_spec(20)</span>
+<span class="sd">        &#39;10100&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_aligns</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_signs</span><span class="p">,</span>  <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">)</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_grouping_options</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_types</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">zero</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="k">if</span> <span class="n">zero_padding</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">fill</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fill</span><span class="si">:{</span><span class="n">align</span><span class="si">}{</span><span class="n">sign</span><span class="si">}{</span><span class="n">zero</span><span class="si">}{</span><span class="n">width</span><span class="si">}{</span><span class="n">grouping_option</span><span class="si">}{</span><span class="n">fmt</span><span class="si">}}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="print_func_create"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.print_func_create">[docs]</a><span class="k">def</span> <span class="nf">print_func_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                      <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                      <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                      <span class="n">left_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a function which prints a formatted text. Please see also the function `format_spec_create`.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        color (str)                : color</span>
+<span class="sd">        left(right)_side_bar (str) : Characters to output to the Left/Right side.</span>
+<span class="sd">        left(right)_margin (int)   : Left/Right side margin</span>
+<span class="sd">        end (str)                  : string appended after the last value, default a newline.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        print_func: Function that can be used like print</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import print_func_create</span>
+<span class="sd">        &gt;&gt;&gt; print_func = print_func_create(width=8, align=&quot;^&quot;, left_side_bar=&quot;[&quot;, right_side_bar=&quot;]&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print_func(&quot;hoge&quot;)</span>
+<span class="sd">        [  hoge  ]</span>
+<span class="sd">        &gt;&gt;&gt; print_func = print_func_create(align=&quot;&lt;&quot;, left_side_bar=&quot;$ &quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print_func(&quot;git clone https://github.com/iwasakishuto/Python-utils.git&quot;)</span>
+<span class="sd">        $ git clone https://github.com/iwasakishuto/Python-utils.git</span>
+<span class="sd">        &gt;&gt;&gt; print_func(&quot;cd Python-utils&quot;)</span>
+<span class="sd">        $ cd Python-utils</span>
+<span class="sd">        &gt;&gt;&gt; print_func(&quot;sudo python setup.py install&quot;)</span>
+<span class="sd">        $ sudo python setup.py install</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span>
+        <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span>
+    <span class="p">)</span>
+    <span class="n">toCOLOR</span> <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">print_func</span><span class="p">(</span><span class="n">fill</span><span class="p">):</span>
+        <span class="n">info</span>  <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">left_side_bar</span><span class="si">}{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">left_margin</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">info</span> <span class="o">+=</span> <span class="n">toCOLOR</span><span class="p">(</span><span class="n">format_spec</span><span class="p">(</span><span class="n">fill</span><span class="p">))</span>
+        <span class="n">info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">right_margin</span><span class="si">}{</span><span class="n">right_side_bar</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">print_func</span></div>
+
+<div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Create a beautiful table and show.</span>
+
+<span class="sd">    Properties:</span>
+<span class="sd">        ncols(int) : the number of columns.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        set_cols : Set values to a table.</span>
+<span class="sd">        show     : Show a table.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import Table</span>
+<span class="sd">        &gt;&gt;&gt; table = Table()</span>
+<span class="sd">        &gt;&gt;&gt; table.set_cols(range(3), colname=&quot;id&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; table.set_cols(list(&quot;abc&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; table.show()</span>
+<span class="sd">        |id|col.2|</span>
+<span class="sd">        ==========</span>
+<span class="sd">        | 0|    a|</span>
+<span class="sd">        | 1|    b|</span>
+<span class="sd">        | 2|    c|</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ncols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_disp_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;print_values&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">print_func</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;print_title&quot;</span><span class="p">)</span>
+            <span class="n">print_func</span><span class="p">(</span><span class="n">colname</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_disp_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
+        <span class="n">table_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="k">if</span> <span class="n">table_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">table_width</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">mark</span><span class="o">*</span><span class="n">table_width</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_disp_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;print_values&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">print_func</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;print_values&quot;</span><span class="p">)</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;values&quot;</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">print_func</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show a table</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
+<span class="sd">            table_width (int) : The table width.</span>
+<span class="sd">            mark (str)        : border mark. (default &quot;=&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_title</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_border</span><span class="p">(</span><span class="n">table_width</span><span class="o">=</span><span class="n">table_width</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_values</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Table.set_cols"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.set_cols">[docs]</a>    <span class="k">def</span> <span class="nf">set_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                 <span class="n">left_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set values to a table.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            values (array) : The array-like data.</span>
+<span class="sd">            colname (str)  : The colname for ``values``.</span>
+<span class="sd">            **kwargs       : See also ``print_func_create``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colname</span> <span class="o">=</span> <span class="n">colname</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;col.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">title_width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">colname</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span>
+                <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span>
+                <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span>
+            <span class="p">)</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">format_spec</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="o">+=</span> <span class="n">width</span> <span class="o">+</span> <span class="n">left_margin</span> <span class="o">+</span> <span class="n">right_margin</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">print_values</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span>
+            <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">left_margin</span><span class="o">=</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="n">right_margin</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">print_title</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span>
+            <span class="n">align</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> 
+            <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;ACCENT&quot;</span><span class="p">,</span>
+            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">left_margin</span><span class="o">=</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="n">right_margin</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="n">colname</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;print_values&quot;</span> <span class="p">:</span> <span class="n">print_values</span><span class="p">,</span>
+                <span class="s2">&quot;print_title&quot;</span>  <span class="p">:</span> <span class="n">print_title</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span>       <span class="p">:</span> <span class="n">values</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="n">nrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">==-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">nrows</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nrows</span> </div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.print_utils</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

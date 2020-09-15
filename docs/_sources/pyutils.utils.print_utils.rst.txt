@@ -1,7 +1,0 @@
-pyutils.utils.print\_utils module
-=================================
-
-.. automodule:: pyutils.utils.print_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:

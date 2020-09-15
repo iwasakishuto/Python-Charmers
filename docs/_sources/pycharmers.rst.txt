@@ -1,0 +1,21 @@
+pycharmers package
+==================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.cli
+   pycharmers.matplotlib
+   pycharmers.opencv
+   pycharmers.utils
+
+Module contents
+---------------
+
+.. automodule:: pycharmers
+   :members:
+   :undoc-members:
+   :show-inheritance:

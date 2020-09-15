@@ -1,0 +1,21 @@
+pycharmers.matplotlib package
+=============================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.matplotlib.cmaps
+   pycharmers.matplotlib.layout
+   pycharmers.matplotlib.plot2d
+   pycharmers.matplotlib.plot3d
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.matplotlib
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+pycharmers.utils.print\_utils module
+====================================
+
+.. automodule:: pycharmers.utils.print_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

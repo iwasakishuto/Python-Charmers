@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 import setuptools
-import pyutils
+import pycharmers
 
 DESCRIPTION = "A collection of useful python programs."
 
@@ -15,8 +15,8 @@ with open(os.path.join(here,"console_scripts.txt"), mode="r") as f:
 
 def setup_package():
     metadata = dict(
-        name="Py-utils",
-        version=pyutils.__version__,
+        name="Python-Charmers",
+        version=pycharmers.__version__,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         long_description_content_type="text/markdown",

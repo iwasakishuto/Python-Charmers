@@ -1,7 +1,7 @@
-pyutils
-=======
+pycharmers
+==========
 
 .. toctree::
    :maxdepth: 4
 
-   pyutils
+   pycharmers

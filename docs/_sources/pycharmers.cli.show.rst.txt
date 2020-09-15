@@ -1,0 +1,7 @@
+pycharmers.cli.show module
+==========================
+
+.. automodule:: pycharmers.cli.show
+   :members:
+   :undoc-members:
+   :show-inheritance:

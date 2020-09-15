@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.matplotlib.cmaps module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.matplotlib.layout module" href="pycharmers.matplotlib.layout.html" />
+    <link rel="prev" title="pycharmers.matplotlib package" href="pycharmers.matplotlib.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.layout.html" title="pycharmers.matplotlib.layout module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.matplotlib.html" accesskey="U">pycharmers.matplotlib package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.matplotlib.cmaps module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.matplotlib.cmaps">
+<span id="pycharmers-matplotlib-cmaps-module"></span><h1>pycharmers.matplotlib.cmaps module<a class="headerlink" href="#module-pycharmers.matplotlib.cmaps" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.matplotlib.cmaps.plot_cmap_category_samples">
+<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_category_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_category_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_category_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot all colormap samples in a category</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>category</strong> (<em>str</em>) – the name of a color map category.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map category</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;Sequential&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color map categories</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.matplotlib.cmaps.plot_cmap_samples">
+<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmap_name</span><span class="o">=</span><span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot color map samples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmap_name</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – The resolution of the figure. (The size of matrix.)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color maps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot color map with different dpi (Dots per inch)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;Pastel1&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.matplotlib.html#module-pycharmers.matplotlib">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.matplotlib.html"
+                        title="previous chapter">pycharmers.matplotlib package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.matplotlib.layout.html"
+                        title="next chapter">pycharmers.matplotlib.layout module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.matplotlib.cmaps.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.layout.html" title="pycharmers.matplotlib.layout module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.matplotlib.html" >pycharmers.matplotlib package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.matplotlib.cmaps module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

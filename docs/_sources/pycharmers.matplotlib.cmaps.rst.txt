@@ -1,0 +1,7 @@
+pycharmers.matplotlib.cmaps module
+==================================
+
+.. automodule:: pycharmers.matplotlib.cmaps
+   :members:
+   :undoc-members:
+   :show-inheritance:

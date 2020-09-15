@@ -1,0 +1,7 @@
+pycharmers.utils.color\_utils module
+====================================
+
+.. automodule:: pycharmers.utils.color_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

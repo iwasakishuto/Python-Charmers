@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.monitor_utils module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.utils.numpy_utils module" href="pycharmers.utils.numpy_utils.html" />
+    <link rel="prev" title="pycharmers.utils.json_utils module" href="pycharmers.utils.json_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.monitor_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.utils.monitor_utils">
+<span id="pycharmers-utils-monitor-utils-module"></span><h1>pycharmers.utils.monitor_utils module<a class="headerlink" href="#module-pycharmers.utils.monitor_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.utils.monitor_utils.ProgressMonitor">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.monitor_utils.</code><code class="sig-name descname">ProgressMonitor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_iter</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">barname</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/monitor_utils.html#ProgressMonitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.monitor_utils.ProgressMonitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Monitor the loop progress.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_iter</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;NAME&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">monitor</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monitor</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<span class="go">NAME 100/100[####################]100.00% - 0.010[s]  loop: 100</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pycharmers.utils.monitor_utils.ProgressMonitor.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/monitor_utils.html#ProgressMonitor.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.monitor_utils.ProgressMonitor.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the necessary processing at the end.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.utils.json_utils.html"
+                        title="previous chapter">pycharmers.utils.json_utils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.utils.numpy_utils.html"
+                        title="next chapter">pycharmers.utils.numpy_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.utils.monitor_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.monitor_utils module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.numpy_utils module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.utils.print_utils module" href="pycharmers.utils.print_utils.html" />
+    <link rel="prev" title="pycharmers.utils.monitor_utils module" href="pycharmers.utils.monitor_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.monitor_utils.html" title="pycharmers.utils.monitor_utils module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.numpy_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.utils.numpy_utils">
+<span id="pycharmers-utils-numpy-utils-module"></span><h1>pycharmers.utils.numpy_utils module<a class="headerlink" href="#module-pycharmers.utils.numpy_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.utils.numpy_utils.confusion_matrix">
+<code class="sig-prename descclassname">pycharmers.utils.numpy_utils.</code><code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/numpy_utils.html#confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.numpy_utils.confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute confusion matrix to evaluate the accuracy of a classification.</p>
+<p>By definition a confusion matrix <span class="math notranslate nohighlight">\(C\)</span> is such that <span class="math notranslate nohighlight">\(C_{i, j}\)</span> is
+equal to the number of observations known to be in group <span class="math notranslate nohighlight">\(i\)</span> and predicted
+to be in group <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Thus in binary classification, the count of true negatives is
+<span class="math notranslate nohighlight">\(C_{0,0}\)</span>, false negatives is <span class="math notranslate nohighlight">\(C_{1,0}\)</span>, true positives is
+<span class="math notranslate nohighlight">\(C_{1,1}\)</span> and false positives is <span class="math notranslate nohighlight">\(C_{0,1}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>array</em>) – Ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>array</em>) – Estimated targets as returned by a classifier.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Confusion matrix whose i-th row and j-th column entry indicates</dt><dd><p>the number of samples with true label being i-th class and prediced label being j-th class.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>cm (array)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Confusion_matrix">Wikipedia entry for the Confusion matrix</a> (Wikipedia and other references may use a different convention for axes)</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">array([[2, 0, 0],</span>
+<span class="go">    [0, 0, 1],</span>
+<span class="go">    [1, 0, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># In the binary case, we can extract true positives, etc as follows:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tn</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tp</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">tn</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+<span class="go">(0, 2, 1, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.numpy_utils.take_centers">
+<code class="sig-prename descclassname">pycharmers.utils.numpy_utils.</code><code class="sig-name descname">take_centers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/numpy_utils.html#take_centers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.numpy_utils.take_centers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a center values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>a</strong> (<em>array</em>) – Array</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">take_centers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">take_centers</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">array([0.5, 1.5, 2.5, 3.5, 4.5])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">take_centers</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="go">array([[0.5, 1.5, 2.5, 3.5, 4.5],</span>
+<span class="go">    [1.5, 2.5, 3.5, 4.5, 5.5]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.utils.monitor_utils.html"
+                        title="previous chapter">pycharmers.utils.monitor_utils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.utils.print_utils.html"
+                        title="next chapter">pycharmers.utils.print_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.utils.numpy_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.monitor_utils.html" title="pycharmers.utils.monitor_utils module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.numpy_utils module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

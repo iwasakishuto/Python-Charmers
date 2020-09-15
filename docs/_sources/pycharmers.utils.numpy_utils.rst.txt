@@ -1,0 +1,7 @@
+pycharmers.utils.numpy\_utils module
+====================================
+
+.. automodule:: pycharmers.utils.numpy_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

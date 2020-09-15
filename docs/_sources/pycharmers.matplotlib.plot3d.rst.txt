@@ -1,0 +1,7 @@
+pycharmers.matplotlib.plot3d module
+===================================
+
+.. automodule:: pycharmers.matplotlib.plot3d
+   :members:
+   :undoc-members:
+   :show-inheritance:
