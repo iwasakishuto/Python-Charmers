@@ -8,7 +8,7 @@ from ..utils.print_utils import Table
 sys.path.append(REPO_DIR)
 from setup import CONSOLE_SCRIPTS
 
-def show_(argv=sys.argv[1:]):
+def show_command_line_programs(argv=sys.argv[1:]):
     """Show all Python-utils's command line programs.
 
     Args:

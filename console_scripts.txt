@@ -1,1 +1,1 @@
-pyutils-show = pyutils.cli.show:show
+pyutils-show = pyutils.cli.show:show_command_line_programs
