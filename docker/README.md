@@ -1,6 +1,6 @@
-# Using Python-Utils via Docker
+# Using Py-utils via Docker
 
-This directory contains `Dockerfile` to make it easy to get up and running with Python-Utils via [Docker](http://www.docker.com/).
+This directory contains `Dockerfile` to make it easy to get up and running with Py-utils via [Docker](http://www.docker.com/).
 
 ## Installing Docker
 

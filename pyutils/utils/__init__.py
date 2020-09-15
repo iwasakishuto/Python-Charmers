@@ -33,7 +33,7 @@ from .generic_utils import now_str
 from .generic_utils import flatten_dual
 from .generic_utils import calc_rectangle_size
 
-from .json_utils import PythonUtilsJSONEncoder
+from .json_utils import PyUtilsJSONEncoder
 from .json_utils import save_json
 
 from .monitor_utils import ProgressMonitor

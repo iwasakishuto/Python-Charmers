@@ -1,7 +1,7 @@
 #coding: utf-8
-__all__ = ["PythonUtilsImprementationError"]
+__all__ = ["PyUtilsImprementationError"]
 
-class PythonUtilsImprementationError(Exception):
+class PyUtilsImprementationError(Exception):
     """ 
     Warnings that developers will resolve. 
     Developers are now solving in a simple stupid way.

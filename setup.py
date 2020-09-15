@@ -15,7 +15,7 @@ with open(os.path.join(here,"console_scripts.txt"), mode="r") as f:
 
 def setup_package():
     metadata = dict(
-        name="Python-Utils",
+        name="Py-utils",
         version=pyutils.__version__,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
