@@ -30,7 +30,7 @@ There are two ways to install **Python-utils**:
 
 |Command|Description|
 |:-:|:-|
-|`pyutils.cli.show:show_command_line_programs`|Show all Python-utils's command line programs.|
+|`pyutils-show`|Show all Python-utils's command line programs.|
 
 ## Quick example
 

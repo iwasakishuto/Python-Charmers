@@ -12,8 +12,8 @@ def show_command_line_programs(argv=sys.argv[1:]):
     """Show all Python-utils's command line programs.
 
     Args:
-        -H, --head (str)  : Show the first ``head`` rows for the table.
-        -W, --width (int) : Table width.
+        -H/--head (str)  : Show the first ``head`` rows for the table.
+        -W/--width (int) : Table width.
         --mark (str)      : The border mark. (default "=")
 
     Note:
