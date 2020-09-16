@@ -29,7 +29,7 @@ def setup_package():
             "Say Thanks!" : "https://twitter.com/cabernet_rock",
         },
         packages=setuptools.find_packages(),
-        python_requires=">=3.8",
+        python_requires=">=3.6",
         install_requires=INSTALL_REQUIRES,
         extras_require={
           "tests": ["pytest"],
