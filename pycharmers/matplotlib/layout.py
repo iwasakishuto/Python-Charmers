@@ -2,9 +2,9 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from ..utils.generic_utils import calc_rectangle_size
+from ..utils.generic_utils import calc_rectangle_size, list_transpose
 
-def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, ncols=1, nrows=1, **kwargs):
+def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, ncols=1, nrows=1, axis=0, **kwargs):
     """ Create a figure and a subplot (a set of subplots).
 
     Args:
@@ -15,6 +15,7 @@ def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, n
         nfigs (int)      : Total number of figures.
         nrows (int)      : The number of rows
         ncols (int)      : The number of columns.
+        axis (int)       : ``0`` or ``1`` Direction to arrange axes.
         **kwargs         : ``kwargs`` for add_subplot(*args, **kwargs) method of ``matplotlib.figure.Figure`` instance.
 
     Returns:
@@ -36,6 +37,8 @@ def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, n
             ncols, nrows, total_figsize = measure_canvas(nfigs=nfigs, ncols=ncols, figsize=figsize)
             fig = plt.figure(figsize=total_figsize)
         ax = [fig.add_subplot(nrows, ncols, i+1, projection=projection, **kwargs) for i in range(nfigs)]
+        if axis==1:
+            ax = list_transpose(lst=ax, width=ncols)
         if nfigs==1: ax = ax[0]
     return (fig, ax)
 
@@ -72,17 +75,33 @@ def set_ax_info(ax, **kwargs):
             method(v)
     return ax
 
-def clear_grid(ax, axis=["x","y"]):
-    if isinstance(axis, str):
-        axis = [axis]
-    for axi in axis:
-        if axi == "x":
+def clear_grid(ax, pos=["x","y"]):
+    """Clear a grid
+
+    Args:
+        ax (Axes)  : The ``Axes`` instance.
+        pos (list) : Positions to clean a grid
+
+    Examples:
+        >>> from pyutils.matplotlib import clear_grid, FigAxes_create
+        >>> fig,ax = FigAxes_create()
+        >>> ax = clear_grid(ax=ax, pos=["x", "y"])
+        >>> ax = clear_grid(ax=ax, pos=list("ltrb"))
+    """
+    if isinstance(pos, str):
+        pos = [pos]
+    for p in pos:
+        if p in ["x", "b", "bottom"]:
             ax.tick_params(labelbottom=False, bottom=False)
             ax.set_xticklabels([])
-        elif axi == "y":
+        elif p in ["y", "l", "left"]:
             ax.tick_params(labelleft=False, left=False)
             ax.set_yticklabels([])
-        elif axi == "all":
+        elif p in ["r", "right"]:
+            ax.tick_params(labelright=False, right=False)
+        elif p in ["t", "top"]:
+            ax.tick_params(labeltop=False, top=False)
+        elif p == "all":
             ax.set_axis_off()
     return ax
 

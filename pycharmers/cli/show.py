@@ -8,7 +8,7 @@ from ..utils.print_utils import Table
 
 with open(os.path.join(REPO_DIR,"console_scripts.txt"), mode="r") as f:
     CONSOLE_SCRIPTS = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
-    
+
 def show_command_line_programs(argv=sys.argv[1:]):
     """Show all Python-Charmers's command line programs.
 
@@ -21,6 +21,12 @@ def show_command_line_programs(argv=sys.argv[1:]):
         When you run from the command line, execute as follows::
         
         $ pycharmers-show
+
+    Examples:
+        >>> $ pycharmers-show
+        >>> |    command     |                     path                      |
+        >>> ==================================================================
+        >>> |pycharmers-show | pycharmers.cli.show:show_command_line_programs|
 
     """
     parser = argparse.ArgumentParser(prog="pycharmers-show", add_help=True)
