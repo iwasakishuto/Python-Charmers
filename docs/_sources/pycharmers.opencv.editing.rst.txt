@@ -1,0 +1,7 @@
+pycharmers.opencv.editing module
+================================
+
+.. automodule:: pycharmers.opencv.editing
+   :members:
+   :undoc-members:
+   :show-inheritance:

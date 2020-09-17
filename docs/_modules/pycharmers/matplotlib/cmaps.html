@@ -45,10 +45,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">import</span> <span class="nn">matplotlib._color_data</span> <span class="k">as</span> <span class="nn">mcd</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">flatten_dual</span>
-<span class="kn">from</span> <span class="nn">.layout</span> <span class="kn">import</span> <span class="n">FigAxes_create</span><span class="p">,</span> <span class="n">set_ax_info</span>
+<span class="kn">from</span> <span class="nn">.layout</span> <span class="kn">import</span> <span class="n">FigAxes_create</span><span class="p">,</span> <span class="n">set_ax_info</span><span class="p">,</span> <span class="n">clear_grid</span>
 
 <span class="n">Category2Cmaps</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Perceptually Uniform Sequential&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="s2">&quot;magma&quot;</span><span class="p">,</span> <span class="s2">&quot;plasma&quot;</span><span class="p">,</span> <span class="s2">&quot;viridis&quot;</span><span class="p">],</span>
@@ -60,6 +62,56 @@
 <span class="p">}</span>
 <span class="n">Supported_Cmap_Categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Category2Cmaps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="n">Supported_Cmaps</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">(</span><span class="n">Category2Cmaps</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="c1">#====== COLOR VARNAMES (RGB) ======</span>
+<span class="n">BASE_COLORS</span> <span class="o">=</span> <span class="n">mcd</span><span class="o">.</span><span class="n">BASE_COLORS</span>
+<span class="n">CSS4_COLORS</span> <span class="o">=</span> <span class="n">mcd</span><span class="o">.</span><span class="n">CSS4_COLORS</span>
+<span class="n">XKCD_COLORS</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">[</span><span class="mi">5</span><span class="p">:]:</span><span class="n">color</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="n">mcd</span><span class="o">.</span><span class="n">XKCD_COLORS</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">TABLEAU_COLORS</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">[</span><span class="mi">4</span><span class="p">:]:</span><span class="n">color</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">color</span> <span class="ow">in</span> <span class="n">mcd</span><span class="o">.</span><span class="n">TABLEAU_COLORS</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">FAMOUS_COLOR_PALETTES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;base&quot;</span>    <span class="p">:</span> <span class="n">BASE_COLORS</span><span class="p">,</span>
+    <span class="s2">&quot;css4&quot;</span>    <span class="p">:</span> <span class="n">CSS4_COLORS</span><span class="p">,</span>
+    <span class="s2">&quot;xkcd&quot;</span>    <span class="p">:</span> <span class="n">XKCD_COLORS</span><span class="p">,</span>
+    <span class="s2">&quot;tableau&quot;</span> <span class="p">:</span> <span class="n">TABLEAU_COLORS</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">COLOR_BLACK</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+<span class="n">COLOR_RED</span>     <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">COLOR_GREEN</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">128</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+<span class="n">COLOR_YELLOW</span>  <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">COLOR_BLUE</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+<span class="n">COLOR_MAGENTA</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">COLOR_CYAN</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+<span class="n">COLOR_WHITE</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="c1">#==============================</span>
+
+<div class="viewcode-block" id="plot_color_palettes"><a class="viewcode-back" href="../../../pycharmers.matplotlib.cmaps.html#pycharmers.matplotlib.cmaps.plot_color_palettes">[docs]</a><span class="k">def</span> <span class="nf">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot color palettes</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        palette_name (str) : The name of a color map known to ``matplotlib``</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import plot_color_palettes</span>
+<span class="sd">        &gt;&gt;&gt; # plot specified color map</span>
+<span class="sd">        &gt;&gt;&gt; plot_color_palettes(palette_name=&quot;xkcd&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; # plot All color maps</span>
+<span class="sd">        &gt;&gt;&gt; plot_color_palettes(palette_name=&quot;all&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">palette_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">palette_name</span> <span class="ow">in</span> <span class="n">FAMOUS_COLOR_PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>            
+            <span class="n">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="n">palette_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">FAMOUS_COLOR_PALETTES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">],</span> <span class="n">palette_name</span><span class="o">=</span><span class="n">palette_name</span><span class="p">)</span>
+        <span class="n">palettes</span> <span class="o">=</span> <span class="n">FAMOUS_COLOR_PALETTES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">palette_name</span><span class="p">)</span>
+        <span class="n">palettes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">palettes</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">FigAxes_create</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">nfigs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">palettes</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Palette: </span><span class="si">{</span><span class="n">palette_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ax</span><span class="p">,(</span><span class="n">name</span><span class="p">,</span><span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">palettes</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> 
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">clear_grid</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;all&quot;</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="plot_cmap_samples"><a class="viewcode-back" href="../../../pycharmers.matplotlib.cmaps.html#pycharmers.matplotlib.cmaps.plot_cmap_samples">[docs]</a><span class="k">def</span> <span class="nf">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Plot color map samples</span>
@@ -128,6 +180,53 @@
             <span class="n">axL</span> <span class="o">=</span> <span class="n">plot_color_map</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axL</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
             <span class="n">axR</span> <span class="o">=</span> <span class="n">plot_color_map</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axR</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_r&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="color_dict_create"><a class="viewcode-back" href="../../../pycharmers.matplotlib.cmaps.html#pycharmers.matplotlib.cmaps.color_dict_create">[docs]</a><span class="k">def</span> <span class="nf">color_dict_create</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a color dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        keys (int / list)              : (The number of) Keys of the color dict</span>
+<span class="sd">        cmap (str / matplotlib.colors) : Color map.</span>
+<span class="sd">        reverse (bool)                 : Whether to reverse the color.</span>
+<span class="sd">        max_val (int)                  : Max value of color code.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        color_dict : key -&gt; color.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import color_dict_create</span>
+<span class="sd">        &gt;&gt;&gt; color_dict_create(keys=[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], cmap=&quot;jet&quot;)</span>
+<span class="sd">        {&#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">        &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">        &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">        &gt;&gt;&gt; color_dict_create(keys=3, cmap=&quot;jet&quot;)</span>
+<span class="sd">        {0: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">        1: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">        2: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">        &gt;&gt;&gt; color_dict_create(keys=[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], cmap=plt.get_cmap(&quot;jet&quot;))</span>
+<span class="sd">        {&#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">        &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">        &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">Colormap</span><span class="p">):</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">Supported_Cmaps</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span> <span class="n">cmap</span> <span class="o">+=</span> <span class="s2">&quot;_r&quot;</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">keys</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">unique_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_keys</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">unique_keys</span>
+    <span class="n">color_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">([</span>
+            <span class="n">max_val</span><span class="o">*</span><span class="n">e</span> <span class="k">if</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+        <span class="p">])</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">color_dict</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -137,7 +236,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../../index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
 </ul>

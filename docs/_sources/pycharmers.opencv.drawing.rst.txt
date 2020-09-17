@@ -1,0 +1,7 @@
+pycharmers.opencv.drawing module
+================================
+
+.. automodule:: pycharmers.opencv.drawing
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+pycharmers.opencv.windows module
+================================
+
+.. automodule:: pycharmers.opencv.windows
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -44,6 +44,7 @@
 <span></span><span class="c1"># coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
@@ -139,6 +140,32 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="list_transpose"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.list_transpose">[docs]</a><span class="k">def</span> <span class="nf">list_transpose</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Transpose a list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list) : A single list.</span>
+<span class="sd">        width (int): The width of the list.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        -----------&gt;</span>
+<span class="sd">        0, 1,  2,  3      0, 4,  8 | </span>
+<span class="sd">        4, 5,  6,  7  -&gt;  1, 5,  9 |</span>
+<span class="sd">        8, 9, 10, 11      2, 6, 10 |</span>
+<span class="sd">                          3, 7, 11 v</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from pyutils.utils import list_transpose</span>
+<span class="sd">        &gt;&gt;&gt; lst = [i for i in range(10)]</span>
+<span class="sd">        &gt;&gt;&gt; lst</span>
+<span class="sd">        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+<span class="sd">        &gt;&gt;&gt; list_transpose(lst, width=3)</span>
+<span class="sd">        [0, 3, 6, 9, 1, 4, 7, 2, 5, 8]</span>
+<span class="sd">        &gt;&gt;&gt; list_transpose(lst, width=4)</span>
+<span class="sd">        [0, 4, 8, 1, 5, 9, 2, 6, 3, 7]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">width</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span><span class="o">//</span><span class="n">width</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">*</span><span class="n">width</span><span class="o">+</span><span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)]</span></div>
+
 <div class="viewcode-block" id="flatten_dual"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.flatten_dual">[docs]</a><span class="k">def</span> <span class="nf">flatten_dual</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Flatten double list.</span>
 
@@ -159,12 +186,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="calc_rectangle_size"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.calc_rectangle_size">[docs]</a><span class="k">def</span> <span class="nf">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<div class="viewcode-block" id="calc_rectangle_size"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.calc_rectangle_size">[docs]</a><span class="k">def</span> <span class="nf">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the lengths of the sides of the rectangle from the area and the vertical length (width).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        area (int): The area of the rectangle.</span>
-<span class="sd">        w (int)   : The length of the vertical line. (width)</span>
+<span class="sd">        w (int)   : The length of the vertical line. (width) If ``w`` is None, arrange like a square.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        size (tuple): (w, h) </span>
@@ -180,12 +207,41 @@
 <span class="sd">        (7, 2)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">area</span><span class="o">&gt;=</span><span class="n">w</span><span class="p">:</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">area</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="n">w</span><span class="o">+</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">area</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">area</span><span class="o">/</span><span class="n">h</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">w</span><span class="o">=</span><span class="n">area</span>
-        <span class="n">h</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">area</span><span class="o">&gt;=</span><span class="n">w</span><span class="p">:</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">area</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="n">w</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">w</span><span class="o">=</span><span class="n">area</span>
+            <span class="n">h</span><span class="o">=</span><span class="mi">1</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="readable_bytes"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.readable_bytes">[docs]</a><span class="k">def</span> <span class="nf">readable_bytes</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;bytes&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unit conversion for readability.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        size (int): File size expressed in bytes</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import readable_bytes</span>
+<span class="sd">        &gt;&gt;&gt; size, unit = readable_bytes(1e2)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;{size:.2f}[{unit}]&quot;)</span>
+<span class="sd">        100.00[KB]</span>
+<span class="sd">        &gt;&gt;&gt; size, unit = readable_bytes(1e5)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;{size:.2f}[{unit}]&quot;)</span>
+<span class="sd">        97.66[MB]</span>
+<span class="sd">        &gt;&gt;&gt; size, unit = readable_bytes(1e10)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;{size:.2f}[{unit}]&quot;)</span>
+<span class="sd">        9.31[GB]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1024.0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">size</span> <span class="o">/=</span> <span class="mf">1024.0</span>
+        <span class="c1"># size &gt;&gt; 10</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="o">+</span><span class="s2">&quot;B&quot;</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -195,7 +251,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../../index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
 </ul>

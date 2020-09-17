@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.download_utils &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.download_utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.utils.download_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">readable_bytes</span>
+<span class="kn">from</span> <span class="nn">.monitor_utils</span> <span class="kn">import</span> <span class="n">progress_reporthook_create</span>
+<span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toGREEN</span>
+
+<span class="n">CONTENT_ENCODING2EXT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;x-gzip&quot;</span>                    <span class="p">:</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/jpeg&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/jpx&quot;</span>                 <span class="p">:</span> <span class="s2">&quot;.jpx&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;image/png&quot;</span>                 <span class="p">:</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/gif&quot;</span>                 <span class="p">:</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/webp&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.webp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/x-canon-cr2&quot;</span>         <span class="p">:</span> <span class="s2">&quot;.cr2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/tiff&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.tif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/bmp&quot;</span>                 <span class="p">:</span> <span class="s2">&quot;.bmp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/vnd.ms-photo&quot;</span>        <span class="p">:</span> <span class="s2">&quot;.jxr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/vnd.adobe.photoshop&quot;</span> <span class="p">:</span> <span class="s2">&quot;.psd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/x-icon&quot;</span>              <span class="p">:</span> <span class="s2">&quot;.ico&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image/heic&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.heic&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">CONTENT_TYPE2EXT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;application/epub+zip&quot;</span>                  <span class="p">:</span> <span class="s2">&quot;.epub&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/zip&quot;</span>                       <span class="p">:</span> <span class="s2">&quot;.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-tar&quot;</span>                     <span class="p">:</span> <span class="s2">&quot;.tar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-rar-compressed&quot;</span>          <span class="p">:</span> <span class="s2">&quot;.rar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/gzip&quot;</span>                      <span class="p">:</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-bzip2&quot;</span>                   <span class="p">:</span> <span class="s2">&quot;.bz2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-7z-compressed&quot;</span>           <span class="p">:</span> <span class="s2">&quot;.7z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-xz&quot;</span>                      <span class="p">:</span> <span class="s2">&quot;.xz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/pdf&quot;</span>                       <span class="p">:</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-msdownload&quot;</span>              <span class="p">:</span> <span class="s2">&quot;.exe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-shockwave-flash&quot;</span>         <span class="p">:</span> <span class="s2">&quot;.swf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/rtf&quot;</span>                       <span class="p">:</span> <span class="s2">&quot;.rtf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/octet-stream&quot;</span>              <span class="p">:</span> <span class="s2">&quot;.eot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/postscript&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.ps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-sqlite3&quot;</span>                 <span class="p">:</span> <span class="s2">&quot;.sqlite&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-nintendo-nes-rom&quot;</span>        <span class="p">:</span> <span class="s2">&quot;.nes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-google-chrome-extension&quot;</span> <span class="p">:</span> <span class="s2">&quot;.crx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/vnd.ms-cab-compressed&quot;</span>     <span class="p">:</span> <span class="s2">&quot;.cab&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-deb&quot;</span>                     <span class="p">:</span> <span class="s2">&quot;.deb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-unix-archive&quot;</span>            <span class="p">:</span> <span class="s2">&quot;.ar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-compress&quot;</span>                <span class="p">:</span> <span class="s2">&quot;.Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/x-lzip&quot;</span>                    <span class="p">:</span> <span class="s2">&quot;.lz&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="decide_extension"><a class="viewcode-back" href="../../../pycharmers.utils.download_utils.html#pycharmers.utils.download_utils.decide_extension">[docs]</a><span class="k">def</span> <span class="nf">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decide File Extension based on ``content_encoding`` and ``content_type``</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content_encoding (str) : The MIME type of the resource or the data.</span>
+<span class="sd">        content_type (str)     : The Content-Encoding entity header is used to compress the media-type.</span>
+<span class="sd">        filename (str)         : The filename.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ext (str): Starts with &quot;.&quot;</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import decide_extension</span>
+<span class="sd">        &gt;&gt;&gt; decide_extension(content_encoding=&quot;x-gzip&quot;, content_type=&quot;application/zip&quot;)</span>
+<span class="sd">        .gz</span>
+<span class="sd">        &gt;&gt;&gt; decide_extension(content_encoding=&quot;image/png&quot;, content_type=None)</span>
+<span class="sd">        .png</span>
+<span class="sd">        &gt;&gt;&gt; decide_extension(content_encoding=None, content_type=&quot;application/pdf&quot;)</span>
+<span class="sd">        .pdf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">CONTENT_ENCODING2EXT</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_encoding</span><span class="p">)</span> <span class="ow">or</span> <span class="n">CONTENT_TYPE2EXT</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ext</span></div>
+
+<div class="viewcode-block" id="download_file"><a class="viewcode-back" href="../../../pycharmers.utils.download_utils.html#pycharmers.utils.download_utils.download_file">[docs]</a><span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bar_width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download a file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (str)       : File URL.</span>
+<span class="sd">        dirname (str)   : Saved directory name.</span>
+<span class="sd">        path (str)      : path/to/downloaded_file</span>
+<span class="sd">        bar_width (int) : The width of progress bar.</span>
+<span class="sd">        verbose (bool)  : Whether print verbose or not.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        path (str) : path/to/downloaded_file</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import download_file</span>
+<span class="sd">        &gt;&gt;&gt; download_file(url=&quot;https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml&quot;)</span>
+<span class="sd">        Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml</span>
+<span class="sd">                    * Content-Encoding : None</span>
+<span class="sd">                    * Content-Length   : (333.404296875, &#39;MB&#39;)</span>
+<span class="sd">                    * Content-Type     : text/plain; charset=utf-8</span>
+<span class="sd">                    * Save Destination : ./haarcascade_eye.xml </span>
+<span class="sd">        haarcascade_eye.xml	100.0%[####################] 0.1[s] 5.5[GB/s]	eta -0.0[s]</span>
+<span class="sd">        &#39;./haarcascade_eye.xml&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">web_file</span><span class="p">:</span>
+            <span class="c1"># Get Information from webfile header</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">web_file</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
+        <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Encoding&quot;</span><span class="p">)</span>
+        <span class="n">content_length</span>   <span class="o">=</span> <span class="n">readable_bytes</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="n">content_type</span>     <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">)</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">guessed_ext</span> <span class="o">=</span> <span class="n">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="n">guessed_ext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;Download a file from </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            * Content-Encoding : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_encoding</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            * Content-Length   : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_length</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            * Content-Type     : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            * Save Destination : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_reporthook_create</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">bar_width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toRED</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> : url=</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.download_utils</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

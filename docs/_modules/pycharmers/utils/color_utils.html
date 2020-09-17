@@ -142,21 +142,29 @@
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import choose_text_color</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0,   0,   0), max_val=255)</span>
+<span class="sd">        # BLACK</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((0,     0,   0), max_val=255)</span>
 <span class="sd">        (255, 255, 255)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0,   0, 255), max_val=255)</span>
+<span class="sd">        # RED</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((0,     0, 255), max_val=255)</span>
 <span class="sd">        (255, 255, 255)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0, 255,   0), max_val=255)</span>
+<span class="sd">        # GREEN</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((0,   128,   0), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(  0, 255, 255), max_val=255)</span>
+<span class="sd">        # YELLOW</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((0,   255, 255), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255,   0,   0), max_val=255)</span>
+<span class="sd">        # BLUE</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((255,   0,   0), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255,   0, 255), max_val=255)</span>
+<span class="sd">        # MAGENTA</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((255,   0, 255), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255,   0), max_val=255)</span>
+<span class="sd">        # CYAN</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((255, 255,   0), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color(color=(255, 255, 255), max_val=255)</span>
+<span class="sd">        # WHITE</span>
+<span class="sd">        &gt;&gt;&gt; choose_text_color((255, 255, 255), max_val=255)</span>
 <span class="sd">        (0, 0, 0)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -187,7 +195,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../../index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
 </ul>

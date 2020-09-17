@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.opencv.video_image_handler &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.video_image_handler</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.opencv.video_image_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.editing</span> <span class="kn">import</span> <span class="n">vconcat_resize_min</span><span class="p">,</span> <span class="n">hconcat_resize_min</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span>
+
+<span class="n">IMAGE_FILE_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;.*\.(jpg|png|bmp|jpeg)&quot;</span>
+
+<div class="viewcode-block" id="mono_frame_generator"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.mono_frame_generator">[docs]</a><span class="k">def</span> <span class="nf">mono_frame_generator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">video</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_POS_FRAMES</span><span class="p">,</span> <span class="n">frame_num</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">yield</span> <span class="n">frame</span>
+        <span class="n">video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fn_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">))[</span><span class="n">frame_num</span><span class="p">:]</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">fn_list</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">frame</span></div>
+
+<div class="viewcode-block" id="multi_frame_generator_sepa"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @return &lt;zip&gt; Generate multiple frames separately.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">mono_frame_generator</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="n">frame_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="multi_frame_generator_concat"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_concat">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_concat</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @params grid : (nrow, ncol)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_frames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+    <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">num_frames</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">grid</span>
+    <span class="n">expected_frames</span> <span class="o">=</span> <span class="n">nrow</span> <span class="o">*</span> <span class="n">ncol</span>
+    <span class="n">num_black_frame</span> <span class="o">=</span> <span class="n">expected_frames</span> <span class="o">-</span> <span class="n">num_frames</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span>
+    <span class="n">max_name_len</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrow</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">r</span><span class="o">*</span><span class="n">ncol</span><span class="p">:(</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">ncol</span><span class="p">]))</span>
+
+    <span class="n">gen</span> <span class="o">=</span> <span class="n">mono_frame_generator</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
+    <span class="n">balck_frames</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span><span class="o">*</span><span class="n">num_black_frame</span>
+
+    <span class="n">gens</span> <span class="o">=</span> <span class="n">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="n">frame_num</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">frames</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">:</span>
+        <span class="n">frames</span> <span class="o">+=</span> <span class="n">balck_frames</span>
+        <span class="n">concated_frame</span> <span class="o">=</span> <span class="n">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+            <span class="n">hconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">frames</span><span class="p">[</span><span class="n">r</span><span class="o">*</span><span class="n">ncol</span><span class="p">:(</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">ncol</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrow</span><span class="p">)</span>
+        <span class="p">])</span>
+        <span class="k">yield</span> <span class="n">concated_frame</span></div>
+
+<div class="viewcode-block" id="count_frame_num"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.count_frame_num">[docs]</a><span class="k">def</span> <span class="nf">count_frame_num</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">frame_num</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frame_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">IMAGE_FILE_PATTERN</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame_num</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="basenaming"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.basenaming">[docs]</a><span class="k">def</span> <span class="nf">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base Naming</span>
+<span class="sd">    @params path : path to video file, or directory which stores sequential images.</span>
+<span class="sd">    @return name :</span>
+<span class="sd">        if path is to video file (sample.mp4) -&gt; sample</span>
+<span class="sd">        if path is to directory (sample) -&gt; sample</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="c1"># File. (Video)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Directory. (stores sequential images.)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">name</span></div>
+
+<div class="viewcode-block" id="create_VideoWriter"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.create_VideoWriter">[docs]</a><span class="k">def</span> <span class="nf">create_VideoWriter</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @params in_path  : (str) Input path.</span>
+<span class="sd">    @params out_path : (str) Output path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">out_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exec_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">method</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">method</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">method</span>
+        <span class="n">video_fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basenaming</span><span class="p">(</span><span class="n">in_path</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">exec_fn</span><span class="si">}{</span><span class="n">method</span><span class="si">}</span><span class="s2">.mp4&quot;</span>
+        <span class="n">out_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SAVE_PATH</span><span class="p">,</span> <span class="n">video_fn</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">in_path</span><span class="p">):</span>
+        <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">in_path</span><span class="p">)</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">in_path</span><span class="p">):</span>
+            <span class="n">img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out_video</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.video_image_handler</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

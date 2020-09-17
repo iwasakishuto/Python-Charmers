@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.utils.generic_utils module" href="pycharmers.utils.generic_utils.html" />
+    <link rel="next" title="pycharmers.utils.download_utils module" href="pycharmers.utils.download_utils.html" />
     <link rel="prev" title="pycharmers.utils.argparse_utils module" href="pycharmers.utils.argparse_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,7 +32,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.generic_utils.html" title="pycharmers.utils.generic_utils module"
+          <a href="pycharmers.utils.download_utils.html" title="pycharmers.utils.download_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pycharmers.utils.argparse_utils.html" title="pycharmers.utils.argparse_utils module"
@@ -64,21 +64,29 @@
 <p><a class="reference external" href="https://www.w3.org/TR/WCAG20/">WCAG</a></p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">choose_text_color</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># BLACK</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(255, 255, 255)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># RED</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(255, 255, 255)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># GREEN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">128</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># YELLOW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># BLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># MAGENTA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># CYAN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go"># WHITE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 <span class="go">(0, 0, 0)</span>
 </pre></div>
 </div>
@@ -214,7 +222,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
@@ -237,8 +244,8 @@
   <p class="topless"><a href="pycharmers.utils.argparse_utils.html"
                         title="previous chapter">pycharmers.utils.argparse_utils module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.utils.generic_utils.html"
-                        title="next chapter">pycharmers.utils.generic_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.download_utils.html"
+                        title="next chapter">pycharmers.utils.download_utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -270,7 +277,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.generic_utils.html" title="pycharmers.utils.generic_utils module"
+          <a href="pycharmers.utils.download_utils.html" title="pycharmers.utils.download_utils module"
              >next</a> |</li>
         <li class="right" >
           <a href="pycharmers.utils.argparse_utils.html" title="pycharmers.utils.argparse_utils module"

@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.opencv.editing &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.editing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.opencv.editing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+
+<div class="viewcode-block" id="vconcat_resize_min"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.vconcat_resize_min">[docs]</a><span class="k">def</span> <span class="nf">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">images</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_CUBIC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Concat vertically while resizing to the smallest width.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        images (np.ndarray) : OpenCV images</span>
+<span class="sd">        interpolation (int) : interpolation method, see `OpenCV Documentations #InterpolationFlags &lt;https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga5bb5a1fea74ea38e1a5445ca803ff121&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import vconcat_resize_min, cv2plot</span>
+<span class="sd">        &gt;&gt;&gt; images = [cv2.imread(path) for path in os.listdir(&quot;images&quot;)]</span>
+<span class="sd">        &gt;&gt;&gt; vconcat_img = vconcat_resize_min(*images)</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(vconcat_img)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">vconcat</span><span class="p">([</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+                   <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="n">w_min</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">w_min</span><span class="o">/</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+                   <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span>
+        <span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span>
+    <span class="p">])</span></div>
+
+<div class="viewcode-block" id="hconcat_resize_min"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.hconcat_resize_min">[docs]</a><span class="k">def</span> <span class="nf">hconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">images</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_CUBIC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Concat horizontally while resizing to the smallest height.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        images (np.ndarray) : OpenCV images</span>
+<span class="sd">        interpolation (int) : interpolation method, see `OpenCV Documentations #InterpolationFlags &lt;https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga5bb5a1fea74ea38e1a5445ca803ff121&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import hconcat_resize_min, cv2plot</span>
+<span class="sd">        &gt;&gt;&gt; images = [cv2.imread(path) for path in os.listdir(&quot;images&quot;)]</span>
+<span class="sd">        &gt;&gt;&gt; hconcat_img = hconcat_resize_min(*images)</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(hconcat_img)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">hconcat</span><span class="p">([</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+                   <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">h_min</span><span class="o">/</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">h_min</span><span class="p">),</span>
+                   <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span>
+        <span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span>
+    <span class="p">])</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.editing</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

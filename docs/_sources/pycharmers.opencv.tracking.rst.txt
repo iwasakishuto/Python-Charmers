@@ -1,0 +1,7 @@
+pycharmers.opencv.tracking module
+=================================
+
+.. automodule:: pycharmers.opencv.tracking
+   :members:
+   :undoc-members:
+   :show-inheritance:

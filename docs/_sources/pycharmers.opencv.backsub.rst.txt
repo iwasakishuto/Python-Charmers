@@ -1,0 +1,7 @@
+pycharmers.opencv.backsub module
+================================
+
+.. automodule:: pycharmers.opencv.backsub
+   :members:
+   :undoc-members:
+   :show-inheritance:

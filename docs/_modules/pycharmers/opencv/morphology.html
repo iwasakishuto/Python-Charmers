@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.opencv.morphology &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.morphology</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.opencv.morphology</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cv2</span>
+
+<span class="c1"># cv2.morphologyEx(img, OP, kernel)</span>
+<span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;opening&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span>
+    <span class="s2">&quot;closing&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span>
+    <span class="s2">&quot;gradient&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_GRADIENT</span><span class="p">,</span>
+    <span class="s2">&quot;tophat&quot;</span>   <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_TOPHAT</span><span class="p">,</span>
+    <span class="s2">&quot;blackhat&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_BLACKHAT</span><span class="p">,</span>
+    <span class="s2">&quot;hitmiss&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_HITMISS</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">MORPHOLOGY_TRANSFORMER_ALGORITHMS</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># cv.getStructuringElement(shape, size)</span>
+<span class="n">MORPH_KERNEL_SHAPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cross&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CROSS</span><span class="p">,</span>
+    <span class="s2">&quot;dilate&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_DILATE</span><span class="p">,</span>
+    <span class="s2">&quot;erode&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ERODE</span><span class="p">,</span>
+    <span class="s2">&quot;open&quot;</span>   <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">MORPH_KERNEL_TYPES</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MORPH_KERNEL_SHAPE</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<div class="viewcode-block" id="morph_kernel_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_kernel_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">MORPH_KERNEL_SHAPE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">size</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="morph_transformer_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_transformer_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_transformer_creator</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    @param op Type of a morphological operation, see #MorphTypes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kernel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">transformer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">src</span><span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transformer</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.morphology</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

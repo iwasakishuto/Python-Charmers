@@ -1,6 +1,22 @@
 pycharmers.opencv package
 =========================
 
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.opencv.backsub
+   pycharmers.opencv.binary
+   pycharmers.opencv.cascade
+   pycharmers.opencv.drawing
+   pycharmers.opencv.editing
+   pycharmers.opencv.morphology
+   pycharmers.opencv.tracking
+   pycharmers.opencv.video_image_handler
+   pycharmers.opencv.windows
+
 Module contents
 ---------------
 

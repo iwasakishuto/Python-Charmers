@@ -1,0 +1,7 @@
+pycharmers.utils.download\_utils module
+=======================================
+
+.. automodule:: pycharmers.utils.download_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pycharmers.utils.json_utils module" href="pycharmers.utils.json_utils.html" />
-    <link rel="prev" title="pycharmers.utils.color_utils module" href="pycharmers.utils.color_utils.html" /> 
+    <link rel="prev" title="pycharmers.utils.download_utils module" href="pycharmers.utils.download_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -35,7 +35,7 @@
           <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+          <a href="pycharmers.utils.download_utils.html" title="pycharmers.utils.download_utils module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
@@ -53,13 +53,13 @@
 <span id="pycharmers-utils-generic-utils-module"></span><h1>pycharmers.utils.generic_utils module<a class="headerlink" href="#module-pycharmers.utils.generic_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.calc_rectangle_size">
-<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">calc_rectangle_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">area</span></em>, <em class="sig-param"><span class="n">w</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#calc_rectangle_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.calc_rectangle_size" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">calc_rectangle_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">area</span></em>, <em class="sig-param"><span class="n">w</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#calc_rectangle_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.calc_rectangle_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the lengths of the sides of the rectangle from the area and the vertical length (width).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>area</strong> (<em>int</em>) – The area of the rectangle.</p></li>
-<li><p><strong>w</strong> (<em>int</em>) – The length of the vertical line. (width)</p></li>
+<li><p><strong>w</strong> (<em>int</em>) – The length of the vertical line. (width) If <code class="docutils literal notranslate"><span class="pre">w</span></code> is None, arrange like a square.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -168,6 +168,39 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.generic_utils.list_transpose">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">list_transpose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="n">width</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#list_transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.list_transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transpose a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – A single list.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – The width of the list.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>———–&gt;
+0, 1,  2,  3      0, 4,  8 |
+4, 5,  6,  7  -&gt;  1, 5,  9 |
+8, 9, 10, 11      2, 6, 10 |</p>
+<blockquote>
+<div><p>3, 7, 11 v</p>
+</div></blockquote>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyutils.utils</span> <span class="kn">import</span> <span class="n">list_transpose</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span>
+<span class="go">[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_transpose</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">[0, 3, 6, 9, 1, 4, 7, 2, 5, 8]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_transpose</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">[0, 4, 8, 1, 5, 9, 2, 6, 3, 7]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.generic_utils.now_str">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">now_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'%Y-%m-%d&#64;%H.%M.%S'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#now_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.now_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns new datetime string representing current time local to tz under the control of an explicit format string.</p>
@@ -187,6 +220,30 @@
 <span class="go">Monday, 14. September 2020 10:31PM&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 <span class="go">&#39;2020-09-14@13.31.17&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.readable_bytes">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">readable_bytes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">'bytes'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#readable_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.readable_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit conversion for readability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – File size expressed in bytes</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">readable_bytes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">readable_bytes</span><span class="p">(</span><span class="mf">1e2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">100.00[KB]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">readable_bytes</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">97.66[MB]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">readable_bytes</span><span class="p">(</span><span class="mf">1e10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="go">9.31[GB]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -222,7 +279,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
@@ -242,8 +298,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.utils.color_utils.html"
-                        title="previous chapter">pycharmers.utils.color_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.download_utils.html"
+                        title="previous chapter">pycharmers.utils.download_utils module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pycharmers.utils.json_utils.html"
                         title="next chapter">pycharmers.utils.json_utils module</a></p>
@@ -281,7 +337,7 @@
           <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+          <a href="pycharmers.utils.download_utils.html" title="pycharmers.utils.download_utils module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>

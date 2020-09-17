@@ -1,0 +1,7 @@
+pycharmers.opencv.video\_image\_handler module
+==============================================
+
+.. automodule:: pycharmers.opencv.video_image_handler
+   :members:
+   :undoc-members:
+   :show-inheritance:

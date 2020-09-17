@@ -1,0 +1,7 @@
+pycharmers.opencv.morphology module
+===================================
+
+.. automodule:: pycharmers.opencv.morphology
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.opencv.video_image_handler module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.opencv.windows module" href="pycharmers.opencv.windows.html" />
+    <link rel="prev" title="pycharmers.opencv.tracking module" href="pycharmers.opencv.tracking.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.windows.html" title="pycharmers.opencv.windows module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.tracking.html" title="pycharmers.opencv.tracking module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" accesskey="U">pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.video_image_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.opencv.video_image_handler">
+<span id="pycharmers-opencv-video-image-handler-module"></span><h1>pycharmers.opencv.video_image_handler module<a class="headerlink" href="#module-pycharmers.opencv.video_image_handler" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.basenaming">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">basenaming</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#basenaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.basenaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base Naming
+&#64;params path : path to video file, or directory which stores sequential images.
+&#64;return name :</p>
+<blockquote>
+<div><p>if path is to video file (sample.mp4) -&gt; sample
+if path is to directory (sample) -&gt; sample</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.count_frame_num">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">count_frame_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#count_frame_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.count_frame_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.create_VideoWriter">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">create_VideoWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fps</span><span class="o">=</span><span class="default_value">30</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#create_VideoWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.create_VideoWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;params in_path  : (str) Input path.
+&#64;params out_path : (str) Output path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.mono_frame_generator">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">mono_frame_generator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">frame_num</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#mono_frame_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.mono_frame_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.multi_frame_generator_concat">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">multi_frame_generator_concat</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">paths</span></em>, <em class="sig-param"><span class="n">frame_num</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#multi_frame_generator_concat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.multi_frame_generator_concat" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;params grid : (nrow, ncol)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">multi_frame_generator_sepa</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">path</span></em>, <em class="sig-param"><span class="n">frame_num</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#multi_frame_generator_sepa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#64;return &lt;zip&gt; Generate multiple frames separately.</p>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.tracking.html"
+                        title="previous chapter">pycharmers.opencv.tracking module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.windows.html"
+                        title="next chapter">pycharmers.opencv.windows module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.opencv.video_image_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.windows.html" title="pycharmers.opencv.windows module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.tracking.html" title="pycharmers.opencv.tracking module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" >pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.video_image_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -163,6 +163,42 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.print_utils.print_dict_tree">
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">print_dict_tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="n">indent</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">rank</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">marks</span><span class="o">=</span><span class="default_value">['-', '*', '#']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#print_dict_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.print_dict_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print Dictionary as a Tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary</strong> (<em>dict</em>) – An input dictionary.</p></li>
+<li><p><strong>indent</strong> (<em>int</em>) – Indent.</p></li>
+<li><p><strong>rank</strong> (<em>int</em>) – A current rank.</p></li>
+<li><p><strong>marks</strong> (<em>list</em>) – List mark types.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">print_dict_tree</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_dict_tree</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="go">- a: 0</span>
+<span class="go">- b: 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_dict_tree</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}})</span>
+<span class="go">- a: 0</span>
+<span class="go">- b:</span>
+<span class="go">  * b1: 1</span>
+<span class="go">  * b2: 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">print_dict_tree</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b21&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b22&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="go">- a: 0</span>
+<span class="go">- b:</span>
+<span class="go">  * b1: 1</span>
+<span class="go">  * b2:</span>
+<span class="go">    # b21: 0</span>
+<span class="go">    # b22: 1</span>
+<span class="go">- c: 3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.print_utils.print_func_create">
 <code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">print_func_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="n">left_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">right_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#print_func_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.print_func_create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a function which prints a formatted text. Please see also the function <cite>format_spec_create</cite>.</p>
@@ -208,7 +244,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">

@@ -1,0 +1,7 @@
+pycharmers.opencv.video\_image\_utils module
+============================================
+
+.. automodule:: pycharmers.opencv.video_image_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

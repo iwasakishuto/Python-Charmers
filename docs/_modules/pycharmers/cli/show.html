@@ -51,7 +51,7 @@
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">REPO_DIR</span><span class="p">,</span><span class="s2">&quot;console_scripts.txt&quot;</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">CONSOLE_SCRIPTS</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span>
-    
+
 <div class="viewcode-block" id="show_command_line_programs"><a class="viewcode-back" href="../../../pycharmers.cli.show.html#pycharmers.cli.show.show_command_line_programs">[docs]</a><span class="k">def</span> <span class="nf">show_command_line_programs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
     <span class="sd">&quot;&quot;&quot;Show all Python-Charmers&#39;s command line programs.</span>
 
@@ -64,6 +64,12 @@
 <span class="sd">        When you run from the command line, execute as follows::</span>
 <span class="sd">        </span>
 <span class="sd">        $ pycharmers-show</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; $ pycharmers-show</span>
+<span class="sd">        &gt;&gt;&gt; |    command     |                     path                      |</span>
+<span class="sd">        &gt;&gt;&gt; ==================================================================</span>
+<span class="sd">        &gt;&gt;&gt; |pycharmers-show | pycharmers.cli.show:show_command_line_programs|</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;pycharmers-show&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -95,7 +101,6 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../../../index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
 </ul>
