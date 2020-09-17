@@ -1,6 +1,7 @@
 # coding: utf-8
 import re
 import json
+import math
 import datetime
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
@@ -96,6 +97,32 @@ def now_str(tz=None, fmt="%Y-%m-%d@%H.%M.%S"):
     """
     return datetime.datetime.now(tz=tz).strftime(fmt)
 
+def list_transpose(lst, width):
+    """ Transpose a list.
+
+    Args:
+        lst (list) : A single list.
+        width (int): The width of the list.
+
+    Notes:
+        ----------->
+        0, 1,  2,  3      0, 4,  8 | 
+        4, 5,  6,  7  ->  1, 5,  9 |
+        8, 9, 10, 11      2, 6, 10 |
+                          3, 7, 11 v
+
+    Example:
+        >>> from pyutils.utils import list_transpose
+        >>> lst = [i for i in range(10)]
+        >>> lst
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        >>> list_transpose(lst, width=3)
+        [0, 3, 6, 9, 1, 4, 7, 2, 5, 8]
+        >>> list_transpose(lst, width=4)
+        [0, 4, 8, 1, 5, 9, 2, 6, 3, 7]
+    """
+    return [lst[i*width+j] for j in range(width) for i in range(len(lst)//width+1) if i*width+j < len(lst)]
+
 def flatten_dual(lst):
     """Flatten double list.
 
@@ -116,12 +143,12 @@ def flatten_dual(lst):
     """
     return [element for sublist in lst for element in sublist]
 
-def calc_rectangle_size(area, w):
+def calc_rectangle_size(area, w=None):
     """Calculate the lengths of the sides of the rectangle from the area and the vertical length (width).
 
     Args:
         area (int): The area of the rectangle.
-        w (int)   : The length of the vertical line. (width)
+        w (int)   : The length of the vertical line. (width) If ``w`` is None, arrange like a square.
 
     Returns:
         size (tuple): (w, h) 
@@ -137,9 +164,38 @@ def calc_rectangle_size(area, w):
         (7, 2)
 
     """
-    if area>=w:
-        h = (area-1)//w+1
+    if w is None:
+        w = math.ceil(math.sqrt(area))
+        h = math.ceil(area/h)
     else:
-        w=area
-        h=1
+        if area>=w:
+            h = (area-1)//w+1
+        else:
+            w=area
+            h=1
     return (w,h)
+
+def readable_bytes(size, type="bytes"):
+    """Unit conversion for readability.
+
+    Args:
+        size (int): File size expressed in bytes
+
+    Examples:
+        >>> from pycharmers.utils import readable_bytes
+        >>> size, unit = readable_bytes(1e2)
+        >>> print(f"{size:.2f}[{unit}]")
+        100.00[KB]
+        >>> size, unit = readable_bytes(1e5)
+        >>> print(f"{size:.2f}[{unit}]")
+        97.66[MB]
+        >>> size, unit = readable_bytes(1e10)
+        >>> print(f"{size:.2f}[{unit}]")
+        9.31[GB]
+    """
+    for unit in ["K","M","G"]:
+        if abs(size) < 1024.0:
+            break
+        size /= 1024.0
+        # size >> 10
+    return (size, unit+"B")

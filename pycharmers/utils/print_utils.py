@@ -197,4 +197,40 @@ class Table():
         })
         nrows = len(values)
         if self.head==-1 or nrows < self.head:
-            self.head = nrows 
+            self.head = nrows
+
+def print_dict_tree(dictionary, indent=4, rank=0, marks=["-", "*", "#"]):
+    """Print Dictionary as a Tree.
+
+    Args:
+        dictionary (dict) : An input dictionary.
+        indent (int)      : Indent.
+        rank (int)        : A current rank.
+        marks (list)      : List mark types.
+
+    Examples:
+        >>> from pycharmers.utils import print_dict_tree
+        >>> print_dict_tree({"a": 0, "b": 1})
+        - a: 0
+        - b: 1
+        >>> print_dict_tree({"a": 0, "b": {"b1": 1, "b2": 2}})
+        - a: 0
+        - b: 
+          * b1: 1
+          * b2: 2
+        >>> print_dict_tree({"a": 0, "b": {"b1": 1, "b2": {"b21": 0, "b22": 1}}, "c": 3})
+        - a: 0
+        - b: 
+          * b1: 1
+          * b2: 
+            # b21: 0
+            # b22: 1
+        - c: 3
+    """
+    if hasattr(dictionary, "items"):
+        for k,v in dictionary.items():
+            if hasattr(v, "items"):
+                print(f"{' '*indent*rank}{marks[rank%len(marks)]} {k}: ")
+                print_dict_tree(dictionary=v, indent=indent, rank=rank+1, marks=marks)
+            else:
+                print(f"{' '*indent*rank}{marks[rank%len(marks)]} {k}: {v}")

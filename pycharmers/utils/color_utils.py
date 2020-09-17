@@ -99,21 +99,29 @@ def choose_text_color(color, max_val=1):
 
     Examples:
         >>> from pycharmers.utils import choose_text_color
-        >>> choose_text_color(color=(  0,   0,   0), max_val=255)
+        # BLACK
+        >>> choose_text_color((0,     0,   0), max_val=255)
         (255, 255, 255)
-        >>> choose_text_color(color=(  0,   0, 255), max_val=255)
+        # RED
+        >>> choose_text_color((0,     0, 255), max_val=255)
         (255, 255, 255)
-        >>> choose_text_color(color=(  0, 255,   0), max_val=255)
+        # GREEN
+        >>> choose_text_color((0,   128,   0), max_val=255)
         (0, 0, 0)
-        >>> choose_text_color(color=(  0, 255, 255), max_val=255)
+        # YELLOW
+        >>> choose_text_color((0,   255, 255), max_val=255)
         (0, 0, 0)
-        >>> choose_text_color(color=(255,   0,   0), max_val=255)
+        # BLUE
+        >>> choose_text_color((255,   0,   0), max_val=255)
         (0, 0, 0)
-        >>> choose_text_color(color=(255,   0, 255), max_val=255)
+        # MAGENTA
+        >>> choose_text_color((255,   0, 255), max_val=255)
         (0, 0, 0)
-        >>> choose_text_color(color=(255, 255,   0), max_val=255)
+        # CYAN
+        >>> choose_text_color((255, 255,   0), max_val=255)
         (0, 0, 0)
-        >>> choose_text_color(color=(255, 255, 255), max_val=255)
+        # WHITE
+        >>> choose_text_color((255, 255, 255), max_val=255)
         (0, 0, 0)
 
     """

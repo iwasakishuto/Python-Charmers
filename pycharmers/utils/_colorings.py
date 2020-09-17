@@ -21,7 +21,7 @@ def _toCOLOR_create(color):
         "RED_FLASH" : "\033[05;41m",
         "END"       : "\033[0m",
     }.get(color, "\033[34m")
-    func = lambda x: f"{charcode}{x}\033[0m"
+    func = lambda x: f"{charcode}{str(x)}\033[0m"
     func.__doc__ = f"""Convert the output color to {color}
 
     Args:
