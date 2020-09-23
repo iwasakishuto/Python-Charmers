@@ -50,18 +50,18 @@
 <span class="kn">from</span> <span class="nn">..matplotlib.layout</span> <span class="kn">import</span> <span class="n">FigAxes_create</span><span class="p">,</span> <span class="n">clear_grid</span>
 
 <div class="viewcode-block" id="convert_coords"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.convert_coords">[docs]</a><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">to_type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert coordinates.</span>
+    <span class="sd">&quot;&quot;&quot;Convert coordinates::</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        bbox (tuple)  : Bounding Box coordinates.</span>
-<span class="sd">        to_type (str) : coordinate type.</span>
-
-<span class="sd">    Note:</span>
 <span class="sd">         (x,y)---------(x+w,y)    (l,t)----------(r,t)</span>
 <span class="sd">           |              |         |              |</span>
 <span class="sd">           |              |         |              |</span>
 <span class="sd">           |              |         |              |</span>
 <span class="sd">        (x,y+h)-------(x+w,y+h)   (l,b)----------(r,b)</span>
+<span class="sd">                [xywh]                   [ltrb]</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (tuple)  : Bounding Box coordinates.</span>
+<span class="sd">        to_type (str) : coordinate type.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import convert_coords</span>

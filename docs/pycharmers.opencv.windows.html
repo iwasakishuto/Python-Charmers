@@ -49,8 +49,413 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-opencv-windows-module">
-<h1>pycharmers.opencv.windows module<a class="headerlink" href="#pycharmers-opencv-windows-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.opencv.windows">
+<span id="pycharmers-opencv-windows-module"></span><h1>pycharmers.opencv.windows module<a class="headerlink" href="#module-pycharmers.opencv.windows" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.opencv.windows.cvKeys">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">cvKeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cv_keys</span><span class="o">=</span><span class="default_value">{'DELETE': {'': '\x08', '&lt;delete&gt;'}, 'ENTER': {'': '\r', '&lt;enter&gt;'}, 'INFO': {'': 'i'}, 'MOVING': {'down': 'j', 'left': 'h', 'right': 'l', 'up': 'k'}, 'NUMBER': {'0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9'}, 'POS': {'fullscreen': 'f', 'topleft': 'o'}, 'QUIT': {'1': '\x1b', '&lt;esc&gt;', '2': 'q'}, 'RATIO': {'expansion': '+', 'reduction': '-'}}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Keys for using openCV</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvKeys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span> <span class="o">=</span> <span class="n">cvKeys</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_1_KEY</span><span class="p">,</span>        <span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_1_KEY_ORD</span>
+<span class="go">(&#39;&#39;, 27)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_1_KEY_STR</span><span class="p">,</span>    <span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_1_KEY_STR_ORD</span>
+<span class="go">(&#39;&lt;esc&gt;&#39;, -1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_KEYS</span><span class="p">,</span>         <span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_KEYS_ORD</span>
+<span class="go">([&#39;&#39;, &#39;q&#39;], [27, 113])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_KEYS_STR</span><span class="p">,</span>     <span class="n">cvKey</span><span class="o">.</span><span class="n">QUIT_KEYS_STR_ORD</span>
+<span class="go">([&#39;&lt;esc&gt;&#39;, &#39;q&#39;], [-1, 113])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_PIYO_KEY</span><span class="p">,</span>     <span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_PIYO_KEY_ORD</span>
+<span class="go">(None, -1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_PIYO_KEY_STR</span><span class="p">,</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_PIYO_KEY_STR_ORD</span>
+<span class="go">(None, -1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_KEYS</span><span class="p">,</span>         <span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_KEYS_ORD</span>
+<span class="go">([], [])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_KEYS_STR</span><span class="p">,</span>     <span class="n">cvKey</span><span class="o">.</span><span class="n">HOGE_KEYS_STR_ORD</span>
+<span class="go">([], [])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.ALL_KEYS">
+<em class="property">property </em><code class="sig-name descname">ALL_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.ALL_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.DELETE_KEYS">
+<em class="property">property </em><code class="sig-name descname">DELETE_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.DELETE_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.DELETE_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">DELETE_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.DELETE_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.ENTER_KEYS">
+<em class="property">property </em><code class="sig-name descname">ENTER_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.ENTER_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.ENTER_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">ENTER_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.ENTER_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.INFO_KEYS">
+<em class="property">property </em><code class="sig-name descname">INFO_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.INFO_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.INFO_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">INFO_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.INFO_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.MOVING_KEYS">
+<em class="property">property </em><code class="sig-name descname">MOVING_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.MOVING_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.MOVING_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">MOVING_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.MOVING_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.NUMBER_KEYS">
+<em class="property">property </em><code class="sig-name descname">NUMBER_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.NUMBER_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.NUMBER_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">NUMBER_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.NUMBER_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.POS_KEYS">
+<em class="property">property </em><code class="sig-name descname">POS_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.POS_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.POS_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">POS_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.POS_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.QUIT_KEYS">
+<em class="property">property </em><code class="sig-name descname">QUIT_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.QUIT_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.QUIT_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">QUIT_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.QUIT_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.RATIO_KEYS">
+<em class="property">property </em><code class="sig-name descname">RATIO_KEYS</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.RATIO_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.RATIO_KEYS_STR">
+<em class="property">property </em><code class="sig-name descname">RATIO_KEYS_STR</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.RATIO_KEYS_STR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.get_group_keys">
+<code class="sig-name descname">get_group_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys.get_group_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.get_group_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.ord">
+<em class="property">static </em><code class="sig-name descname">ord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys.ord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.ord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Unicode code point for a one-character string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvKeys.set_keys">
+<code class="sig-name descname">set_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys.set_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.set_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.opencv.windows.cvWindow">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">cvWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">winname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">move_distance</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">expansion_rate</span><span class="o">=</span><span class="default_value">1.1</span></em>, <em class="sig-param"><span class="n">cv_keys</span><span class="o">=</span><span class="default_value">{'DELETE': {'': '\x08', '&lt;delete&gt;'}, 'ENTER': {'': '\r', '&lt;enter&gt;'}, 'INFO': {'': 'i'}, 'MOVING': {'down': 'j', 'left': 'h', 'right': 'l', 'up': 'k'}, 'NUMBER': {'0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9'}, 'POS': {'fullscreen': 'f', 'topleft': 'o'}, 'QUIT': {'1': '\x1b', '&lt;esc&gt;', '2': 'q'}, 'RATIO': {'expansion': '+', 'reduction': '-'}}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Window &amp; Image Location</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Ix,Iy,Iw,Ih</span> <span class="pre">=</span> <span class="pre">cv2.getWindowImageRect(winname)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cv2.moveWindow(winname,</span> <span class="pre">Wx,</span> <span class="pre">Wy)</span></code></p></li>
+</ul>
+<p>Variable Names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Wx</span><span class="p">,</span><span class="n">Wy</span><span class="p">)</span> <span class="o">-----------------------</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+    <span class="o">|</span>               <span class="o">^</span>                <span class="o">|</span>
+    <span class="o">|</span>               <span class="o">|</span> <span class="n">Fh</span>             <span class="o">|</span>
+    <span class="o">|</span>               <span class="n">v</span>                <span class="o">|</span>
+    <span class="o">|</span>     <span class="p">(</span><span class="n">Ix</span><span class="p">,</span><span class="n">Iy</span><span class="p">)</span> <span class="o">------</span> <span class="p">(</span><span class="n">Ix</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">Iy</span><span class="p">)</span>   <span class="o">|</span>
+    <span class="o">|</span>   <span class="n">Fw</span>   <span class="o">|</span>               <span class="o">|</span>       <span class="o">|</span>
+    <span class="o">|&lt;------&gt;|</span>     <span class="n">Image</span>     <span class="o">|</span>       <span class="o">|</span>
+    <span class="o">|</span>        <span class="o">|</span>               <span class="o">|</span>       <span class="o">|</span>
+    <span class="o">|</span>    <span class="p">(</span><span class="n">Ix</span><span class="p">,</span><span class="n">Iy</span><span class="o">+</span><span class="n">h</span><span class="p">)</span> <span class="o">----</span> <span class="p">(</span><span class="n">Ix</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">Iy</span><span class="o">+</span><span class="n">h</span><span class="p">)</span>  <span class="o">|</span>
+    <span class="o">|</span>                                <span class="o">|</span>
+<span class="p">(</span><span class="n">Wx</span><span class="p">,</span><span class="n">Wy</span><span class="o">+</span><span class="n">h</span><span class="p">)</span> <span class="o">---------------------</span> <span class="p">(</span><span class="n">Wx</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">Wy</span><span class="o">+</span><span class="n">h</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>No</strong> (<em>int</em>) – The number of windows.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pycharmers.opencv.windows.cvWindow.video_save_dir">
+<code class="sig-name descname">video_save_dir</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.video_save_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path/to/created_video/directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.windows.cvWindow.img_save_dir">
+<code class="sig-name descname">img_save_dir</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.img_save_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path/to/created_image/directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.windows.cvWindow.reduction_rate">
+<code class="sig-name descname">reduction_rate</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.reduction_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">1./expansion_rate</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.windows.cvWindow.cvKey">
+<code class="sig-name descname">cvKey</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.cvKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keys for using openCV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pycharmers.opencv.windows.cvKeys" title="pycharmers.opencv.windows.cvKeys">cvKeys</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">iIh, iIw</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.windows.cvWindow.No">
+<code class="sig-name descname">No</code><em class="property"> = 0</em><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.No" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.describe">
+<code class="sig-name descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.describe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describe Key info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.frame_size">
+<em class="property">property </em><code class="sig-name descname">frame_size</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.frame_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Frame width (<code class="docutils literal notranslate"><span class="pre">Fw</span></code>) and Frame height (<code class="docutils literal notranslate"><span class="pre">Fh</span></code>)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.getWindowImageRect">
+<code class="sig-name descname">getWindowImageRect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.getWindowImageRect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.getWindowImageRect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides rectangle of image in the window.</p>
+<p>The function getWindowImageRect returns the client screen coordinates, width and height of the image rendering area.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.getWindowRect">
+<code class="sig-name descname">getWindowRect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.getWindowRect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.getWindowRect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get window bounding boxes as <code class="docutils literal notranslate"><span class="pre">(x,y,w,h)</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.get_anchors">
+<code class="sig-name descname">get_anchors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.get_anchors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.get_anchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the <code class="docutils literal notranslate"><span class="pre">(Wx,Wy,Fw,Fh)</span></code></p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">self.getWindowImageRect()</span></code> gets the rectangle of image in the window.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">self.moveWindow(x,</span> <span class="pre">y)</span></code> make the window left top to <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.image_size">
+<em class="property">property </em><code class="sig-name descname">image_size</code><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.image_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Image width (<code class="docutils literal notranslate"><span class="pre">Iw</span></code>) and Image height (<code class="docutils literal notranslate"><span class="pre">Ih</span></code>)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.moveWindow">
+<code class="sig-name descname">moveWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.moveWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.moveWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves window to the specified position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>int</em>) – The new x-coordinate of the window.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – The new y-coordinate of the window.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.recieveKey">
+<code class="sig-name descname">recieveKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.recieveKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.recieveKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response according to Recieved key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – Input Key. (= <code class="docutils literal notranslate"><span class="pre">cv2.waitKey(0)</span></code>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>is_break (bool) Whether loop break or not. If break, destroy the window.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id0">
+<em class="property">property </em><code class="sig-name descname">reduction_rate</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.resizeWindow">
+<code class="sig-name descname">resizeWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.resizeWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.resizeWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes window to the specified size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<em>int</em>) – The new window width.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – The new window height.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.setup">
+<code class="sig-name descname">setup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">winname</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting up for the OpenCV windows.</p>
+<ul class="simple">
+<li><p>Decide window name.</p></li>
+<li><p>Decide and Create the location of the directory to save image.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>winname</strong> (<em>str</em>) – Unique winname.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays an image in the specified window. (<code class="docutils literal notranslate"><span class="pre">self.winname</span></code>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mat</strong> (<em>np.ndarray</em>) – Image to be shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.opencv.windows.frameWindow">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">frameWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">input_path</span></em>, <em class="sig-param"><span class="n">winname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">move_distance</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">expansion_rate</span><span class="o">=</span><span class="default_value">1.1</span></em>, <em class="sig-param"><span class="n">cv_keys</span><span class="o">=</span><span class="default_value">{'DELETE': {'': '\x08', '&lt;delete&gt;'}, 'ENTER': {'': '\r', '&lt;enter&gt;'}, 'FRAME': {'advance': 'w', 'back': 'b', 'jump': '&#64;'}, 'INFO': {'': 'i'}, 'MOVING': {'down': 'j', 'left': 'h', 'right': 'l', 'up': 'k'}, 'NUMBER': {'0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9'}, 'POS': {'fullscreen': 'f', 'topleft': 'o'}, 'QUIT': {'1': '\x1b', '&lt;esc&gt;', '2': 'q'}, 'RANGE': {'end': 'e', 'start': 's'}, 'RATIO': {'expansion': '+', 'reduction': '-'}, 'TAKE': {'picture': 'p', 'video': 'v'}}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#frameWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.frameWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycharmers.opencv.windows.cvWindow" title="pycharmers.opencv.windows.cvWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.opencv.windows.cvWindow</span></code></a></p>
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.frameWindow.range_processing">
+<code class="sig-name descname">range_processing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#frameWindow.range_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.frameWindow.range_processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select a range and process the image or video of that part.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.frameWindow.recieveKey">
+<code class="sig-name descname">recieveKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#frameWindow.recieveKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.frameWindow.recieveKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response according to Recieved key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – Input Key. (= <code class="docutils literal notranslate"><span class="pre">cv2.waitKey(0)</span></code>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>is_break (bool) Whether loop break or not. If break, destroy the window.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.frameWindow.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#frameWindow.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.frameWindow.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays an image in the specified window. (<code class="docutils literal notranslate"><span class="pre">self.winname</span></code>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mat</strong> (<em>np.ndarray</em>) – Image to be shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.windows.wait_for_choice">
+<code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">wait_for_choice</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#wait_for_choice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.wait_for_choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until choicing the one of the keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*keys</strong> – Keys.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.windows</span> <span class="kn">import</span> <span class="n">wait_for_choice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;lena.png&quot;</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">val</span> <span class="o">=</span> <span class="n">wait_for_choice</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;ltrb&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.windows.wait_for_input">
+<code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">wait_for_input</code><span class="sig-paren">(</span><em class="sig-param">fmt='Your input : {}'</em>, <em class="sig-param">cvKey=&lt;pycharmers.opencv.windows.cvKeys object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#wait_for_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.wait_for_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the valid input is entered.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.windows</span> <span class="kn">import</span> <span class="n">wait_for_input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;lena.png&quot;</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">val</span> <span class="o">=</span> <span class="n">wait_for_input</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

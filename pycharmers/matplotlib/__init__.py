@@ -15,6 +15,7 @@ from .cmaps import color_dict_create
 from .layout import FigAxes_create
 from .layout import set_ax_info
 from .layout import measure_canvas
+from .layout import clear_grid
 
 from .plot2d import plot_hist
 from .plot2d import plot_cumulative_ratio

@@ -37,6 +37,7 @@ def progress_reporthook_create(filename="", bar_width=20, verbose=True):
         speed, speed_unit = readable_bytes(speed)
         
         sys.stdout.write(f"\r{filename}\t{percentage:.1%}[{progress_bar}] {duration:.1f}[s] {speed:.1f}[{speed_unit}/s]\teta {eta:.1f}[s]")
+        if progress_size == total_size: print()
     def progress_reporthook_non_verbose(block_count, block_size, total_size):
         pass
     return progress_reporthook_verbose if verbose else progress_reporthook_non_verbose

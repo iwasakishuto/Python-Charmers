@@ -110,10 +110,12 @@
 
 <div class="viewcode-block" id="basenaming"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.basenaming">[docs]</a><span class="k">def</span> <span class="nf">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Base Naming</span>
-<span class="sd">    @params path : path to video file, or directory which stores sequential images.</span>
-<span class="sd">    @return name :</span>
-<span class="sd">        if path is to video file (sample.mp4) -&gt; sample</span>
-<span class="sd">        if path is to directory (sample) -&gt; sample</span>
+
+<span class="sd">    - if path is to video file (``sample.mp4``) -&gt; ``sample``</span>
+<span class="sd">    - if path is to directory (``sample``) -&gt; ``sample``</span>
+<span class="sd">  </span>
+<span class="sd">    Args:</span>
+<span class="sd">        path (str) : path to video file, or directory which stores sequential images.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="c1"># File. (Video)</span>

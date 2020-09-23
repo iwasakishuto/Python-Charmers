@@ -166,7 +166,7 @@ def calc_rectangle_size(area, w=None):
     """
     if w is None:
         w = math.ceil(math.sqrt(area))
-        h = math.ceil(area/h)
+        h = math.ceil(area/w)
     else:
         if area>=w:
             h = (area-1)//w+1

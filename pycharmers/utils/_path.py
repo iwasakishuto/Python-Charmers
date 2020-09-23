@@ -1,9 +1,55 @@
 #coding: utf-8
 import os
 from pathlib import Path
+
 from ._colorings import toBLUE
+from .download_utils import download_file
+
+def _makedirs(name, mode=511, msg=""):
+    """Create a directory if it does not exist.
+
+    Args:
+        name (str) : path/to/directory.
+        mode (int) : The mode argument is ignored on Windows.
+        msg (str)  : Add info
+
+    Examples:
+        >>> from pycharmers.utils import _makedirs
+        >>> _makedirs(name="path/to/dirname")
+        path/to/dirname is created.
+    """
+    if not os.path.exists(name):
+        os.makedirs(name=name, mode=mode)
+        print(f"{toBLUE(name)} is created. {msg}")
+  
+def _download_sample_data(url, path, msg=""):
+    """Download sample data.
+    Args:
+        url (str)  : File URL.
+        path (str) : path/to/downloaded_file
+        msg (str)  : Add info
+
+    Examples:
+        >>> from pycharmers.utils import _download_sample_data
+        >>> from pycharmers.utils import SAMPLE_LENA_IMG
+        >>> _download_sample_data(
+        ...     url="https://raw.githubusercontent.com/opencv/opencv/master/samples/data/lena.jpg", 
+        ...     path=SAMPLE_LENA_IMG
+        >>> )
+        Download a file from https://raw.githubusercontent.com/opencv/opencv/master/samples/data/lena.jpg
+                    * Content-Encoding : None
+                    * Content-Length   : (89.662109375, 'MB')
+                    * Content-Type     : image/jpeg
+                    * Save Destination : /Users/iwasakishuto/.pycharmers/opencv/image/lena.jpg
+        lena.jpg	100.0%[####################] 0.0[s] 4.9[GB/s]	eta -0.0[s]
+        /Users/iwasakishuto/.pycharmers/opencv/image/lena.jpg is downloaded. 
+    """
+    if not os.path.exists(path):
+        download_file(url, dirname=".", path=path, bar_width=20, verbose=True)
+        print(f"{toBLUE(path)} is downloaded. {msg}")
 
 __all__ = [
+    "_makedirs", "_download_sample_data",
     "UTILS_DIR", "MODULE_DIR", "REPO_DIR", "CLI_DIR", "PYCHARMERS_DIR",
 ]
 
@@ -15,6 +61,4 @@ PYCHARMERS_DIR = os.path.join(os.path.expanduser("~"), ".pycharmers") # /Users/<
 # Check whether uid/gid has the write access to DATADIR_BASE
 if os.path.exists(PYCHARMERS_DIR) and not os.access(PYCHARMERS_DIR, os.W_OK):
     PYCHARMERS_DIR = os.path.join("/tmp", ".pycharmers")
-if not os.path.exists(PYCHARMERS_DIR):
-    os.mkdir(PYCHARMERS_DIR)
-    print(f"{toBLUE(PYCHARMERS_DIR)} is created.")
+_makedirs(name=PYCHARMERS_DIR)
