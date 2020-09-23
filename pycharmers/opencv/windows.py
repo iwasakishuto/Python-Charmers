@@ -1,78 +1,145 @@
 #coding: utf-8
 import os
-import sys
 import re
+import sys
 import cv2
 
-from . import SAVE_PATH
+from ._path import PYCHARMERS_OPENCV_IMAGE_DIR, PYCHARMERS_OPENCV_VIDEO_DIR
 from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_generator_concat,
                                  count_frame_num, create_VideoWriter)
 from .drawing import draw_text_with_bg
 
-# KEYS for `cvWindow`
-MOVING_KEYS     = [ord("h"), ord("l"), ord("j"), ord("k")]
-ABS_POS_KEYS    = [ord("o")]
-FULLSCREEN_KEYS = [ord("f")]
-RATIO_KEYS      = [ord("+"), ord("-")]
-QUIT_KEYS       = [ord("\x1b"), ord("q")] # "\x1b" = <esc>
-INFO_KEYS       = [ord("i")]
-# WAIT FOR NUMBER
-ENTER_KEYS      = [ord("\r")]   # <enter>
-NUMBER_KEYS     = [i for i in range(ord("0"), ord("9")+1)]
-# KEYS for `frameWindow`.
-FRAME_KEYS      = [ord("w"), ord("b"), ord("@")]
-DELETE_KEYS     = [ord("\x08")] # <delete>
-RANGE_KEYS      = [ord("s"), ord("e")]
-TAKE_PIC_KEYS   = [ord("p")]
-TAKE_VIDEO_KEYS = [ord("v")]
+from ..utils.generic_utils import now_str, flatten_dual
+from ..utils._path import _makedirs
+from ..utils._colorings import toBLUE, toGREEN, toACCENT
 
-def print_alpha2key():
-    alpha2key = {}
-    for name,vals in globals().items():
-        if name.endswith("_KEYS"):
-            alpha2key.update({chr(e): name for e in vals if re.match(r"[a-z]", chr(e))})
+DEFAULT_CV_KEYS = {
+    "MOVING": {"left": "h", "right": "l", "down": "j", "up": "k"},
+    "RATIO" : {"expansion" : "+", "reduction" : "-"},
+    "POS"   : {"fullscreen": "f", "topleft": "o"},
+    "INFO"  : {"": "i"},
+    "QUIT"  : {"1": ("\x1b", "<esc>"), "2": "q"},
+    "DELETE": {"": ("\x08", "<delete>")},
+    "ENTER" : {"": ("\r", "<enter>")},
+    "NUMBER": {str(i):str(i) for i in range(10)},
+}
+DEFAULT_FRAME_KEYS = DEFAULT_CV_KEYS.copy()
+DEFAULT_FRAME_KEYS.update({
+    "FRAME" : {"advance": "w", "back": "b", "jump": "@"},
+    "RANGE" : {"start": "s", "end": "e"},
+    "TAKE"  : {"picture": "p", "video": "v"},
+})
 
-    for i in range(26):
-        alphabet = chr(ord('a')+i)
-        print(f"{alphabet}: {alpha2key.get(alphabet, '-')}")
 
-def waitForNumber(format_="Your input: {}"):
-    current_num = ""
-    template = "\033[2K\033[G" + format_
-    sys.stdout.write(template.format(current_num))
-    sys.stdout.flush()
-    key = cv2.waitKey(0)
-    while key not in ENTER_KEYS:
-        if key in DELETE_KEYS:
-            current_num = current_num[:-1]
-        elif key in NUMBER_KEYS:
-            current_num += chr(key)
-        sys.stdout.write(template.format(current_num))
+class cvKeys():
+    """Keys for using openCV
+
+    Examples:
+        >>> from pycharmers.opencv import cvKeys
+        >>> cvKey = cvKeys()
+        >>> cvKey.QUIT_1_KEY,        cvKey.QUIT_1_KEY_ORD
+        ('\x1b', 27)
+        >>> cvKey.QUIT_1_KEY_STR,    cvKey.QUIT_1_KEY_STR_ORD
+        ('<esc>', -1)
+        >>> cvKey.QUIT_KEYS,         cvKey.QUIT_KEYS_ORD
+        (['\x1b', 'q'], [27, 113])
+        >>> cvKey.QUIT_KEYS_STR,     cvKey.QUIT_KEYS_STR_ORD
+        (['<esc>', 'q'], [-1, 113])
+        >>> cvKey.HOGE_PIYO_KEY,     cvKey.HOGE_PIYO_KEY_ORD
+        (None, -1)
+        >>> cvKey.HOGE_PIYO_KEY_STR, cvKey.HOGE_PIYO_KEY_STR_ORD
+        (None, -1)
+        >>> cvKey.HOGE_KEYS,         cvKey.HOGE_KEYS_ORD
+        ([], [])
+        >>> cvKey.HOGE_KEYS_STR,     cvKey.HOGE_KEYS_STR_ORD
+        ([], [])
+    """
+    
+    def __init__(self, cv_keys=DEFAULT_CV_KEYS):
+        self.group_prefixes = []
+        for prefix, keys in cv_keys.items():
+            self.set_keys(prefix=prefix, **keys)
+    
+    @staticmethod
+    def ord(c):
+        """Return the Unicode code point for a one-character string."""
+        return ord(c) if (c is not None) and (len(c)==1) else -1
+    
+    def __getattr__(self, key):
+        if key.endswith("_ORD"):
+            key = key[:-4] # key.rstrip("_ORD")
+            try:
+                val = self.__getattribute__(key)  
+            except AttributeError:
+                val = self.__getattr__(key)
+            return [self.ord(e) for e in val] if isinstance(val, list) else self.ord(val)
+        return [] if (key.endswith("KEYS") or key.endswith("KEYS_STR")) else None
+
+            
+    def set_keys(self, prefix, **keys):
+        prefix = prefix.upper()
+        self.group_prefixes.append(prefix)
+        
+        for key,val in keys.items():
+            key = key.upper()
+            setattr(self, f"__{prefix}_{key}_KEY",   val)
+            setattr(self, f"{prefix}_{key}_KEY",     val[0])
+            setattr(self, f"{prefix}_{key}_KEY_STR", val[-1])
+                       
+        setattr(self.__class__, f"{prefix}_KEYS",     property(lambda self: self.get_group_keys(prefix=prefix, suffix="_KEY")))
+        setattr(self.__class__, f"{prefix}_KEYS_STR", property(lambda self: self.get_group_keys(prefix=prefix, suffix="_KEY_STR")))
+        
+    def get_group_keys(self, prefix="", suffix=""):
+        prefix = prefix.upper()
+        group_keys = [key for name,key in self.__dict__.items() if re.match(pattern=fr"^{prefix}.+{suffix}$", string=name)]
+        return group_keys
+    
+    @property
+    def ALL_KEYS(self):
+        return flatten_dual([self.get_group_keys(prefix=prefix) for prefix in self.group_prefixes])
+
+def wait_for_input(fmt="Your input : {}", cvKey=cvKeys(cv_keys=DEFAULT_CV_KEYS)):
+    """Wait until the valid input is entered.
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv.windows import wait_for_input
+        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> cv2.imshow("lena.png", cv2.imread(SAMPLE_LENA_IMG))
+        >>> val = wait_for_input()
+        >>> cv2.destroyAllWindows()
+    """
+    curt_val = ""
+    def print_log(curt_val):
+        sys.stdout.write("\033[2K\033[G" + fmt.format(curt_val))
         sys.stdout.flush()
-        key = cv2.waitKey(0)
-    print()
-    if len(current_num) == 0:
-        current_num = waitForNumber(format_=format_)
-    return int(current_num)
-
-def waitForInput(format_="Your input: %s"):
-    current_val = ""
-    format_ = "\033[2K\033[G" + format_
-    sys.stdout.write(format_ % current_val)
-    sys.stdout.flush()
     key = cv2.waitKey(0)
-    while key not in ENTER_KEYS:
-        if key in DELETE_KEYS:
-            current_val = current_val[:-1]
+    while key not in cvKey.ENTER_KEYS_ORD:
+        if key in cvKey.DELETE_KEYS_ORD:
+            curt_val = curt_val[:-1]
         else:
-            current_val += chr(key)
-        sys.stdout.write(format_ % current_val)
-        sys.stdout.flush()
+            curt_val += chr(key)
+        print_log(curt_val)
         key = cv2.waitKey(0)
     print()
-    return current_val
+    if len(curt_val) == 0:
+        curt_val = wait_for_input()
+    return curt_val
 
-def waitTochoice(*keys):
+def wait_for_choice(*keys):
+    """Wait until choicing the one of the keys.
+
+    Args:
+        *keys: Keys.
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv.windows import wait_for_choice
+        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> cv2.imshow("lena.png", cv2.imread(SAMPLE_LENA_IMG))
+        >>> val = wait_for_choice(*list("ltrb"))
+        >>> cv2.destroyAllWindows()
+    """
     num_choices = len(keys)
     max_len = len(max(keys, key=len))
     int2key = dict(zip(range(num_choices), keys))
@@ -82,7 +149,7 @@ def waitTochoice(*keys):
         print(f" - {k:<{max_len}}: {i}")
 
     while True:
-        i = waitForNumber()
+        i = int(wait_for_input())
         if 0 <= i < num_choices:
             break
         else:
@@ -90,180 +157,259 @@ def waitTochoice(*keys):
     return keys[i]
 
 class cvWindow():
-    """
-    [ Window & Image Location ]
-    - Ix,Iy,Iw,Ih = cv2.getWindowImageRect(winname)
-    - cv2.moveWindow(winname, Wx, Wy)
-     (Wx,Wy) ----------------------- (x+w,y)
-        |               ^                |
-        |               | Fh             |
-        |               v                |
-        |     (Ix,Iy) ------ (Ix+w,Iy)   |
-        |   Fw   |               |       |
-        |<------>|     Image     |       |
-        |        |               |       |
-        |    (Ix,Iy+h) ---- (Ix+w,Iy+h)  |
-        |                                |
-    (Wx,Wy+h) --------------------- (Wx+w,Wy+h)
+    """Window & Image Location
+
+    - ``Ix,Iy,Iw,Ih = cv2.getWindowImageRect(winname)``
+    - ``cv2.moveWindow(winname, Wx, Wy)``
+
+    Variable Names::
+
+        (Wx,Wy) ----------------------- (x+w,y)
+            |               ^                |
+            |               | Fh             |
+            |               v                |
+            |     (Ix,Iy) ------ (Ix+w,Iy)   |
+            |   Fw   |               |       |
+            |<------>|     Image     |       |
+            |        |               |       |
+            |    (Ix,Iy+h) ---- (Ix+w,Iy+h)  |
+            |                                |
+        (Wx,Wy+h) --------------------- (Wx+w,Wy+h)
+
+    Args:
+        No (int) : The number of windows.
+
+    Attributes:
+        video_save_dir (str)   : Path/to/created_video/directory.
+        img_save_dir (str)     : Path/to/created_image/directory.
+        reduction_rate (float) :  ``1./expansion_rate``
+        cvKey (cvKeys)         : Keys for using openCV
+        iIh, iIw (int)         : 
     """
     No = 0
 
-    def __init__(self, winname=None, move_distance=10, expansion_rate=1.1):
-        cvWindow.No += 1
-        if winname is None:
-            winname = f"frame {cvWindow.No:>02}"
-        self.winname = winname
-        cv2.namedWindow(winname, cv2.WINDOW_NORMAL)
+    def __init__(self, winname=None, move_distance=10, expansion_rate=1.1, cv_keys=DEFAULT_CV_KEYS):
+        """initialization of the OpenCV Windows.
+
+        Args:
+            winname (str)          : The window name.
+            move_distance (int)    : Moving distance. (px)
+            expansion_rate (float) : Expansion Rate.
+            cv_keys (dict)         : Keys for ``cvWindow``.
+
+        Examples:
+            >>> from pycharmers.opencv import cvWindow
+            >>> window = cvWindow()
+        """
+        self.setup(winname=winname)
 
         self.move_distance = move_distance
-        if expansion_rate <= 1.:
-            expansion_rate += 1.
         self.expansion_rate = expansion_rate
-        self.reduction_rate = 1./expansion_rate
+        self.cvKey = cvKeys(cv_keys=cv_keys)
 
         self.iIh = None
         self.iIw = None
 
     @property
+    def reduction_rate(self):
+        return 1./self.expansion_rate
+
+    def setup(self, winname=None):
+        """Setting up for the OpenCV windows.
+
+        - Decide window name.
+        - Decide and Create the location of the directory to save image.
+
+        Args:
+            winname (str) : Unique winname.
+        """
+        # Decide window name.
+        cvWindow.No += 1
+        if winname is None:
+            winname = f"frame {cvWindow.No:>02}"
+        self.winname = winname
+        cv2.namedWindow(winname, cv2.WINDOW_NORMAL)
+        # Decide the location of the directory to save image.
+        data_str = now_str()
+        self.img_save_dir = os.path.join(PYCHARMERS_OPENCV_IMAGE_DIR, data_str)
+        _makedirs(name=self.img_save_dir, msg="Images will be saved here.")
+        self.video_save_dir = os.path.join(PYCHARMERS_OPENCV_VIDEO_DIR, data_str)
+        _makedirs(name=self.video_save_dir, msg="Videos will be saved here.")
+
+    @property
     def frame_size(self):
-        Wx,Wy,Fw,Fh = self.get_anchors()
+        """Get Frame width (``Fw``) and Frame height (``Fh``)"""
+        _,_,Fw,Fh = self.get_anchors()
         return (Fw,Fh)
 
     @property
     def image_size(self):
-        _,_,Iw,Ih = cv2.getWindowImageRect(self.winname)
+        """Get Image width (``Iw``) and Image height (``Ih``)"""
+        _,_,Iw,Ih = self.getWindowImageRect()
         return (Iw,Ih)
 
-    def resizeWindow(self, H, W):
-        cv2.resizeWindow(self.winname, (H,W))
+    def resizeWindow(self, width, height):
+        """Resizes window to the specified size
+
+        Args:
+            width (int)  : The new window width.
+            height (int) : The new window height.
+        """
+        cv2.resizeWindow(winname=self.winname, width=width, height=height)
 
     def moveWindow(self, x, y):
-        cv2.moveWindow(self.winname, x, y)
+        """Moves window to the specified position
+
+        Args:
+            x (int): The new x-coordinate of the window.
+            y (int): The new y-coordinate of the window.
+        """
+        cv2.moveWindow(winname=self.winname, x=x, y=y)
 
     def getWindowImageRect(self):
-        return cv2.getWindowImageRect(self.winname)
+        """Provides rectangle of image in the window.
+
+        The function getWindowImageRect returns the client screen coordinates, width and height of the image rendering area.
+        """
+        Ix,Iy,Iw,Ih = cv2.getWindowImageRect(winname=self.winname)
+        return (Ix,Iy,Iw,Ih)
 
     def getWindowRect(self):
+        """Get window bounding boxes as ``(x,y,w,h)``"""
         Wx,Wy,Fw,Fh = self.get_anchors()
         Iw,Ih = self.image_size
-        return (Wx,Wy,Iw+Fw*2,Ih+Fh*2)
-
-    def align_TopLeft(self):
-        cv2.moveWindow(self.winname, 0, 0)
+        Ww = Iw+Fw*2; Wh = Ih+Fh*2
+        return (Wx,Wy,Ww,Wh)
 
     def get_anchors(self):
-        """ Get the Wx,Wy,Fw,Fh """
-        winname = self.winname
-        # NOTE: In fact, get the current (Ix,Iy).
-        Wx,Wy,_,_ = cv2.getWindowImageRect(winname)
-        cv2.moveWindow(winname, Wx, Wy)
-        # NOTE; In fact, get the (Ix+Fw,Iy+Fw) in the initial window.
-        Ix,Iy,_,_ = cv2.getWindowImageRect(winname)
-        Fw = Ix-Wx; Fh = Iy-Wy
-        # NOTE: This is the real (Wx,Wy) in the initial window.
-        Wx -= Fw; Wy -= Fh
+        """ Get the ``(Wx,Wy,Fw,Fh)`` 
+        
+        Notes:
+            - ``self.getWindowImageRect()`` gets the rectangle of image in the window.
+            - ``self.moveWindow(x, y)`` make the window left top to ``(x,y)``
+        
+        """
+        Ix,Iy,_,_ = self.getWindowImageRect()
+        self.moveWindow(Ix, Iy)
+        # NOTE: Get the (Ix+Fw,Iy+Fw) in the initial window.
+        Ix_Fw,Iy_Fw,_,_ = self.getWindowImageRect()
+        Fw = Ix_Fw-Ix; Fh = Iy_Fw-Iy
+        Wx = Ix-Fw;    Wy = Iy-Fh
         # Reset the window position.
-        cv2.moveWindow(winname, Wx, Wy)
+        self.moveWindow(Wx, Wy)
         return (Wx,Wy,Fw,Fh)
 
     def show(self, mat):
+        """Displays an image in the specified window. (``self.winname``)
+        
+        Args:
+            mat (np.ndarray): Image to be shown.
+        """
         if self.iIh is None or (self.iIh, self.iIw) != mat.shape[:2]:
             self.iIh, self.iIw, _ = mat.shape
-            self.Ih, self.Iw, _ = mat.shape
-            cv2.resizeWindow(self.winname, (self.iIh, self.iIw))
-        cv2.imshow(self.winname, mat)
+            self.Ih,  self.Iw,  _ = mat.shape
+            self.resizeWindow(height=self.iIh, width=self.iIw)
+        cv2.imshow(winname=self.winname, mat=mat)
 
     def _ret_info(self):
+        """ Return Key Information. """
+        cvKey = self.cvKey
         return f"""
-        [Window Name {self.winname}]
-        # Move window : {self.move_distance}px
-        - To move left,  press 'h' .
-        - To move right, press 'l' .
-        - To move down,  press 'j' .
-        - To move up,    press 'k' .
+        {toACCENT(f'[Window Name {self.winname}]')}
+        # Move window : {toBLUE(str(self.move_distance) + 'px')}
+        - To move {toBLUE('left')+',':<15} press {toGREEN(cvKey.MOVING_LEFT_KEY_STR)}
+        - To move {toBLUE('right')+',':<15} press {toGREEN(cvKey.MOVING_RIGHT_KEY_STR)}
+        - To move {toBLUE('down')+',':<15} press {toGREEN(cvKey.MOVING_DOWN_KEY_STR)}
+        - To move {toBLUE('up')+',':<15} press {toGREEN(cvKey.MOVING_UP_KEY_STR)}
         # window position
-        - To align top & left, press 'o' .
-        - To make the window full screen, press 'f' .
-        # Expansion & Reduction : {self.expansion_rate*100:.1f}%
-        - To expand window, press '+' .
-        - To shrink window, press '-' .
+        - To align {toBLUE('top & left')}, press {toGREEN(cvKey.POS_TOPLEFT_KEY_STR)}
+        - To make the window {toBLUE('fullscreen')}, press {toGREEN(cvKey.POS_FULLSCREEN_KEY_STR)}
+        # Expansion & Reduction : {toBLUE(f'{self.expansion_rate:.1%}')}
+        - To {toBLUE('expand')} window, press {toGREEN(cvKey.RATIO_EXPANSION_KEY_STR)}
+        - To {toBLUE('shrink')} window, press {toGREEN(cvKey.RATIO_REDUCTION_KEY_STR)}
         # Quit
-        - To quit, press 'q' or '<ESC>' .
+        - To {toBLUE('quit')}, press {', '.join([toGREEN(e) for e in cvKey.QUIT_KEYS_STR])}
         # Info
-        - To get the window rectangle, press 'i' .
+        - To get the window rectangle, press {toGREEN(cvKey.INFO__KEY_STR)}
         """
 
     def describe(self):
+        """Describe Key info."""
         print(self._ret_info())
 
     def recieveKey(self, key):
-        """
-        @params key      : (int) Input Key. (= cv2.waitKey(1) )
-        @return is_break : (bool) Whether loop break or not.
-                           If break, destroy the window.
+        """Response according to Recieved key.
+
+        Args:
+            key (int): Input Key. (= ``cv2.waitKey(0)``)
+
+        Returns:
+            is_break (bool) Whether loop break or not. If break, destroy the window.
         """
         is_break = False
+        cvKey = self.cvKey
         winname = self.winname
 
-        if key in QUIT_KEYS:
+        if key in cvKey.QUIT_KEYS_ORD:
             cv2.destroyWindow(winname)
             is_break = True
 
-        elif key in MOVING_KEYS:
+        elif key in cvKey.MOVING_KEYS_ORD:
             Wx,Wy,_,_ = self.get_anchors()
 
-            if key == ord("h"):
+            if key == cvKey.MOVING_LEFT_KEY_ORD:
                 Wx-=self.move_distance
-            elif key == ord("l"):
+            elif key == cvKey.MOVING_RIGHT_KEY_ORD:
                 Wx+=self.move_distance
-            elif key == ord("j"):
+            elif key == cvKey.MOVING_DOWN_KEY_ORD:
                 Wy+=self.move_distance
-            else: # key == ord("k")
+            else: # key == cvKey.MOVING_UP_KEY_ORD
                 Wy-=self.move_distance
 
-            cv2.moveWindow(winname, Wx, Wy)
+            self.moveWindow(Wx, Wy)
 
-        elif key in RATIO_KEYS:
-            if key == ord("+"):
+        elif key in cvKey.RATIO_KEYS_ORD:
+            if key == cvKey.RATIO_EXPANSION_KEY_ORD:
                 rate = self.expansion_rate
             else:
                 rate = self.reduction_rate
 
             self.Ih = int(rate*self.Ih)
             self.Iw = int(rate*self.Iw)
-            cv2.resizeWindow(winname, (self.Ih, self.Iw))
+            self.resizeWindow(width=self.Iw, height=self.Ih)
 
-        elif key in INFO_KEYS:
+        elif key in cvKey.INFO_KEYS_ORD:
             print(f"Window Rectangle: {self.getWindowRect()}")
 
-        elif key in ABS_POS_KEYS:
-            self.align_TopLeft()
-
-        elif key in FULLSCREEN_KEYS:
-            """
-            cv2.WINDOW_NORMAL = 0
-            cv2.WINDOW_FULLSCREEN = 1
-            """
-            cv2.setWindowProperty(
-                winname=winname,
-                prop_id=cv2.WND_PROP_FULLSCREEN,
-                prop_value=1-cv2.getWindowProperty(
+        elif key in cvKey.POS_KEYS_ORD:
+            if key == vKey.POS_FULLSCREEN_KEY_ORD:
+                """
+                ``cv2.WINDOW_NORMAL = 0``
+                ``cv2.WINDOW_FULLSCREEN = 1``
+                """
+                cv2.setWindowProperty(
                     winname=winname,
                     prop_id=cv2.WND_PROP_FULLSCREEN,
+                    prop_value=1-cv2.getWindowProperty(
+                        winname=winname,
+                        prop_id=cv2.WND_PROP_FULLSCREEN,
+                    )
                 )
-            )
+            else:
+                self.moveWindow(0, 0)
 
         return is_break
 
 class frameWindow(cvWindow):
-    def __init__(self, *input_path, winname=None, move_distance=10, expansion_rate=1.1):
+    def __init__(self, *input_path, winname=None, move_distance=10, expansion_rate=1.1, cv_keys=DEFAULT_FRAME_KEYS):
         self.name = "+".join([basenaming(path) for path in input_path])
         if winname is None:
             winname = self.name
         super().__init__(
                 winname=winname,
                 move_distance=move_distance,
-                expansion_rate=expansion_rate
+                expansion_rate=expansion_rate,
+                cv_keys=cv_keys,
         )
         self.input_path_ = input_path[0]
         self.input_path  = input_path
@@ -279,6 +425,11 @@ class frameWindow(cvWindow):
         self.show(self.gen.__next__())
 
     def show(self, mat):
+        """Displays an image in the specified window. (``self.winname``)
+        
+        Args:
+            mat (np.ndarray): Image to be shown.
+        """
         draw_text_with_bg(
             img=mat, text=f"{self.frame_num}/{self.total_num}",
             org=(50, 50), fontFace=cv2.FONT_HERSHEY_COMPLEX,
@@ -288,40 +439,50 @@ class frameWindow(cvWindow):
         super().show(mat)
 
     def recieveKey(self, key):
+        """Response according to Recieved key.
+
+        Args:
+            key (int): Input Key. (= ``cv2.waitKey(0)``)
+
+        Returns:
+            is_break (bool) Whether loop break or not. If break, destroy the window.
+        """
         is_break = False
-        if key in FRAME_KEYS:
-            if key == ord("w"):
+        cvKey = self.cvKey
+        
+        if key in cvKey.FRAME_KEYS_ORD:
+            if key == cvKey.FRAME_ADVANCE_KEY_ORD:
                 if self.frame_num < self.total_num:
                     self.frame_num += 1
                 else:
                     self.gen = self.frame_generator(
                         *self.input_path, frame_num=self.frame_num-1
                     )
-            elif key == ord("b"):
+            elif key == cvKey.FRAME_BACK_KEY_ORD:
                 self.frame_num -= 1
                 self.frame_num = max(1, self.frame_num)
                 self.gen = self.frame_generator(
                     *self.input_path, frame_num=self.frame_num-1
                 )
-            elif key == ord("@"):
-                frame_num = waitForNumber(format_="\033[2K\033[GJump to %s frame.")
+            elif key == cvKey.FRAME_JUMP_KEY_ORD:
+                frame_num = int(wait_for_input(fmt="Jump to {} frame."))
                 self.frame_num = max(1, min(int(frame_num), self.total_num))
                 self.gen = self.frame_generator(
                     *self.input_path, frame_num=self.frame_num-1
                 )
             self.show(self.gen.__next__())
-        elif key in RANGE_KEYS:
-            if key == ord("s"):
+        elif key in cvKey.RANGE_KEYS_ORD:
+            if key == cvKey.RANGE_START_KEY_ORD:
                 self.start_ = self.frame_num
                 print(f"start: {self.frame_num} frame.")
                 if self.end_ is not None:
                     self.range_processing()
-            elif key == ord("e"):
+            elif key == cvKey.RANGE_END_KEY_ORD:
                 self.end_ = self.frame_num
                 print(f"end  : {self.frame_num} frame.")
                 if self.start_ is not None:
                     self.range_processing()
-        elif key in TAKE_PIC_KEYS:
+        elif key == cvKey.TAKE_PICTURE_KEY_ORD:
             self.gen = self.frame_generator(
                 *self.input_path, frame_num=self.frame_num-1
             )
@@ -334,23 +495,25 @@ class frameWindow(cvWindow):
         return is_break
 
     def range_processing(self):
+        """Select a range and process the image or video of that part."""
         start = self.start_
         end = self.end_
         span = end-start+1
         if span<0:
             print("`start` must be an earlier frame than `end`.")
         else:
+            cvKey = self.cvKey
             print(f"""
             # You select {start}-{end} frame
-            - press 'v' to extract a video.
-            - press 'p' to shot all frames in the range.
+            - press '{toBLUE(cvKey.TAKE_VIDEO_KEY_STR)}' to extract a video.
+            - press '{toBLUE(cvKey.TAKE_PICTURE_KEY_STR)}' to shot all frames in the range.
             """)
             gen = self.frame_generator(*self.input_path, frame_num=start-1)
             name = self.name
             total_num = self.total_num
             while True:
                 key = cv2.waitKey(0)
-                if key in TAKE_PIC_KEYS:
+                if key == cvKey.TAKE_PICTURE_KEY_ORD:
                     for i,frame in enumerate(gen):
                         current = start+i
                         fn = f"{name}({current}-out-of-{total_num}).png"
@@ -359,7 +522,7 @@ class frameWindow(cvWindow):
                             break
                     print(f"Take a screenshots from {start} frame to {end} frame.")
                     break
-                elif key in TAKE_VIDEO_KEYS:
+                elif key == cvKey.TAKE_VIDEO_KEY_ORD:
                     video_fn = f"{name}({start}-to-{end}-out-of-{total_num}).mp4"
                     out_video = create_VideoWriter(
                         in_path=self.input_path_,
@@ -379,20 +542,23 @@ class frameWindow(cvWindow):
         self.end_ = None
 
     def _ret_info(self):
+        """ Return Key Information. """
+        cvKey = self.cvKey
         info  = super()._ret_info()
-        info += f"""# Frame Control
-        - To advance frame, press 'w' .
-        - To back frame,    press 'b' .
-        - To jump to frame, press '@' .
-            Then,
-            - To specify the frane, press 'number key' .
-            - To delete character,  press '<delete>' .
-            - To finish the entry,  press '<enter>' .
+        info += f"""\
+        # Frame Control
+        - To {toGREEN('advance')+' frame,':<23} press '{toBLUE(cvKey.FRAME_ADVANCE_KEY_STR)}'
+        - To {toGREEN('back')+' frame,':<23} press '{toBLUE(cvKey.FRAME_BACK_KEY_STR)}'
+        - To {toGREEN('jump to')+' frame,':<23} press '{toBLUE(cvKey.FRAME_JUMP_KEY_STR)}'
+        \tThen,
+        \t- To {toGREEN('specify')} the frame, press '{toBLUE('<number_key>')}'
+        \t- To {toGREEN('delete')} character,  press '{toBLUE(cvKey.DELETE__KEY_STR)}'
+        \t- To {toGREEN('finish')} the entry,  press '{toBLUE(cvKey.ENTER__KEY_STR)}'
         # Video Editing
-        - To take a screenshot, press 'p' .
+        - To {toGREEN('take a screenshot')}, press '{toBLUE(cvKey.TAKE_PICTURE_KEY_STR)}' .
         - When you deal with a contiguous range of video,
-            - press 's', and 'e' to select the range.
-            - press 'v' to extract a video.
-            - press 'p' to shot all frames in the range.
+        \t- press '{toBLUE(cvKey.RANGE_START_KEY_STR)}', and '{toBLUE(cvKey.RANGE_END_KEY_STR)}' to select the range.
+        \t- press '{toBLUE(cvKey.TAKE_VIDEO_KEY_STR)}' to {toGREEN('extract a video')}.
+        \t- press '{toBLUE(cvKey.TAKE_PICTURE_KEY_STR)}' to {toGREEN('shot all frames')} in the range.
         """
         return info
