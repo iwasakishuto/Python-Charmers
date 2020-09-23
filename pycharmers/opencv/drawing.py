@@ -7,18 +7,18 @@ from ..matplotlib.cmaps import COLOR_WHITE, COLOR_BLACK, FAMOUS_COLOR_PALETTES
 from ..matplotlib.layout import FigAxes_create, clear_grid
 
 def convert_coords(bbox, to_type):
-    """Convert coordinates.
+    """Convert coordinates::
 
-    Args:
-        bbox (tuple)  : Bounding Box coordinates.
-        to_type (str) : coordinate type.
-
-    Note:
          (x,y)---------(x+w,y)    (l,t)----------(r,t)
            |              |         |              |
            |              |         |              |
            |              |         |              |
         (x,y+h)-------(x+w,y+h)   (l,b)----------(r,b)
+                [xywh]                   [ltrb]
+
+    Args:
+        bbox (tuple)  : Bounding Box coordinates.
+        to_type (str) : coordinate type.
 
     Examples:
         >>> from pycharmers.opencv import convert_coords

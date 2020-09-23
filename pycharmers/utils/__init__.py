@@ -1,8 +1,8 @@
 # coding: utf-8
-from ._colorings import *
-from ._exceptions import *
-from ._path import *
-from ._warnings import *
+from . import _colorings
+from . import _exceptions
+from . import _path
+from . import _warnings
 from . import argparse_utils
 from . import color_utils
 from . import download_utils
@@ -11,6 +11,11 @@ from . import json_utils
 from . import monitor_utils
 from . import print_utils
 
+
+from ._colorings import *
+from ._exceptions import *
+from ._path import *
+from ._warnings import *
 
 from .argparse_utils import ListParamProcessor
 from .argparse_utils import DictParamProcessor

@@ -67,10 +67,12 @@ def count_frame_num(path):
 
 def basenaming(path):
     """ Base Naming
-    @params path : path to video file, or directory which stores sequential images.
-    @return name :
-        if path is to video file (sample.mp4) -> sample
-        if path is to directory (sample) -> sample
+
+    - if path is to video file (``sample.mp4``) -> ``sample``
+    - if path is to directory (``sample``) -> ``sample``
+  
+    Args:
+        path (str) : path to video file, or directory which stores sequential images.
     """
     if os.path.isfile(path):
         # File. (Video)

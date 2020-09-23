@@ -6,7 +6,7 @@
 Welcome to Python-Charmers's documentation!
 ===========================================
 
-|header||PyPI version||GitHub version||Python package||Upload Python Package||license|
+|header| |PyPI version| |GitHub version| |Python package| |Upload Python Package| |license|
 
 A collection of useful python programs.
 
