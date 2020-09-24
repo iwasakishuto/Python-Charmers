@@ -5,9 +5,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.utils.generic_utils module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.utils.generic_utils.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true" />
+  <meta name="twitter:site" content="@cabernet_rock" />
+<meta property="og:site_name" content="Python-Charmers" />
     <title>pycharmers.utils.generic_utils module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -83,6 +91,25 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.generic_utils.class2str">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">class2str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">class_</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#class2str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.class2str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert class to str.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>class</strong> (<em>class</em>) – class object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">class2str</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">class2str</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="go">&#39;str&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">class2str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
+<span class="go">&#39;tuple&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.generic_utils.flatten_dual">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">flatten_dual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#flatten_dual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.flatten_dual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flatten double list.</p>
@@ -107,6 +134,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.get_create">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corresp_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">class_</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">genre</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Python-Charmers'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.handleKeyError">
@@ -222,6 +254,30 @@
 <span class="go">&#39;2020-09-14@13.31.17&#39;</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.pycat">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">pycat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em>, <em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">buffering</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">errors</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">newline</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#pycat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.pycat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the contents of the specified <code class="docutils literal notranslate"><span class="pre">file</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>head</strong> (<em>int</em>) – </p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – The mode in which the file is opened.</p></li>
+<li><p><strong>buffering</strong> (<em>int</em>) – Set the buffering policy.</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – Name of the encoding used to encode the <code class="docutils literal notranslate"><span class="pre">file</span></code>.</p></li>
+<li><p><strong>errors</strong> (<em>str</em>) – How encoding errors are to be handled.</p></li>
+<li><p><strong>newline</strong> (<em>str</em>) – How universal newlines works (it only applies to text mode)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<pre class="doctest literal-block">&gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG
+&gt;&gt;&gt; from pycharmers.utils import pycat
+&gt;&gt;&gt; pycat(SAMPLE_LENA_IMG, mode=&quot;rb&quot;)
+b'ÿØÿàJFIFIIÿþ...
+</pre>
 </dd></dl>
 
 <dl class="py function">
