@@ -8,6 +8,7 @@
     <title>pycharmers.utils.generic_utils &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -74,6 +75,22 @@
             <span class="n">lst</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">])</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Please choose the argment </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s2"> from [</span><span class="si">{</span><span class="n">lst</span><span class="si">}</span><span class="s2">]. you chose </span><span class="si">{</span><span class="n">toRED</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="class2str"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.class2str">[docs]</a><span class="k">def</span> <span class="nf">class2str</span><span class="p">(</span><span class="n">class_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert class to str.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        class_ (class): class object</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import class2str</span>
+<span class="sd">        &gt;&gt;&gt; class2str(str)</span>
+<span class="sd">        &#39;str&#39;</span>
+<span class="sd">        &gt;&gt;&gt; class2str(tuple)</span>
+<span class="sd">        &#39;tuple&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;class &#39;(.*?)&#39;&gt;&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">class_</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="handleTypeError"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.handleTypeError">[docs]</a><span class="k">def</span> <span class="nf">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check whether all types of ``kwargs.values()`` match any of ``types``.</span>
 
@@ -94,11 +111,10 @@
 <span class="sd">    Raise:</span>
 <span class="sd">        TypeError: If the types of ``kwargs.values()`` are none of the ``types``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">type2str</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;class &#39;(.*?)&#39;&gt;&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\033[34m\1\033[0m&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">]):</span>
-            <span class="n">str_true_types</span>  <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">type2str</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">])</span>
-            <span class="n">srt_false_type</span> <span class="o">=</span> <span class="n">type2str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+            <span class="n">str_true_types</span>  <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">class2str</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">])</span>
+            <span class="n">srt_false_type</span> <span class="o">=</span> <span class="n">class2str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
                 <span class="n">err_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;must be </span><span class="si">{</span><span class="n">str_true_types</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">else</span><span class="p">:</span>
@@ -242,6 +258,55 @@
         <span class="n">size</span> <span class="o">/=</span> <span class="mf">1024.0</span>
         <span class="c1"># size &gt;&gt; 10</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="o">+</span><span class="s2">&quot;B&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_create"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.get_create">[docs]</a><span class="k">def</span> <span class="nf">get_create</span><span class="p">(</span><span class="n">corresp_dict</span><span class="o">=</span><span class="p">{},</span> <span class="n">class_</span><span class="o">=</span><span class="p">[],</span> <span class="n">genre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Python-Charmers&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">class_</span> <span class="o">=</span> <span class="p">[</span><span class="n">class_</span><span class="p">]</span>
+    <span class="n">class_</span> <span class="o">=</span> <span class="n">class_</span><span class="o">+</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="c1"># Create a get function.</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="n">class_</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">corresp_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">corresp_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">identifier</span><span class="p">)(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">identifier</span>
+        <span class="k">return</span> <span class="n">instance</span>
+    <span class="c1"># Set a docstrings.</span>
+    <span class="n">genre</span> <span class="o">=</span> <span class="n">genre</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+    <span class="n">class_str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">class2str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">class_</span><span class="p">])</span>
+    <span class="n">get</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Retrieves a </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">genre</span><span class="si">}</span><span class="s2"> instance.</span>
+<span class="s2">    </span>
+<span class="s2">    Args:</span>
+<span class="s2">        identifier (</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">) : </span><span class="si">{</span><span class="n">genre</span><span class="si">}</span><span class="s2"> identifier, string name of a </span><span class="si">{</span><span class="n">genre</span><span class="si">}</span><span class="s2">, or</span>
+<span class="s2">                    </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">class_str</span><span class="p">)</span><span class="si">}</span><span class="s2">    a </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">genre</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> instance.</span>
+<span class="s2">    </span>
+<span class="s2">    Returns:</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">class_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> : A </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">genre</span><span class="si">}</span><span class="s2"> instance.    </span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">get</span></div>
+
+<div class="viewcode-block" id="pycat"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.pycat">[docs]</a><span class="k">def</span> <span class="nf">pycat</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">head</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display the contents of the specified ``file``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        head (int)      :</span>
+<span class="sd">        mode (str)      : The mode in which the file is opened. </span>
+<span class="sd">        buffering (int) : Set the buffering policy.</span>
+<span class="sd">        encoding (str)  : Name of the encoding used to encode the ``file``.</span>
+<span class="sd">        errors (str)    : How encoding errors are to be handled.</span>
+<span class="sd">        newline (str)   : How universal newlines works (it only applies to text mode)</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pycat</span>
+<span class="sd">        &gt;&gt;&gt; pycat(SAMPLE_LENA_IMG, mode=&quot;rb&quot;)</span>
+<span class="sd">        b&#39;\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00I\x00I\x00\x00\xff\xfe...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="n">buffering</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="n">newline</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> <span class="k">break</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+  
 </pre></div>
 
             <div class="clearer"></div>

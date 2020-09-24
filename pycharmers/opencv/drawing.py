@@ -6,9 +6,12 @@ from ..utils.generic_utils import handleKeyError
 from ..matplotlib.cmaps import COLOR_WHITE, COLOR_BLACK, FAMOUS_COLOR_PALETTES
 from ..matplotlib.layout import FigAxes_create, clear_grid
 
+SUPPORTED_COORD_TYPES = ["xywh", "ltrb"]
+
 def convert_coords(bbox, to_type):
     """Convert coordinates::
 
+               [OpenCV]                  [YOLO]
          (x,y)---------(x+w,y)    (l,t)----------(r,t)
            |              |         |              |
            |              |         |              |
@@ -24,9 +27,9 @@ def convert_coords(bbox, to_type):
         >>> from pycharmers.opencv import convert_coords
         >>> xywh = (120,250,60,80)
         >>> ltrb = convert_coords(bbox=xywh, to_type="ltrb")
-        >>> xywh == convert_coords(bbox=ltrb, to_type="xywh")
+        >>> xywh = convert_coords(bbox=ltrb, to_type="xywh")
     """
-    handleKeyError(lst=["xywh", "ltrb"], to_type=to_type)
+    handleKeyError(lst=SUPPORTED_COORD_TYPES, to_type=to_type)
     a,b,c,d = bbox
     if to_type == "xywh":
         a,b,c,d = (a,b,c-a,d-b)
@@ -97,6 +100,13 @@ def draw_bboxes_ltrb(frame, bboxes, infos=None):
         cv2.rectangle(img=frame, pt1=(l, t), pt2=(r, b), color=color, thickness=1)
         cv2.putText(frame, text, (l,t), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), thickness=1)
     return frame
+
+def draw_bboxes_create(coord_type="xywh"):
+    handleKeyError(lst=SUPPORTED_COORD_TYPES, coord_type=coord_type)
+    return {
+        "xywh" : draw_bboxes_xywh,
+        "ltrb" : draw_bboxes_ltrb,
+    }.get(coord_type)
 
 def cv2read_mpl(filename):
     """loads an image from the specified file and returns it as RGB format."""

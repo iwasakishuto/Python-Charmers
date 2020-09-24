@@ -8,6 +8,7 @@
     <title>pycharmers.opencv.windows &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -47,13 +48,11 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 
-<span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">,</span> <span class="n">PYCHARMERS_OPENCV_VIDEO_DIR</span>
+<span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">save_dir_create</span>
 <span class="kn">from</span> <span class="nn">.video_image_handler</span> <span class="kn">import</span> <span class="p">(</span><span class="n">basenaming</span><span class="p">,</span> <span class="n">mono_frame_generator</span><span class="p">,</span> <span class="n">multi_frame_generator_concat</span><span class="p">,</span>
-                                 <span class="n">count_frame_num</span><span class="p">,</span> <span class="n">create_VideoWriter</span><span class="p">)</span>
+                                  <span class="n">count_frame_num</span><span class="p">,</span> <span class="n">create_VideoWriter</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.drawing</span> <span class="kn">import</span> <span class="n">draw_text_with_bg</span>
-
-<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span><span class="p">,</span> <span class="n">flatten_dual</span>
-<span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">_makedirs</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span><span class="p">,</span> <span class="n">flatten_dual</span><span class="p">,</span> <span class="n">handleKeyError</span>
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
 
 <span class="n">DEFAULT_CV_KEYS</span> <span class="o">=</span> <span class="p">{</span>
@@ -78,8 +77,8 @@
     <span class="sd">&quot;&quot;&quot;Keys for using openCV</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import cvKeys</span>
-<span class="sd">        &gt;&gt;&gt; cvKey = cvKeys()</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import cvKeys, DEFAULT_CV_KEYS</span>
+<span class="sd">        &gt;&gt;&gt; cvKey = cvKeys(**DEFAULT_CV_KEYS)</span>
 <span class="sd">        &gt;&gt;&gt; cvKey.QUIT_1_KEY,        cvKey.QUIT_1_KEY_ORD</span>
 <span class="sd">        (&#39;\x1b&#39;, 27)</span>
 <span class="sd">        &gt;&gt;&gt; cvKey.QUIT_1_KEY_STR,    cvKey.QUIT_1_KEY_STR_ORD</span>
@@ -96,12 +95,17 @@
 <span class="sd">        ([], [])</span>
 <span class="sd">        &gt;&gt;&gt; cvKey.HOGE_KEYS_STR,     cvKey.HOGE_KEYS_STR_ORD</span>
 <span class="sd">        ([], [])</span>
+<span class="sd">        # You can find out all the keys used.</span>
+<span class="sd">        &gt;&gt;&gt; sorted(cvKey.ALL_KEYS)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cv_keys</span><span class="o">=</span><span class="n">DEFAULT_CV_KEYS</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">cv_keys</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group_prefixes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">cv_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_keys</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="o">**</span><span class="n">keys</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_keys</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="o">**</span><span class="n">keys</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">prefix</span><span class="p">:</span> <span class="n">keys</span><span class="p">})</span>
     
 <div class="viewcode-block" id="cvKeys.ord"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.cvKeys.ord">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">ord</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
@@ -139,15 +143,15 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ALL_KEYS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">flatten_dual</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_group_keys</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_prefixes</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">flatten_dual</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_group_keys</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;KEY&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_prefixes</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="wait_for_input"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.wait_for_input">[docs]</a><span class="k">def</span> <span class="nf">wait_for_input</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Your input : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cvKey</span><span class="o">=</span><span class="n">cvKeys</span><span class="p">(</span><span class="n">cv_keys</span><span class="o">=</span><span class="n">DEFAULT_CV_KEYS</span><span class="p">)):</span>
+<div class="viewcode-block" id="wait_for_input"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.wait_for_input">[docs]</a><span class="k">def</span> <span class="nf">wait_for_input</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Your input : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cvKey</span><span class="o">=</span><span class="n">cvKeys</span><span class="p">(</span><span class="o">**</span><span class="n">DEFAULT_CV_KEYS</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;Wait until the valid input is entered.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import cv2</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv.windows import wait_for_input</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG</span>
 <span class="sd">        &gt;&gt;&gt; cv2.imshow(&quot;lena.png&quot;, cv2.imread(SAMPLE_LENA_IMG))</span>
 <span class="sd">        &gt;&gt;&gt; val = wait_for_input()</span>
 <span class="sd">        &gt;&gt;&gt; cv2.destroyAllWindows()</span>
@@ -220,35 +224,36 @@
 <span class="sd">        (Wx,Wy+h) --------------------- (Wx+w,Wy+h)</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        No (int) : The number of windows.</span>
+<span class="sd">        no (int) : The number of windows.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        video_save_dir (str)   : Path/to/created_video/directory.</span>
-<span class="sd">        img_save_dir (str)     : Path/to/created_image/directory.</span>
+<span class="sd">        video_save_dir (str)   : ``Path/to/created_video/directory``</span>
+<span class="sd">        img_save_dir (str)     : ``Path/to/created_image/directory``</span>
 <span class="sd">        reduction_rate (float) :  ``1./expansion_rate``</span>
-<span class="sd">        cvKey (cvKeys)         : Keys for using openCV</span>
+<span class="sd">        cvKey (cvKeys)         : Keys that can be used with OpenCV.</span>
 <span class="sd">        iIh, iIw (int)         : </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">No</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">no</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">move_distance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">expansion_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">cv_keys</span><span class="o">=</span><span class="n">DEFAULT_CV_KEYS</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">move_distance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">expansion_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">cvKey</span><span class="o">=</span><span class="n">cvKeys</span><span class="p">(</span><span class="o">**</span><span class="n">DEFAULT_CV_KEYS</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;initialization of the OpenCV Windows.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            winname (str)          : The window name.</span>
+<span class="sd">            dirname (str)          : dirname for saved image or directory.</span>
 <span class="sd">            move_distance (int)    : Moving distance. (px)</span>
 <span class="sd">            expansion_rate (float) : Expansion Rate.</span>
-<span class="sd">            cv_keys (dict)         : Keys for ``cvWindow``.</span>
+<span class="sd">            cv_keys (dict)         : ``&lt;pycharmers.opencv.windows.cvKeys object&gt;``.</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; from pycharmers.opencv import cvWindow</span>
 <span class="sd">            &gt;&gt;&gt; window = cvWindow()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">move_distance</span> <span class="o">=</span> <span class="n">move_distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expansion_rate</span> <span class="o">=</span> <span class="n">expansion_rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cvKey</span> <span class="o">=</span> <span class="n">cvKeys</span><span class="p">(</span><span class="n">cv_keys</span><span class="o">=</span><span class="n">cv_keys</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cvKey</span> <span class="o">=</span> <span class="n">cvKey</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">iIh</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iIw</span> <span class="o">=</span> <span class="kc">None</span>
@@ -257,7 +262,7 @@
     <span class="k">def</span> <span class="nf">reduction_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mf">1.</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">expansion_rate</span>
 
-<div class="viewcode-block" id="cvWindow.setup"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.cvWindow.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="cvWindow.setup"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.cvWindow.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Setting up for the OpenCV windows.</span>
 
 <span class="sd">        - Decide window name.</span>
@@ -265,19 +270,16 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            winname (str) : Unique winname.</span>
+<span class="sd">            dirname (str) : dirname for saved image or directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Decide window name.</span>
-        <span class="n">cvWindow</span><span class="o">.</span><span class="n">No</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">cvWindow</span><span class="o">.</span><span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">winname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">winname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;frame </span><span class="si">{</span><span class="n">cvWindow</span><span class="o">.</span><span class="n">No</span><span class="si">:</span><span class="s2">&gt;02</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">winname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;frame </span><span class="si">{</span><span class="n">cvWindow</span><span class="o">.</span><span class="n">no</span><span class="si">:</span><span class="s2">&gt;02</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">winname</span> <span class="o">=</span> <span class="n">winname</span>
         <span class="n">cv2</span><span class="o">.</span><span class="n">namedWindow</span><span class="p">(</span><span class="n">winname</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WINDOW_NORMAL</span><span class="p">)</span>
         <span class="c1"># Decide the location of the directory to save image.</span>
-        <span class="n">data_str</span> <span class="o">=</span> <span class="n">now_str</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">img_save_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">,</span> <span class="n">data_str</span><span class="p">)</span>
-        <span class="n">_makedirs</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">img_save_dir</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Images will be saved here.&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">video_save_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PYCHARMERS_OPENCV_VIDEO_DIR</span><span class="p">,</span> <span class="n">data_str</span><span class="p">)</span>
-        <span class="n">_makedirs</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_save_dir</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Videos will be saved here.&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_save_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">video_save_dir</span> <span class="o">=</span> <span class="n">save_dir_create</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">video</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">frame_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -443,16 +445,29 @@
 
         <span class="k">return</span> <span class="n">is_break</span></div></div>
 
-<div class="viewcode-block" id="frameWindow"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.frameWindow">[docs]</a><span class="k">class</span> <span class="nc">frameWindow</span><span class="p">(</span><span class="n">cvWindow</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">input_path</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">move_distance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">expansion_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">cv_keys</span><span class="o">=</span><span class="n">DEFAULT_FRAME_KEYS</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">input_path</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">winname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">winname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+<div class="viewcode-block" id="FrameWindow"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.FrameWindow">[docs]</a><span class="k">class</span> <span class="nc">FrameWindow</span><span class="p">(</span><span class="n">cvWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;OpenCV window for Frames (images or video).</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import FrameWindow, SAMPLE_VTEST_VIDEO</span>
+<span class="sd">        &gt;&gt;&gt; window = FrameWindow(SAMPLE_VTEST_VIDEO)</span>
+<span class="sd">        &gt;&gt;&gt; # window.describe()</span>
+<span class="sd">        &gt;&gt;&gt; while True:</span>
+<span class="sd">        ...     key = cv2.waitKey(0)</span>
+<span class="sd">        ...     is_break = window.recieveKey(key)</span>
+<span class="sd">        ...     if is_break:</span>
+<span class="sd">        ...         break</span>
+<span class="sd">        &gt;&gt;&gt; cv2.destroyAllWindows()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">input_path</span><span class="p">,</span> <span class="n">winname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">move_distance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">expansion_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">cvKey</span><span class="o">=</span><span class="n">cvKeys</span><span class="p">(</span><span class="o">**</span><span class="n">DEFAULT_FRAME_KEYS</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basenames</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">input_path</span><span class="p">])</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-                <span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">,</span>
-                <span class="n">move_distance</span><span class="o">=</span><span class="n">move_distance</span><span class="p">,</span>
-                <span class="n">expansion_rate</span><span class="o">=</span><span class="n">expansion_rate</span><span class="p">,</span>
-                <span class="n">cv_keys</span><span class="o">=</span><span class="n">cv_keys</span><span class="p">,</span>
+            <span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">,</span>
+            <span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span>
+            <span class="n">move_distance</span><span class="o">=</span><span class="n">move_distance</span><span class="p">,</span>
+            <span class="n">expansion_rate</span><span class="o">=</span><span class="n">expansion_rate</span><span class="p">,</span>
+            <span class="n">cvKey</span><span class="o">=</span><span class="n">cvKey</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_path_</span> <span class="o">=</span> <span class="n">input_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span>  <span class="o">=</span> <span class="n">input_path</span>
@@ -463,11 +478,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span><span class="o">*</span><span class="n">input_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_num</span> <span class="o">=</span> <span class="n">count_frame_num</span><span class="p">(</span><span class="n">input_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span>
 
-<div class="viewcode-block" id="frameWindow.show"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.frameWindow.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">):</span>
+<div class="viewcode-block" id="FrameWindow.show"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.FrameWindow.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Displays an image in the specified window. (``self.winname``)</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -481,7 +495,7 @@
         <span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="frameWindow.recieveKey"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.frameWindow.recieveKey">[docs]</a>    <span class="k">def</span> <span class="nf">recieveKey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="FrameWindow.recieveKey"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.FrameWindow.recieveKey">[docs]</a>    <span class="k">def</span> <span class="nf">recieveKey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Response according to Recieved key.</span>
 
 <span class="sd">        Args:</span>
@@ -495,49 +509,31 @@
         
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">FRAME_KEYS_ORD</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">FRAME_ADVANCE_KEY_ORD</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span>
-                        <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span>
-                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">FRAME_BACK_KEY_ORD</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">FRAME_JUMP_KEY_ORD</span><span class="p">:</span>
                 <span class="n">frame_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wait_for_input</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Jump to </span><span class="si">{}</span><span class="s2"> frame.&quot;</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">frame_num</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span>
-                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="fm">__next__</span><span class="p">())</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">RANGE_KEYS_ORD</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">RANGE_START_KEY_ORD</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;start: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2"> frame.&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">range_processing</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">RANGE_END_KEY_ORD</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;end  : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2"> frame.&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">range_processing</span><span class="p">()</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">RANGE_START_KEY_ORD</span> <span class="k">else</span> <span class="s2">&quot;end&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">pos</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2"> frame.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">range_processing</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">TAKE_PICTURE_KEY_ORD</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span>
-                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
-            <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2">-out-of-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_num</span><span class="si">}</span><span class="s2">).png&quot;</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SAVE_PATH</span><span class="p">,</span> <span class="n">fn</span><span class="p">),</span> <span class="n">frame</span><span class="p">)</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basenames</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2">-out-of-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_num</span><span class="si">}</span><span class="s2">).png&quot;</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img_save_dir</span><span class="p">,</span> <span class="n">fn</span><span class="p">),</span> <span class="n">frame</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Take a screenshot (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_num</span><span class="si">}</span><span class="s2"> frame)&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">is_break</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">recieveKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">is_break</span></div>
 
-<div class="viewcode-block" id="frameWindow.range_processing"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.frameWindow.range_processing">[docs]</a>    <span class="k">def</span> <span class="nf">range_processing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FrameWindow.range_processing"><a class="viewcode-back" href="../../../pycharmers.opencv.windows.html#pycharmers.opencv.windows.FrameWindow.range_processing">[docs]</a>    <span class="k">def</span> <span class="nf">range_processing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Select a range and process the image or video of that part.&quot;&quot;&quot;</span>
         <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_</span>
         <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_</span>
@@ -552,37 +548,31 @@
 <span class="s2">            - press &#39;</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">cvKey</span><span class="o">.</span><span class="n">TAKE_PICTURE_KEY_STR</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; to shot all frames in the range.</span>
 <span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span>
             <span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_generator</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
             <span class="n">total_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">cvKey</span><span class="o">.</span><span class="n">TAKE_KEYS</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">TAKE_PICTURE_KEY_ORD</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gen</span><span class="p">):</span>
                         <span class="n">current</span> <span class="o">=</span> <span class="n">start</span><span class="o">+</span><span class="n">i</span>
-                        <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">-out-of-</span><span class="si">{</span><span class="n">total_num</span><span class="si">}</span><span class="s2">).png&quot;</span>
-                        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SAVE_PATH</span><span class="p">,</span> <span class="n">fn</span><span class="p">),</span> <span class="n">frame</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">current</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
-                            <span class="k">break</span>
+                        <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basenames</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">.out.of.</span><span class="si">{</span><span class="n">total_num</span><span class="si">}</span><span class="s2">.png&quot;</span>
+                        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img_save_dir</span><span class="p">,</span> <span class="n">fn</span><span class="p">),</span> <span class="n">frame</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">current</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span> <span class="k">break</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Take a screenshots from </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> frame to </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> frame.&quot;</span><span class="p">)</span>
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">cvKey</span><span class="o">.</span><span class="n">TAKE_VIDEO_KEY_ORD</span><span class="p">:</span>
-                    <span class="n">video_fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">-to-</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">-out-of-</span><span class="si">{</span><span class="n">total_num</span><span class="si">}</span><span class="s2">).mp4&quot;</span>
+                    <span class="n">video_fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">basenames</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">.to.</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">.out.of.</span><span class="si">{</span><span class="n">total_num</span><span class="si">}</span><span class="s2">.mp4&quot;</span>
                     <span class="n">out_video</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span>
                         <span class="n">in_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path_</span><span class="p">,</span>
-                        <span class="n">out_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SAVE_PATH</span><span class="p">,</span> <span class="n">video_fn</span><span class="p">)</span>
+                        <span class="n">out_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">video_save_dir</span><span class="p">,</span> <span class="n">video_fn</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">frame</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gen</span><span class="p">):</span>
                         <span class="n">out_video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">start</span><span class="o">+</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
-                            <span class="k">break</span>
+                        <span class="k">if</span> <span class="n">start</span><span class="o">+</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span> <span class="k">break</span>
                     <span class="n">out_video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extract a video from </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> frame to </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> frame.&quot;</span><span class="p">)</span>
                     <span class="k">break</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Please select a key from </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TAKE_PIC_KEYS</span><span class="o">+</span><span class="n">TAKE_VIDEO_KEYS</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">_ret_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return Key Information. &quot;&quot;&quot;</span>

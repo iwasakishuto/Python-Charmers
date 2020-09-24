@@ -31,6 +31,22 @@ def handleKeyError(lst, **kwargs):
             lst = ', '.join([f"'{toGREEN(e)}'" for e in lst])
             raise KeyError(f"Please choose the argment {toBLUE(k)} from [{lst}]. you chose {toRED(v)}")
 
+def class2str(class_):
+    """Convert class to str.
+    
+    Args:
+        class_ (class): class object
+        
+    Examples:
+        >>> from pycharmers.utils import class2str
+        >>> class2str(str)
+        'str'
+        >>> class2str(tuple)
+        'tuple'
+
+    """
+    return re.sub(r"<class '(.*?)'>", r"\1", str(class_))
+
 def handleTypeError(types, **kwargs):
     """Check whether all types of ``kwargs.values()`` match any of ``types``.
 
@@ -51,11 +67,10 @@ def handleTypeError(types, **kwargs):
     Raise:
         TypeError: If the types of ``kwargs.values()`` are none of the ``types``
     """
-    type2str = lambda t: re.sub(r"<class '(.*?)'>", r"\033[34m\1\033[0m", str(t))
     for k,v in kwargs.items():
         if not any([isinstance(v,t) for t in types]):
-            str_true_types  = ', '.join([f"'{toGREEN(type2str(t))}'" for t in types])
-            srt_false_type = type2str(type(v))
+            str_true_types  = ', '.join([f"'{toGREEN(class2str(t))}'" for t in types])
+            srt_false_type = class2str(type(v))
             if len(types)==1:
                 err_msg = f"must be {str_true_types}"
             else:
@@ -199,3 +214,52 @@ def readable_bytes(size, type="bytes"):
         size /= 1024.0
         # size >> 10
     return (size, unit+"B")
+
+def get_create(corresp_dict={}, class_=[], genre="", name="Python-Charmers"):
+    if not isinstance(class_, list): class_ = [class_]
+    class_ = class_+[str]
+    # Create a get function.
+    def get(identifier, **kwargs):
+        handleTypeError(types=class_, identifier=identifier)
+        if isinstance(identifier, str):
+            handleKeyError(lst=list(corresp_dict.keys()), identifier=identifier)
+            instance = corresp_dict.get(identifier)(**kwargs)
+        else:
+            instance = identifier
+        return instance
+    # Set a docstrings.
+    genre = genre.capitalize()
+    class_str = ", ".join([class2str(e) for e in class_])
+    get.__doc__ = f"""Retrieves a {name} {genre} instance.
+    
+    Args:
+        identifier ({class_str}) : {genre} identifier, string name of a {genre}, or
+                    {' '*len(class_str)}    a {name} {genre.capitalize()} instance.
+    
+    Returns:
+        {class_[0]} : A {name} {genre} instance.    
+    """
+    return get
+
+def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, newline=None):
+    """Display the contents of the specified ``file``.
+
+    Args:
+        head (int)      :
+        mode (str)      : The mode in which the file is opened. 
+        buffering (int) : Set the buffering policy.
+        encoding (str)  : Name of the encoding used to encode the ``file``.
+        errors (str)    : How encoding errors are to be handled.
+        newline (str)   : How universal newlines works (it only applies to text mode)
+
+    Examples:
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG
+        >>> from pycharmers.utils import pycat
+        >>> pycat(SAMPLE_LENA_IMG, mode="rb")
+        b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00I\x00I\x00\x00\xff\xfe...
+    """
+    with open(file, mode=mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline) as f:
+        for i,line in enumerate(f.readlines()):
+            if i==head: break
+            print(line, end="")
+  

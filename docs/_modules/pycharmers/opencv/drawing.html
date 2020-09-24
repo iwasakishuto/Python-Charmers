@@ -8,6 +8,7 @@
     <title>pycharmers.opencv.drawing &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -49,9 +50,12 @@
 <span class="kn">from</span> <span class="nn">..matplotlib.cmaps</span> <span class="kn">import</span> <span class="n">COLOR_WHITE</span><span class="p">,</span> <span class="n">COLOR_BLACK</span><span class="p">,</span> <span class="n">FAMOUS_COLOR_PALETTES</span>
 <span class="kn">from</span> <span class="nn">..matplotlib.layout</span> <span class="kn">import</span> <span class="n">FigAxes_create</span><span class="p">,</span> <span class="n">clear_grid</span>
 
+<span class="n">SUPPORTED_COORD_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;xywh&quot;</span><span class="p">,</span> <span class="s2">&quot;ltrb&quot;</span><span class="p">]</span>
+
 <div class="viewcode-block" id="convert_coords"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.convert_coords">[docs]</a><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">to_type</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert coordinates::</span>
 
+<span class="sd">               [OpenCV]                  [YOLO]</span>
 <span class="sd">         (x,y)---------(x+w,y)    (l,t)----------(r,t)</span>
 <span class="sd">           |              |         |              |</span>
 <span class="sd">           |              |         |              |</span>
@@ -67,9 +71,9 @@
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import convert_coords</span>
 <span class="sd">        &gt;&gt;&gt; xywh = (120,250,60,80)</span>
 <span class="sd">        &gt;&gt;&gt; ltrb = convert_coords(bbox=xywh, to_type=&quot;ltrb&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; xywh == convert_coords(bbox=ltrb, to_type=&quot;xywh&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; xywh = convert_coords(bbox=ltrb, to_type=&quot;xywh&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;xywh&quot;</span><span class="p">,</span> <span class="s2">&quot;ltrb&quot;</span><span class="p">],</span> <span class="n">to_type</span><span class="o">=</span><span class="n">to_type</span><span class="p">)</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">SUPPORTED_COORD_TYPES</span><span class="p">,</span> <span class="n">to_type</span><span class="o">=</span><span class="n">to_type</span><span class="p">)</span>
     <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">bbox</span>
     <span class="k">if</span> <span class="n">to_type</span> <span class="o">==</span> <span class="s2">&quot;xywh&quot;</span><span class="p">:</span>
         <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">-</span><span class="n">a</span><span class="p">,</span><span class="n">d</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
@@ -140,6 +144,13 @@
         <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">pt2</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">frame</span></div>
+
+<div class="viewcode-block" id="draw_bboxes_create"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.draw_bboxes_create">[docs]</a><span class="k">def</span> <span class="nf">draw_bboxes_create</span><span class="p">(</span><span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;xywh&quot;</span><span class="p">):</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">SUPPORTED_COORD_TYPES</span><span class="p">,</span> <span class="n">coord_type</span><span class="o">=</span><span class="n">coord_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;xywh&quot;</span> <span class="p">:</span> <span class="n">draw_bboxes_xywh</span><span class="p">,</span>
+        <span class="s2">&quot;ltrb&quot;</span> <span class="p">:</span> <span class="n">draw_bboxes_ltrb</span><span class="p">,</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">coord_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="cv2read_mpl"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.cv2read_mpl">[docs]</a><span class="k">def</span> <span class="nf">cv2read_mpl</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;loads an image from the specified file and returns it as RGB format.&quot;&quot;&quot;</span>

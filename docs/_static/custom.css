@@ -1,0 +1,50 @@
+/*!
+ * Custom CSS for https://iwasakishuto.github.io/Python-Charmers/index.html
+ *
+ * Copyright 2020 Shuto Iwasaki
+ * Twitter : https://twitter.com/cabernet_rock
+ * Github  : https://github.com/iwasakishuto
+ * 
+ */
+
+.bodywrapper {
+  background: url("https://github.com/iwasakishuto/iwasakishuto.github.io/blob/master/images/background-loop.png?raw=true");
+  background-repeat: repeat-y;
+  background-size: contain;
+}
+div.document {
+  background-color: #061c32;
+}
+div.sphinxsidebarwrapper {
+  font-family: monospace;
+}
+div.body {
+  background-color: #eeeeee;
+}
+
+dl.py.class > dt {
+  background-color: #fff8cd;
+  padding: 0.5em;
+  border-radius: 0.5em;
+}
+
+dl.py.function > dt {
+  background-color: #f7c2c2;
+  border-radius: 0.5em;
+  padding: 0.5em;
+}
+
+div.related {
+  background-color: #722F38;
+}
+/* @media screen and (min-width: 1400px) {
+  .bodywrapper {
+    background: url("https://github.com/iwasakishuto/iwasakishuto.github.io/blob/master/images/background-loop.png?raw=true");
+    background-repeat: repeat-y;
+    background-size: contain;
+  }
+  .wy-nav-content {
+    margin: 0;
+    background: #fcfcfc
+  }
+} */
