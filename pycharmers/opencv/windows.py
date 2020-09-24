@@ -4,13 +4,11 @@ import re
 import sys
 import cv2
 
-from ._path import PYCHARMERS_OPENCV_IMAGE_DIR, PYCHARMERS_OPENCV_VIDEO_DIR
+from ._path import save_dir_create
 from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_generator_concat,
-                                 count_frame_num, create_VideoWriter)
+                                  count_frame_num, create_VideoWriter)
 from .drawing import draw_text_with_bg
-
-from ..utils.generic_utils import now_str, flatten_dual
-from ..utils._path import _makedirs
+from ..utils.generic_utils import now_str, flatten_dual, handleKeyError
 from ..utils._colorings import toBLUE, toGREEN, toACCENT
 
 DEFAULT_CV_KEYS = {
@@ -35,8 +33,8 @@ class cvKeys():
     """Keys for using openCV
 
     Examples:
-        >>> from pycharmers.opencv import cvKeys
-        >>> cvKey = cvKeys()
+        >>> from pycharmers.opencv import cvKeys, DEFAULT_CV_KEYS
+        >>> cvKey = cvKeys(**DEFAULT_CV_KEYS)
         >>> cvKey.QUIT_1_KEY,        cvKey.QUIT_1_KEY_ORD
         ('\x1b', 27)
         >>> cvKey.QUIT_1_KEY_STR,    cvKey.QUIT_1_KEY_STR_ORD
@@ -53,12 +51,17 @@ class cvKeys():
         ([], [])
         >>> cvKey.HOGE_KEYS_STR,     cvKey.HOGE_KEYS_STR_ORD
         ([], [])
+        # You can find out all the keys used.
+        >>> sorted(cvKey.ALL_KEYS)
     """
     
-    def __init__(self, cv_keys=DEFAULT_CV_KEYS):
+    def __init__(self, **cv_keys):
         self.group_prefixes = []
         for prefix, keys in cv_keys.items():
-            self.set_keys(prefix=prefix, **keys)
+            if isinstance(keys, dict):
+                self.set_keys(prefix=prefix, **keys)
+            else:
+                self.__dict__.update({prefix: keys})
     
     @staticmethod
     def ord(c):
@@ -96,15 +99,15 @@ class cvKeys():
     
     @property
     def ALL_KEYS(self):
-        return flatten_dual([self.get_group_keys(prefix=prefix) for prefix in self.group_prefixes])
+        return flatten_dual([self.get_group_keys(prefix=prefix, suffix="KEY") for prefix in self.group_prefixes])
 
-def wait_for_input(fmt="Your input : {}", cvKey=cvKeys(cv_keys=DEFAULT_CV_KEYS)):
+def wait_for_input(fmt="Your input : {}", cvKey=cvKeys(**DEFAULT_CV_KEYS)):
     """Wait until the valid input is entered.
 
     Examples:
         >>> import cv2
         >>> from pycharmers.opencv.windows import wait_for_input
-        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG
         >>> cv2.imshow("lena.png", cv2.imread(SAMPLE_LENA_IMG))
         >>> val = wait_for_input()
         >>> cv2.destroyAllWindows()
@@ -177,35 +180,36 @@ class cvWindow():
         (Wx,Wy+h) --------------------- (Wx+w,Wy+h)
 
     Args:
-        No (int) : The number of windows.
+        no (int) : The number of windows.
 
     Attributes:
-        video_save_dir (str)   : Path/to/created_video/directory.
-        img_save_dir (str)     : Path/to/created_image/directory.
+        video_save_dir (str)   : ``Path/to/created_video/directory``
+        img_save_dir (str)     : ``Path/to/created_image/directory``
         reduction_rate (float) :  ``1./expansion_rate``
-        cvKey (cvKeys)         : Keys for using openCV
+        cvKey (cvKeys)         : Keys that can be used with OpenCV.
         iIh, iIw (int)         : 
     """
-    No = 0
+    no = 0
 
-    def __init__(self, winname=None, move_distance=10, expansion_rate=1.1, cv_keys=DEFAULT_CV_KEYS):
+    def __init__(self, winname=None, dirname=None, move_distance=10, expansion_rate=1.1, cvKey=cvKeys(**DEFAULT_CV_KEYS)):
         """initialization of the OpenCV Windows.
 
         Args:
             winname (str)          : The window name.
+            dirname (str)          : dirname for saved image or directory.
             move_distance (int)    : Moving distance. (px)
             expansion_rate (float) : Expansion Rate.
-            cv_keys (dict)         : Keys for ``cvWindow``.
+            cv_keys (dict)         : ``<pycharmers.opencv.windows.cvKeys object>``.
 
         Examples:
             >>> from pycharmers.opencv import cvWindow
             >>> window = cvWindow()
         """
-        self.setup(winname=winname)
+        self.setup(winname=winname, dirname=dirname)
 
         self.move_distance = move_distance
         self.expansion_rate = expansion_rate
-        self.cvKey = cvKeys(cv_keys=cv_keys)
+        self.cvKey = cvKey
 
         self.iIh = None
         self.iIw = None
@@ -214,7 +218,7 @@ class cvWindow():
     def reduction_rate(self):
         return 1./self.expansion_rate
 
-    def setup(self, winname=None):
+    def setup(self, winname=None, dirname=None):
         """Setting up for the OpenCV windows.
 
         - Decide window name.
@@ -222,19 +226,16 @@ class cvWindow():
 
         Args:
             winname (str) : Unique winname.
+            dirname (str) : dirname for saved image or directory.
         """
         # Decide window name.
-        cvWindow.No += 1
+        cvWindow.no += 1
         if winname is None:
-            winname = f"frame {cvWindow.No:>02}"
+            winname = f"frame {cvWindow.no:>02}"
         self.winname = winname
         cv2.namedWindow(winname, cv2.WINDOW_NORMAL)
         # Decide the location of the directory to save image.
-        data_str = now_str()
-        self.img_save_dir = os.path.join(PYCHARMERS_OPENCV_IMAGE_DIR, data_str)
-        _makedirs(name=self.img_save_dir, msg="Images will be saved here.")
-        self.video_save_dir = os.path.join(PYCHARMERS_OPENCV_VIDEO_DIR, data_str)
-        _makedirs(name=self.video_save_dir, msg="Videos will be saved here.")
+        self.img_save_dir, self.video_save_dir = save_dir_create(dirname=dirname, image=True, video=True, json=False)
 
     @property
     def frame_size(self):
@@ -400,16 +401,29 @@ class cvWindow():
 
         return is_break
 
-class frameWindow(cvWindow):
-    def __init__(self, *input_path, winname=None, move_distance=10, expansion_rate=1.1, cv_keys=DEFAULT_FRAME_KEYS):
-        self.name = "+".join([basenaming(path) for path in input_path])
-        if winname is None:
-            winname = self.name
+class FrameWindow(cvWindow):
+    """OpenCV window for Frames (images or video).
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv import FrameWindow, SAMPLE_VTEST_VIDEO
+        >>> window = FrameWindow(SAMPLE_VTEST_VIDEO)
+        >>> # window.describe()
+        >>> while True:
+        ...     key = cv2.waitKey(0)
+        ...     is_break = window.recieveKey(key)
+        ...     if is_break:
+        ...         break
+        >>> cv2.destroyAllWindows()
+    """
+    def __init__(self, *input_path, winname=None, dirname=None, move_distance=10, expansion_rate=1.1, cvKey=cvKeys(**DEFAULT_FRAME_KEYS)):
+        self.basenames = ".".join([basenaming(path) for path in input_path])
         super().__init__(
-                winname=winname,
-                move_distance=move_distance,
-                expansion_rate=expansion_rate,
-                cv_keys=cv_keys,
+            winname=winname,
+            dirname=dirname,
+            move_distance=move_distance,
+            expansion_rate=expansion_rate,
+            cvKey=cvKey,
         )
         self.input_path_ = input_path[0]
         self.input_path  = input_path
@@ -420,8 +434,7 @@ class frameWindow(cvWindow):
         self.gen = self.frame_generator(*input_path)
         self.total_num = count_frame_num(input_path[0])
         self.frame_num = 1
-        self.start_ = None
-        self.end_ = None
+        self.start_ = self.end_ = None
         self.show(self.gen.__next__())
 
     def show(self, mat):
@@ -452,43 +465,25 @@ class frameWindow(cvWindow):
         
         if key in cvKey.FRAME_KEYS_ORD:
             if key == cvKey.FRAME_ADVANCE_KEY_ORD:
-                if self.frame_num < self.total_num:
-                    self.frame_num += 1
-                else:
-                    self.gen = self.frame_generator(
-                        *self.input_path, frame_num=self.frame_num-1
-                    )
+                self.frame_num = min(self.total_num, self.frame_num+1)
             elif key == cvKey.FRAME_BACK_KEY_ORD:
-                self.frame_num -= 1
-                self.frame_num = max(1, self.frame_num)
-                self.gen = self.frame_generator(
-                    *self.input_path, frame_num=self.frame_num-1
-                )
+                self.frame_num = max(1, self.frame_num-1)
             elif key == cvKey.FRAME_JUMP_KEY_ORD:
                 frame_num = int(wait_for_input(fmt="Jump to {} frame."))
                 self.frame_num = max(1, min(int(frame_num), self.total_num))
-                self.gen = self.frame_generator(
-                    *self.input_path, frame_num=self.frame_num-1
-                )
+            self.gen = self.frame_generator(*self.input_path, frame_num=self.frame_num-1)
             self.show(self.gen.__next__())
         elif key in cvKey.RANGE_KEYS_ORD:
-            if key == cvKey.RANGE_START_KEY_ORD:
-                self.start_ = self.frame_num
-                print(f"start: {self.frame_num} frame.")
-                if self.end_ is not None:
-                    self.range_processing()
-            elif key == cvKey.RANGE_END_KEY_ORD:
-                self.end_ = self.frame_num
-                print(f"end  : {self.frame_num} frame.")
-                if self.start_ is not None:
-                    self.range_processing()
+            pos = "start" if key == cvKey.RANGE_START_KEY_ORD else "end"
+            self.__dict__[pos+"_"] = self.frame_num
+            print(f"{pos}: {self.frame_num} frame.")
+            if (self.start_ is not None) and (self.end_ is not None):
+                self.range_processing()
         elif key == cvKey.TAKE_PICTURE_KEY_ORD:
-            self.gen = self.frame_generator(
-                *self.input_path, frame_num=self.frame_num-1
-            )
+            self.gen = self.frame_generator(*self.input_path, frame_num=self.frame_num-1)
             frame = self.gen.__next__()
-            fn = f"{self.name}({self.frame_num}-out-of-{self.total_num}).png"
-            cv2.imwrite(os.path.join(SAVE_PATH, fn), frame)
+            fn = f"{self.basenames}({self.frame_num}-out-of-{self.total_num}).png"
+            cv2.imwrite(os.path.join(self.img_save_dir, fn), frame)
             print(f"Take a screenshot ({self.frame_num} frame)")
         else:
             is_break = super().recieveKey(key)
@@ -509,37 +504,31 @@ class frameWindow(cvWindow):
             - press '{toBLUE(cvKey.TAKE_PICTURE_KEY_STR)}' to shot all frames in the range.
             """)
             gen = self.frame_generator(*self.input_path, frame_num=start-1)
-            name = self.name
             total_num = self.total_num
             while True:
                 key = cv2.waitKey(0)
+                handleKeyError(lst=cvKey.TAKE_KEYS, key=chr(key))
                 if key == cvKey.TAKE_PICTURE_KEY_ORD:
                     for i,frame in enumerate(gen):
                         current = start+i
-                        fn = f"{name}({current}-out-of-{total_num}).png"
-                        cv2.imwrite(os.path.join(SAVE_PATH, fn), frame)
-                        if current >= end:
-                            break
+                        fn = f"{self.basenames}.{current}.out.of.{total_num}.png"
+                        cv2.imwrite(os.path.join(self.img_save_dir, fn), frame)
+                        if current >= end: break
                     print(f"Take a screenshots from {start} frame to {end} frame.")
                     break
                 elif key == cvKey.TAKE_VIDEO_KEY_ORD:
-                    video_fn = f"{name}({start}-to-{end}-out-of-{total_num}).mp4"
+                    video_fn = f"{self.basenames}.{start}.to.{end}.out.of.{total_num}.mp4"
                     out_video = create_VideoWriter(
                         in_path=self.input_path_,
-                        out_path=os.path.join(SAVE_PATH, video_fn)
+                        out_path=os.path.join(self.video_save_dir, video_fn)
                     )
                     for i,frame in enumerate(gen):
                         out_video.write(frame)
-                        if start+i >= end:
-                            break
+                        if start+i >= end: break
                     out_video.release()
                     print(f"Extract a video from {start} frame to {end} frame.")
                     break
-                else:
-                    print(f"Please select a key from {', '.join(TAKE_PIC_KEYS+TAKE_VIDEO_KEYS)}")
-
-        self.start_ = None
-        self.end_ = None
+        self.start_ = self.end_ = None
 
     def _ret_info(self):
         """ Return Key Information. """

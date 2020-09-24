@@ -40,10 +40,13 @@ from .generic_utils import handleKeyError
 from .generic_utils import handleTypeError
 from .generic_utils import str_strip
 from .generic_utils import now_str
+from .generic_utils import class2str
 from .generic_utils import list_transpose
 from .generic_utils import flatten_dual
 from .generic_utils import calc_rectangle_size
 from .generic_utils import readable_bytes
+from .generic_utils import get_create
+from .generic_utils import pycat
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import save_json
