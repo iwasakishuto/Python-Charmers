@@ -9,9 +9,11 @@
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.drawing.html" />
   <meta property="og:description" content="" />
-  <meta property="og:image" content="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true" />
-  <meta name="twitter:site" content="@cabernet_rock" />
-<meta property="og:site_name" content="Python-Charmers" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
     <title>pycharmers.opencv.drawing module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -61,7 +63,7 @@
 <span id="pycharmers-opencv-drawing-module"></span><h1>pycharmers.opencv.drawing module<a class="headerlink" href="#module-pycharmers.opencv.drawing" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="pycharmers.opencv.drawing.convert_coords">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">convert_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bbox</span></em>, <em class="sig-param"><span class="n">to_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#convert_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.convert_coords" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">convert_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bbox</span></em>, <em class="sig-param"><span class="n">to_type</span></em>, <em class="sig-param"><span class="n">from_type</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#convert_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.convert_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert coordinates:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>       <span class="p">[</span><span class="n">OpenCV</span><span class="p">]</span>                  <span class="p">[</span><span class="n">YOLO</span><span class="p">]</span>
  <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="o">---------</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>    <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">)</span><span class="o">----------</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
@@ -123,13 +125,13 @@
 
 <dl class="py function">
 <dt id="pycharmers.opencv.drawing.draw_bboxes_ltrb">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_ltrb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#draw_bboxes_ltrb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_ltrb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_ltrb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_ltrb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drawing Inference results on frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>frame</strong> (<em>ndarray</em>) – Image. shape=(H,W,ch)</p></li>
-<li><p><strong>bboxes</strong> (<em>list</em>) – Each element is the coordinate (l,t,r,b)</p></li>
+<li><p><strong>bboxes</strong> (<em>list</em>) – Each element is the coordinate (x,y,w,h)</p></li>
 <li><p><strong>infos</strong> (<em>list</em>) – Each element is dictionary. (<code class="docutils literal notranslate"><span class="pre">key</span></code> is <code class="docutils literal notranslate"><span class="pre">color</span></code>, or <code class="docutils literal notranslate"><span class="pre">text</span></code>)</p></li>
 </ul>
 </dd>
@@ -141,7 +143,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="s2">&quot;path/to/img.png&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">draw_bboxes_ltrb</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">frame</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">330</span><span class="p">),(</span><span class="mi">220</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">140</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">80</span><span class="p">),(</span><span class="mi">220</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)],</span>
 <span class="gp">... </span>    <span class="n">infos</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person1&quot;</span><span class="p">},{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person2&quot;</span><span class="p">}]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
@@ -152,7 +154,7 @@
 
 <dl class="py function">
 <dt id="pycharmers.opencv.drawing.draw_bboxes_xywh">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_xywh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#draw_bboxes_xywh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_xywh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_xywh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_xywh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drawing Inference results on frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

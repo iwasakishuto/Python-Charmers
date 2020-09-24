@@ -383,7 +383,7 @@ class cvWindow():
             print(f"Window Rectangle: {self.getWindowRect()}")
 
         elif key in cvKey.POS_KEYS_ORD:
-            if key == vKey.POS_FULLSCREEN_KEY_ORD:
+            if key == cvKey.POS_FULLSCREEN_KEY_ORD:
                 """
                 ``cv2.WINDOW_NORMAL = 0``
                 ``cv2.WINDOW_FULLSCREEN = 1``
