@@ -52,7 +52,7 @@
 
 <span class="n">SUPPORTED_COORD_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;xywh&quot;</span><span class="p">,</span> <span class="s2">&quot;ltrb&quot;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="convert_coords"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.convert_coords">[docs]</a><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">to_type</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_coords"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.convert_coords">[docs]</a><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">to_type</span><span class="p">,</span> <span class="n">from_type</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert coordinates::</span>
 
 <span class="sd">               [OpenCV]                  [YOLO]</span>
@@ -74,83 +74,54 @@
 <span class="sd">        &gt;&gt;&gt; xywh = convert_coords(bbox=ltrb, to_type=&quot;xywh&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">SUPPORTED_COORD_TYPES</span><span class="p">,</span> <span class="n">to_type</span><span class="o">=</span><span class="n">to_type</span><span class="p">)</span>
-    <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">bbox</span>
-    <span class="k">if</span> <span class="n">to_type</span> <span class="o">==</span> <span class="s2">&quot;xywh&quot;</span><span class="p">:</span>
-        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">-</span><span class="n">a</span><span class="p">,</span><span class="n">d</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">to_type</span> <span class="o">==</span> <span class="s2">&quot;ltrb&quot;</span><span class="p">:</span>
-        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">c</span><span class="p">,</span><span class="n">b</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="draw_bboxes_xywh"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.draw_bboxes_xywh">[docs]</a><span class="k">def</span> <span class="nf">draw_bboxes_xywh</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Drawing Inference results on frame.</span>
-<span class="sd">    </span>
-<span class="sd">    Args:</span>
-<span class="sd">        frame (ndarray) : Image. shape=(H,W,ch)</span>
-<span class="sd">        bboxes (list)   : Each element is the coordinate (x,y,w,h)</span>
-<span class="sd">        infos (list)    : Each element is dictionary. (``key`` is ``color``, or ``text``)</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; import cv2</span>
-<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import draw_bboxes_xywh, cv2read_mpl</span>
-<span class="sd">        &gt;&gt;&gt; img = cv2read_mpl(&quot;path/to/img.png&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; draw_bboxes_xywh(</span>
-<span class="sd">        ...     frame=img, </span>
-<span class="sd">        ...     bboxes=[(120,250,60,80),(220,40,80,100)], </span>
-<span class="sd">        ...     infos=[{&quot;color&quot;:(255,0,0),&quot;text&quot;: &quot;person1&quot;},{&quot;color&quot;:(0,255,0),&quot;text&quot;: &quot;person2&quot;}]</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; plt.imshow(img)</span>
-<span class="sd">        &gt;&gt;&gt; plt.show()</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">bboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">bboxes</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">infos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">infos</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bboxes</span><span class="p">))]</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">),</span><span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-        <span class="n">text</span>  <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">pt2</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">frame</span></div>
-
-<div class="viewcode-block" id="draw_bboxes_ltrb"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.draw_bboxes_ltrb">[docs]</a><span class="k">def</span> <span class="nf">draw_bboxes_ltrb</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Drawing Inference results on frame.</span>
-<span class="sd">    </span>
-<span class="sd">    Args:</span>
-<span class="sd">        frame (ndarray) : Image. shape=(H,W,ch)</span>
-<span class="sd">        bboxes (list)   : Each element is the coordinate (l,t,r,b)</span>
-<span class="sd">        infos (list)    : Each element is dictionary. (``key`` is ``color``, or ``text``)</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; import cv2</span>
-<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import draw_bboxes_ltrb, cv2read_mpl</span>
-<span class="sd">        &gt;&gt;&gt; img = cv2read_mpl(&quot;path/to/img.png&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; draw_bboxes_ltrb(</span>
-<span class="sd">        ...     frame=img, </span>
-<span class="sd">        ...     bboxes=[(120,250,180,330),(220,40,300,140)], </span>
-<span class="sd">        ...     infos=[{&quot;color&quot;:(255,0,0),&quot;text&quot;: &quot;person1&quot;},{&quot;color&quot;:(0,255,0),&quot;text&quot;: &quot;person2&quot;}]</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; plt.imshow(img)</span>
-<span class="sd">        &gt;&gt;&gt; plt.show()</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">bboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">bboxes</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">infos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">infos</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bboxes</span><span class="p">))]</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">b</span><span class="p">),</span><span class="n">info_dict</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-        <span class="n">text</span>  <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">pt2</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">frame</span></div>
+    <span class="k">if</span> <span class="n">from_type</span><span class="o">!=</span><span class="n">to_type</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">bbox</span>
+        <span class="k">if</span> <span class="n">to_type</span> <span class="o">==</span> <span class="s2">&quot;xywh&quot;</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">-</span><span class="n">a</span><span class="p">,</span><span class="n">d</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">to_type</span> <span class="o">==</span> <span class="s2">&quot;ltrb&quot;</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">c</span><span class="p">,</span><span class="n">b</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bbox</span></div>
 
 <div class="viewcode-block" id="draw_bboxes_create"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.draw_bboxes_create">[docs]</a><span class="k">def</span> <span class="nf">draw_bboxes_create</span><span class="p">(</span><span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;xywh&quot;</span><span class="p">):</span>
     <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">SUPPORTED_COORD_TYPES</span><span class="p">,</span> <span class="n">coord_type</span><span class="o">=</span><span class="n">coord_type</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;xywh&quot;</span> <span class="p">:</span> <span class="n">draw_bboxes_xywh</span><span class="p">,</span>
-        <span class="s2">&quot;ltrb&quot;</span> <span class="p">:</span> <span class="n">draw_bboxes_ltrb</span><span class="p">,</span>
-    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">coord_type</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">draw_bboxes</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">bboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">bboxes</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">infos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">infos</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bboxes</span><span class="p">))]</span>
+        <span class="k">for</span> <span class="n">bbox</span><span class="p">,</span><span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">infos</span><span class="p">):</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">text</span>  <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">to_type</span><span class="o">=</span><span class="s2">&quot;ltrb&quot;</span><span class="p">,</span> <span class="n">from_type</span><span class="o">=</span><span class="n">coord_type</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">pt2</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frame</span>
+    <span class="n">dict_infos</span> <span class="o">=</span> <span class="s1">&#39;{&quot;color&quot;:(255,0,0),&quot;text&quot;: &quot;person1&quot;},{&quot;color&quot;:(0,255,0),&quot;text&quot;: &quot;person2&quot;}&#39;</span>
+    <span class="n">draw_bboxes</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Drawing Inference results on frame.</span>
+<span class="s2">    </span>
+<span class="s2">    Args:</span>
+<span class="s2">        frame (ndarray) : Image. shape=(H,W,ch)</span>
+<span class="s2">        bboxes (list)   : Each element is the coordinate (x,y,w,h)</span>
+<span class="s2">        infos (list)    : Each element is dictionary. (``key`` is ``color``, or ``text``)</span>
+
+<span class="s2">    Examples:</span>
+<span class="s2">        &gt;&gt;&gt; import cv2</span>
+<span class="s2">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="s2">        &gt;&gt;&gt; from pycharmers.opencv import draw_bboxes_</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">, cv2read_mpl</span>
+<span class="s2">        &gt;&gt;&gt; img = cv2read_mpl(&quot;path/to/img.png&quot;)</span>
+<span class="s2">        &gt;&gt;&gt; draw_bboxes_</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">(</span>
+<span class="s2">        ...     frame=img, </span>
+<span class="s2">        ...     bboxes=[(120,250,60,80),(220,40,80,100)], </span>
+<span class="s2">        ...     infos=[</span><span class="si">{</span><span class="n">dict_infos</span><span class="si">}</span><span class="s2">]</span>
+<span class="s2">        ... )</span>
+<span class="s2">        &gt;&gt;&gt; plt.imshow(img)</span>
+<span class="s2">        &gt;&gt;&gt; plt.show()</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">draw_bboxes</span></div>
+
+<span class="n">draw_bboxes_xywh</span> <span class="o">=</span> <span class="n">draw_bboxes_create</span><span class="p">(</span><span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;xywh&quot;</span><span class="p">)</span>
+<span class="n">draw_bboxes_ltrb</span> <span class="o">=</span> <span class="n">draw_bboxes_create</span><span class="p">(</span><span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;ltrb&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cv2read_mpl"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.cv2read_mpl">[docs]</a><span class="k">def</span> <span class="nf">cv2read_mpl</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;loads an image from the specified file and returns it as RGB format.&quot;&quot;&quot;</span>

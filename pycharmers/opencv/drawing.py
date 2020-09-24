@@ -8,7 +8,7 @@ from ..matplotlib.layout import FigAxes_create, clear_grid
 
 SUPPORTED_COORD_TYPES = ["xywh", "ltrb"]
 
-def convert_coords(bbox, to_type):
+def convert_coords(bbox, to_type, from_type=""):
     """Convert coordinates::
 
                [OpenCV]                  [YOLO]
@@ -30,15 +30,31 @@ def convert_coords(bbox, to_type):
         >>> xywh = convert_coords(bbox=ltrb, to_type="xywh")
     """
     handleKeyError(lst=SUPPORTED_COORD_TYPES, to_type=to_type)
-    a,b,c,d = bbox
-    if to_type == "xywh":
-        a,b,c,d = (a,b,c-a,d-b)
-    elif to_type == "ltrb":
-        a,b,c,d = (a,b,a+c,b+d)
-    return (a,b,c,d)
+    if from_type!=to_type:
+        a,b,c,d = bbox
+        if to_type == "xywh":
+            a,b,c,d = (a,b,c-a,d-b)
+        elif to_type == "ltrb":
+            a,b,c,d = (a,b,a+c,b+d)
+        bbox = (a,b,c,d)
+    return bbox
 
-def draw_bboxes_xywh(frame, bboxes, infos=None):
-    """ Drawing Inference results on frame.
+def draw_bboxes_create(coord_type="xywh"):
+    handleKeyError(lst=SUPPORTED_COORD_TYPES, coord_type=coord_type)
+    def draw_bboxes(frame, bboxes, infos=None):
+        if not isinstance(bboxes, list):
+            bboxes = [bboxes]
+        if infos is None:
+            infos = [{} for _ in range(len(bboxes))]
+        for bbox,info in zip(bboxes, infos):
+            color = info.pop("color", (0,255,0))
+            text  = info.pop("text", "")
+            l,t,r,b = convert_coords(bbox, to_type="ltrb", from_type=coord_type)
+            cv2.rectangle(img=frame, pt1=(l, t), pt2=(r, b), color=color, thickness=1)
+            cv2.putText(frame, text, (l,t), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), thickness=1)
+        return frame
+    dict_infos = '{"color":(255,0,0),"text": "person1"},{"color":(0,255,0),"text": "person2"}'
+    draw_bboxes.__doc__ = f"""Drawing Inference results on frame.
     
     Args:
         frame (ndarray) : Image. shape=(H,W,ch)
@@ -48,65 +64,20 @@ def draw_bboxes_xywh(frame, bboxes, infos=None):
     Examples:
         >>> import cv2
         >>> import matplotlib.pyplot as plt
-        >>> from pycharmers.opencv import draw_bboxes_xywh, cv2read_mpl
+        >>> from pycharmers.opencv import draw_bboxes_{coord_type}, cv2read_mpl
         >>> img = cv2read_mpl("path/to/img.png")
-        >>> draw_bboxes_xywh(
+        >>> draw_bboxes_{coord_type}(
         ...     frame=img, 
         ...     bboxes=[(120,250,60,80),(220,40,80,100)], 
-        ...     infos=[{"color":(255,0,0),"text": "person1"},{"color":(0,255,0),"text": "person2"}]
+        ...     infos=[{dict_infos}]
         ... )
         >>> plt.imshow(img)
         >>> plt.show()
     """
-    if not isinstance(bboxes, list):
-        bboxes = [bboxes]
-    if infos is None:
-        infos = [{} for _ in range(len(bboxes))]
-    for (x,y,w,h),info in zip(bboxes, infos):
-        color = info.pop("color", (0,255,0))
-        text  = info.pop("text", "")
-        cv2.rectangle(img=frame, pt1=(x, y), pt2=(x+w, y+h), color=color, thickness=1)
-        cv2.putText(frame, text, (x,y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), thickness=1)
-    return frame
+    return draw_bboxes
 
-def draw_bboxes_ltrb(frame, bboxes, infos=None):
-    """ Drawing Inference results on frame.
-    
-    Args:
-        frame (ndarray) : Image. shape=(H,W,ch)
-        bboxes (list)   : Each element is the coordinate (l,t,r,b)
-        infos (list)    : Each element is dictionary. (``key`` is ``color``, or ``text``)
-
-    Examples:
-        >>> import cv2
-        >>> import matplotlib.pyplot as plt
-        >>> from pycharmers.opencv import draw_bboxes_ltrb, cv2read_mpl
-        >>> img = cv2read_mpl("path/to/img.png")
-        >>> draw_bboxes_ltrb(
-        ...     frame=img, 
-        ...     bboxes=[(120,250,180,330),(220,40,300,140)], 
-        ...     infos=[{"color":(255,0,0),"text": "person1"},{"color":(0,255,0),"text": "person2"}]
-        ... )
-        >>> plt.imshow(img)
-        >>> plt.show()
-    """
-    if not isinstance(bboxes, list):
-        bboxes = [bboxes]
-    if infos is None:
-        infos = [{} for _ in range(len(bboxes))]
-    for (l,t,r,b),info_dict in zip(bboxes, infos):
-        color = info.pop("color", (0,255,0))
-        text  = info.pop("text", "")
-        cv2.rectangle(img=frame, pt1=(l, t), pt2=(r, b), color=color, thickness=1)
-        cv2.putText(frame, text, (l,t), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), thickness=1)
-    return frame
-
-def draw_bboxes_create(coord_type="xywh"):
-    handleKeyError(lst=SUPPORTED_COORD_TYPES, coord_type=coord_type)
-    return {
-        "xywh" : draw_bboxes_xywh,
-        "ltrb" : draw_bboxes_ltrb,
-    }.get(coord_type)
+draw_bboxes_xywh = draw_bboxes_create(coord_type="xywh")
+draw_bboxes_ltrb = draw_bboxes_create(coord_type="ltrb")
 
 def cv2read_mpl(filename):
     """loads an image from the specified file and returns it as RGB format."""
