@@ -1,0 +1,18 @@
+pycharmers.api package
+======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.api.github
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.api
+   :members:
+   :undoc-members:
+   :show-inheritance:

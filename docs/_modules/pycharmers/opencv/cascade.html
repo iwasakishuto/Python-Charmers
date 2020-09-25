@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.opencv.cascade &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.cascade</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.opencv.cascade</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
+<span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_DATA_DIR</span>
+
+<span class="n">OPENCV_CASCADES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">path</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PYCHARMERS_OPENCV_DATA_DIR</span><span class="si">}</span><span class="s2">/**/*cascade*.xml&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="cascade_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.cascade.html#pycharmers.opencv.cascade.cascade_creator">[docs]</a><span class="k">def</span> <span class="nf">cascade_creator</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a ``cv2.CascadeClassifier`` instance.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        cascade (str, cv2.CascadeClassifier) : </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``cv2.CascadeClassifier``</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG, cv2read_mpl, cv2plot, cascade_creator, draw_bboxes_xywh</span>
+<span class="sd">        &gt;&gt;&gt; cascade = cascade_creator(cascade=&quot;haarcascades:haarcascade_frontalface_alt2&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; gray = cv2read_mpl(SAMPLE_LENA_IMG, 0)</span>
+<span class="sd">        &gt;&gt;&gt; for bbox in cascade.detectMultiScale(gray):</span>
+<span class="sd">        ...     draw_bboxes_xywh(</span>
+<span class="sd">        ...         frame=gray, bboxes=bbox</span>
+<span class="sd">        ...     )</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(gray)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">cascade</span><span class="o">=</span><span class="n">cascade</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">OPENCV_CASCADES</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">cascade</span><span class="o">=</span><span class="n">cascade</span><span class="p">)</span>
+        <span class="n">cascade</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="n">OPENCV_CASCADES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cascade</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cascade</span></div>
+
+<div class="viewcode-block" id="cascade_detection_create"><a class="viewcode-back" href="../../../pycharmers.opencv.cascade.html#pycharmers.opencv.cascade.cascade_detection_create">[docs]</a><span class="k">def</span> <span class="nf">cascade_detection_create</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a ``cascade_detection`` function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cascade (str, cv2.CascadeClassifier) : </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``cascade_detection``</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG, cv2read_mpl, cv2plot, cascade_detection_create, draw_bboxes_ltrb</span>
+<span class="sd">        &gt;&gt;&gt; cascade_detection = cascade_detection_create(cascade=&quot;haarcascades:haarcascade_frontalface_alt2&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; img = cv2.cvtColor(cv2.imread(SAMPLE_LENA_IMG), cv2.COLOR_BGR2RGB) </span>
+<span class="sd">        &gt;&gt;&gt; for bbox in cascade_detection(img):</span>
+<span class="sd">        ...     draw_bboxes_ltrb(frame=img, bboxes=bbox)</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(img)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cascade</span> <span class="o">=</span> <span class="n">cascade_creator</span><span class="p">(</span><span class="n">cascade</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">cascade_detection</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">expand_ratio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_RGB2GRAY</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">cascade</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">edge_w</span><span class="p">,</span><span class="n">edge_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="o">*</span><span class="n">expand_ratio</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">*</span><span class="n">expand_ratio</span><span class="p">)</span>
+            <span class="n">top</span>    <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">edge_h</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+            <span class="n">bottom</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="o">+</span><span class="n">edge_h</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+            <span class="n">left</span>   <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">edge_w</span><span class="p">,</span>   <span class="mi">0</span><span class="p">)</span>
+            <span class="n">right</span>  <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="o">+</span><span class="n">edge_w</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+            <span class="n">locations</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">left</span><span class="p">,</span><span class="n">top</span><span class="p">,</span><span class="n">right</span><span class="p">,</span><span class="n">bottom</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">locations</span>
+    <span class="n">cascade_detection</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Detect using the specified ``cv2.CascadeClassifier``.</span>
+
+<span class="s2">    Args:</span>
+<span class="s2">        rgb (np.ndarray)     : RGB Image. (= ``cv2read_mp()`` )</span>
+<span class="s2">        expand_ratio (float) : Edges will be expaned to ``( (1+2*expand_ratio)*w, (1+2*expand_ratio)*h )``</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cascade_detection</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.cascade</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

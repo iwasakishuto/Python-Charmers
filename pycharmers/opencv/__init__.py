@@ -1,14 +1,29 @@
+"""Utility programs for `OpenCV <https://opencv.org/>`_
+
+    OpenCV (Open Source Computer Vision Library) is a library of programming 
+    functions mainly aimed at real-time computer vision. Originally developed 
+    by Intel, it was later supported by Willow Garage then Itseez (which was later 
+    acquired by Intel). The library is cross-platform and free for use under the 
+    open-source BSD license.
+"""
+
 # coding: utf-8
 from ._path import *
 from ._path import save_dir_create
-# from . import binary
-# from . import cascade
+from . import backsub
+from . import cascade
 from . import drawing
 from . import editing
-# from . import morphology
+from . import morphology
 from . import tracking
 from . import video_image_handler
 from . import windows
+
+
+from .backsub import background_subtractor_create
+
+from .cascade import cascade_creator
+from .cascade import cascade_detection_create
 
 from .drawing import cv2read_mpl
 from .drawing import cv2plot
@@ -20,6 +35,9 @@ from .drawing import draw_text_with_bg
 
 from .editing import vconcat_resize_min
 from .editing import hconcat_resize_min
+
+from .morphology import morph_kernel_creator
+from .morphology import morph_transformer_creator
 
 from .tracking import DEFAULT_TRACKING_KEYS
 from .tracking import tracker_create

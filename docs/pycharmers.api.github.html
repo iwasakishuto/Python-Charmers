@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.api.github module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.api.github.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.api.github module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.cli package" href="pycharmers.cli.html" />
+    <link rel="prev" title="pycharmers.api package" href="pycharmers.api.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.html" title="pycharmers.api package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" accesskey="U">pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.github module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.api.github">
+<span id="pycharmers-api-github-module"></span><h1>pycharmers.api.github module<a class="headerlink" href="#module-pycharmers.api.github" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.api.github.url2raw">
+<code class="sig-prename descclassname">pycharmers.api.github.</code><code class="sig-name descname">url2raw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/github.html#url2raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.github.url2raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from Github URL to Raw URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – Github URL.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pycat</span><span class="p">,</span> <span class="n">download_file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">url2raw</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">github_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/opencv/opencv/blob/master/data/CMakeLists.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">github_url</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pycat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&lt;!DOCTYPE html&gt;</span>
+<span class="go">&lt;html lang=&quot;en&quot;&gt;</span>
+<span class="go">&lt;head&gt;</span>
+<span class="go">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="go">&lt;link rel=&quot;dns-prefetch&quot; href=&quot;https://github.githubassets.com&quot;&gt;</span>
+<span class="go"># The above file is HTML!!</span>
+<span class="go"># Therefore, convert from Github URL to Raw URL.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">raw_url</span> <span class="o">=</span> <span class="n">url2raw</span><span class="p">(</span><span class="n">github_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">raw_url</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pycat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">file(GLOB HAAR_CASCADES haarcascades/*.xml)</span>
+<span class="go">file(GLOB LBP_CASCADES lbpcascades/*.xml)</span>
+<span class="go"># Get the desired data :)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.api.github.wgit">
+<code class="sig-prename descclassname">pycharmers.api.github.</code><code class="sig-name descname">wgit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_url</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">base_dir</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">depth</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/github.html#wgit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.github.wgit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download only a specific folder or directory from a remote Git repo hosted on GitHub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> (<em>str</em>) – URL for a specific folder or directory from a remote Git repository.</p></li>
+<li><p><strong>base_dir</strong> (<em>str</em>) – The directory where downloaded data will be saved.</p></li>
+<li><p><strong>depth</strong> (<em>int</em>) – Depth of the directory tree.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Examples</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">wgit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wgit</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/opencv/opencv/tree/master/data&quot;</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">PYCHARMERS_OPENCV_DIR</span><span class="p">)</span>
+<span class="go">/Users/iwasakishuto/.pycharmers/opencv/data is created.</span>
+<span class="go">/Users/iwasakishuto/.pycharmers/opencv/data/haarcascades is created.</span>
+<span class="go">Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml</span>
+<span class="go">            * Content-Encoding : None</span>
+<span class="go">            * Content-Length   : (333.404296875, &#39;MB&#39;)</span>
+<span class="go">            * Content-Type     : text/plain; charset=utf-8</span>
+<span class="go">            * Save Destination : /Users/iwasakishuto/.pycharmers/opencv/data/haarcascades/haarcascade_eye.xml</span>
+<span class="go">haarcascade_eye.xml     100.0%[####################] 0.1[s] 4.5[GB/s]   eta -0.0[s]</span>
+<span class="go">Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye_tree_eyeglasses.xml</span>
+<span class="go">:</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.api.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.api.html#module-pycharmers.api">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.api.html"
+                        title="previous chapter">pycharmers.api package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.cli.html"
+                        title="next chapter">pycharmers.cli package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.api.github.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.html" title="pycharmers.api package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" >pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.github module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

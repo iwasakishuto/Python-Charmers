@@ -59,8 +59,56 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-opencv-cascade-module">
-<h1>pycharmers.opencv.cascade module<a class="headerlink" href="#pycharmers-opencv-cascade-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.opencv.cascade">
+<span id="pycharmers-opencv-cascade-module"></span><h1>pycharmers.opencv.cascade module<a class="headerlink" href="#module-pycharmers.opencv.cascade" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.cascade.cascade_creator">
+<code class="sig-prename descclassname">pycharmers.opencv.cascade.</code><code class="sig-name descname">cascade_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cascade</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cascade.html#cascade_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cascade.cascade_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cv2.CascadeClassifier</span></code> instance.
+:param cascade:
+:type cascade: str, cv2.CascadeClassifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">cv2.CascadeClassifier</span></code></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">cv2read_mpl</span><span class="p">,</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">cascade_creator</span><span class="p">,</span> <span class="n">draw_bboxes_xywh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cascade</span> <span class="o">=</span> <span class="n">cascade_creator</span><span class="p">(</span><span class="n">cascade</span><span class="o">=</span><span class="s2">&quot;haarcascades:haarcascade_frontalface_alt2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gray</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">cascade</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">gray</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">draw_bboxes_xywh</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">frame</span><span class="o">=</span><span class="n">gray</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="n">bbox</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.cascade.cascade_detection_create">
+<code class="sig-prename descclassname">pycharmers.opencv.cascade.</code><code class="sig-name descname">cascade_detection_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cascade</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cascade.html#cascade_detection_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cascade.cascade_detection_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cascade_detection</span></code> function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cascade</strong> (<em>str</em><em>, </em><em>cv2.CascadeClassifier</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">cascade_detection</span></code></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">cv2read_mpl</span><span class="p">,</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">cascade_detection_create</span><span class="p">,</span> <span class="n">draw_bboxes_ltrb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cascade_detection</span> <span class="o">=</span> <span class="n">cascade_detection_create</span><span class="p">(</span><span class="n">cascade</span><span class="o">=</span><span class="s2">&quot;haarcascades:haarcascade_frontalface_alt2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">cascade_detection</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">draw_bboxes_ltrb</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -74,6 +122,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
