@@ -15,7 +15,7 @@ DEFAULT_TRACKING_KEYS = DEFAULT_FRAME_KEYS.copy()
 DEFAULT_TRACKING_KEYS.update({
     "TRACKING" : {"start": "t", "stop": "c", "init": "n"},
 })
-all = PYCHARMERS_TRACKER_CREATORS = {
+all = OPENCV_TRACKER_CREATORS = {
     "boosting"   : cv2.TrackerBoosting_create,
     "csrt"       : cv2.TrackerCSRT_create,
     "goturn"     : cv2.TrackerGOTURN_create,

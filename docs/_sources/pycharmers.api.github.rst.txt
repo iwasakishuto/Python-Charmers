@@ -1,0 +1,7 @@
+pycharmers.api.github module
+============================
+
+.. automodule:: pycharmers.api.github
+   :members:
+   :undoc-members:
+   :show-inheritance:

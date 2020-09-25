@@ -140,7 +140,28 @@
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.get_create">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corresp_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">class_</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">genre</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Python-Charmers'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a get functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corresp_dict</strong> (<em>dict</em>) – Dictionary of <code class="docutils literal notranslate"><span class="pre">identifier</span></code> -&gt; instance</p></li>
+<li><p><strong>class</strong> (<em>list</em>) – The list of class names.</p></li>
+<li><p><strong>genre</strong> (<em>str</em>) – Genre of the class.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Package name.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">get_create</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">all</span> <span class="o">=</span> <span class="n">PYCHARMERS_BACKGROUND_SUBTRACTOR_CREATORS</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;mog&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">createBackgroundSubtractorMOG2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;knn&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">createBackgroundSubtractorKNN</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">background_subtractor_create</span> <span class="o">=</span> <span class="n">get_create</span><span class="p">(</span><span class="n">corresp_dict</span><span class="o">=</span><span class="nb">all</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">BackgroundSubtractor</span><span class="p">],</span> <span class="n">genre</span><span class="o">=</span><span class="s2">&quot;background_subtractor&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.handleKeyError">
@@ -340,6 +361,7 @@ b'ÿØÿàJFIFIIÿþ...
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>

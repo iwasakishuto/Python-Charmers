@@ -42,10 +42,12 @@
           <div class="body" role="main">
             
   <h1>Source code for pycharmers.opencv.morphology</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
 
-<span class="c1"># cv2.morphologyEx(img, OP, kernel)</span>
-<span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span> <span class="o">=</span> <span class="p">{</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
+
+<span class="n">OPENCV_MORPHOLOGY_OPERATIONS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;opening&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span>
     <span class="s2">&quot;closing&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span>
     <span class="s2">&quot;gradient&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_GRADIENT</span><span class="p">,</span>
@@ -53,29 +55,59 @@
     <span class="s2">&quot;blackhat&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_BLACKHAT</span><span class="p">,</span>
     <span class="s2">&quot;hitmiss&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_HITMISS</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">MORPHOLOGY_TRANSFORMER_ALGORITHMS</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="c1"># cv.getStructuringElement(shape, size)</span>
-<span class="n">MORPH_KERNEL_SHAPE</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">OPENCV_MORPHOLOGY_KERNEL_SHAPES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;cross&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CROSS</span><span class="p">,</span>
     <span class="s2">&quot;dilate&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_DILATE</span><span class="p">,</span>
     <span class="s2">&quot;erode&quot;</span>  <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ERODE</span><span class="p">,</span>
     <span class="s2">&quot;open&quot;</span>   <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">MORPH_KERNEL_TYPES</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">MORPH_KERNEL_SHAPE</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-<div class="viewcode-block" id="morph_kernel_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_kernel_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="n">MORPH_KERNEL_SHAPE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">size</span><span class="p">))</span></div>
+<div class="viewcode-block" id="morph_kernel_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_kernel_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a structuring element of the specified size and shape for morphological operations.</span>
 
-<div class="viewcode-block" id="morph_transformer_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_transformer_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_transformer_creator</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    @param op Type of a morphological operation, see #MorphTypes</span>
+<span class="sd">    Args:</span>
+<span class="sd">        shape (str, int) : Element shape.</span>
+<span class="sd">        ksize (tuple)    : Size of the structuring element.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import morph_kernel_creator</span>
+<span class="sd">        &gt;&gt;&gt; kernel = morph_kernel_creator(shape=&quot;erode&quot;, ksize=(5,5))</span>
+<span class="sd">        &gt;&gt;&gt; kernel.shape</span>
+<span class="sd">        (5, 5)</span>
+<span class="sd">        &gt;&gt;&gt; kernel = morph_kernel_creator(shape=&quot;erode&quot;, ksize=(3,5))</span>
+<span class="sd">        &gt;&gt;&gt; kernel.shape</span>
+<span class="sd">        &gt;&gt;&gt; (5, 3)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">op</span> <span class="o">=</span> <span class="n">MORPHOLOGY_TRANSFORMER_CREATOR</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+    <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">OPENCV_MORPHOLOGY_KERNEL_SHAPES</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">OPENCV_MORPHOLOGY_KERNEL_SHAPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ksize</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="morph_transformer_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.morphology.html#pycharmers.opencv.morphology.morph_transformer_creator">[docs]</a><span class="k">def</span> <span class="nf">morph_transformer_creator</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a function which performs advanced morphological transformations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        op (str, int)    : Type of a morphological operation</span>
+<span class="sd">        kernel (array)   : Structuring element. It can be created using ``morph_kernel_creator``</span>
+<span class="sd">                           The same can be achieved by giving values in the parameters (``shape``, ``ksize``).</span>
+<span class="sd">        shape (str, int) : Element shape.</span>
+<span class="sd">        ksize (tuple)    : Size of the structuring element.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import (SAMPLE_LENA_IMG, morph_transformer_creator,</span>
+<span class="sd">                                        hconcat_resize_min, cv2plot, cv2read_mpl)</span>
+<span class="sd">        &gt;&gt;&gt; img = cv2read_mpl(SAMPLE_LENA_IMG, 0)</span>
+<span class="sd">        &gt;&gt;&gt; transformer = morph_transformer_creator(op=&quot;opening&quot;, shape=&quot;open&quot;, ksize=(12,12))</span>
+<span class="sd">        &gt;&gt;&gt; img_opening = transformer(img)</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(hconcat_resize_min(img, img_opening), cmap=&quot;gray&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">OPENCV_MORPHOLOGY_OPERATIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">op</span><span class="o">=</span><span class="n">op</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">OPENCV_MORPHOLOGY_OPERATIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">kernel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kernel</span> <span class="o">=</span> <span class="n">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="n">ksize</span><span class="p">)</span>
     <span class="n">transformer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">src</span><span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">transformer</span></div>
 </pre></div>

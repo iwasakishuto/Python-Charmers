@@ -216,6 +216,23 @@ def readable_bytes(size, type="bytes"):
     return (size, unit+"B")
 
 def get_create(corresp_dict={}, class_=[], genre="", name="Python-Charmers"):
+    """Create a get functions
+
+    Args:
+        corresp_dict (dict) : Dictionary of ``identifier`` -> instance
+        class_ (list)       : The list of class names.
+        genre (str)         : Genre of the class.
+        name (str)          : Package name.
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.utils import get_create
+        >>> all = PYCHARMERS_BACKGROUND_SUBTRACTOR_CREATORS = {
+        ...     "mog" : cv2.createBackgroundSubtractorMOG2,
+        ...     "knn" : cv2.createBackgroundSubtractorKNN,
+        ... }
+        >>> background_subtractor_create = get_create(corresp_dict=all, class_=[cv2.BackgroundSubtractor], genre="background_subtractor")
+    """
     if not isinstance(class_, list): class_ = [class_]
     class_ = class_+[str]
     # Create a get function.

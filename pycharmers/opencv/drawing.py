@@ -79,9 +79,14 @@ def draw_bboxes_create(coord_type="xywh"):
 draw_bboxes_xywh = draw_bboxes_create(coord_type="xywh")
 draw_bboxes_ltrb = draw_bboxes_create(coord_type="ltrb")
 
-def cv2read_mpl(filename):
-    """loads an image from the specified file and returns it as RGB format."""
-    return cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB) 
+def cv2read_mpl(filename, *flags):
+    """loads an image from the specified file and returns it as RGB format.
+    
+    Args:
+        filename (str): Name of file to be loaded.
+        flags (int)   : Flags.
+    """
+    return cv2.cvtColor(cv2.imread(filename, *flags), cv2.COLOR_BGR2RGB) 
 
 def cv2plot(x, ax=None, clear_pos=list("ltrb"), cmap=None, **kwargs):
     """Plot Image using OpenCV

@@ -260,6 +260,23 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="o">+</span><span class="s2">&quot;B&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_create"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.get_create">[docs]</a><span class="k">def</span> <span class="nf">get_create</span><span class="p">(</span><span class="n">corresp_dict</span><span class="o">=</span><span class="p">{},</span> <span class="n">class_</span><span class="o">=</span><span class="p">[],</span> <span class="n">genre</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Python-Charmers&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a get functions</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        corresp_dict (dict) : Dictionary of ``identifier`` -&gt; instance</span>
+<span class="sd">        class_ (list)       : The list of class names.</span>
+<span class="sd">        genre (str)         : Genre of the class.</span>
+<span class="sd">        name (str)          : Package name.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import get_create</span>
+<span class="sd">        &gt;&gt;&gt; all = PYCHARMERS_BACKGROUND_SUBTRACTOR_CREATORS = {</span>
+<span class="sd">        ...     &quot;mog&quot; : cv2.createBackgroundSubtractorMOG2,</span>
+<span class="sd">        ...     &quot;knn&quot; : cv2.createBackgroundSubtractorKNN,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; background_subtractor_create = get_create(corresp_dict=all, class_=[cv2.BackgroundSubtractor], genre=&quot;background_subtractor&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">class_</span> <span class="o">=</span> <span class="p">[</span><span class="n">class_</span><span class="p">]</span>
     <span class="n">class_</span> <span class="o">=</span> <span class="n">class_</span><span class="o">+</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="c1"># Create a get function.</span>
