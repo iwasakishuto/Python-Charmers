@@ -67,8 +67,9 @@ def handleTypeError(types, **kwargs):
     Raise:
         TypeError: If the types of ``kwargs.values()`` are none of the ``types``
     """
+    types = tuple(types)
     for k,v in kwargs.items():
-        if not any([isinstance(v,t) for t in types]):
+        if not isinstance(v,tuple(types)):
             str_true_types  = ', '.join([f"'{toGREEN(class2str(t))}'" for t in types])
             srt_false_type = class2str(type(v))
             if len(types)==1:
@@ -92,7 +93,7 @@ def str_strip(string):
         >>> str_strip("  ho    g　e")
         'ho g e'
     """
-    return re.sub(pattern=r"[\s 　]+", repl=" ", string=string).strip()
+    return re.sub(pattern=r"[\s 　]+", repl=" ", string=str(string)).strip()
 
 def now_str(tz=None, fmt="%Y-%m-%d@%H.%M.%S"):
     """Returns new datetime string representing current time local to tz under the control of an explicit format string.
@@ -119,12 +120,12 @@ def list_transpose(lst, width):
         lst (list) : A single list.
         width (int): The width of the list.
 
-    Notes:
-        ----------->
-        0, 1,  2,  3      0, 4,  8 | 
-        4, 5,  6,  7  ->  1, 5,  9 |
-        8, 9, 10, 11      2, 6, 10 |
-                          3, 7, 11 v
+    Notes: Perform the following conversion::
+
+        ----------->      0, 4,  8 | 
+        0, 1,  2,  3      1, 5,  9 |
+        4, 5,  6,  7  ->  2, 6, 10 |
+        8, 9, 10, 11      3, 7, 11 v
 
     Example:
         >>> from pyutils.utils import list_transpose

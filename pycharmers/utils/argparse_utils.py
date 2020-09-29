@@ -39,7 +39,7 @@ class DictParamProcessor(argparse.Action):
         >>> args = parser.parse_args(args=["--dict_params", "foo = [a, b, c]", "--dict_params", "bar=d"])
         >>> args.dict_params
         {'foo': ['a', 'b', 'c'], 'bar': 'd'}
-        >>> args = args = parser.parse_args(args=["--dict_params", "foo=a, bar=b"])
+        >>> args = parser.parse_args(args=["--dict_params", "foo=a, bar=b"])
         ValueError: too many values to unpack (expected 2)
 
     Note:
