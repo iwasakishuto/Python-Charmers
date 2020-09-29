@@ -97,9 +97,10 @@ def download_file(url, dirname=".", path=None, bar_width=20, verbose=True):
         with urllib.request.urlopen(url) as web_file:
             # Get Information from webfile header
             headers = dict(web_file.headers._headers)
-        content_encoding = headers.get("Content-Encoding")
-        content_length   = readable_bytes(int(headers.get("Content-Length", 0)))
-        content_type     = headers.get("Content-Type")
+        content_encoding     = headers.get("Content-Encoding")
+        content_length, unit = readable_bytes(int(headers.get("Content-Length", 0)))
+        content_length       = f"{content_length:.1f} [{unit}]"
+        content_type         = headers.get("Content-Type")
         fn = url.split("/")[-1]
         if path is None:
             *name, ext = fn.split(".")
