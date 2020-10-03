@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:title" content="pycharmers.cli.show module" />
+  <meta property="og:title" content="pycharmers.cli.regexp_replacement module" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.show.html" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.regexp_replacement.html" />
   <meta property="og:description" content="" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <title>pycharmers.cli.show module &#8212; Python-Charmers  documentation</title>
+    <title>pycharmers.cli.regexp_replacement module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.matplotlib package" href="pycharmers.matplotlib.html" />
-    <link rel="prev" title="pycharmers.cli.regexp_replacement module" href="pycharmers.cli.regexp_replacement.html" /> 
+    <link rel="next" title="pycharmers.cli.show module" href="pycharmers.cli.show.html" />
+    <link rel="prev" title="pycharmers.cli package" href="pycharmers.cli.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -57,7 +57,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" accesskey="U">pycharmers.cli package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.show module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.regexp_replacement module</a></li> 
       </ul>
     </div>  
 
@@ -66,33 +66,60 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.cli.show">
-<span id="pycharmers-cli-show-module"></span><h1>pycharmers.cli.show module<a class="headerlink" href="#module-pycharmers.cli.show" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.regexp_replacement">
+<span id="pycharmers-cli-regexp-replacement-module"></span><h1>pycharmers.cli.regexp_replacement module<a class="headerlink" href="#module-pycharmers.cli.regexp_replacement" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="pycharmers.cli.show.show_command_line_programs">
-<code class="sig-prename descclassname">pycharmers.cli.show.</code><code class="sig-name descname">show_command_line_programs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/show.html#show_command_line_programs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.show.show_command_line_programs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show all Python-Charmers’s command line programs.</p>
+<dt id="pycharmers.cli.regexp_replacement.regexp_replacement">
+<code class="sig-prename descclassname">pycharmers.cli.regexp_replacement.</code><code class="sig-name descname">regexp_replacement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/regexp_replacement.html#regexp_replacement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.regexp_replacement.regexp_replacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>String replacement using regular expression</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.json</span></code> path can be specified by “<code class="docutils literal notranslate"><span class="pre">json-dir</span></code> / <code class="docutils literal notranslate"><span class="pre">json-file</span></code>” or “<code class="docutils literal notranslate"><span class="pre">json-path</span></code>”</p></li>
+<li><p>output file path can be specified by “<code class="docutils literal notranslate"><span class="pre">output-path</span></code>” or “<code class="docutils literal notranslate"><span class="pre">input-path</span></code> + <code class="docutils literal notranslate"><span class="pre">suffix</span></code>”</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>-H/--head</strong> (<em>str</em>) – Show the first <code class="docutils literal notranslate"><span class="pre">head</span></code> rows for the table.</p></li>
-<li><p><strong>-W/--width</strong> (<em>int</em>) – Table width.</p></li>
-<li><p><strong>--mark</strong> (<em>str</em>) – The border mark. (default “=”)</p></li>
+<li><p><strong>-I/--input-path</strong> (<em>str</em>) – Path/to/input file.</p></li>
+<li><p><strong>-O/--output-path</strong> (<em>str</em>) – Path/to/output file.</p></li>
+<li><p><strong>-jd/--json-dir</strong> (<em>str</em>) – Path/to/json directory.</p></li>
+<li><p><strong>-jf/--json-file</strong> (<em>str</em>) – File name in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code>.</p></li>
+<li><p><strong>-jp/--json-path</strong> (<em>str</em>) – Path/to/json file.</p></li>
+<li><p><strong>-suf/--suffix</strong> (<em>str</em>) – Suffix of output filename.</p></li>
+<li><p><strong>-ext/--extension</strong> (<em>str</em>) – When ‘input-path’ is directory, only file in ‘input-path’ with this extension will be replaced.</p></li>
+<li><p><strong>--show-all</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show all json file descriptions in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code></p></li>
+<li><p><strong>--show</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show the content of a specified json file.</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When you run from the command line, execute as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pycharmers-show
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ regexp_replacement -I sample.md -jf sample.json
+$ regexp_replacement --show-all
+$ regexp_replacement -jf sample.json --show
 </pre></div>
 </div>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; $ pycharmers-show
-&gt;&gt;&gt; |    command     |                     path                      |
-&gt;&gt;&gt; ==================================================================
-&gt;&gt;&gt; |pycharmers-show | pycharmers.cli.show:show_command_line_programs|
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace Input file using regular expression.</span>
+$ regexp-replacement -I sample.md -jf sample.json
+    Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json
+    Input  file : sample.md
+    Output file : sample.md
+<span class="c1"># Show all json file in &#39;json-dir&#39;</span>
+$ regexp-replacement --show-all
+Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement
+* sample.json: Sample Json
+<span class="c1"># Show the content of the file at `json-path`</span>
+$ regexp-replacement -jf sample.json --show
+Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
+<span class="o">{</span>
+    <span class="s2">&quot;description&quot;</span> : <span class="s2">&quot;Sample Json&quot;</span>,
+    <span class="s2">&quot;patterns&quot;</span> : <span class="o">[</span>
+        <span class="o">[</span><span class="s2">&quot;`(.*?)`&quot;</span>, <span class="s2">&quot;&lt;span class=&quot;</span>code<span class="s2">&quot;&gt;\1&lt;/span&gt;&quot;</span><span class="o">]</span>,
+        <span class="o">[</span><span class="s2">&quot;+(.*?)+&quot;</span>, <span class="s2">&quot;&lt;span class=&quot;</span>strong<span class="s2">&quot;&gt;\1&lt;/span&gt;&quot;</span><span class="o">]</span>
+    <span class="o">]</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -155,15 +182,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.cli.regexp_replacement.html"
-                        title="previous chapter">pycharmers.cli.regexp_replacement module</a></p>
+  <p class="topless"><a href="pycharmers.cli.html"
+                        title="previous chapter">pycharmers.cli package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.matplotlib.html"
-                        title="next chapter">pycharmers.matplotlib package</a></p>
+  <p class="topless"><a href="pycharmers.cli.show.html"
+                        title="next chapter">pycharmers.cli.show module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pycharmers.cli.show.rst.txt"
+      <li><a href="_sources/pycharmers.cli.regexp_replacement.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -191,10 +218,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -202,7 +229,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" >pycharmers.cli package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.show module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.regexp_replacement module</a></li> 
       </ul>
     </div>
 

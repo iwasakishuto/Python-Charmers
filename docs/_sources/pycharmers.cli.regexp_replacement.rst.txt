@@ -1,0 +1,7 @@
+pycharmers.cli.regexp\_replacement module
+=========================================
+
+.. automodule:: pycharmers.cli.regexp_replacement
+   :members:
+   :undoc-members:
+   :show-inheritance:
