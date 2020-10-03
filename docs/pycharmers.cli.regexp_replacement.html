@@ -33,7 +33,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.cli.show module" href="pycharmers.cli.show.html" />
+    <link rel="next" title="pycharmers.cli.render_template module" href="pycharmers.cli.render_template.html" />
     <link rel="prev" title="pycharmers.cli package" href="pycharmers.cli.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -46,7 +46,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
+          <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pycharmers.cli.html" title="pycharmers.cli package"
@@ -101,17 +101,33 @@ $ regexp_replacement -jf sample.json --show
 </div>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace Input file using regular expression.</span>
-$ regexp-replacement -I sample.md -jf sample.json
+<ul>
+<li><dl>
+<dt>Replace Input file using regular expression.</dt><dd><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement -I sample.md -jf sample.json
     Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json
     Input  file : sample.md
     Output file : sample.md
-<span class="c1"># Show all json file in &#39;json-dir&#39;</span>
-$ regexp-replacement --show-all
+$ regexp-replacement -I sample.md -jf sample.json -suf suffix
+    Json: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json
+    Input path : sample.md
+    Output path: sample_suffix.md
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p>Show all json file in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code></p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement --show-all
 Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement
 * sample.json: Sample Json
-<span class="c1"># Show the content of the file at `json-path`</span>
-$ regexp-replacement -jf sample.json --show
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Show the content of the file at <code class="docutils literal notranslate"><span class="pre">json-path</span></code></p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement -jf sample.json --show
 Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
 <span class="o">{</span>
     <span class="s2">&quot;description&quot;</span> : <span class="s2">&quot;Sample Json&quot;</span>,
@@ -122,6 +138,9 @@ Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
 <span class="o">}</span>
 </pre></div>
 </div>
+</div></blockquote>
+</li>
+</ul>
 </dd></dl>
 
 </div>
@@ -185,8 +204,8 @@ Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
   <p class="topless"><a href="pycharmers.cli.html"
                         title="previous chapter">pycharmers.cli package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.cli.show.html"
-                        title="next chapter">pycharmers.cli.show module</a></p>
+  <p class="topless"><a href="pycharmers.cli.render_template.html"
+                        title="next chapter">pycharmers.cli.render_template module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -218,7 +237,7 @@ Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
+          <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"
              >next</a> |</li>
         <li class="right" >
           <a href="pycharmers.cli.html" title="pycharmers.cli package"

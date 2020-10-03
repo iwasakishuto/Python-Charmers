@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pycharmers.cli.regexp_replacement
+   pycharmers.cli.render_template
    pycharmers.cli.show
 
 Module contents

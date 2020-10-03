@@ -54,8 +54,8 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR</span>
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
@@ -87,27 +87,39 @@
 
 <span class="sd">    Examples:</span>
 
-<span class="sd">        .. code-block:: shell</span>
+<span class="sd">        - Replace Input file using regular expression.</span>
+<span class="sd">            .. code-block:: shell</span>
 
-<span class="sd">            # Replace Input file using regular expression.</span>
-<span class="sd">            $ regexp-replacement -I sample.md -jf sample.json</span>
-<span class="sd">                Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json</span>
-<span class="sd">                Input  file : sample.md</span>
-<span class="sd">                Output file : sample.md</span>
-<span class="sd">            # Show all json file in &#39;json-dir&#39;</span>
-<span class="sd">            $ regexp-replacement --show-all</span>
-<span class="sd">            Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement</span>
-<span class="sd">            * sample.json: Sample Json</span>
-<span class="sd">            # Show the content of the file at `json-path`</span>
-<span class="sd">            $ regexp-replacement -jf sample.json --show</span>
-<span class="sd">            Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json</span>
-<span class="sd">            {</span>
-<span class="sd">                &quot;description&quot; : &quot;Sample Json&quot;,</span>
-<span class="sd">                &quot;patterns&quot; : [</span>
-<span class="sd">                    [&quot;`(.*?)`&quot;, &quot;&lt;span class=\&quot;code\&quot;&gt;\\1&lt;/span&gt;&quot;],</span>
-<span class="sd">                    [&quot;+(.*?)+&quot;, &quot;&lt;span class=\&quot;strong\&quot;&gt;\\1&lt;/span&gt;&quot;]</span>
-<span class="sd">                ]</span>
-<span class="sd">            }</span>
+<span class="sd">                $ regexp-replacement -I sample.md -jf sample.json</span>
+<span class="sd">                    Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json</span>
+<span class="sd">                    Input  file : sample.md</span>
+<span class="sd">                    Output file : sample.md</span>
+<span class="sd">                $ regexp-replacement -I sample.md -jf sample.json -suf suffix</span>
+<span class="sd">                    Json: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json</span>
+<span class="sd">                    Input path : sample.md</span>
+<span class="sd">                    Output path: sample_suffix.md</span>
+
+<span class="sd">        - Show all json file in ``json-dir``</span>
+
+<span class="sd">            .. code-block:: shell</span>
+
+<span class="sd">                $ regexp-replacement --show-all</span>
+<span class="sd">                Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement</span>
+<span class="sd">                * sample.json: Sample Json</span>
+
+<span class="sd">        - Show the content of the file at ``json-path``</span>
+
+<span class="sd">            .. code-block:: shell</span>
+
+<span class="sd">                $ regexp-replacement -jf sample.json --show</span>
+<span class="sd">                Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;description&quot; : &quot;Sample Json&quot;,</span>
+<span class="sd">                    &quot;patterns&quot; : [</span>
+<span class="sd">                        [&quot;`(.*?)`&quot;, &quot;&lt;span class=\&quot;code\&quot;&gt;\\1&lt;/span&gt;&quot;],</span>
+<span class="sd">                        [&quot;+(.*?)+&quot;, &quot;&lt;span class=\&quot;strong\&quot;&gt;\\1&lt;/span&gt;&quot;]</span>
+<span class="sd">                    ]</span>
+<span class="sd">                }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;regexp-replace&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-I&quot;</span><span class="p">,</span>  <span class="s2">&quot;--input-path&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path/to/input file.&quot;</span><span class="p">)</span>
@@ -125,9 +137,10 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show_all</span><span class="p">:</span>
         <span class="n">json_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">json_dir</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Json directory: </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">json_dir</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">json_dir</span><span class="si">}</span><span class="s2">/*.json&quot;</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json_dir</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">json_dir</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.json&quot;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Show the content of the file at `json-path`</span>
@@ -154,8 +167,8 @@
             <span class="n">f_out</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="n">replace_str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">readlines</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">add_suffix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
-        <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span> <span class="o">+</span> <span class="n">sep</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="n">input_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">input_path</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">suffix</span>
@@ -170,14 +183,17 @@
         <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">in2out</span> <span class="o">=</span> <span class="n">add_suffix</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span> <span class="n">output_dir</span> <span class="o">=</span> <span class="n">input_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span> <span class="n">output_dir</span> <span class="o">=</span> <span class="n">output_dir</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">in2out</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">path</span><span class="p">,</span> <span class="n">suffix</span> <span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
         
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input dir : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output dir: </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">extension</span>
-        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2">/**/*</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
-            <span class="n">replace_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">in2out</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span></div>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;**/*</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="n">replace_file</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">in2out</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">suffix</span><span class="p">))</span></div>
 </pre></div>
 
             <div class="clearer"></div>

@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:title" content="pycharmers.cli package" />
+  <meta property="og:title" content="pycharmers.cli.render_template module" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.html" />
-  <meta property="og:description" content="Submodules: pycharmers.cli.regexp_replacement module, pycharmers.cli.render_template module, pycharmers.cli.show module. Module contents:" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.render_template.html" />
+  <meta property="og:description" content="" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <title>pycharmers.cli package &#8212; Python-Charmers  documentation</title>
+    <title>pycharmers.cli.render_template module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.cli.regexp_replacement module" href="pycharmers.cli.regexp_replacement.html" />
-    <link rel="prev" title="pycharmers.api.github module" href="pycharmers.api.github.html" /> 
+    <link rel="next" title="pycharmers.cli.show module" href="pycharmers.cli.show.html" />
+    <link rel="prev" title="pycharmers.cli.regexp_replacement module" href="pycharmers.cli.regexp_replacement.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,17 +46,18 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.api.github.html" title="pycharmers.api.github module"
+          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
         <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
 
-          <li class="nav-item nav-item-1"><a href="pycharmers.html" accesskey="U">pycharmers package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli package</a></li> 
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" accesskey="U">pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.render_template module</a></li> 
       </ul>
     </div>  
 
@@ -65,21 +66,60 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-package">
-<h1>pycharmers.cli package<a class="headerlink" href="#pycharmers-cli-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
+  <div class="section" id="module-pycharmers.cli.render_template">
+<span id="pycharmers-cli-render-template-module"></span><h1>pycharmers.cli.render_template module<a class="headerlink" href="#module-pycharmers.cli.render_template" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.render_template.render_template">
+<code class="sig-prename descclassname">pycharmers.cli.render_template.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/render_template.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.render_template.render_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>String replacement using regular expression</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-I/--input-path</strong> (<em>str</em>) – Path to a input json file or directory.</p></li>
+<li><p><strong>-O/--output-path</strong> (<em>str</em>) – Path to an output file or directory.</p></li>
+<li><p><strong>-td/--tpl-dir</strong> (<em>str</em>) – Path to a templates directory.</p></li>
+<li><p><strong>-ext/--extension</strong> (<em>str</em>) – Create a file with this extension.</p></li>
+<li><p><strong>--show-all</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show all template filenames in <code class="docutils literal notranslate"><span class="pre">tmp-dir</span></code></p></li>
+<li><p><strong>--quiet</strong> (<em>bool</em>) – Whether to make the output quiet.</p></li>
 </ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ render-template -I sample.json
+$ render-template -I dir
+$ render-template --show-all
+</pre></div>
 </div>
 </div>
-<div class="section" id="module-pycharmers.cli">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycharmers.cli" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Examples</p>
+<ul>
+<li><dl>
+<dt>Replace Input file using regular expression:</dt><dd><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ render-template -I sample.json
+- sample.json -&gt; sample.html
+$ render-template -I dir
+Input directory  : dir
+Output directory : dir
+- dir/sample.json -&gt; dir/sample.html
+- dir/subdir/sample.json -&gt; dir/subdir/sample.html
+</pre></div>
 </div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Show all json file in <code class="docutils literal notranslate"><span class="pre">tpl-dir</span></code></dt><dd><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ render-template --show-all
+Template directory: /Users/iwasakishuto/.pycharmers/cli/render_templates
+* protocols.tpl
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
 </div>
 
 
@@ -122,9 +162,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">pycharmers.cli package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pycharmers.cli">Module contents</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.cli.html#module-pycharmers.cli">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
@@ -138,15 +178,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.api.github.html"
-                        title="previous chapter">pycharmers.api.github module</a></p>
-  <h4>Next topic</h4>
   <p class="topless"><a href="pycharmers.cli.regexp_replacement.html"
-                        title="next chapter">pycharmers.cli.regexp_replacement module</a></p>
+                        title="previous chapter">pycharmers.cli.regexp_replacement module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.cli.show.html"
+                        title="next chapter">pycharmers.cli.show module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pycharmers.cli.rst.txt"
+      <li><a href="_sources/pycharmers.cli.render_template.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -174,17 +214,18 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.api.github.html" title="pycharmers.api.github module"
+          <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
         <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli package</a></li> 
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" >pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.render_template module</a></li> 
       </ul>
     </div>
 
