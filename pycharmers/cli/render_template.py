@@ -52,8 +52,9 @@ def render_template(argv=sys.argv[1:]):
     parser.add_argument("-O",   "--output-path", type=str, default=None,  help="Path to output file or directory.")
     parser.add_argument("-td",  "--tmp-dir",     type=str, default=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR, help="Path to templates dir")
     parser.add_argument("-ext", "--extension",   type=str, default=".html", help="Create a file with this extension.")
-    parser.add_argument("--show-all", action="store_true", help="If True, show all template filenames in 'tmp-dir'")
-    parser.add_argument("--quiet",    action="store_true", help="Whether to make the output quiet")
+    parser.add_argument("--show-all",     action="store_true", help="If True, show all template filenames in 'tmp-dir'")
+    parser.add_argument("--quiet",        action="store_true", help="Whether to make the output quiet")
+    parser.add_argument("--date-as-slug", action="store_true", help="Whether to use DATE as a Slug.")
     args = parser.parse_args(argv)
 
     tmp_dir = args.tmp_dir
@@ -61,15 +62,24 @@ def render_template(argv=sys.argv[1:]):
     # Show all json file in 'json-dir'
     if args.show_all:
         print(f"Template directory: {toGREEN(tmp_dir)}")
-        for fn in glob.glob(f"{tmp_dir}/*.tpl"):
+        p = Path(tmp_dir)
+        for fn in p.glob("**/*.tpl"):
             print(f"* {toBLUE(os.path.basename(fn))}")
         sys.exit(-1)
 
+    date_as_slug = args.date_as_slug
     env = Environment(loader=FileSystemLoader(searchpath=tmp_dir))
     def render_template(input_path, output_path):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_json:
             data = json.load(f_json)
+        filename = os.path.basename(input_path)
+        if date_as_slug or "Slug" not in data:
+            data["Slug"] = filename
+        if "DATE" not in data:
+            # filename: YYYY-MM-DD hh:mm
+            dates = filename.split("-")
+            data["DATE"] = "-".join(dates[:3]) + " " + ":".join(dates[-2:])
         template = env.get_template(name=data.pop("template"))
         with open(output_path, mode="w") as f_out:
             f_out.write(template.render(**data))
@@ -92,7 +102,7 @@ def render_template(argv=sys.argv[1:]):
         if verbose:
             print(f"Input directory  : {toBLUE(input_path)}")
             print(f"Output directory : {toBLUE(output_dir)}")
-        ext = args.extension
+
         p = Path(input_path)
         for fp in p.glob("**/*.json"):
             fp = str(fp)

@@ -26,6 +26,7 @@ def regexp_replacement(argv=sys.argv[1:]):
         -ext/--extension (str) : When 'input-path' is directory, only file in 'input-path' with this extension will be replaced.
         --show-all (bool)      : If ``True``, show all json file descriptions in ``json-dir``
         --show (bool)          : If ``True``, show the content of a specified json file.
+        --quiet (bool)         : Whether to make the output quiet.
 
     Note:
         When you run from the command line, execute as follows::
@@ -80,8 +81,10 @@ def regexp_replacement(argv=sys.argv[1:]):
     parser.add_argument("-ext", "--extension",  type=str, default="",   help="When 'input-path' is directory, only file in 'input-path' with this extension will be replaced.")
     parser.add_argument("--show-all", action="store_true", help="If True, show all json file descriptions in 'json-dir'")
     parser.add_argument("--show",     action="store_true", help="If True, show the content of a specified json file.")
+    parser.add_argument("--quiet",    action="store_true", help="Whether to make the output quiet")
     args = parser.parse_args(argv)
 
+    verbose = not args.quiet
     # Show all json file in 'json-dir'
     if args.show_all:
         json_dir = args.json_dir
@@ -94,7 +97,7 @@ def regexp_replacement(argv=sys.argv[1:]):
 
     # Show the content of the file at `json-path`
     json_path = args.json_path or os.path.join(args.json_dir, args.json_file)
-    print(f"Json: {toBLUE(json_path)}")
+    if verbose: print(f"Json: {toBLUE(json_path)}")
     if args.show:
         pycat(json_path)
         sys.exit(-1)
@@ -110,6 +113,7 @@ def regexp_replacement(argv=sys.argv[1:]):
         return string
     # Replace File contents.
     def replace_file(input_path, output_path):
+        if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_in:
             readlines = f_in.readlines()
         with open(output_path, mode="w") as f_out:
@@ -117,14 +121,13 @@ def regexp_replacement(argv=sys.argv[1:]):
 
     def add_suffix(path, suffix, sep="."):
         *fp, ext = path.split(sep)
-        return f"{sep.join(fp)}_{suffix}{sep}{ext}"
+        return sep.join(fp) + suffix + sep + ext
 
     input_path = args.input_path
     suffix = args.suffix
+    if len(suffix)>0 and (not suffix.startswith(".")): suffix = "_" + suffix
     if os.path.isfile(input_path):
         output_path = args.output_path or add_suffix(input_path,suffix)
-        print(f"Input path : {toBLUE(input_path)}")
-        print(f"Output path: {toBLUE(output_path)}")
         replace_file(input_path, output_path)
     elif os.path.isdir(input_path):
         if input_path.endswith("/"): input_path = input_path[:-1]
@@ -135,11 +138,14 @@ def regexp_replacement(argv=sys.argv[1:]):
             if output_dir.endswith("/"): output_dir = output_dir[:-1]
             in2out = lambda path, suffix : path.replace(input_path, output_dir)
         
-        print(f"Input dir : {toBLUE(input_path)}")
-        print(f"Output dir: {toBLUE(output_path)}")
+        if verbose: 
+            print(f"Input dir : {toBLUE(input_path)}")
+            print(f"Output dir: {toBLUE(output_dir or '')}")
         ext = args.extension
+        if not ext.startswith("."): ext = "." + ext
 
         p = Path(input_path)
         for fp in p.glob(f"**/*{ext}"):
-            fp = str(fp)
-            replace_file(fp, in2out(fp, suffix))
+            if fp.is_file():
+                fp = str(fp)
+                replace_file(fp, in2out(fp, suffix))
