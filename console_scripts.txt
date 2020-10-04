@@ -1,1 +1,3 @@
 pycharmers-show = pycharmers.cli.show:show_command_line_programs
+regexp-replacement = pycharmers.cli.regexp_replacement:regexp_replacement
+render-template = pycharmers.cli.render_template:render_template

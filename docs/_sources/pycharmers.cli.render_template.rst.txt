@@ -1,0 +1,7 @@
+pycharmers.cli.render\_template module
+======================================
+
+.. automodule:: pycharmers.cli.render_template
+   :members:
+   :undoc-members:
+   :show-inheritance:
