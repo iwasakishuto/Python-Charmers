@@ -1,5 +1,6 @@
 #coding: utf-8
 import os
+import re
 import sys
 import json
 import argparse
@@ -67,22 +68,31 @@ def render_template(argv=sys.argv[1:]):
             print(f"* {toBLUE(os.path.basename(fn))}")
         sys.exit(-1)
 
-    date_as_slug = args.date_as_slug
     env = Environment(loader=FileSystemLoader(searchpath=tmp_dir))
-    def render_template(input_path, output_path):
+    def render_template(input_path, output_path, date_as_slug=args.date_as_slug):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_json:
             data = json.load(f_json)
-        filename = os.path.basename(input_path)
-        if date_as_slug or "Slug" not in data:
-            data["Slug"] = filename
-        if "DATE" not in data:
+        filename = os.path.splitext(os.path.basename(input_path))[0]
+
+        # Arrange Head for Pelican.
+        head = data.get("head", {})
+        if date_as_slug or "Slug" not in head:
+            head["Slug"] = filename
+        if "Date" not in data:
             # filename: YYYY-MM-DD hh:mm
             dates = filename.split("-")
-            data["DATE"] = "-".join(dates[:3]) + " " + ":".join(dates[-2:])
-        template = env.get_template(name=data.pop("template"))
+            head["Date"] = "-".join(dates[:3]) + " " + ":".join(dates[-2:])
+        data["head"] = head
+
+        content = ""
+        for key, vals in data.items():
+            vals["id_"] = key
+            if ("base_url" in vals) and (not vals["base_url"].endswith("/")): vals["base_url"] += "/"
+            template = env.get_template(re.sub(pattern=r"(.+?)((?:\d+)?)$", repl=r"\1.html", string=key))
+            content += template.render(**vals)        
         with open(output_path, mode="w") as f_out:
-            f_out.write(template.render(**data))
+            f_out.write(content)
 
     input_path = args.input_path
     ext = args.extension
