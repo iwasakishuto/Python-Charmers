@@ -281,3 +281,44 @@ def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, new
             if i==head: break
             print(line, end="")
   
+class formatted_enumerator():
+    """Generator which yeilds elements with formatted numbers.
+
+    Args:
+        iterable (int)  : An object supporting iteration
+        start (int)     : The enumerate object yields pairs containing a count (from start, which defaults to ``1``) and a value yielded by the iterable argument.
+
+    Attributes:
+        total (int) : Total number of iterable elements.
+        digit (int) : Digit. It is used for formatting the index.
+
+    Examples:
+        >>> from pycharmers.utils import formatted_enumerator
+        >>> gen = formatted_enumerator(["a","b","c"])
+        >>> for i,d in gen:
+        ...     print(i, d)
+        1 a
+        2 i
+        3 u        
+    """
+    def __init__(self, iterable, start=1):
+        self._i = 0
+        self._iterable = iterable
+        self._start = start
+        self.total = len(iterable)
+        self.digit = len(str(self.total))
+        
+    def __iter__(self):
+        return self
+    
+    @property
+    def _idx(self):
+        return self._i + self._start
+    
+    def __next__(self):  # Python2だと next(self) で定義
+        if self._i == self.total:
+            raise StopIteration
+        element = self._iterable[self._i]
+        idx = f"{self._idx:>0{self.digit}}"
+        self._i += 1
+        return (idx, element)

@@ -39,10 +39,8 @@ from .editing import hconcat_resize_min
 from .morphology import morph_kernel_creator
 from .morphology import morph_transformer_creator
 
-from .tracking import DEFAULT_TRACKING_KEYS
 from .tracking import tracker_create
 from .tracking import BBoxLogger
-from .tracking import TrackingWindow
 
 from .video_image_handler import count_frame_num
 from .video_image_handler import basenaming
@@ -51,9 +49,10 @@ from .video_image_handler import mono_frame_generator
 from .video_image_handler import multi_frame_generator_concat
 from .video_image_handler import multi_frame_generator_sepa
 
-from .windows import (DEFAULT_CV_KEYS, DEFAULT_FRAME_KEYS)
+from .windows import (DEFAULT_CV_KEYS, DEFAULT_FRAME_KEYS, DEFAULT_TRACKING_KEYS)
 from .windows import cvKeys
 from .windows import wait_for_input
 from .windows import wait_for_choice
 from .windows import cvWindow
 from .windows import FrameWindow
+from .windows import TrackingWindow

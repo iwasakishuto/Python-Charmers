@@ -120,6 +120,50 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="pycharmers.opencv.windows.TrackingWindow">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">TrackingWindow</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">tracker='boosting'</em>, <em class="sig-param">coord_type='xywh'</em>, <em class="sig-param">bbox=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">winname=None</em>, <em class="sig-param">dirname=None</em>, <em class="sig-param">move_distance=10</em>, <em class="sig-param">expansion_rate=1.1</em>, <em class="sig-param">cvKey=&lt;pycharmers.opencv.windows.cvKeys object&gt;</em>, <em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#TrackingWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.TrackingWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycharmers.opencv.windows.FrameWindow" title="pycharmers.opencv.windows.FrameWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.opencv.windows.FrameWindow</span></code></a></p>
+<p>OpenCV window for Trackings (images or video).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">TrackingWindow</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">window</span> <span class="o">=</span> <span class="n">TrackingWindow</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">,</span> <span class="n">tracker</span><span class="o">=</span><span class="s2">&quot;boosting&quot;</span><span class="p">,</span> <span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;xywh&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># window.describe()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">is_break</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">recieveKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">is_break</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.TrackingWindow.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bbox</span><span class="o">=</span><span class="default_value">0, 0, 0, 0</span></em>, <em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em>, <em class="sig-param"><span class="n">input_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#TrackingWindow.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.TrackingWindow.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.TrackingWindow.init_bbox_winname">
+<em class="property">property </em><code class="sig-name descname">init_bbox_winname</code><a class="headerlink" href="#pycharmers.opencv.windows.TrackingWindow.init_bbox_winname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.TrackingWindow.recieveKey">
+<code class="sig-name descname">recieveKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#TrackingWindow.recieveKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.TrackingWindow.recieveKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response according to Recieved key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – Input Key. (= <code class="docutils literal notranslate"><span class="pre">cv2.waitKey(0)</span></code>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>is_break (bool) Whether loop break or not. If break, destroy the window.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="pycharmers.opencv.windows.cvKeys">
 <em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">cvKeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">cv_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>

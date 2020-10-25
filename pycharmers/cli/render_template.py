@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import json
+import shutil
 import argparse
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -56,10 +57,12 @@ def render_template(argv=sys.argv[1:]):
     parser.add_argument("--show-all",     action="store_true", help="If True, show all template filenames in 'tmp-dir'")
     parser.add_argument("--quiet",        action="store_true", help="Whether to make the output quiet")
     parser.add_argument("--date-as-slug", action="store_true", help="Whether to use DATE as a Slug.")
+    parser.add_argument("--not-pelican",  action="store_true", help="Whether you want to render template for pelican or not.")
     args = parser.parse_args(argv)
 
     tmp_dir = args.tmp_dir
     verbose = not args.quiet
+    is_pelican = not args.not_pelican
     # Show all json file in 'json-dir'
     if args.show_all:
         print(f"Template directory: {toGREEN(tmp_dir)}")
@@ -69,27 +72,32 @@ def render_template(argv=sys.argv[1:]):
         sys.exit(-1)
 
     env = Environment(loader=FileSystemLoader(searchpath=tmp_dir))
-    def render_template(input_path, output_path, date_as_slug=args.date_as_slug):
+    def render_template(input_path, output_path, date_as_slug=args.date_as_slug, is_pelican=is_pelican):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_json:
             data = json.load(f_json)
         filename = os.path.splitext(os.path.basename(input_path))[0]
 
+        remove_suffix_num = lambda string : re.sub(pattern=r"(.+?)((?:\d+)?)$", repl=r"\1.html", string=string)
         # Arrange Head for Pelican.
-        head = data.get("head", {})
-        if date_as_slug or "Slug" not in head:
-            head["Slug"] = filename
-        if "Date" not in data:
-            # filename: YYYY-MM-DD hh:mm
-            dates = filename.split("-")
-            head["Date"] = "-".join(dates[:3]) + " " + ":".join(dates[-2:])
-        data["head"] = head
+        if is_pelican:
+            head = data.get("head", {})
+            if date_as_slug or "Slug" not in head:
+                head["Slug"] = filename
+            if "Date" not in data:
+                # filename: YYYY-MM-DD hh:mm
+                dates = filename.split("-")
+                head["Date"] = "-".join(dates[:3]) + " " + ":".join(dates[-2:])
+            # // Arranged Head for Pelican.
+            data["head"] = head
 
+        keys = [remove_suffix_num(key)[:-5] for key in data.keys()] # "hoge.html"[:-5] = "hoge"
         content = ""
         for key, vals in data.items():
             vals["id_"] = key
+            vals["keys_"] = keys
             if ("base_url" in vals) and (not vals["base_url"].endswith("/")): vals["base_url"] += "/"
-            template = env.get_template(re.sub(pattern=r"(.+?)((?:\d+)?)$", repl=r"\1.html", string=key))
+            template = env.get_template(remove_suffix_num(key))
             content += template.render(**vals)        
         with open(output_path, mode="w") as f_out:
             f_out.write(content)
@@ -117,3 +125,7 @@ def render_template(argv=sys.argv[1:]):
         for fp in p.glob("**/*.json"):
             fp = str(fp)
             render_template(fp, fp.replace(input_path, output_dir).replace(".json", ext))
+        
+        for fp in p.glob("**/*.md.raw"):
+            fp = str(fp)
+            shutil.copy(fp, fp.replace(".md.raw", ".md"))

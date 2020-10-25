@@ -1,0 +1,7 @@
+pycharmers.cli.cvWindow module
+==============================
+
+.. automodule:: pycharmers.cli.cvWindow
+   :members:
+   :undoc-members:
+   :show-inheritance:

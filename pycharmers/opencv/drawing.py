@@ -42,7 +42,7 @@ def convert_coords(bbox, to_type, from_type=""):
 def draw_bboxes_create(coord_type="xywh"):
     handleKeyError(lst=SUPPORTED_COORD_TYPES, coord_type=coord_type)
     def draw_bboxes(frame, bboxes, infos=None):
-        if not isinstance(bboxes, list):
+        if not hasattr(bboxes[0], "__iter__"):
             bboxes = [bboxes]
         if infos is None:
             infos = [{} for _ in range(len(bboxes))]
