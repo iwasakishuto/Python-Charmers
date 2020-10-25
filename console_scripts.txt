@@ -1,3 +1,5 @@
 pycharmers-show = pycharmers.cli.show:show_command_line_programs
 regexp-replacement = pycharmers.cli.regexp_replacement:regexp_replacement
 render-template = pycharmers.cli.render_template:render_template
+cv-window = pycharmers.cli.cvWindow:cvWindow
+pdfmine = pycharmers.cli.pdfmine:pdfmine

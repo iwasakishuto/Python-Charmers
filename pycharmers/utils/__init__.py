@@ -47,6 +47,7 @@ from .generic_utils import calc_rectangle_size
 from .generic_utils import readable_bytes
 from .generic_utils import get_create
 from .generic_utils import pycat
+from .generic_utils import formatted_enumerator
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import save_json

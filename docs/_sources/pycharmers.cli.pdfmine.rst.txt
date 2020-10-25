@@ -1,0 +1,7 @@
+pycharmers.cli.pdfmine module
+=============================
+
+.. automodule:: pycharmers.cli.pdfmine
+   :members:
+   :undoc-members:
+   :show-inheritance:

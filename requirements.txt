@@ -5,3 +5,6 @@ scipy
 opencv-python
 requests
 beautifulsoup4
+PyMuPDF
+Pillow
+camelot-py[cv]

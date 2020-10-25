@@ -144,6 +144,53 @@
 </dl>
 </dd></dl>
 
+<dl class="py class">
+<dt id="pycharmers.utils.generic_utils.formatted_enumerator">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">formatted_enumerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iterable</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#formatted_enumerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.formatted_enumerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generator which yeilds elements with formatted numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterable</strong> (<em>int</em>) – An object supporting iteration</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The enumerate object yields pairs containing a count (from start, which defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>) and a value yielded by the iterable argument.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pycharmers.utils.generic_utils.formatted_enumerator.total">
+<code class="sig-name descname">total</code><a class="headerlink" href="#pycharmers.utils.generic_utils.formatted_enumerator.total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of iterable elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.utils.generic_utils.formatted_enumerator.digit">
+<code class="sig-name descname">digit</code><a class="headerlink" href="#pycharmers.utils.generic_utils.formatted_enumerator.digit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Digit. It is used for formatting the index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">formatted_enumerator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen</span> <span class="o">=</span> <span class="n">formatted_enumerator</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="go">1 a</span>
+<span class="go">2 i</span>
+<span class="go">3 u</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.get_create">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corresp_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">class_</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">genre</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Python-Charmers'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_create" title="Permalink to this definition">¶</a></dt>

@@ -332,6 +332,47 @@
             <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> <span class="k">break</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
   
+<div class="viewcode-block" id="formatted_enumerator"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.formatted_enumerator">[docs]</a><span class="k">class</span> <span class="nc">formatted_enumerator</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Generator which yeilds elements with formatted numbers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterable (int)  : An object supporting iteration</span>
+<span class="sd">        start (int)     : The enumerate object yields pairs containing a count (from start, which defaults to ``1``) and a value yielded by the iterable argument.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        total (int) : Total number of iterable elements.</span>
+<span class="sd">        digit (int) : Digit. It is used for formatting the index.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import formatted_enumerator</span>
+<span class="sd">        &gt;&gt;&gt; gen = formatted_enumerator([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; for i,d in gen:</span>
+<span class="sd">        ...     print(i, d)</span>
+<span class="sd">        1 a</span>
+<span class="sd">        2 i</span>
+<span class="sd">        3 u        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span> <span class="o">=</span> <span class="n">iterable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">digit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span>
+    
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># Python2だと next(self) で定義</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_idx</span><span class="si">:</span><span class="s2">&gt;0</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">digit</span><span class="si">}}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
