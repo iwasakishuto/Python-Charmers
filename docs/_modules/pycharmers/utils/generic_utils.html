@@ -50,10 +50,12 @@
             
   <h1>Source code for pycharmers.utils.generic_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
 <span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="ne">KeyError</span>
@@ -310,16 +312,17 @@
 <span class="s2">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">get</span></div>
 
-<div class="viewcode-block" id="pycat"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.pycat">[docs]</a><span class="k">def</span> <span class="nf">pycat</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">head</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="pycat"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.pycat">[docs]</a><span class="k">def</span> <span class="nf">pycat</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">head</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count_number</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Display the contents of the specified ``file``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        head (int)      :</span>
-<span class="sd">        mode (str)      : The mode in which the file is opened. </span>
-<span class="sd">        buffering (int) : Set the buffering policy.</span>
-<span class="sd">        encoding (str)  : Name of the encoding used to encode the ``file``.</span>
-<span class="sd">        errors (str)    : How encoding errors are to be handled.</span>
-<span class="sd">        newline (str)   : How universal newlines works (it only applies to text mode)</span>
+<span class="sd">        head (int)          :</span>
+<span class="sd">        mode (str)          : The mode in which the file is opened. </span>
+<span class="sd">        buffering (int)     : Set the buffering policy.</span>
+<span class="sd">        encoding (str)      : Name of the encoding used to encode the ``file``.</span>
+<span class="sd">        errors (str)        : How encoding errors are to be handled.</span>
+<span class="sd">        newline (str)       : How universal newlines works (it only applies to text mode)</span>
+<span class="sd">        count_number (bool) : Whether to display line number.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG</span>
@@ -330,8 +333,114 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="n">buffering</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="n">newline</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()):</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> <span class="k">break</span>
+            <span class="k">if</span> <span class="n">count_number</span><span class="p">:</span> <span class="n">line</span> <span class="o">=</span> <span class="n">toGREEN</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">line</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
-  
+
+<div class="viewcode-block" id="pytree"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.pytree">[docs]</a><span class="k">def</span> <span class="nf">pytree</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;**/*&quot;</span><span class="p">,</span> <span class="n">disp_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;list contents of directories in a tree-like format.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        *args/**kwargs  : Argments for ``root = Path(*args, **kwargs)``</span>
+<span class="sd">        pattern (str)   : Argments for ``root.glob(pattern)``</span>
+<span class="sd">        disp_all (bool) : Whether not to ignore entries starting with .</span>
+<span class="sd">        max_level (int) : Max display depth of the directory tree.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pytree</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils._path import REPO_DIR</span>
+<span class="sd">        &gt;&gt;&gt; pytree(REPO_DIR, pattern=&quot;**/*.py&quot;, max_level=3)</span>
+<span class="sd">        /Users/iwasakishuto/Github/portfolio/Python-Charmers</span>
+<span class="sd">        ├── build</span>
+<span class="sd">        │   └── lib</span>
+<span class="sd">        │       ├── pycharmers</span>
+<span class="sd">        │       └── pyutils</span>
+<span class="sd">        ├── pycharmers</span>
+<span class="sd">        │   ├── __init__.py</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">class</span> <span class="nc">Tree</span><span class="p">():</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepaths</span><span class="o">=</span><span class="p">[],</span> <span class="n">disp_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Tree structure for ``pytree`` function.</span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">                filepaths (list): Filepaths which is to be printed.</span>
+<span class="sd">                disp_all (bool) : Whether not to ignore entries starting with .</span>
+<span class="sd">                max_level (int) : Max display depth of the directory tree.</span>
+<span class="sd">                </span>
+<span class="sd">            </span>
+<span class="sd">            Examples:</span>
+<span class="sd">                &gt;&gt;&gt; tree = Tree()</span>
+<span class="sd">                &gt;&gt;&gt; tree.run(REPO_DIR)</span>
+<span class="sd">                /Users/iwasakishuto/Github/portfolio/Python-Charmers</span>
+<span class="sd">                ├── Icon</span>
+<span class="sd">                ├── LICENSE</span>
+<span class="sd">                ├── MANIFEST.in</span>
+<span class="sd">                ├── Python_Charmers.egg-info</span>
+<span class="sd">                │   ├── PKG-INFO</span>
+<span class="sd">                :            </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="o">=</span> <span class="n">filepaths</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp_all</span> <span class="o">=</span> <span class="n">disp_all</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_level</span> <span class="o">=</span> <span class="n">max_level</span>
+            
+        <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_directories</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_files</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_directories</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_files</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">pathjoin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Join two or more pathname components, inserting &#39;/&#39; as needed, and remove &#39;./&#39; at the begining.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^\.\/&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">))</span>
+        
+        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Run ``tree`` command.</span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">                dirname: path to root directory .</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">dirname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_directories</span><span class="p">)</span><span class="si">}</span><span class="s2"> directories, </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files.&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">walk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Print filecontens in ``dirname`` recursively.</span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">                dirname (str)      : path to current directory.</span>
+<span class="sd">                depth (int)        : current depth.</span>
+<span class="sd">                print_prefix (str) : Prefix for clean output.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">filenames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span>
+                <span class="n">fn</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span> 
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="n">fp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">])</span>
+            <span class="p">])</span> 
+            <span class="n">num_filenames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+            
+            <span class="n">prefixes</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;├── &quot;</span><span class="p">,</span> <span class="s2">&quot;│   &quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">fn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_all</span><span class="p">):</span> <span class="k">continue</span>
+                <span class="n">abspath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+                <span class="c1"># Remember the file contents.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">abspath</span><span class="p">)</span>
+                <span class="c1"># Update prefixes for the last entries.</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">num_filenames</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="n">prefixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;└── &quot;</span><span class="p">,</span> <span class="s2">&quot;    &quot;</span><span class="p">)</span>
+                <span class="c1"># Print and walk recursively.</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">abspath</span><span class="p">):</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">toBLUE</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>      
+                <span class="nb">print</span><span class="p">(</span><span class="n">print_prefix</span><span class="o">+</span><span class="n">prefixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">fn</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">abspath</span><span class="p">)</span> <span class="ow">and</span> <span class="n">depth</span><span class="o">!=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_level</span><span class="p">:</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">abspath</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_prefix</span><span class="o">=</span><span class="n">print_prefix</span><span class="o">+</span><span class="n">prefixes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pattern</span><span class="p">)]</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">filepaths</span><span class="o">=</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">disp_all</span><span class="o">=</span><span class="n">disp_all</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=</span><span class="n">max_level</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">root</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="formatted_enumerator"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.formatted_enumerator">[docs]</a><span class="k">class</span> <span class="nc">formatted_enumerator</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Generator which yeilds elements with formatted numbers.</span>
 

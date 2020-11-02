@@ -71,7 +71,7 @@ def render_template(argv=sys.argv[1:]):
             print(f"* {toBLUE(os.path.basename(fn))}")
         sys.exit(-1)
 
-    env = Environment(loader=FileSystemLoader(searchpath=tmp_dir))
+    env = Environment(loader=FileSystemLoader(searchpath=tmp_dir), extensions=["jinja2.ext.loopcontrols"])
     def render_template(input_path, output_path, date_as_slug=args.date_as_slug, is_pelican=is_pelican):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_json:
