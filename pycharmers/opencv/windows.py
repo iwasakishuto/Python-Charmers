@@ -7,7 +7,7 @@ import cv2
 from ._path import save_dir_create
 from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_generator_concat,
                                   count_frame_num, create_VideoWriter)
-from .drawing import draw_text_with_bg
+from .drawing import draw_text_with_bg, draw_bboxes_create
 from .tracking import tracker_create, BBoxLogger
 from ..utils.generic_utils import now_str, flatten_dual, handleKeyError
 from ..utils._colorings import toBLUE, toGREEN, toACCENT

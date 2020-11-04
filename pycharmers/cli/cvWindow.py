@@ -1,4 +1,6 @@
+#coding: utf-8
 import cv2
+import sys
 from pycharmers.opencv import TrackingWindow, SAMPLE_VTEST_VIDEO
 
 def cvWindow(argv=sys.argv[1:]):
