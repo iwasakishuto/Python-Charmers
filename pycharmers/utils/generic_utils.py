@@ -1,8 +1,10 @@
 # coding: utf-8
+import os
 import re
 import json
 import math
 import datetime
+from pathlib import Path
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
@@ -259,16 +261,17 @@ def get_create(corresp_dict={}, class_=[], genre="", name="Python-Charmers"):
     """
     return get
 
-def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, newline=None):
+def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, newline=None, count_number=False):
     """Display the contents of the specified ``file``.
 
     Args:
-        head (int)      :
-        mode (str)      : The mode in which the file is opened. 
-        buffering (int) : Set the buffering policy.
-        encoding (str)  : Name of the encoding used to encode the ``file``.
-        errors (str)    : How encoding errors are to be handled.
-        newline (str)   : How universal newlines works (it only applies to text mode)
+        head (int)          :
+        mode (str)          : The mode in which the file is opened. 
+        buffering (int)     : Set the buffering policy.
+        encoding (str)      : Name of the encoding used to encode the ``file``.
+        errors (str)        : How encoding errors are to be handled.
+        newline (str)       : How universal newlines works (it only applies to text mode)
+        count_number (bool) : Whether to display line number.
 
     Examples:
         >>> from pycharmers.opencv import SAMPLE_LENA_IMG
@@ -279,8 +282,114 @@ def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, new
     with open(file, mode=mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline) as f:
         for i,line in enumerate(f.readlines()):
             if i==head: break
+            if count_number: line = toGREEN(i) + " " + line
             print(line, end="")
-  
+
+def pytree(*args, pattern="**/*", disp_all=False, max_level=-1, **kwargs):
+    """list contents of directories in a tree-like format.
+    
+    Args:
+        *args/**kwargs  : Argments for ``root = Path(*args, **kwargs)``
+        pattern (str)   : Argments for ``root.glob(pattern)``
+        disp_all (bool) : Whether not to ignore entries starting with .
+        max_level (int) : Max display depth of the directory tree.
+
+    Examples:
+        >>> from pycharmers.utils import pytree
+        >>> from pycharmers.utils._path import REPO_DIR
+        >>> pytree(REPO_DIR, pattern="**/*.py", max_level=3)
+        /Users/iwasakishuto/Github/portfolio/Python-Charmers
+        ├── build
+        │   └── lib
+        │       ├── pycharmers
+        │       └── pyutils
+        ├── pycharmers
+        │   ├── __init__.py
+    """
+    class Tree():
+        def __init__(self, filepaths=[], disp_all=False, max_level=-1):
+            """Tree structure for ``pytree`` function.
+            
+            Args:
+                filepaths (list): Filepaths which is to be printed.
+                disp_all (bool) : Whether not to ignore entries starting with .
+                max_level (int) : Max display depth of the directory tree.
+                
+            
+            Examples:
+                >>> tree = Tree()
+                >>> tree.run(REPO_DIR)
+                /Users/iwasakishuto/Github/portfolio/Python-Charmers
+                ├── Icon
+                ├── LICENSE
+                ├── MANIFEST.in
+                ├── Python_Charmers.egg-info
+                │   ├── PKG-INFO
+                :            
+            """
+            self.filepaths = filepaths
+            self.disp_all = disp_all
+            self.max_level = max_level
+            
+        def _init(self):
+            self.num_directories = 0
+            self.num_files = 0
+
+        def register(self, path):
+            if os.path.isdir(path):
+                self.num_directories += 1
+            else:
+                self.num_files += 1
+            
+        @staticmethod
+        def pathjoin(a, *p):
+            """Join two or more pathname components, inserting '/' as needed, and remove './' at the begining."""
+            return re.sub(pattern=r"^\.\/", repl="", string=os.path.join(a, *p))
+        
+        def run(self, dirname):
+            """Run ``tree`` command.
+            
+            Args:
+                dirname: path to root directory .
+            """
+            self._init()
+            print(toBLUE(dirname))
+            self.walk(dirname=dirname, depth=1, print_prefix="")
+            print(f"\n{toGREEN(self.num_directories)} directories, {toGREEN(self.num_files)} files.")
+
+        def walk(self, dirname, depth=1, print_prefix=""):
+            """Print filecontens in ``dirname`` recursively.
+            
+            Args:
+                dirname (str)      : path to current directory.
+                depth (int)        : current depth.
+                print_prefix (str) : Prefix for clean output.
+            """
+            filenames = sorted([
+                fn for fn in os.listdir(dirname) 
+                if len(self.filepaths)==0 or any([fp.startswith(self.pathjoin(dirname, fn)) for fp in self.filepaths])
+            ]) 
+            num_filenames = len(filenames)
+            
+            prefixes = ("├── ", "│   ")
+            for i,fn in enumerate(filenames):
+                if fn[0] == "." and (not self.disp_all): continue
+                abspath = os.path.join(dirname, fn)
+                # Remember the file contents.
+                self.register(abspath)
+                # Update prefixes for the last entries.
+                if i == num_filenames-1:  prefixes=("└── ", "    ")
+                # Print and walk recursively.
+                if os.path.isdir(abspath): fn = toBLUE(fn)      
+                print(print_prefix+prefixes[0]+fn)
+                if os.path.isdir(abspath) and depth!=self.max_level: 
+                    self.walk(dirname=abspath, depth=depth+1, print_prefix=print_prefix+prefixes[1])
+
+    root = Path(*args, **kwargs)
+    filepaths = [str(p) for p in root.glob(pattern)]
+    tree = Tree(filepaths=filepaths, disp_all=disp_all, max_level=max_level)
+    tree.run(str(root))
+
 class formatted_enumerator():
     """Generator which yeilds elements with formatted numbers.
 

@@ -104,20 +104,58 @@ def regexp_replacement(argv=sys.argv[1:]):
 
     # Get the contents from json and create a replacement functions.
     with open(json_path, mode="r") as f_json:
-        data = json.load(f_json).get("patterns", [])
+        data = json.load(f_json)
+        patterns = data.get("patterns", [])
+        escapes = data.get("escapes", [])
 
     # Replace Strings.
+    memory = {}; idx = 0
     def replace_str(string):
-        for pat, repl in data:
+        """Replace Strings.
+        
+            1. Encode strings
+            2. Replace the remaining strings
+            3. Decode strings.
+    
+        """
+        global memory, idx
+        memory = {}; idx = 0
+        
+        def encode_create(code="º"):
+            def encode(m):
+                global memory, idx
+                memory[idx] = m.group(0)
+                idx += 1
+                return code
+            return encode
+
+        def decode(m):
+            global memory, idx
+            ret = memory[idx]
+            idx += 1
+            return ret      
+
+        # Encoding
+        for pat, repl in escapes:
+            string = re.sub(pattern=rf"{pat}", repl=encode_create(code=repl), string=string)
+
+        # NOTE: Replacement
+        for pat, repl in patterns:
             string = re.sub(pattern=rf"{pat}", repl=rf"{repl}", string=string)
+
+        # Decoding
+        idx = 0
+        for pat, repl in escapes:
+            string = re.sub(pattern=repl, repl=decode, string=string)
         return string
+
     # Replace File contents.
     def replace_file(input_path, output_path):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_in:
             readlines = f_in.readlines()
         with open(output_path, mode="w") as f_out:
-            f_out.writelines([replace_str(line) for line in readlines])
+            f_out.writelines([replace_str("".join(readlines))])
 
     def add_suffix(path, suffix, sep="."):
         *fp, ext = path.split(sep)

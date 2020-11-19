@@ -5,11 +5,28 @@ import sys
 import json
 import shutil
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from ._path import PYCHARMERS_CLI_RENDER_TEMPLATES_DIR
 from ..utils._colorings import toBLUE, toGREEN
+
+def add_title_prefix_for_rawmeta(fp, ext=".raw"):
+    fp = str(fp)
+    with open(fp, mode="r") as fr:
+        content = fr.readlines()
+        title = content[0]
+    for key,fa in {
+        "(R)"      : "fab fa-r-project",
+        "(python)" : "fab fa-python",
+    }.items():
+        if key in title:
+            title = f': <i class="{fa}" style="color: #3e978b"></i>&thinsp;'.join(title.split(": "))
+    content[0] = title
+    with open(fp.replace(ext, ""), mode="w") as fw:
+        fw.writelines(content)
 
 def render_template(argv=sys.argv[1:]):
     """String replacement using regular expression
@@ -48,12 +65,21 @@ def render_template(argv=sys.argv[1:]):
                 $ render-template --show-all
                 Template directory: /Users/iwasakishuto/.pycharmers/cli/render_templates
                 * protocols.tpl
+
+        >>> # If you want to try the contents of the template
+        >>> from jinja2 import Environment, FileSystemLoader
+        >>> from pycharmers.cli._path import PYCHARMERS_CLI_RENDER_TEMPLATES_DIR
+        >>> env = Environment(loader=FileSystemLoader(searchpath=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR))
+        >>> template = env.get_template("template.tpl")
+        >>> print(template.render())
+        
     """
     parser = argparse.ArgumentParser(prog="render-template", add_help=True)
     parser.add_argument("-I",   "--input-path",  type=str, required=True, help="Path to input json file or directory.")
     parser.add_argument("-O",   "--output-path", type=str, default=None,  help="Path to output file or directory.")
     parser.add_argument("-td",  "--tmp-dir",     type=str, default=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR, help="Path to templates dir")
     parser.add_argument("-ext", "--extension",   type=str, default=".html", help="Create a file with this extension.")
+    parser.add_argument("--cmap",                type=str, default="tab10", help="Color map name which is supported in ``matplotlib``")
     parser.add_argument("--show-all",     action="store_true", help="If True, show all template filenames in 'tmp-dir'")
     parser.add_argument("--quiet",        action="store_true", help="Whether to make the output quiet")
     parser.add_argument("--date-as-slug", action="store_true", help="Whether to use DATE as a Slug.")
@@ -71,7 +97,8 @@ def render_template(argv=sys.argv[1:]):
             print(f"* {toBLUE(os.path.basename(fn))}")
         sys.exit(-1)
 
-    env = Environment(loader=FileSystemLoader(searchpath=tmp_dir))
+    colors_ = ['#{:02x}{:02x}{:02x}'.format(*tuple(rgb.astype(int))) for rgb in np.array(plt.get_cmap(args.cmap).colors)*255]
+    env = Environment(loader=FileSystemLoader(searchpath=tmp_dir), extensions=["jinja2.ext.loopcontrols"])
     def render_template(input_path, output_path, date_as_slug=args.date_as_slug, is_pelican=is_pelican):
         if verbose: print(f"- {input_path} -> {output_path}")
         with open(input_path, mode="r") as f_json:
@@ -94,11 +121,12 @@ def render_template(argv=sys.argv[1:]):
         keys = [remove_suffix_num(key)[:-5] for key in data.keys()] # "hoge.html"[:-5] = "hoge"
         content = ""
         for key, vals in data.items():
+            vals["colors_"] = colors_
             vals["id_"] = key
             vals["keys_"] = keys
             if ("base_url" in vals) and (not vals["base_url"].endswith("/")): vals["base_url"] += "/"
             template = env.get_template(remove_suffix_num(key))
-            content += template.render(**vals)        
+            content += template.render(**vals) + "\n"
         with open(output_path, mode="w") as f_out:
             f_out.write(content)
 
@@ -127,5 +155,7 @@ def render_template(argv=sys.argv[1:]):
             render_template(fp, fp.replace(input_path, output_dir).replace(".json", ext))
         
         for fp in p.glob("**/*.md.raw"):
-            fp = str(fp)
-            shutil.copy(fp, fp.replace(".md.raw", ".md"))
+            add_title_prefix_for_rawmeta(fp, ext=".raw")
+
+        for fp in p.glob("**/*.nbdata.raw"):
+            add_title_prefix_for_rawmeta(fp, ext=".raw")

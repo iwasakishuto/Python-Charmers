@@ -69,6 +69,11 @@
   <div class="section" id="module-pycharmers.cli.render_template">
 <span id="pycharmers-cli-render-template-module"></span><h1>pycharmers.cli.render_template module<a class="headerlink" href="#module-pycharmers.cli.render_template" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.cli.render_template.add_title_prefix_for_rawmeta">
+<code class="sig-prename descclassname">pycharmers.cli.render_template.</code><code class="sig-name descname">add_title_prefix_for_rawmeta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fp</span></em>, <em class="sig-param"><span class="n">ext</span><span class="o">=</span><span class="default_value">'.raw'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/render_template.html#add_title_prefix_for_rawmeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.render_template.add_title_prefix_for_rawmeta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.cli.render_template.render_template">
 <code class="sig-prename descclassname">pycharmers.cli.render_template.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/render_template.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.render_template.render_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>String replacement using regular expression</p>
@@ -118,6 +123,14 @@ Template directory: /Users/iwasakishuto/.pycharmers/cli/render_templates
 </dl>
 </li>
 </ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># If you want to try the contents of the template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.cli._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_CLI_RENDER_TEMPLATES_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">searchpath</span><span class="o">=</span><span class="n">PYCHARMERS_CLI_RENDER_TEMPLATES_DIR</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;template.tpl&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">())</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

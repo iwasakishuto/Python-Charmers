@@ -22,7 +22,11 @@ class ListParamProcessor(argparse.Action):
 
     """
     def __call__(self, parser, namespace, values, option_strings=None):
-        values = [str_strip(e) for e in values[1:-1].split(",")]
+        match = re.match(pattern=r"(?:\[|\()(.+)(?:\]|\))", string=values)
+        if match:
+            values = [str_strip(e) for e in match.group(1).split(",")]
+        else:
+            values = [values]
         setattr(namespace, self.dest, values)
 
 class DictParamProcessor(argparse.Action):

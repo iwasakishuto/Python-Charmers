@@ -334,7 +334,7 @@
 
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.pycat">
-<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">pycat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em>, <em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">buffering</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">errors</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">newline</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#pycat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.pycat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">pycat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em>, <em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">buffering</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">errors</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">newline</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">count_number</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#pycat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.pycat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the contents of the specified <code class="docutils literal notranslate"><span class="pre">file</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -345,6 +345,7 @@
 <li><p><strong>encoding</strong> (<em>str</em>) – Name of the encoding used to encode the <code class="docutils literal notranslate"><span class="pre">file</span></code>.</p></li>
 <li><p><strong>errors</strong> (<em>str</em>) – How encoding errors are to be handled.</p></li>
 <li><p><strong>newline</strong> (<em>str</em>) – How universal newlines works (it only applies to text mode)</p></li>
+<li><p><strong>count_number</strong> (<em>bool</em>) – Whether to display line number.</p></li>
 </ul>
 </dd>
 </dl>
@@ -354,6 +355,36 @@
 &gt;&gt;&gt; pycat(SAMPLE_LENA_IMG, mode=&quot;rb&quot;)
 b'ÿØÿàJFIFIIÿþ...
 </pre>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.pytree">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">pytree</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">pattern</span><span class="o">=</span><span class="default_value">'**/*'</span></em>, <em class="sig-param"><span class="n">disp_all</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_level</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#pytree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.pytree" title="Permalink to this definition">¶</a></dt>
+<dd><p>list contents of directories in a tree-like format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args/**kwargs</strong> – <p>Argments for <code class="docutils literal notranslate"><span class="pre">root</span> <span class="pre">=</span> <span class="pre">Path(*args,</span> <span class="pre">**kwargs)</span></code></p>
+</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – Argments for <code class="docutils literal notranslate"><span class="pre">root.glob(pattern)</span></code></p></li>
+<li><p><strong>disp_all</strong> (<em>bool</em>) – Whether not to ignore entries starting with .</p></li>
+<li><p><strong>max_level</strong> (<em>int</em>) – Max display depth of the directory tree.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pytree</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils._path</span> <span class="kn">import</span> <span class="n">REPO_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pytree</span><span class="p">(</span><span class="n">REPO_DIR</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;**/*.py&quot;</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">/Users/iwasakishuto/Github/portfolio/Python-Charmers</span>
+<span class="go">├── build</span>
+<span class="go">│   └── lib</span>
+<span class="go">│       ├── pycharmers</span>
+<span class="go">│       └── pyutils</span>
+<span class="go">├── pycharmers</span>
+<span class="go">│   ├── __init__.py</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
