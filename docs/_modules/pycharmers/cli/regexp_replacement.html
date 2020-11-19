@@ -155,20 +155,58 @@
 
     <span class="c1"># Get the contents from json and create a replacement functions.</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_json</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_json</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;patterns&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_json</span><span class="p">)</span>
+        <span class="n">patterns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;patterns&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">escapes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;escapes&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="c1"># Replace Strings.</span>
+    <span class="n">memory</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">def</span> <span class="nf">replace_str</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">pat</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Replace Strings.</span>
+<span class="sd">        </span>
+<span class="sd">            1. Encode strings</span>
+<span class="sd">            2. Replace the remaining strings</span>
+<span class="sd">            3. Decode strings.</span>
+<span class="sd">    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">memory</span><span class="p">,</span> <span class="n">idx</span>
+        <span class="n">memory</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">def</span> <span class="nf">encode_create</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s2">&quot;º&quot;</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">global</span> <span class="n">memory</span><span class="p">,</span> <span class="n">idx</span>
+                <span class="n">memory</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">code</span>
+            <span class="k">return</span> <span class="n">encode</span>
+
+        <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">global</span> <span class="n">memory</span><span class="p">,</span> <span class="n">idx</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">memory</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">ret</span>      
+
+        <span class="c1"># Encoding</span>
+        <span class="k">for</span> <span class="n">pat</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="n">escapes</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="n">encode_create</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">repl</span><span class="p">),</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
+
+        <span class="c1"># NOTE: Replacement</span>
+        <span class="k">for</span> <span class="n">pat</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
             <span class="n">string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repl</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
+
+        <span class="c1"># Decoding</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pat</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="n">escapes</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">repl</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">string</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string</span>
+
     <span class="c1"># Replace File contents.</span>
     <span class="k">def</span> <span class="nf">replace_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_in</span><span class="p">:</span>
             <span class="n">readlines</span> <span class="o">=</span> <span class="n">f_in</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_out</span><span class="p">:</span>
-            <span class="n">f_out</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="n">replace_str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">readlines</span><span class="p">])</span>
+            <span class="n">f_out</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="n">replace_str</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">readlines</span><span class="p">))])</span>
 
     <span class="k">def</span> <span class="nf">add_suffix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
         <span class="o">*</span><span class="n">fp</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>

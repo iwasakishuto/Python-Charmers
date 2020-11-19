@@ -18,12 +18,10 @@ def add_title_prefix_for_rawmeta(fp, ext=".raw"):
     with open(fp, mode="r") as fr:
         content = fr.readlines()
         title = content[0]
-    print(title)
     for key,fa in {
         "(R)"      : "fab fa-r-project",
         "(python)" : "fab fa-python",
     }.items():
-        print(f"{key}: {key in title}")
         if key in title:
             title = f': <i class="{fa}" style="color: #3e978b"></i>&thinsp;'.join(title.split(": "))
     content[0] = title
@@ -67,6 +65,14 @@ def render_template(argv=sys.argv[1:]):
                 $ render-template --show-all
                 Template directory: /Users/iwasakishuto/.pycharmers/cli/render_templates
                 * protocols.tpl
+
+        >>> # If you want to try the contents of the template
+        >>> from jinja2 import Environment, FileSystemLoader
+        >>> from pycharmers.cli._path import PYCHARMERS_CLI_RENDER_TEMPLATES_DIR
+        >>> env = Environment(loader=FileSystemLoader(searchpath=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR))
+        >>> template = env.get_template("template.tpl")
+        >>> print(template.render())
+        
     """
     parser = argparse.ArgumentParser(prog="render-template", add_help=True)
     parser.add_argument("-I",   "--input-path",  type=str, required=True, help="Path to input json file or directory.")
@@ -120,7 +126,7 @@ def render_template(argv=sys.argv[1:]):
             vals["keys_"] = keys
             if ("base_url" in vals) and (not vals["base_url"].endswith("/")): vals["base_url"] += "/"
             template = env.get_template(remove_suffix_num(key))
-            content += template.render(**vals)        
+            content += template.render(**vals) + "\n"
         with open(output_path, mode="w") as f_out:
             f_out.write(content)
 
