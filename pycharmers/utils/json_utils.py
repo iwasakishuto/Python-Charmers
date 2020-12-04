@@ -2,6 +2,7 @@
 import json
 import datetime
 import numpy as np
+from .generic_utils import str_strip
 
 class PythonCharmersJSONEncoder(json.JSONEncoder):
     """ Json encoder for Python data structures.
@@ -67,7 +68,7 @@ class PythonCharmersJSONEncoder(json.JSONEncoder):
         
         return super().default(obj)
     
-def save_json(obj, file, ensure_ascii=False, indent=2, cls=PythonCharmersJSONEncoder, **kwargs):
+def save_json(obj, file, ensure_ascii=False, indent=2, cls=PythonCharmersJSONEncoder, flatten_list=True, **kwargs):
     """ Save the json file with easy-to-use arguments
 
     Args:
@@ -76,6 +77,7 @@ def save_json(obj, file, ensure_ascii=False, indent=2, cls=PythonCharmersJSONEnc
         ensure_ascii (bool)    : If ``ensure_ascii`` is false, then the strings written to ``fp`` can contain non-ASCII characters if they appear in strings contained in ``obj``.
         indent (int)           : If ``indent`` is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. ``None`` is the most compact representation.
         cls (json.JSONEncoder) : To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the ``.default()`` method to serialize additional types), specify it with the ``cls`` kwarg; otherwise ``PythonCharmersJSONEncoder`` is used.
+        flatten_list (bool)    : Whether you want to flatten the list or not.
 
     Example:
         >>> import datetime
@@ -90,5 +92,17 @@ def save_json(obj, file, ensure_ascii=False, indent=2, cls=PythonCharmersJSONEnc
         }
 
     """
+    if flatten_list:
+        encoder = cls(ensure_ascii=ensure_ascii, indent=indent)
+        chunks=[]; num_brackets=0
+        for e in encoder.iterencode(obj, _one_shot=True):
+            if e[0]=="[": num_brackets+=1
+            elif e[0]=="]": num_brackets-=1    
+            if num_brackets>1: e = str_strip(e)
+            chunks.append(e)
+        text = ''.join(chunks).replace("[ ", "[")
+    else:
+        text = json.dumps(obj=obj, ensure_ascii=ensure_ascii, indent=indent, cls=cls, **kwargs)
+    
     with open(file=file, mode="w", encoding="utf-8") as fp:
-        json.dump(obj=obj, fp=fp, ensure_ascii=ensure_ascii, indent=indent, cls=cls, **kwargs)
+        fp.write(text)
