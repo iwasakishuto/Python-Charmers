@@ -79,6 +79,7 @@ def render_template(argv=sys.argv[1:]):
     parser.add_argument("-O",   "--output-path", type=str, default=None,  help="Path to output file or directory.")
     parser.add_argument("-td",  "--tmp-dir",     type=str, default=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR, help="Path to templates dir")
     parser.add_argument("-ext", "--extension",   type=str, default=".html", help="Create a file with this extension.")
+    parser.add_argument("--remove-pattern",      type=str, default=r".*\/data\/")
     parser.add_argument("--cmap",                type=str, default="tab10", help="Color map name which is supported in ``matplotlib``")
     parser.add_argument("--show-all",     action="store_true", help="If True, show all template filenames in 'tmp-dir'")
     parser.add_argument("--quiet",        action="store_true", help="Whether to make the output quiet")
@@ -89,6 +90,7 @@ def render_template(argv=sys.argv[1:]):
     tmp_dir = args.tmp_dir
     verbose = not args.quiet
     is_pelican = not args.not_pelican
+    remove_pattern = args.remove_pattern
     # Show all json file in 'json-dir'
     if args.show_all:
         print(f"Template directory: {toGREEN(tmp_dir)}")
@@ -152,6 +154,7 @@ def render_template(argv=sys.argv[1:]):
         p = Path(input_path)
         for fp in p.glob("**/*.json"):
             fp = str(fp)
+            if (remove_pattern is not None) and re.match(pattern=remove_pattern, string=fp): continue
             render_template(fp, fp.replace(input_path, output_dir).replace(".json", ext))
         
         for fp in p.glob("**/*.md.raw"):

@@ -53,6 +53,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span>
 
 <div class="viewcode-block" id="PythonCharmersJSONEncoder"><a class="viewcode-back" href="../../../pycharmers.utils.json_utils.html#pycharmers.utils.json_utils.PythonCharmersJSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">PythonCharmersJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Json encoder for Python data structures.</span>
@@ -118,7 +119,48 @@
         
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div></div>
     
-<div class="viewcode-block" id="save_json"><a class="viewcode-back" href="../../../pycharmers.utils.json_utils.html#pycharmers.utils.json_utils.save_json">[docs]</a><span class="k">def</span> <span class="nf">save_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PythonCharmersJSONEncoder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="dumps_json"><a class="viewcode-back" href="../../../pycharmers.utils.json_utils.html#pycharmers.utils.json_utils.dumps_json">[docs]</a><span class="k">def</span> <span class="nf">dumps_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PythonCharmersJSONEncoder</span><span class="p">,</span> <span class="n">flatten_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;dumps Json object to String.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj (dict)             : Serialize ``obj`` as a JSON formatted stream.</span>
+<span class="sd">        ensure_ascii (bool)    : If ``ensure_ascii`` is false, then the strings written to ``fp`` can contain non-ASCII characters if they appear in strings contained in ``obj``.</span>
+<span class="sd">        indent (int)           : If ``indent`` is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. ``None`` is the most compact representation.</span>
+<span class="sd">        cls (json.JSONEncoder) : To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the ``.default()`` method to serialize additional types), specify it with the ``cls`` kwarg; otherwise ``PythonCharmersJSONEncoder`` is used.</span>
+<span class="sd">        flatten_list (bool)    : Whether you want to flatten the list or not.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import datetime</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import dumps_json</span>
+<span class="sd">        &gt;&gt;&gt; print(dumps_json(obj={</span>
+<span class="sd">        ...    &quot;date&quot;: datetime.datetime.now(), </span>
+<span class="sd">        ...     &quot;bool&quot; : True,</span>
+<span class="sd">        ...     &quot;dual_list&quot;: [[1,2,3],[4,5,6]]</span>
+<span class="sd">        &gt;&gt;&gt; }))</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;date&quot;: &quot;2020-12-07T23:28:49.311962&quot;,</span>
+<span class="sd">            &quot;bool&quot;: true,</span>
+<span class="sd">            &quot;dual_list&quot;: [</span>
+<span class="sd">                [1, 2, 3],</span>
+<span class="sd">                [4, 5, 6]</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">flatten_list</span><span class="p">:</span>
+        <span class="n">encoder</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
+        <span class="n">chunks</span><span class="o">=</span><span class="p">[];</span> <span class="n">num_brackets</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">encoder</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_one_shot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;[&quot;</span><span class="p">:</span> <span class="n">num_brackets</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;]&quot;</span><span class="p">:</span> <span class="n">num_brackets</span><span class="o">-=</span><span class="mi">1</span>    
+            <span class="k">if</span> <span class="n">num_brackets</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span> <span class="n">e</span> <span class="o">=</span> <span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[ &quot;</span><span class="p">,</span> <span class="s2">&quot;[&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;NaN&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="save_json"><a class="viewcode-back" href="../../../pycharmers.utils.json_utils.html#pycharmers.utils.json_utils.save_json">[docs]</a><span class="k">def</span> <span class="nf">save_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">PythonCharmersJSONEncoder</span><span class="p">,</span> <span class="n">flatten_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Save the json file with easy-to-use arguments</span>
 
 <span class="sd">    Args:</span>
@@ -127,6 +169,7 @@
 <span class="sd">        ensure_ascii (bool)    : If ``ensure_ascii`` is false, then the strings written to ``fp`` can contain non-ASCII characters if they appear in strings contained in ``obj``.</span>
 <span class="sd">        indent (int)           : If ``indent`` is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. ``None`` is the most compact representation.</span>
 <span class="sd">        cls (json.JSONEncoder) : To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the ``.default()`` method to serialize additional types), specify it with the ``cls`` kwarg; otherwise ``PythonCharmersJSONEncoder`` is used.</span>
+<span class="sd">        flatten_list (bool)    : Whether you want to flatten the list or not.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import datetime</span>
@@ -136,13 +179,21 @@
 <span class="sd">        &gt;&gt;&gt;     for line in f.readlines():</span>
 <span class="sd">        &gt;&gt;&gt;         print(line, end=&quot;&quot;)</span>
 <span class="sd">        {</span>
-<span class="sd">        &quot;date&quot;: &quot;2020-09-13T20:45:56.614838&quot;,</span>
-<span class="sd">        &quot;bool&quot;: true</span>
+<span class="sd">            &quot;date&quot;: &quot;2020-09-13T20:45:56.614838&quot;,</span>
+<span class="sd">            &quot;bool&quot;: true</span>
 <span class="sd">        }</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">dumps_json</span><span class="p">(</span>
+        <span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> 
+        <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">,</span> 
+        <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> 
+        <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="p">,</span> 
+        <span class="n">flatten_list</span><span class="o">=</span><span class="n">flatten_list</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>    
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

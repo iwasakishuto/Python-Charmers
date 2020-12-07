@@ -51,6 +51,7 @@ from .generic_utils import pytree
 from .generic_utils import formatted_enumerator
 
 from .json_utils import PythonCharmersJSONEncoder
+from .json_utils import dumps_json
 from .json_utils import save_json
 
 from .monitor_utils import progress_reporthook_create
