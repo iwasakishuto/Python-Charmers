@@ -146,8 +146,43 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.json_utils.dumps_json">
+<code class="sig-prename descclassname">pycharmers.utils.json_utils.</code><code class="sig-name descname">dumps_json</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">ensure_ascii=False</em>, <em class="sig-param">indent=2</em>, <em class="sig-param">cls=&lt;class 'pycharmers.utils.json_utils.PythonCharmersJSONEncoder'&gt;</em>, <em class="sig-param">flatten_list=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/json_utils.html#dumps_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.json_utils.dumps_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>dumps Json object to String.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>dict</em>) – Serialize <code class="docutils literal notranslate"><span class="pre">obj</span></code> as a JSON formatted stream.</p></li>
+<li><p><strong>ensure_ascii</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, then the strings written to <code class="docutils literal notranslate"><span class="pre">fp</span></code> can contain non-ASCII characters if they appear in strings contained in <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</p></li>
+<li><p><strong>indent</strong> (<em>int</em>) – If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact representation.</p></li>
+<li><p><strong>cls</strong> (<em>json.JSONEncoder</em>) – To use a custom <code class="docutils literal notranslate"><span class="pre">JSONEncoder</span></code> subclass (e.g. one that overrides the <code class="docutils literal notranslate"><span class="pre">.default()</span></code> method to serialize additional types), specify it with the <code class="docutils literal notranslate"><span class="pre">cls</span></code> kwarg; otherwise <code class="docutils literal notranslate"><span class="pre">PythonCharmersJSONEncoder</span></code> is used.</p></li>
+<li><p><strong>flatten_list</strong> (<em>bool</em>) – Whether you want to flatten the list or not.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">dumps_json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dumps_json</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>   <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="s2">&quot;bool&quot;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;dual_list&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}))</span>
+<span class="go">{</span>
+<span class="go">    &quot;date&quot;: &quot;2020-12-07T23:28:49.311962&quot;,</span>
+<span class="go">    &quot;bool&quot;: true,</span>
+<span class="go">    &quot;dual_list&quot;: [</span>
+<span class="go">        [1, 2, 3],</span>
+<span class="go">        [4, 5, 6]</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.json_utils.save_json">
-<code class="sig-prename descclassname">pycharmers.utils.json_utils.</code><code class="sig-name descname">save_json</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">file</em>, <em class="sig-param">ensure_ascii=False</em>, <em class="sig-param">indent=2</em>, <em class="sig-param">cls=&lt;class 'pycharmers.utils.json_utils.PythonCharmersJSONEncoder'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/json_utils.html#save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.json_utils.save_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.utils.json_utils.</code><code class="sig-name descname">save_json</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">file</em>, <em class="sig-param">ensure_ascii=False</em>, <em class="sig-param">indent=2</em>, <em class="sig-param">cls=&lt;class 'pycharmers.utils.json_utils.PythonCharmersJSONEncoder'&gt;</em>, <em class="sig-param">flatten_list=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/json_utils.html#save_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.json_utils.save_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the json file with easy-to-use arguments</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -157,6 +192,7 @@
 <li><p><strong>ensure_ascii</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">ensure_ascii</span></code> is false, then the strings written to <code class="docutils literal notranslate"><span class="pre">fp</span></code> can contain non-ASCII characters if they appear in strings contained in <code class="docutils literal notranslate"><span class="pre">obj</span></code>.</p></li>
 <li><p><strong>indent</strong> (<em>int</em>) – If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact representation.</p></li>
 <li><p><strong>cls</strong> (<em>json.JSONEncoder</em>) – To use a custom <code class="docutils literal notranslate"><span class="pre">JSONEncoder</span></code> subclass (e.g. one that overrides the <code class="docutils literal notranslate"><span class="pre">.default()</span></code> method to serialize additional types), specify it with the <code class="docutils literal notranslate"><span class="pre">cls</span></code> kwarg; otherwise <code class="docutils literal notranslate"><span class="pre">PythonCharmersJSONEncoder</span></code> is used.</p></li>
+<li><p><strong>flatten_list</strong> (<em>bool</em>) – Whether you want to flatten the list or not.</p></li>
 </ul>
 </dd>
 </dl>
@@ -168,8 +204,8 @@
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 <span class="go">{</span>
-<span class="go">&quot;date&quot;: &quot;2020-09-13T20:45:56.614838&quot;,</span>
-<span class="go">&quot;bool&quot;: true</span>
+<span class="go">    &quot;date&quot;: &quot;2020-09-13T20:45:56.614838&quot;,</span>
+<span class="go">    &quot;bool&quot;: true</span>
 <span class="go">}</span>
 </pre></div>
 </div>

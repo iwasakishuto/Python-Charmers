@@ -1,0 +1,7 @@
+pycharmers.utils.pil\_utils module
+==================================
+
+.. automodule:: pycharmers.utils.pil_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
