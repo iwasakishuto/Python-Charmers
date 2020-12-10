@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:title" content="pycharmers.utils.download_utils module" />
+  <meta property="og:title" content="pycharmers.utils.pil_utils module" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.utils.download_utils.html" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.utils.pil_utils.html" />
   <meta property="og:description" content="" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <title>pycharmers.utils.download_utils module &#8212; Python-Charmers  documentation</title>
+    <title>pycharmers.utils.pil_utils module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.utils.generic_utils module" href="pycharmers.utils.generic_utils.html" />
-    <link rel="prev" title="pycharmers.utils.color_utils module" href="pycharmers.utils.color_utils.html" /> 
+    <link rel="next" title="pycharmers.utils.print_utils module" href="pycharmers.utils.print_utils.html" />
+    <link rel="prev" title="pycharmers.utils.numpy_utils module" href="pycharmers.utils.numpy_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.generic_utils.html" title="pycharmers.utils.generic_utils module"
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -57,7 +57,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.download_utils module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.pil_utils module</a></li> 
       </ul>
     </div>  
 
@@ -66,70 +66,37 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.utils.download_utils">
-<span id="pycharmers-utils-download-utils-module"></span><h1>pycharmers.utils.download_utils module<a class="headerlink" href="#module-pycharmers.utils.download_utils" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.utils.pil_utils">
+<span id="pycharmers-utils-pil-utils-module"></span><h1>pycharmers.utils.pil_utils module<a class="headerlink" href="#module-pycharmers.utils.pil_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="pycharmers.utils.download_utils.decide_extension">
-<code class="sig-prename descclassname">pycharmers.utils.download_utils.</code><code class="sig-name descname">decide_extension</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content_encoding</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">content_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/download_utils.html#decide_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.download_utils.decide_extension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decide File Extension based on <code class="docutils literal notranslate"><span class="pre">content_encoding</span></code> and <code class="docutils literal notranslate"><span class="pre">content_type</span></code></p>
+<dt id="pycharmers.utils.pil_utils.draw_text">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ttfontname</span><span class="o">=</span><span class="default_value">'SFNSTextCondensed-Bold.otf'</span></em>, <em class="sig-param"><span class="n">img_size</span><span class="o">=</span><span class="default_value">250, 250</span></em>, <em class="sig-param"><span class="n">text_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="o">=</span><span class="default_value">16</span></em>, <em class="sig-param"><span class="n">margin</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">bgRGB</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="o">=</span><span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw text in <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>content_encoding</strong> (<em>str</em>) – The MIME type of the resource or the data.</p></li>
-<li><p><strong>content_type</strong> (<em>str</em>) – The Content-Encoding entity header is used to compress the media-type.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) – The filename.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – Text to be drawn to <code class="docutils literal notranslate"><span class="pre">img</span></code>.</p></li>
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – The image to draw in. If this argment is <code class="docutils literal notranslate"><span class="pre">None</span></code>, img will be created using <code class="docutils literal notranslate"><span class="pre">img_size</span></code> and <code class="docutils literal notranslate"><span class="pre">bgRGB</span></code> arguments.</p></li>
+<li><p><strong>ttfontname</strong> (<em>str</em>) – A filename or file-like object containing a TrueType font.</p></li>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – The image size.</p></li>
+<li><p><strong>text_width</strong> (<em>int</em>) – The length of characters in one line.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em>) – The requested size, in points.</p></li>
+<li><p><strong>margin</strong> (<em>int</em>) – The margin size.</p></li>
+<li><p><strong>bgRGB</strong> (<em>tuple</em>) – The color of background image. (RGB)</p></li>
+<li><p><strong>textRGB</strong> (<em>tuple</em>) – The color of text. (RGB)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Starts with “.”</p>
+<dd class="field-even"><p>img, Length from top to bottom text line.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ext (str)</p>
+<dd class="field-odd"><p>tuple (PIL.Image, int)</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">decide_extension</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="o">=</span><span class="s2">&quot;x-gzip&quot;</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/zip&quot;</span><span class="p">)</span>
-<span class="go">.gz</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="go">.png</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/pdf&quot;</span><span class="p">)</span>
-<span class="go">.pdf</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.utils.download_utils.download_file">
-<code class="sig-prename descclassname">pycharmers.utils.download_utils.</code><code class="sig-name descname">download_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bar_width</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/download_utils.html#download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.download_utils.download_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download a file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<em>str</em>) – File URL.</p></li>
-<li><p><strong>dirname</strong> (<em>str</em>) – The directory where downloaded data will be saved.</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – path/to/downloaded_file</p></li>
-<li><p><strong>bar_width</strong> (<em>int</em>) – The width of progress bar.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – Whether print verbose or not.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>path/to/downloaded_file</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>path (str)</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">download_file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml&quot;</span><span class="p">)</span>
-<span class="go">Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml</span>
-<span class="go">            * Content-Encoding : None</span>
-<span class="go">            * Content-Length   : (333.404296875, &#39;MB&#39;)</span>
-<span class="go">            * Content-Type     : text/plain; charset=utf-8</span>
-<span class="go">            * Save Destination : ./haarcascade_eye.xml</span>
-<span class="go">haarcascade_eye.xml     100.0%[####################] 0.1[s] 5.5[GB/s]   eta -0.0[s]</span>
-<span class="go">&#39;./haarcascade_eye.xml&#39;</span>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">take_centers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">draw_text</span><span class="p">(</span><span class="s2">&quot;Hello World!!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;sample.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -192,15 +159,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.utils.color_utils.html"
-                        title="previous chapter">pycharmers.utils.color_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.numpy_utils.html"
+                        title="previous chapter">pycharmers.utils.numpy_utils module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.utils.generic_utils.html"
-                        title="next chapter">pycharmers.utils.generic_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.print_utils.html"
+                        title="next chapter">pycharmers.utils.print_utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pycharmers.utils.download_utils.rst.txt"
+      <li><a href="_sources/pycharmers.utils.pil_utils.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -228,10 +195,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.generic_utils.html" title="pycharmers.utils.generic_utils module"
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.color_utils.html" title="pycharmers.utils.color_utils module"
+          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -239,7 +206,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.download_utils module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.pil_utils module</a></li> 
       </ul>
     </div>
 

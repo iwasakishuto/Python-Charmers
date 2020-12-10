@@ -9,6 +9,7 @@ from . import download_utils
 from . import generic_utils
 from . import json_utils
 from . import monitor_utils
+from . import pil_utils
 from . import print_utils
 
 
@@ -59,6 +60,8 @@ from .monitor_utils import ProgressMonitor
 
 from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
+
+from .pil_utils import draw_text
 
 from .print_utils import Table
 from .print_utils import format_spec_create
