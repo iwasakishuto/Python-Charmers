@@ -52,6 +52,8 @@
 <span></span><span class="c1"># coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="k">as</span> <span class="nn">mlines</span>
+<span class="kn">import</span> <span class="nn">numbers</span>
 
 <span class="kn">from</span> <span class="nn">.layout</span> <span class="kn">import</span> <span class="n">FigAxes_create</span><span class="p">,</span> <span class="n">set_ax_info</span>
 <span class="kn">from</span> <span class="nn">..utils.numpy_utils</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">take_centers</span>
@@ -168,6 +170,65 @@
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">set_ax_info</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">predict_label</span><span class="p">,</span> <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">},</span> <span class="n">ylabel</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ylabel&quot;</span><span class="p">:</span><span class="n">answer_label</span><span class="p">,</span> <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="plot_lines"><a class="viewcode-back" href="../../../pycharmers.matplotlib.plot2d.html#pycharmers.matplotlib.plot2d.plot_lines">[docs]</a><span class="k">def</span> <span class="nf">plot_lines</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot lines.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (array)     : Array-like sample data.</span>
+<span class="sd">        ax (AxesSubplot) : The ``Axes`` instance.</span>
+<span class="sd">        transpose (bool) : Whether lines are horizontal or vertical.</span>
+<span class="sd">        margin (float)   : Whether plot as bar or graph.</span>
+<span class="sd">        label (str)      : The label for line&quot;s&quot; data.</span>
+<span class="sd">        kwargs (dict)    : The key word arguments for ``matplotlib.lines.Line2D``, ``linewidth`` , ``linestyle``, ``color (str)``, ``marker``</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import set_ax_info, plot_lines</span>
+<span class="sd">        &gt;&gt;&gt; #=== Data ===</span>
+<span class="sd">        &gt;&gt;&gt; names = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; dates = [&quot;early-Jan.&quot;,&quot;mid-Jan.&quot;,&quot;late-Jan.&quot;,&quot;early-Feb.&quot;,&quot;mid-Feb.&quot;,&quot;late-Feb.&quot;,&quot;early-Mar.&quot;,&quot;mid-Mar.&quot;,&quot;late-Mar.&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; month_colors = [&quot;#e30013&quot;, &quot;#4b73b6&quot;, &quot;#f09eb0&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; schedule_hope = [None, None, 4, 6, 2, 0, 3]</span>
+<span class="sd">        &gt;&gt;&gt; schedule_inconvenient = [[], [2], [1, 2, 3], [0, 1, 2, 5, 7, 8], [1, 3, 4, 5], [1, 2, 5], [0, 5, 6]]</span>
+<span class="sd">        &gt;&gt;&gt; num_names = len(names)</span>
+<span class="sd">        &gt;&gt;&gt; num_dates = len(dates)</span>
+<span class="sd">        &gt;&gt;&gt; #=== Plot ===</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots(figsize=(12,8), dpi=80, facecolor=&quot;white&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ax = plot_lines(data=schedule_inconvenient, ax=ax, transpose=True, color=&quot;black&quot;, label=&quot;Inconvenient&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ax.scatter(x=schedule_hope, y=[i for i in range(len(schedule_hope))], color=&quot;red&quot;, s=100, marker=&quot;*&quot;, label=&quot;Hope&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; for i,color in enumerate(month_colors):</span>
+<span class="sd">        ...     ax.fill((i*3-0.5,i*3-0.5,(i+1)*3-0.5,(i+1)*3-0.5), (num_names,0,0,num_names), color=color, alpha=0.1, label=dates[i*3].split(&quot;-&quot;)[-1]) </span>
+<span class="sd">        &gt;&gt;&gt; #=== Decoration ===</span>
+<span class="sd">        &gt;&gt;&gt; ax = set_ax_info(ax, **{</span>
+<span class="sd">        ...     &quot;xticks&quot;:      {&quot;ticks&quot; : [i for i in range(num_dates)]},</span>
+<span class="sd">        ...     &quot;xticklabels&quot;: {&quot;labels&quot;: dates, &quot;fontsize&quot;:16},</span>
+<span class="sd">        ...     &quot;yticks&quot;:      {&quot;ticks&quot; : [i for i in range(num_names)]},</span>
+<span class="sd">        ...     &quot;yticklabels&quot;: {&quot;labels&quot;: names, &quot;fontsize&quot;:16},</span>
+<span class="sd">        ...     &quot;title&quot;:       {&quot;label&quot;: &quot;Results of Schedule Adjustment&quot;, &quot;fontsize&quot;:20},</span>
+<span class="sd">        &gt;&gt;&gt; })</span>
+<span class="sd">        &gt;&gt;&gt; ax.legend()</span>
+<span class="sd">        &gt;&gt;&gt; plt.tight_layout()</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">newline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">xdata</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">];</span> <span class="n">ydata</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">y</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
+            <span class="n">xdata</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">margin</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ydata</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">-</span><span class="n">margin</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">margin</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">(</span><span class="n">xdata</span><span class="o">=</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="o">=</span><span class="n">ydata</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ax</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">ith_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ith_data</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span> <span class="n">ith_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">ith_data</span><span class="p">]</span>
+        <span class="n">i_</span><span class="o">=</span><span class="n">i</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ith_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
+                <span class="n">e</span><span class="p">,</span><span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i_</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>                
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">newline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">newline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span></div>
 </pre></div>
 

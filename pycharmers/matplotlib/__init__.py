@@ -20,6 +20,7 @@ from .layout import clear_grid
 from .plot2d import plot_hist
 from .plot2d import plot_cumulative_ratio
 from .plot2d import plot_classification_performance
+from .plot2d import plot_lines
 
 from .plot3d import stl2mpl_data
 from .plot3d import plot_stl_file
