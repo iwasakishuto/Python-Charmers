@@ -116,6 +116,27 @@
         <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_labels</span><span class="p">,</span> <span class="n">num_labels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
     <span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">cm</span></div>
+
+<div class="viewcode-block" id="rotate2d"><a class="viewcode-back" href="../../../pycharmers.utils.numpy_utils.html#pycharmers.utils.numpy_utils.rotate2d">[docs]</a><span class="k">def</span> <span class="nf">rotate2d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rotate 2d vectors using Rotation matrix :math:`R(\\theta)` </span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        R(\\theta) = \\left( \\begin{array}{c} \\cos\\theta &amp; -\\sin\\theta \\\\ \\sin\\theta &amp; \\cos\\theta \\end{array} \\right)</span>
+
+<span class="sd">    Using this matrix, the rotation of the vector can be expressed as follows.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\left( \\begin{array}{c} x^{\\prime} \\\\ y^{\\prime} \\end{array} \\right) = \\left( \\begin{array}{c} \\cos\\theta &amp; -\\sin\\theta \\\\ \\sin\\theta &amp; \\cos\\theta \\end{array} \\right)\\left( \\begin{array}{c} x \\\\ y \\end{array} \\right)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a (ndarray)   : Array</span>
+<span class="sd">        theta (float) : float value like `1/2*np.pi`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],[</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">R</span> <span class="o">@</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span></div>
 </pre></div>
 
             <div class="clearer"></div>

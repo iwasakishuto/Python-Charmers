@@ -65,3 +65,24 @@ def confusion_matrix(y_true, y_pred):
         shape=(num_labels, num_labels), dtype=np.int64,
     ).toarray()
     return cm
+
+def rotate2d(a, theta):
+    """Rotate 2d vectors using Rotation matrix :math:`R(\\theta)` 
+
+    .. math::
+
+        R(\\theta) = \\left( \\begin{array}{c} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{array} \\right)
+
+    Using this matrix, the rotation of the vector can be expressed as follows.
+
+    .. math::
+
+        \\left( \\begin{array}{c} x^{\\prime} \\\\ y^{\\prime} \\end{array} \\right) = \\left( \\begin{array}{c} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{array} \\right)\\left( \\begin{array}{c} x \\\\ y \\end{array} \\right)
+
+    Args:
+        a (ndarray)   : Array
+        theta (float) : float value like `1/2*np.pi`
+    """
+    c, s = np.cos(theta), np.sin(theta)
+    R = np.array([[c, -s],[s, c]])
+    return (R @ a.reshape(2,1)).squeeze()

@@ -60,6 +60,7 @@ from .monitor_utils import ProgressMonitor
 
 from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
+from .numpy_utils import rotate2d
 
 from .pil_utils import draw_text
 
