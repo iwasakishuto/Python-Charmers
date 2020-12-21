@@ -28,6 +28,14 @@ def add_title_prefix_for_rawmeta(fp, ext=".raw"):
     with open(fp.replace(ext, ""), mode="w") as fw:
         fw.writelines(content)
 
+def add_extra_keys(keys, data):
+    if "photowall" in data:
+        photowall = data["photowall"]
+        if photowall.get("administration", False):
+            keys.append("administration")
+        if photowall.get("extraction", False):
+            keys.append("extraction")
+
 def render_template(argv=sys.argv[1:]):
     """String replacement using regular expression
 
@@ -121,6 +129,7 @@ def render_template(argv=sys.argv[1:]):
             data["head"] = head
 
         keys = [remove_suffix_num(key)[:-5] for key in data.keys()] # "hoge.html"[:-5] = "hoge"
+        add_extra_keys(keys, data)
         content = ""
         for key, vals in data.items():
             vals["colors_"] = colors_

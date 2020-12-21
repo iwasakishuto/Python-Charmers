@@ -16,6 +16,7 @@ Submodules
    pycharmers.utils.numpy_utils
    pycharmers.utils.pil_utils
    pycharmers.utils.print_utils
+   pycharmers.utils.templates
 
 Module contents
 ---------------

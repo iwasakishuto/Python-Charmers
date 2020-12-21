@@ -1,6 +1,8 @@
 # coding: utf-8
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
+import numbers
 
 from .layout import FigAxes_create, set_ax_info
 from ..utils.numpy_utils import confusion_matrix, take_centers
@@ -117,4 +119,63 @@ def plot_classification_performance(cm=None, y_true=None, y_pred=None, cmap="RdB
         for j in range(cm.shape[1]):
             ax.text(x=j, y=i, s=cm[i, j], va="center", ha="center")
     ax = set_ax_info(ax, title={"label": predict_label, "fontsize": 16}, ylabel={"ylabel":answer_label, "fontsize": 16})
+    return ax
+
+def plot_lines(data, ax=None, transpose=False, margin=0.5, label=None, linewidth=None, linestyle=None, color=None, marker=None, **kwargs):
+    """Plot lines.
+
+    Args:
+        data (array)     : Array-like sample data.
+        ax (AxesSubplot) : The ``Axes`` instance.
+        transpose (bool) : Whether lines are horizontal or vertical.
+        margin (float)   : Whether plot as bar or graph.
+        label (str)      : The label for line"s" data.
+        kwargs (dict)    : The key word arguments for ``matplotlib.lines.Line2D``, ``linewidth`` , ``linestyle``, ``color (str)``, ``marker``
+
+    Examples:
+        >>> import matplotlib.pyplot as plt
+        >>> from pycharmers.matplotlib import set_ax_info, plot_lines
+        >>> #=== Data ===
+        >>> names = ["A", "B", "C", "D", "E", "F", "G"]
+        >>> dates = ["early-Jan.","mid-Jan.","late-Jan.","early-Feb.","mid-Feb.","late-Feb.","early-Mar.","mid-Mar.","late-Mar."]
+        >>> month_colors = ["#e30013", "#4b73b6", "#f09eb0"]
+        >>> schedule_hope = [None, None, 4, 6, 2, 0, 3]
+        >>> schedule_inconvenient = [[], [2], [1, 2, 3], [0, 1, 2, 5, 7, 8], [1, 3, 4, 5], [1, 2, 5], [0, 5, 6]]
+        >>> num_names = len(names)
+        >>> num_dates = len(dates)
+        >>> #=== Plot ===
+        >>> fig, ax = plt.subplots(figsize=(12,8), dpi=80, facecolor="white")
+        >>> ax = plot_lines(data=schedule_inconvenient, ax=ax, transpose=True, color="black", label="Inconvenient")
+        >>> ax.scatter(x=schedule_hope, y=[i for i in range(len(schedule_hope))], color="red", s=100, marker="*", label="Hope")
+        >>> for i,color in enumerate(month_colors):
+        ...     ax.fill((i*3-0.5,i*3-0.5,(i+1)*3-0.5,(i+1)*3-0.5), (num_names,0,0,num_names), color=color, alpha=0.1, label=dates[i*3].split("-")[-1]) 
+        >>> #=== Decoration ===
+        >>> ax = set_ax_info(ax, **{
+        ...     "xticks":      {"ticks" : [i for i in range(num_dates)]},
+        ...     "xticklabels": {"labels": dates, "fontsize":16},
+        ...     "yticks":      {"ticks" : [i for i in range(num_names)]},
+        ...     "yticklabels": {"labels": names, "fontsize":16},
+        ...     "title":       {"label": "Results of Schedule Adjustment", "fontsize":20},
+        >>> })
+        >>> ax.legend()
+        >>> plt.tight_layout()
+        >>> plt.show()
+    """
+    def newline(x,y,ax,label=None):
+        xdata = [x,x]; ydata = [y,y]
+        if transpose:
+            xdata = [x-margin,x+margin]
+        else:
+            ydata = [y-margin,y+margin]
+        ax.add_line(mlines.Line2D(xdata=xdata, ydata=ydata, linewidth=linewidth, linestyle=linestyle, color=color, marker=marker, label=label, **kwargs))
+        return ax
+    
+    for i,ith_data in enumerate(data):
+        if isinstance(ith_data, numbers.Number): ith_data = [ith_data]
+        i_=i
+        for e in ith_data:
+            if transpose:
+                e,i = (i_,e)                
+            ax = newline(x=i, y=e, ax=ax, label=None)
+    ax = newline(x=i, y=e, ax=ax, label=label)
     return ax

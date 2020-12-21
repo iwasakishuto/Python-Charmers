@@ -79,6 +79,14 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
         <span class="n">fw</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="add_extra_keys"><a class="viewcode-back" href="../../../pycharmers.cli.render_template.html#pycharmers.cli.render_template.add_extra_keys">[docs]</a><span class="k">def</span> <span class="nf">add_extra_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;photowall&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">photowall</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;photowall&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">photowall</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;administration&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;administration&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">photowall</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extraction&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;extraction&quot;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="render_template"><a class="viewcode-back" href="../../../pycharmers.cli.render_template.html#pycharmers.cli.render_template.render_template">[docs]</a><span class="k">def</span> <span class="nf">render_template</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
     <span class="sd">&quot;&quot;&quot;String replacement using regular expression</span>
 
@@ -172,6 +180,7 @@
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">head</span>
 
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_suffix_num</span><span class="p">(</span><span class="n">key</span><span class="p">)[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span> <span class="c1"># &quot;hoge.html&quot;[:-5] = &quot;hoge&quot;</span>
+        <span class="n">add_extra_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">vals</span><span class="p">[</span><span class="s2">&quot;colors_&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors_</span>

@@ -11,6 +11,7 @@ from . import json_utils
 from . import monitor_utils
 from . import pil_utils
 from . import print_utils
+from . import templates
 
 
 from ._colorings import *
@@ -50,6 +51,7 @@ from .generic_utils import get_create
 from .generic_utils import pycat
 from .generic_utils import pytree
 from .generic_utils import formatted_enumerator
+from .generic_utils import open_new_tab
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json
@@ -60,6 +62,7 @@ from .monitor_utils import ProgressMonitor
 
 from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
+from .numpy_utils import rotate2d
 
 from .pil_utils import draw_text
 
@@ -67,3 +70,5 @@ from .print_utils import Table
 from .print_utils import format_spec_create
 from .print_utils import print_func_create
 from .print_utils import print_dict_tree
+
+from .templates import render_template

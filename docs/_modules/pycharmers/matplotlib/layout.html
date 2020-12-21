@@ -50,10 +50,14 @@
             
   <h1>Source code for pycharmers.matplotlib.layout</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 
-<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span><span class="p">,</span> <span class="n">list_transpose</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span><span class="p">,</span> <span class="n">list_transpose</span><span class="p">,</span> <span class="n">open_new_tab</span>
+<span class="kn">from</span> <span class="nn">..utils.templates</span> <span class="kn">import</span> <span class="n">render_template</span>
+<span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_HTML_DIR</span>
 
 <div class="viewcode-block" id="FigAxes_create"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.FigAxes_create">[docs]</a><span class="k">def</span> <span class="nf">FigAxes_create</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfigs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Create a figure and a subplot (a set of subplots).</span>
@@ -193,6 +197,16 @@
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">figsize</span>
     <span class="n">total_figsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="o">*</span><span class="n">ncols</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="n">nrows</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="show_all_fonts"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.show_all_fonts">[docs]</a><span class="k">def</span> <span class="nf">show_all_fonts</span><span class="p">():</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;matplotlib.font_manager.fontManager.ttflist.html&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PYCHARMERS_HTML_DIR</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="n">render_template</span><span class="p">(</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span> 
+        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))},</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">path</span>
+    <span class="p">)</span>
+    <span class="n">open_new_tab</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

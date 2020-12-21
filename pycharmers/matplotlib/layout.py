@@ -1,8 +1,12 @@
 # coding: utf-8
+import os
+import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from ..utils.generic_utils import calc_rectangle_size, list_transpose
+from ..utils.generic_utils import calc_rectangle_size, list_transpose, open_new_tab
+from ..utils.templates import render_template
+from ..utils._path import PYCHARMERS_HTML_DIR
 
 def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, ncols=1, nrows=1, axis=0, **kwargs):
     """ Create a figure and a subplot (a set of subplots).
@@ -142,3 +146,13 @@ def measure_canvas(nfigs, ncols=2, figsize=(6,4)):
     w, h = figsize
     total_figsize = (w*ncols, h*nrows)
     return (ncols, nrows, total_figsize)
+
+def show_all_fonts():
+    fn = "matplotlib.font_manager.fontManager.ttflist.html"
+    path = os.path.join(PYCHARMERS_HTML_DIR, fn)
+    render_template(
+        source="fonts.html", 
+        content={"fonts": sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))},
+        path=path
+    )
+    open_new_tab(path)

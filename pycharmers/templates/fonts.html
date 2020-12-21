@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}All Fonts{% endblock title %}
+{%- block content %}
+    <h1>Available Fonts</h1>
+    <ul>
+      {%- for font in fonts %}
+      <li>{{ font }}: <span style='font-family:{{ font }}; font-size: 2em;'>{{ font }}</li>
+      {%- endfor %}
+    </ul>
+{%- endblock %}

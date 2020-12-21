@@ -115,6 +115,25 @@ to be in group <span class="math notranslate nohighlight">\(j\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.numpy_utils.rotate2d">
+<code class="sig-prename descclassname">pycharmers.utils.numpy_utils.</code><code class="sig-name descname">rotate2d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/numpy_utils.html#rotate2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.numpy_utils.rotate2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate 2d vectors using Rotation matrix <span class="math notranslate nohighlight">\(R(\theta)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R(\theta) = \left( \begin{array}{c} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{array} \right)\end{split}\]</div>
+<p>Using this matrix, the rotation of the vector can be expressed as follows.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left( \begin{array}{c} x^{\prime} \\ y^{\prime} \end{array} \right) = \left( \begin{array}{c} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{array} \right)\left( \begin{array}{c} x \\ y \end{array} \right)\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>ndarray</em>) – Array</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – float value like <cite>1/2*np.pi</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.numpy_utils.take_centers">
 <code class="sig-prename descclassname">pycharmers.utils.numpy_utils.</code><code class="sig-name descname">take_centers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/numpy_utils.html#take_centers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.numpy_utils.take_centers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a center values.</p>

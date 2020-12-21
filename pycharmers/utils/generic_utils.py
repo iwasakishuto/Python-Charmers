@@ -4,6 +4,7 @@ import re
 import json
 import math
 import datetime
+import webbrowser
 from pathlib import Path
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
@@ -431,3 +432,23 @@ class formatted_enumerator():
         idx = f"{self._idx:>0{self.digit}}"
         self._i += 1
         return (idx, element)
+
+def open_new_tab(url):
+    """Open ``url`` in  a new page ("tab") of the default browser.
+
+    Args:
+        url (str): Local file path or url.
+
+    Returns:
+        flag (bool): Whether it was successful or not.
+    
+    Examples:
+        >>> from pycharmers.utils import open_new_tab
+        >>> open_new_tab("https://google.com")
+        True
+        >>> open_new_tab("sample.html")
+        True
+    """
+    if os.path.exists(url):
+        url = "file://" + os.path.abspath(url)
+    return webbrowser.open_new_tab(url)
