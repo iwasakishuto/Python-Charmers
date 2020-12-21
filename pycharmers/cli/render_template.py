@@ -37,7 +37,7 @@ def add_extra_keys(keys, data):
             keys.append("extraction")
 
 def render_template(argv=sys.argv[1:]):
-    """String replacement using regular expression
+    """Render templates.
 
     Args:
         -I/--input-path (str)  : Path to a input json file or directory.
