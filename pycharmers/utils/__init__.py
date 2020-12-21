@@ -52,6 +52,7 @@ from .generic_utils import pycat
 from .generic_utils import pytree
 from .generic_utils import formatted_enumerator
 from .generic_utils import open_new_tab
+from .generic_utils import remove_invalid_fn
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json

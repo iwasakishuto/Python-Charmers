@@ -452,3 +452,18 @@ def open_new_tab(url):
     if os.path.exists(url):
         url = "file://" + os.path.abspath(url)
     return webbrowser.open_new_tab(url)
+
+def remove_invalid_fn(fn):
+    """Remove invalid file name.
+
+    Args:
+        fn (str) : filename
+
+    Example:
+        >>> from pycharmers.utils import remove_invalid_fn
+        >>> remove_invalid_fn(fn="Is plasticity of synapses the mechanism of long-term memory storage?")
+        'Is plasticity of synapses the mechanism of long-term memory storage'
+        >>> remove_invalid_fn(fn="siDirect 2.0: updated software for designing functional siRNA with reduced seed-dependent off-target effect")
+        'siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect'
+    """
+    return re.sub(pattern=r'[\\\/\?\*\|<>":;]+', repl='', string=fn)

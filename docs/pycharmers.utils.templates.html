@@ -79,7 +79,8 @@
 <p>The contents of the file are as follows:
 .. code-block:: html</p>
 <blockquote>
-<div><p>&lt;!DOCTYPE html&gt;
+<div><p>{%- if add_base -%}
+&lt;!DOCTYPE html&gt;
 &lt;html lang=”en”&gt;</p>
 <blockquote>
 <div><dl class="simple">
@@ -101,13 +102,16 @@
 </dl>
 <p>&lt;/head&gt;
 &lt;body&gt;</p>
-<blockquote>
-<div><p>{%- block content %}
+</div></blockquote>
+<dl class="simple">
+<dt>{%- endif -%}</dt><dd><p>{%- block content %}
 {%- endblock %}</p>
-</div></blockquote>
-<p>&lt;/body&gt;</p>
-</div></blockquote>
-<p>&lt;/html&gt;</p>
+</dd>
+<dt>{%- if add_base -%}</dt><dd><p>&lt;/body&gt;</p>
+</dd>
+</dl>
+<p>&lt;/html&gt;
+{%- endif -%}</p>
 </div></blockquote>
 </dd></dl>
 

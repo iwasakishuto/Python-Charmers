@@ -1,3 +1,4 @@
+{%- if add_base -%}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,7 +18,10 @@
     {% include 'style.html' %}
   </head>
   <body>
+{%- endif -%}
     {%- block content %}
     {%- endblock %}
+{%- if add_base -%}
   </body>
 </html>
+{%- endif -%}

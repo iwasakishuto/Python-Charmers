@@ -503,6 +503,21 @@
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">webbrowser</span><span class="o">.</span><span class="n">open_new_tab</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="remove_invalid_fn"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.remove_invalid_fn">[docs]</a><span class="k">def</span> <span class="nf">remove_invalid_fn</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove invalid file name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fn (str) : filename</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import remove_invalid_fn</span>
+<span class="sd">        &gt;&gt;&gt; remove_invalid_fn(fn=&quot;Is plasticity of synapses the mechanism of long-term memory storage?&quot;)</span>
+<span class="sd">        &#39;Is plasticity of synapses the mechanism of long-term memory storage&#39;</span>
+<span class="sd">        &gt;&gt;&gt; remove_invalid_fn(fn=&quot;siDirect 2.0: updated software for designing functional siRNA with reduced seed-dependent off-target effect&quot;)</span>
+<span class="sd">        &#39;siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">\/\?\*\|&lt;&gt;&quot;:;]+&#39;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
