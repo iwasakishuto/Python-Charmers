@@ -1,0 +1,7 @@
+pycharmers.utils.templates module
+=================================
+
+.. automodule:: pycharmers.utils.templates
+   :members:
+   :undoc-members:
+   :show-inheritance:

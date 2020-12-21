@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.utils.templates module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.utils.templates.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.utils.templates module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pycharmers.utils.print_utils module" href="pycharmers.utils.print_utils.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.templates module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.utils.templates">
+<span id="pycharmers-utils-templates-module"></span><h1>pycharmers.utils.templates module<a class="headerlink" href="#module-pycharmers.utils.templates" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.utils.templates.base_html">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">base_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.base_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Where this file is.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p>The contents of the file are as follows:
+.. code-block:: html</p>
+<blockquote>
+<div><p>&lt;!DOCTYPE html&gt;
+&lt;html lang=”en”&gt;</p>
+<blockquote>
+<div><dl class="simple">
+<dt>&lt;head&gt;</dt><dd><p>&lt;meta charset=”UTF-8” /&gt;
+&lt;meta name=”viewport” content=”width=device-width, initial-scale=1.0” /&gt;
+&lt;meta name=”twitter:card” content=”summary” /&gt;
+&lt;meta name=”twitter:site” content=”&#64;cabernet_rock” /&gt;
+&lt;meta name=”twitter:image:src” content=”https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png”&gt;
+&lt;meta property=”og:url” content=”https://github.com/iwasakishuto/Python-Charmers” /&gt;
+&lt;meta property=”og:site_name” content=”Python-Charmers” /&gt;
+&lt;meta property=”og:title” content=”Python-Charmers” /&gt;
+&lt;meta property=”og:description” content=”Translation Gummy is a collection of useful python programs.” /&gt;
+&lt;meta property=”og:image” content=”https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true” /&gt;
+&lt;title&gt;{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}&lt;/title&gt;
+&lt;link rel=”shortcut icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png”/&gt;
+&lt;link rel=”apple-touch-icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png” sizes=”152x152”&gt;
+{% include ‘style.html’ %}</p>
+</dd>
+</dl>
+<p>&lt;/head&gt;
+&lt;body&gt;</p>
+<blockquote>
+<div><p>{%- block content %}
+{%- endblock %}</p>
+</div></blockquote>
+<p>&lt;/body&gt;</p>
+</div></blockquote>
+<p>&lt;/html&gt;</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.templates.fonts_html">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">fonts_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.fonts_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/fonts.html</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Where this file is.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p>The contents of the file are as follows:
+.. code-block:: html</p>
+<blockquote>
+<div><p>{% extends ‘base.html’ %}
+{% block title %}All Fonts{% endblock title %}
+{%- block content %}</p>
+<blockquote>
+<div><p>&lt;h1&gt;Available Fonts&lt;/h1&gt;
+&lt;ul&gt;</p>
+<blockquote>
+<div><p>{%- for font in fonts %}
+&lt;li&gt;{{ font }}: &lt;span style=’font-family:{{ font }}; font-size: 2em;’&gt;{{ font }}&lt;/li&gt;
+{%- endfor %}</p>
+</div></blockquote>
+<p>&lt;/ul&gt;</p>
+</div></blockquote>
+<p>{%- endblock %}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.templates.render_template">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">content</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">searchpath</span><span class="o">=</span><span class="default_value">'/Users/iwasakishuto/Github/portfolio/Python-Charmers/pycharmers/templates'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">envkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.render_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.templates.style_html">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">style_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.style_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Where this file is.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p>The contents of the file are as follows:
+.. code-block:: html</p>
+<blockquote>
+<div><dl>
+<dt>&lt;style&gt;</dt><dd><dl class="simple">
+<dt>body {</dt><dd><p>font-family: “Times New Roman”, “Helvetica Neue”, Meiryo, monospace, -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Oxygen, Ubuntu, Cantarell, IPAexMincho, “Open Sans”, “Helvetica Neue”, sans-serif, serif;
+margin: 0;</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<p>&lt;/style&gt;</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.utils.print_utils.html"
+                        title="previous chapter">pycharmers.utils.print_utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.utils.templates.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.templates module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Shuto.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>
