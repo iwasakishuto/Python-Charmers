@@ -518,6 +518,41 @@
 <span class="sd">        &#39;siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">\/\?\*\|&lt;&gt;&quot;:;]+&#39;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="try_wrapper"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.try_wrapper">[docs]</a><span class="k">def</span> <span class="nf">try_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ret_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">msg_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">verbose_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrap ``func(*args, **kwargs)`` with ``try-`` and ``except`` blocks.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func (functions) : functions.</span>
+<span class="sd">        args (tuple)     : ``*args`` for ``func``.</span>
+<span class="sd">        kwargs (kwargs)  : ``*kwargs`` for ``func``.</span>
+<span class="sd">        ret_ (any)       : default ret val.</span>
+<span class="sd">        msg_ (str)       : message to print.</span>
+<span class="sd">        verbose_ (bool)  : Whether to print message or not. (default= ``True``) </span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import try_wrapper</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 2, msg_=&quot;divide&quot;)</span>
+<span class="sd">        Succeeded to divide</span>
+<span class="sd">        &gt;&gt;&gt; ret</span>
+<span class="sd">        0.5</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 0, msg_=&quot;divide&quot;)</span>
+<span class="sd">        [division by zero] Failed to divide</span>
+<span class="sd">        &gt;&gt;&gt; ret is None</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 0, ret_=1, msg_=&quot;divide&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ret is None</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; ret</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ret_</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;Succeeded to &quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">toRED</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">] Failed to &quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">msg_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret_</span></div>
 </pre></div>
 
             <div class="clearer"></div>

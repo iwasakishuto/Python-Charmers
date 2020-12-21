@@ -467,3 +467,38 @@ def remove_invalid_fn(fn):
         'siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect'
     """
     return re.sub(pattern=r'[\\\/\?\*\|<>":;]+', repl='', string=fn)
+
+def try_wrapper(func, *args, ret_=None, msg_="", verbose_=True, **kwargs):
+    """Wrap ``func(*args, **kwargs)`` with ``try-`` and ``except`` blocks.
+
+    Args:
+        func (functions) : functions.
+        args (tuple)     : ``*args`` for ``func``.
+        kwargs (kwargs)  : ``*kwargs`` for ``func``.
+        ret_ (any)       : default ret val.
+        msg_ (str)       : message to print.
+        verbose_ (bool)  : Whether to print message or not. (default= ``True``) 
+    
+    Examples:
+        >>> from pycharmers.utils import try_wrapper
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 2, msg_="divide")
+        Succeeded to divide
+        >>> ret
+        0.5
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 0, msg_="divide")
+        [division by zero] Failed to divide
+        >>> ret is None
+        True
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 0, ret_=1, msg_="divide")
+        >>> ret is None
+        False
+        >>> ret
+        1
+    """
+    try:
+        ret_ = func(*args, **kwargs)
+        prefix = toGREEN("Succeeded to ")
+    except Exception as e:
+        prefix = toRED(f"[{str_strip(e)}] Failed to ")
+    if verbose_: print(prefix + msg_)
+    return ret_

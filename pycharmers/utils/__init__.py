@@ -38,6 +38,17 @@ from .color_utils import choose_text_color
 from .download_utils import decide_extension
 from .download_utils import download_file
 
+from .driver_utils import DRIVER_TYPE
+from .driver_utils import get_chrome_options
+from .driver_utils import get_driver
+from .driver_utils import try_find_element
+from .driver_utils import try_find_element_click
+from .driver_utils import try_find_element_send_keys
+from .driver_utils import pass_forms
+from .driver_utils import click
+from .driver_utils import wait_until_all_elements
+from .driver_utils import scrollDown
+
 from .generic_utils import handleKeyError
 from .generic_utils import handleTypeError
 from .generic_utils import str_strip
@@ -53,6 +64,7 @@ from .generic_utils import pytree
 from .generic_utils import formatted_enumerator
 from .generic_utils import open_new_tab
 from .generic_utils import remove_invalid_fn
+from .generic_utils import try_wrapper
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json

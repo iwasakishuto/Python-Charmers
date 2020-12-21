@@ -10,6 +10,7 @@ Submodules
    pycharmers.utils.argparse_utils
    pycharmers.utils.color_utils
    pycharmers.utils.download_utils
+   pycharmers.utils.driver_utils
    pycharmers.utils.generic_utils
    pycharmers.utils.json_utils
    pycharmers.utils.monitor_utils
