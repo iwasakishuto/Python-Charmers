@@ -9,8 +9,11 @@ from . import download_utils
 from . import generic_utils
 from . import json_utils
 from . import monitor_utils
+from . import numpy_utils
+from . import pandas_utils
 from . import pil_utils
 from . import print_utils
+from . import soup_utils
 from . import templates
 
 
@@ -65,6 +68,7 @@ from .generic_utils import formatted_enumerator
 from .generic_utils import open_new_tab
 from .generic_utils import remove_invalid_fn
 from .generic_utils import try_wrapper
+from .generic_utils import list2name
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json
@@ -77,11 +81,21 @@ from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
 from .numpy_utils import rotate2d
 
+from .pandas_utils import flatten_multi_columns
+
 from .pil_utils import draw_text
 
 from .print_utils import Table
 from .print_utils import format_spec_create
 from .print_utils import print_func_create
 from .print_utils import print_dict_tree
+
+from .soup_utils import str2soup
+from .soup_utils import split_section
+from .soup_utils import group_soup_with_head
+from .soup_utils import replace_soup_tag
+from .soup_utils import find_target_text
+from .soup_utils import find_all_target_text
+from .soup_utils import find_target_id
 
 from .templates import render_template

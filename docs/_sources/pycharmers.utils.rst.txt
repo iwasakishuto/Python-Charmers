@@ -15,8 +15,10 @@ Submodules
    pycharmers.utils.json_utils
    pycharmers.utils.monitor_utils
    pycharmers.utils.numpy_utils
+   pycharmers.utils.pandas_utils
    pycharmers.utils.pil_utils
    pycharmers.utils.print_utils
+   pycharmers.utils.soup_utils
    pycharmers.utils.templates
 
 Module contents

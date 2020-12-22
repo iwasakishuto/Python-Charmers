@@ -277,6 +277,32 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.generic_utils.list2name">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">list2name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="n">how</span><span class="o">=</span><span class="default_value">'snake'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#list2name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.list2name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Naming convention.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst</strong> (<em>list</em>) – List.</p></li>
+<li><p><strong>how</strong> (<em>str</em>) – How to convert list elements to string name.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">list2name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2name</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="s2">&quot;shuto&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;camel&quot;</span><span class="p">)</span>
+<span class="go">&#39;iwasakiShuto&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2name</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="s2">&quot;shuto&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;pascal&quot;</span><span class="p">)</span>
+<span class="go">&#39;IwasakiShuto&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2name</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="s2">&quot;shuto&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;snake&quot;</span><span class="p">)</span>
+<span class="go">&#39;iwasaki_shuto&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2name</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="s2">&quot;shuto&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;kebab&quot;</span><span class="p">)</span>
+<span class="go">&#39;iwasaki-shuto&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.generic_utils.list_transpose">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">list_transpose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em>, <em class="sig-param"><span class="n">width</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#list_transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.list_transpose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transpose a list.</p>

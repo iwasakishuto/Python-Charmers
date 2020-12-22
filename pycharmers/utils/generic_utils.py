@@ -502,3 +502,38 @@ def try_wrapper(func, *args, ret_=None, msg_="", verbose_=True, **kwargs):
         prefix = toRED(f"[{str_strip(e)}] Failed to ")
     if verbose_: print(prefix + msg_)
     return ret_
+
+def list2name(lst, how="snake"):
+    """Naming convention.
+
+    Args:
+        lst (list) : List.
+        how (str)  : How to convert list elements to string name.
+
+    Examples:
+        >>> from pycharmers.utils import list2name
+        >>> list2name(lst=["iwasaki", "shuto"], how="camel")
+        'iwasakiShuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="pascal")
+        'IwasakiShuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="snake")
+        'iwasaki_shuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="kebab")
+        'iwasaki-shuto'
+    """
+    how = how.lower()
+    handleKeyError(lst=["lower camel", "camel", "upper camel", "pascal", "snake", "kebab"], how=how)
+    lst = [str(e) for e in lst]
+    if how in ["lower camel", "camel"]:
+        lst = [e.capitalize() if i!=0 else e for i,e in enumerate(lst)]
+        joint = ""
+    elif how in ["upper camel", "pascal"]:
+        lst = [e.capitalize() for e in lst]
+        joint = ""
+    elif how=="snake":
+        joint = "_"
+    elif how=="kebab":
+        joint = "-"
+    return joint.join(lst)
+
+    

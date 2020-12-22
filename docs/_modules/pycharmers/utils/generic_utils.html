@@ -553,6 +553,41 @@
         <span class="n">prefix</span> <span class="o">=</span> <span class="n">toRED</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">] Failed to &quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">msg_</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret_</span></div>
+
+<div class="viewcode-block" id="list2name"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.list2name">[docs]</a><span class="k">def</span> <span class="nf">list2name</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;snake&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Naming convention.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list) : List.</span>
+<span class="sd">        how (str)  : How to convert list elements to string name.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import list2name</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;camel&quot;)</span>
+<span class="sd">        &#39;iwasakiShuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;pascal&quot;)</span>
+<span class="sd">        &#39;IwasakiShuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;snake&quot;)</span>
+<span class="sd">        &#39;iwasaki_shuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;kebab&quot;)</span>
+<span class="sd">        &#39;iwasaki-shuto&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">how</span> <span class="o">=</span> <span class="n">how</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lower camel&quot;</span><span class="p">,</span> <span class="s2">&quot;camel&quot;</span><span class="p">,</span> <span class="s2">&quot;upper camel&quot;</span><span class="p">,</span> <span class="s2">&quot;pascal&quot;</span><span class="p">,</span> <span class="s2">&quot;snake&quot;</span><span class="p">,</span> <span class="s2">&quot;kebab&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="n">how</span><span class="p">)</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">how</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;lower camel&quot;</span><span class="p">,</span> <span class="s2">&quot;camel&quot;</span><span class="p">]:</span>
+        <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="o">!=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst</span><span class="p">)]</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;upper camel&quot;</span><span class="p">,</span> <span class="s2">&quot;pascal&quot;</span><span class="p">]:</span>
+        <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span><span class="o">==</span><span class="s2">&quot;snake&quot;</span><span class="p">:</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span><span class="o">==</span><span class="s2">&quot;kebab&quot;</span><span class="p">:</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
+    <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span></div>
+
+    
 </pre></div>
 
             <div class="clearer"></div>

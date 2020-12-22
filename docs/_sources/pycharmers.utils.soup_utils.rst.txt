@@ -1,0 +1,7 @@
+pycharmers.utils.soup\_utils module
+===================================
+
+.. automodule:: pycharmers.utils.soup_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
