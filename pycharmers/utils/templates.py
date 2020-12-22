@@ -24,11 +24,13 @@ def _mk_func(fn):
         code = "\t".join(f.readlines())
     def func():
         return fp
-    func.__doc__ = f"""Return ``TEMPLATES_DIR``/{fn}
+    func.__doc__ = f"""Return the path to ``TEMPLATES_DIR``/{fn}
     
     Returns:
         str : Where this file is.
+    
     The contents of the file are as follows:
+
     .. code-block:: html
         
         {code}

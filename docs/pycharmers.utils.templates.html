@@ -67,7 +67,7 @@
 <dl class="py function">
 <dt id="pycharmers.utils.templates.base_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">base_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.base_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -76,49 +76,42 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><p>{%- if add_base -%}
-&lt;!DOCTYPE html&gt;
-&lt;html lang=”en”&gt;</p>
-<blockquote>
-<div><dl class="simple">
-<dt>&lt;head&gt;</dt><dd><p>&lt;meta charset=”UTF-8” /&gt;
-&lt;meta name=”viewport” content=”width=device-width, initial-scale=1.0” /&gt;
-&lt;meta name=”twitter:card” content=”summary” /&gt;
-&lt;meta name=”twitter:site” content=”&#64;cabernet_rock” /&gt;
-&lt;meta name=”twitter:image:src” content=”https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png”&gt;
-&lt;meta property=”og:url” content=”https://github.com/iwasakishuto/Python-Charmers” /&gt;
-&lt;meta property=”og:site_name” content=”Python-Charmers” /&gt;
-&lt;meta property=”og:title” content=”Python-Charmers” /&gt;
-&lt;meta property=”og:description” content=”Translation Gummy is a collection of useful python programs.” /&gt;
-&lt;meta property=”og:image” content=”https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true” /&gt;
-&lt;title&gt;{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}&lt;/title&gt;
-&lt;link rel=”shortcut icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png”/&gt;
-&lt;link rel=”apple-touch-icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png” sizes=”152x152”&gt;
-{% include ‘style.html’ %}</p>
-</dd>
-</dl>
-<p>&lt;/head&gt;
-&lt;body&gt;</p>
-</div></blockquote>
-<dl class="simple">
-<dt>{%- endif -%}</dt><dd><p>{%- block content %}
-{%- endblock %}</p>
-</dd>
-<dt>{%- if add_base -%}</dt><dd><p>&lt;/body&gt;</p>
-</dd>
-</dl>
-<p>&lt;/html&gt;
-{%- endif -%}</p>
-</div></blockquote>
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{%- if add_base -%}
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:card&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;summary&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:site&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;@cabernet_rock&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:image:src&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://github.com/iwasakishuto/Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:site_name&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Translation Gummy is a collection of useful python programs.&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;shortcut icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png&quot;</span><span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;apple-touch-icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png&quot;</span> <span class="na">sizes</span><span class="o">=</span><span class="s">&quot;152x152&quot;</span><span class="p">&gt;</span>
+    {% include &#39;style.html&#39; %}
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+{%- endif -%}
+    {%- block content %}
+    {%- endblock %}
+{%- if add_base -%}
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+{%- endif -%}
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.utils.templates.fonts_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">fonts_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.fonts_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/fonts.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/fonts.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -127,24 +120,19 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><p>{% extends ‘base.html’ %}
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% extends &#39;base.html&#39; %}
 {% block title %}All Fonts{% endblock title %}
-{%- block content %}</p>
-<blockquote>
-<div><p>&lt;h1&gt;Available Fonts&lt;/h1&gt;
-&lt;ul&gt;</p>
-<blockquote>
-<div><p>{%- for font in fonts %}
-&lt;li&gt;{{ font }}: &lt;span style=’font-family:{{ font }}; font-size: 2em;’&gt;{{ font }}&lt;/li&gt;
-{%- endfor %}</p>
-</div></blockquote>
-<p>&lt;/ul&gt;</p>
-</div></blockquote>
-<p>{%- endblock %}</p>
-</div></blockquote>
+{%- block content %}
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Available Fonts<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+      {%- for font in fonts %}
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>{{ font }}: <span class="p">&lt;</span><span class="nt">span</span> <span class="na">style</span><span class="o">=</span><span class="s">&#39;font-family:{{ font }}; font-size: 2em;&#39;</span><span class="p">&gt;</span>{{ font }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      {%- endfor %}
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+{%- endblock %}
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -155,7 +143,7 @@
 <dl class="py function">
 <dt id="pycharmers.utils.templates.style_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">style_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.style_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -164,20 +152,15 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><dl>
-<dt>&lt;style&gt;</dt><dd><dl class="simple">
-<dt>body {</dt><dd><p>font-family: “Times New Roman”, “Helvetica Neue”, Meiryo, monospace, -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Oxygen, Ubuntu, Cantarell, IPAexMincho, “Open Sans”, “Helvetica Neue”, sans-serif, serif;
-margin: 0;</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>&lt;/style&gt;</p>
-</div></blockquote>
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="nt">body</span> <span class="p">{</span>
+    <span class="k">font-family</span><span class="p">:</span> <span class="s2">&quot;Times New Roman&quot;</span><span class="p">,</span> <span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="n">Meiryo</span><span class="p">,</span> <span class="kc">monospace</span><span class="p">,</span> <span class="o">-</span><span class="n">apple-system</span><span class="p">,</span> <span class="n">BlinkMacSystemFont</span><span class="p">,</span> <span class="s2">&quot;Segoe UI&quot;</span><span class="p">,</span> <span class="n">Roboto</span><span class="p">,</span> <span class="n">Oxygen</span><span class="p">,</span> <span class="n">Ubuntu</span><span class="p">,</span> <span class="n">Cantarell</span><span class="p">,</span> <span class="n">IPAexMincho</span><span class="p">,</span> <span class="s2">&quot;Open Sans&quot;</span><span class="p">,</span> <span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">,</span> <span class="kc">serif</span><span class="p">;</span>
+    <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

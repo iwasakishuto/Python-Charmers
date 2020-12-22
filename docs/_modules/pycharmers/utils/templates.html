@@ -75,11 +75,13 @@
         <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
     <span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">fp</span>
-    <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Return ``TEMPLATES_DIR``/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"></span>
+    <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Return the path to ``TEMPLATES_DIR``/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">    </span>
 <span class="s2">    Returns:</span>
 <span class="s2">        str : Where this file is.</span>
+<span class="s2">    </span>
 <span class="s2">    The contents of the file are as follows:</span>
+
 <span class="s2">    .. code-block:: html</span>
 <span class="s2">        </span>
 <span class="s2">        </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"></span>

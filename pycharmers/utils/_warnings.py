@@ -1,4 +1,5 @@
 #coding: utf-8
+from ._colorings import toBLUE, toGREEN
 
 __all__ = ["PythonCharmersImprementationWarning", "DriverNotFoundWarning"]
 

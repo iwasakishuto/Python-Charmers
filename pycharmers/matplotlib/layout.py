@@ -20,7 +20,7 @@ def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, n
         nrows (int)      : The number of rows
         ncols (int)      : The number of columns.
         axis (int)       : ``0`` or ``1`` Direction to arrange axes.
-        **kwargs         : ``kwargs`` for add_subplot(*args, **kwargs) method of ``matplotlib.figure.Figure`` instance.
+        \*\*kwargs         : ``kwargs`` for add_subplot(\*args, \*\*kwargs) method of ``matplotlib.figure.Figure`` instance.
 
     Returns:
         fig (Figure) : The ``Figure`` instance
