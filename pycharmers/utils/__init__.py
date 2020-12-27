@@ -69,6 +69,8 @@ from .generic_utils import open_new_tab
 from .generic_utils import remove_invalid_fn
 from .generic_utils import try_wrapper
 from .generic_utils import list2name
+from .generic_utils import infer_types
+from .generic_utils import html2reStructuredText
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json
@@ -97,5 +99,7 @@ from .soup_utils import replace_soup_tag
 from .soup_utils import find_target_text
 from .soup_utils import find_all_target_text
 from .soup_utils import find_target_id
+from .soup_utils import get_soup
 
 from .templates import render_template
+from .templates import defFunction

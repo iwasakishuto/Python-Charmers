@@ -3,6 +3,7 @@ import os
 import re
 import json
 import math
+import urllib
 import datetime
 import webbrowser
 from pathlib import Path
@@ -535,5 +536,65 @@ def list2name(lst, how="snake"):
     elif how=="kebab":
         joint = "-"
     return joint.join(lst)
-
     
+def infer_types(val, default=str):
+    """Infer data types by evaluate the given source.
+    
+    Args:
+        val (str)      : data
+        default (type) : Default type.
+        
+    Return:
+        type (type) : data type.
+        
+    Examples:
+        >>> from pycharmers.utils import infer_types
+        >>> infer_types(1)
+        int
+        >>> infer_types(1.1)
+        float
+        >>> infer_types("1e3")
+        float
+        >>> infer_types("Hello")
+        str
+    """
+    t = default
+    if val is not None:
+        try:
+            t = type(eval(str(val), {"__builtins__":None}))
+        except:
+            pass
+    return t
+
+def html2reStructuredText(html, base_url=""):
+    """Convert html string to reStructuredText
+    
+    Args:
+        html (str)     : html string.
+        base_url (str) : base URL.
+        
+    Returns:
+        reStructuredText (str) : reStructuredText.
+        
+    Examples:
+        >>> from pycharmers.utils import html2reStructuredText
+        >>> html2reStructuredText("<code>CODE</code>")
+        ' ``CODE`` '      
+        >>> html2reStructuredText(
+        ...     html='<a class="reference internal" href="pycharmers.html">pycharmers package</a>',
+        ...     base_url="https://iwasakishuto.github.io/Python-Charmers/"
+        >>> )
+        '`pycharmers package <https://iwasakishuto.github.io/Python-Charmers/pycharmers.html>`_'
+    """
+    html = html.replace("<code>", " ``").replace("</code>", "`` ")
+    def repl(m):
+        """How to replacement Match object.
+        Args: 
+            m (Match object) : The result of re.match() and re.search()
+        """
+        href,inner_text = m.groups()
+        # TODO: Conbine code block and link.
+        if inner_text[1:3]=="``": return inner_text
+        href = urllib.parse.urljoin(base=base_url, url=href)
+        return f'`{inner_text} <{href}>`_'
+    return re.sub(pattern=r'<a.*?href="(.*?)">(.*?)</a>',  repl=repl, string=html)

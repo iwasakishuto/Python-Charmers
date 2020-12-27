@@ -53,15 +53,36 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">TEMPLATES_DIR</span>
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span>
-<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span><span class="p">,</span> <span class="n">TemplateNotFound</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span><span class="p">,</span> <span class="n">TemplateNotFound</span><span class="p">,</span> <span class="n">Template</span>
 
-<div class="viewcode-block" id="render_template"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.render_template">[docs]</a><span class="k">def</span> <span class="nf">render_template</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="p">{},</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">searchpath</span><span class="o">=</span><span class="n">TEMPLATES_DIR</span><span class="p">,</span> <span class="o">**</span><span class="n">envkwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="render_template"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.render_template">[docs]</a><span class="k">def</span> <span class="nf">render_template</span><span class="p">(</span><span class="n">template_name_or_string</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{},</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">searchpath</span><span class="o">=</span><span class="n">TEMPLATES_DIR</span><span class="p">,</span> <span class="o">**</span><span class="n">envkwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Render Template.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        template_name_or_string (str) : The name of the template to be rendered or a string.</span>
+<span class="sd">        context (dict)                : The variables that should be available in the context of the template.</span>
+<span class="sd">        path (str)                    : If given, output to ``path`` file.</span>
+<span class="sd">        searchpath (str)              : (Default= ``TEMPLATES_DIR`` )</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import matplotlib</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import render_template</span>
+<span class="sd">        &gt;&gt;&gt; render_template(</span>
+<span class="sd">        ...     template_name_or_string=&quot;fonts.html&quot;, </span>
+<span class="sd">        ...     context={&quot;fonts&quot;: sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))}</span>
+<span class="sd">        &gt;&gt;&gt; )</span>
+<span class="sd">            &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
+<span class="sd">            &lt;ul&gt;</span>
+<span class="sd">            &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
+<span class="sd">            &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
+<span class="sd">            : </span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">searchpath</span><span class="o">=</span><span class="n">searchpath</span><span class="p">),</span> <span class="o">**</span><span class="n">envkwargs</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">template_name_or_string</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">TemplateNotFound</span><span class="p">:</span>
-        <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-    <span class="n">string</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">template_name_or_string</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -92,6 +113,54 @@
     <span class="k">if</span> <span class="n">fn</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.html&quot;</span><span class="p">:</span> <span class="k">continue</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
     <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> = _mk_func(&#39;</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="defFunction"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction">[docs]</a><span class="k">class</span> <span class="nc">defFunction</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">short_description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">is_method</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_name</span> <span class="o">=</span> <span class="n">func_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="n">short_description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_method</span> <span class="o">=</span> <span class="n">is_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">argwidth</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="defFunction.set_example"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.set_example">[docs]</a>    <span class="k">def</span> <span class="nf">set_example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&gt;&gt;&gt; &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_name</span> <span class="o">+</span> <span class="s2">&quot;(&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">example_prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">example_suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">examples</span><span class="o">=</span><span class="kc">True</span></div>
+
+<div class="viewcode-block" id="defFunction.set_returns"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.set_returns">[docs]</a>    <span class="k">def</span> <span class="nf">set_returns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returns</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        
+<div class="viewcode-block" id="defFunction.sort_arguments"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.sort_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">sort_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;is_required&quot;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="defFunction.set_argument"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.set_argument">[docs]</a>    <span class="k">def</span> <span class="nf">set_argument</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">example</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">is_required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">name_type</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">argumeta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+            <span class="s2">&quot;is_required&quot;</span><span class="p">:</span> <span class="n">is_required</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">default</span><span class="p">,</span>
+            <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="n">example</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;name_type&quot;</span><span class="p">:</span> <span class="n">name_type</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">argumeta</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">argumeta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">argwidth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">argwidth</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">name_type</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="defFunction.set_arguments"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.set_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">set_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">arguments</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">argname</span><span class="p">,</span> <span class="n">argmeta</span> <span class="ow">in</span> <span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_argument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">argname</span><span class="p">,</span> <span class="o">**</span><span class="n">argmeta</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="defFunction.create"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_arguments</span><span class="p">()</span>
+        <span class="n">render_template</span><span class="p">(</span>
+            <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;def.html&quot;</span><span class="p">,</span>
+            <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
+            <span class="n">searchpath</span><span class="o">=</span><span class="n">TEMPLATES_DIR</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>

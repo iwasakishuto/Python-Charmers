@@ -51,8 +51,10 @@
   <h1>Source code for pycharmers.utils.soup_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1">#coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span>
+<span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span><span class="p">,</span> <span class="n">handleKeyError</span>
+<span class="kn">from</span> <span class="nn">.driver_utils</span> <span class="kn">import</span> <span class="n">scrollDown</span><span class="p">,</span> <span class="n">wait_until_all_elements</span>
 
 <div class="viewcode-block" id="str2soup"><a class="viewcode-back" href="../../../pycharmers.utils.soup_utils.html#pycharmers.utils.soup_utils.str2soup">[docs]</a><span class="k">def</span> <span class="nf">str2soup</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert strings to soup, and removed extra tags such as ``&lt;html&gt;``, ``&lt;body&gt;``, and ``&lt;head&gt;``.</span>
@@ -380,6 +382,27 @@
     <span class="k">if</span> <span class="n">strip</span><span class="p">:</span>
         <span class="n">id_</span> <span class="o">=</span> <span class="n">str_strip</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">id_</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">id_</span></div>
+
+<div class="viewcode-block" id="get_soup"><a class="viewcode-back" href="../../../pycharmers.utils.soup_utils.html#pycharmers.utils.soup_utils.get_soup">[docs]</a><span class="k">def</span> <span class="nf">get_soup</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Scrape and get page source from ``url``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url  (str)         : URL.</span>
+<span class="sd">        driver (WebDriver) : webdriver</span>
+<span class="sd">        features (str)     : Desirable features of the parser to be used. This may be the name of a specific parser (&quot;lxml&quot;, &quot;lxml-xml&quot;, &quot;html.parser&quot;, or &quot;html5lib&quot;) or it may be the type of markup to be used (&quot;html&quot;, &quot;html5&quot;, &quot;xml&quot;). It&#39;s recommended that you name a specific parser, so that Beautiful Soup gives you the same results across platforms and virtual environments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        BeautifulSoup : A data structure representing a parsed HTML or XML document.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lxml&quot;</span><span class="p">,</span> <span class="s2">&quot;lxml-xml&quot;</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">,</span> <span class="s2">&quot;html5lib&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;html5&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">],</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">driver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">wait_until_all_elements</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">scrollDown</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">page_source</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">markup</span><span class="o">=</span><span class="n">html</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

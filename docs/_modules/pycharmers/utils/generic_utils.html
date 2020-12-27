@@ -54,6 +54,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -586,8 +587,68 @@
     <span class="k">elif</span> <span class="n">how</span><span class="o">==</span><span class="s2">&quot;kebab&quot;</span><span class="p">:</span>
         <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
     <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span></div>
-
     
+<div class="viewcode-block" id="infer_types"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.infer_types">[docs]</a><span class="k">def</span> <span class="nf">infer_types</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Infer data types by evaluate the given source.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        val (str)      : data</span>
+<span class="sd">        default (type) : Default type.</span>
+<span class="sd">        </span>
+<span class="sd">    Return:</span>
+<span class="sd">        type (type) : data type.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import infer_types</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(1)</span>
+<span class="sd">        int</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(1.1)</span>
+<span class="sd">        float</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(&quot;1e3&quot;)</span>
+<span class="sd">        float</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(&quot;Hello&quot;)</span>
+<span class="sd">        str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">default</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="html2reStructuredText"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.html2reStructuredText">[docs]</a><span class="k">def</span> <span class="nf">html2reStructuredText</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert html string to reStructuredText</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        html (str)     : html string.</span>
+<span class="sd">        base_url (str) : base URL.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        reStructuredText (str) : reStructuredText.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import html2reStructuredText</span>
+<span class="sd">        &gt;&gt;&gt; html2reStructuredText(&quot;&lt;code&gt;CODE&lt;/code&gt;&quot;)</span>
+<span class="sd">        &#39; ``CODE`` &#39;      </span>
+<span class="sd">        &gt;&gt;&gt; html2reStructuredText(</span>
+<span class="sd">        ...     html=&#39;&lt;a class=&quot;reference internal&quot; href=&quot;pycharmers.html&quot;&gt;pycharmers package&lt;/a&gt;&#39;,</span>
+<span class="sd">        ...     base_url=&quot;https://iwasakishuto.github.io/Python-Charmers/&quot;</span>
+<span class="sd">        &gt;&gt;&gt; )</span>
+<span class="sd">        &#39;`pycharmers package &lt;https://iwasakishuto.github.io/Python-Charmers/pycharmers.html&gt;`_&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;code&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot; ``&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;/code&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;`` &quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">repl</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;How to replacement Match object.</span>
+<span class="sd">        Args: </span>
+<span class="sd">            m (Match object) : The result of re.match() and re.search()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">href</span><span class="p">,</span><span class="n">inner_text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="c1"># TODO: Conbine code block and link.</span>
+        <span class="k">if</span> <span class="n">inner_text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;``&quot;</span><span class="p">:</span> <span class="k">return</span> <span class="n">inner_text</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">href</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">inner_text</span><span class="si">}</span><span class="s1"> &lt;</span><span class="si">{</span><span class="n">href</span><span class="si">}</span><span class="s1">&gt;`_&#39;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;&lt;a.*?href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;&#39;</span><span class="p">,</span>  <span class="n">repl</span><span class="o">=</span><span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">html</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

@@ -1,7 +1,9 @@
 #coding: utf-8
 import re
+import requests
 from bs4 import BeautifulSoup
-from .generic_utils import str_strip
+from .generic_utils import str_strip, handleKeyError
+from .driver_utils import scrollDown, wait_until_all_elements
 
 def str2soup(string):
     """Convert strings to soup, and removed extra tags such as ``<html>``, ``<body>``, and ``<head>``.
@@ -329,3 +331,24 @@ def find_target_id(soup, key, name=None, attrs={}, recursive=True, text=None, de
     if strip:
         id_ = str_strip(string=id_)
     return id_
+
+def get_soup(url, driver=None, features="lxml", timeout=1):
+    """ Scrape and get page source from ``url``.
+
+    Args:
+        url  (str)         : URL.
+        driver (WebDriver) : webdriver
+        features (str)     : Desirable features of the parser to be used. This may be the name of a specific parser ("lxml", "lxml-xml", "html.parser", or "html5lib") or it may be the type of markup to be used ("html", "html5", "xml"). It's recommended that you name a specific parser, so that Beautiful Soup gives you the same results across platforms and virtual environments.
+
+    Returns:
+        BeautifulSoup : A data structure representing a parsed HTML or XML document.
+    """
+    handleKeyError(lst=["lxml", "lxml-xml", "html.parser", "html5lib", "html", "html5", "xml"], features=features)
+    if driver is None:
+        html = requests.get(url=url).content
+    else:
+        driver.get(url)
+        wait_until_all_elements(driver=driver, timeout=timeout, verbose=False)
+        scrollDown(driver=driver, verbose=False)
+        html = driver.page_source.encode("utf-8")
+    return BeautifulSoup(markup=html, features=features)

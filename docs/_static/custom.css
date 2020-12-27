@@ -78,3 +78,21 @@ ul.social a.sc-twitter {
   color: white;
   background-color: #4da7de;
 }
+div.body p, div.body dd, div.body li, div.body blockquote {
+  text-align: left!important;
+}
+div.body p, div.body dd, div.body li, div.body blockquote {
+  -moz-hyphens: none!important;
+  -ms-hyphens: none!important;
+  -webkit-hyphens: none!important;
+  hyphens: none!important;
+}
+ul.simple li strong {
+  font-family: monaco;
+  font-size: .9em;
+  color: #d14;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  white-space: nowrap;
+  padding: 1px 2px;
+}

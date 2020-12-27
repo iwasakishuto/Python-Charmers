@@ -197,6 +197,27 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.soup_utils.get_soup">
+<code class="sig-prename descclassname">pycharmers.utils.soup_utils.</code><code class="sig-name descname">get_soup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">driver</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">'lxml'</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/soup_utils.html#get_soup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.soup_utils.get_soup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scrape and get page source from <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – URL.</p></li>
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – webdriver</p></li>
+<li><p><strong>features</strong> (<em>str</em>) – Desirable features of the parser to be used. This may be the name of a specific parser (“lxml”, “lxml-xml”, “html.parser”, or “html5lib”) or it may be the type of markup to be used (“html”, “html5”, “xml”). It’s recommended that you name a specific parser, so that Beautiful Soup gives you the same results across platforms and virtual environments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A data structure representing a parsed HTML or XML document.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>BeautifulSoup</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.soup_utils.group_soup_with_head">
 <code class="sig-prename descclassname">pycharmers.utils.soup_utils.</code><code class="sig-name descname">group_soup_with_head</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">soup</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">attrs</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">recursive</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">text</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/soup_utils.html#group_soup_with_head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.soup_utils.group_soup_with_head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gouping <code class="docutils literal notranslate"><span class="pre">bs4.BeautifulSoup</span></code> based on head.</p>

@@ -148,11 +148,12 @@ def measure_canvas(nfigs, ncols=2, figsize=(6,4)):
     return (ncols, nrows, total_figsize)
 
 def show_all_fonts():
+    """Show all fonts available in ``matplotlib`` ."""
     fn = "matplotlib.font_manager.fontManager.ttflist.html"
     path = os.path.join(PYCHARMERS_HTML_DIR, fn)
     render_template(
-        source="fonts.html", 
-        content={"fonts": sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))},
+        template_name_or_string="fonts.html", 
+        context={"fonts": sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))},
         path=path
     )
     open_new_tab(path)
