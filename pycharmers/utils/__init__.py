@@ -85,6 +85,8 @@ from .numpy_utils import rotate2d
 
 from .pandas_utils import flatten_multi_columns
 
+from .pil_utils import pilread
+from .pil_utils import roughen_img
 from .pil_utils import draw_text
 
 from .print_utils import Table
