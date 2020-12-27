@@ -1,0 +1,36 @@
+<!-- Concatenate strings -->
+{% macro concate(title, content=[]) %}{{ (title + content | join('<br>')) | replace ('"', "'") }}{% endmacro %}
+
+<!-- String to list -->
+{% macro toList(val, sep="¢") -%}
+  {% set lst = val if (val is iterable) and (val is not string) else [val] -%}
+{% for e in lst %}{{ e }}{% if not loop.last %}{{ sep }}{% endif %}{% endfor -%}
+{% endmacro %}
+
+<!-- Count variable length -->
+{% macro count(val, sep="¢") %}{{ toList(val, sep=sep).split(sep) | length }}{% endmacro %}
+
+<!-- Calculate mean -->
+{%- macro mean(vals, sep="¢", if_null="null") -%}
+  {%- set lst = [] -%}
+  {%- for val in toList(vals, sep=sep).split(sep) -%}
+    {%- if val | string not in ["None", ""] -%}
+      {%- set _ = lst.append(val | float) -%}
+    {%- endif -%}
+  {%- endfor -%}
+{{ lst | sum / lst | length if (lst | length) > 0 else if_null }}
+{%- endmacro %}
+
+<!-- Format pricision -->
+{% macro pre_fmt(val, if_null="null") %}{{ "{:.3f}".format(val|float) if val|string not in ["null", "None", ""] else if_none }}{% endmacro %}
+
+<!-- Divide -->
+{% macro devide(dividend, divisor) %}{{ "inf" if divisor|float ==0 else dividend|float / divisor|float }}{% endmacro %}
+
+<!-- python formalization -->
+{%- macro pythonalization(var, quotation='"') %}
+  {%- if var is string -%}
+    {%- set var = quotation + var + quotation %}
+  {%- endif -%}
+  {{ var }}
+{%- endmacro %}
