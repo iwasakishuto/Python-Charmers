@@ -1,0 +1,54 @@
+{%- if __comment -%}<!--  
+  arguments={
+    argname: {
+      type,
+      is_required,
+      default,
+      example_prefix,
+      description,
+      name_type
+    }
+  },
+  short_description
+  description
+  is_method
+  
+
+
+-->{%- endif -%}
+{%- from "_macros/utils.html" import pythonalization -%}
+def {{ func_name }}(
+    {%- if is_method -%}self{%- if arguments|length > 0 %}, {% endif %}{% endif -%}
+    {%- for argname,argmeta in arguments.items() -%}
+        {{ argname }}{% if not argmeta.is_required %}={{ pythonalization(argmeta.default) }}{% endif %}{% if not loop.last %}, {% endif -%}
+    {%- endfor -%}
+):
+    """{% if short_description and short_description | length > 0 %}{{ short_description }}
+    {% endif %}
+
+    {%- if description and description | length > 0 %}
+    {{ description }}
+    {%- endif %}
+
+    Args:
+    {%- for argname,argmeta in arguments.items()%}
+        {{ argmeta.name_type.ljust(argwidth) }} : {{ argmeta.description }} {% if argmeta.default %}(default= ``{{ pythonalization(argmeta.default) }}`` ){% endif %}
+    {%- endfor %}
+
+    {%- if returns %}
+    
+    Returns:
+        {{ returns | indent(width=8, first=Faslse) }}
+    {%- endif %}
+
+    {%- if examples %}
+    
+    Examples:
+        {{ example_prefix | indent(width=8, first=Faslse) }}
+        {%- for argname,argmeta in arguments.items()%}
+        ...     {{ argname }}={{ pythonalization(argmeta.example) }},
+        {%- endfor %}
+        >>> )
+        {{ example_suffix | indent(width=8, first=Faslse) }}
+    {%- endif %}
+    """
