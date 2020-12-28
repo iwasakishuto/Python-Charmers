@@ -45,7 +45,10 @@ dl.field-list {
   padding: 5px 10px;
 }
 
-th, dl.field-list > dt {
+/* th, dl.field-list>dt {
+  padding: 5px;
+} */
+th, dl.field-list dt, dl.field-list dd {
   padding: 5px;
 }
 
@@ -88,11 +91,39 @@ div.body p, div.body dd, div.body li, div.body blockquote {
   hyphens: none!important;
 }
 ul.simple li strong {
-  font-family: monaco;
+  font-family: monaco, monospace;
   font-size: .9em;
   color: #d14;
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   white-space: nowrap;
   padding: 1px 2px;
+}
+code.descname {
+  font: bold 1.2em monaco, monospace;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  white-space: nowrap;
+  padding: 2px 4px;
+}
+.py.method code.sig-name.descname {
+  color: #0000FF;
+}
+.py.attribute code.sig-name.descname {
+  color: red;
+}
+code.sig-name.descname {
+  color: #008000;
+}
+span.pre {
+  color: tomato;
+}
+span.viewcode-link {
+  font-family: monospace;
+}
+span.viewcode-link:after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f1c9";
+  padding-left: 1px;
 }

@@ -101,6 +101,58 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.pil_utils.pilread">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">pilread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#pilread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.pilread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens and identifies the given image file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – PIL Image object</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path or URL to image file.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>img (PIL.Image) : PIL Image object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pilread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">==</span> <span class="n">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.pil_utils.roughen_img">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">roughen_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rrate</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#roughen_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.roughen_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roughen the Image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – image file.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path or URL to image file.</p></li>
+<li><p><strong>rrate</strong> (<em>float</em>) – Reduction rate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>img (PIL.Image) : Roughened PIL Image object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">roughen_img</span><span class="p">,</span> <span class="n">pilread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">pilread</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roughened_img</span> <span class="o">=</span> <span class="n">roughen_img</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">rrate</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">roughened_img</span><span class="o">.</span><span class="n">size</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
