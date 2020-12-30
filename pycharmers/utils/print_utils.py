@@ -1,4 +1,5 @@
 # coding: utf-8
+import re
 from ._colorings import _toCOLOR_create
 from .generic_utils import handleKeyError, handleTypeError
 
@@ -234,3 +235,22 @@ def print_dict_tree(dictionary, indent=4, rank=0, marks=["-", "*", "#"]):
                 print_dict_tree(dictionary=v, indent=indent, rank=rank+1, marks=marks)
             else:
                 print(f"{' '*indent*rank}{marks[rank%len(marks)]} {k}: {v}")
+
+def pretty_3quote(*value, indent=0):
+    """pretty 3 quote string.
+    
+    Args:
+        indent (int)  : If indent is a non-negative integer, then multiple lines will be pretty-printed with that indent level.
+        
+    Examples:
+        >>> from pycharmers.utils import pretty_3quote
+        >>> print(*pretty_3quote(\"\"\"
+            When I was 17, I read a quote that went something like: 
+            “If you live each day as if it was your last, someday you’ll most certainly be right.”
+            It made an impression on me, and since then, for the past 33 years, 
+        \"\"\"))
+        When I was 17, I read a quote that went something like: 
+        “If you live each day as if it was your last, someday you’ll most certainly be right.”
+        It made an impression on me, and since then, for the past 33 years, 
+    """
+    return [re.sub(pattern=r"\n\s+", repl=r"\n"+r" "*indent, string=val).strip("\n") for val in value]

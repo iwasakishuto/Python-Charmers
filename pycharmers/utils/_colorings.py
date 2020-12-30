@@ -5,7 +5,8 @@ __all__ = [
     "toACCENT", "toBLACK", "toRED", "toGREEN", "toYELLOW", "toBLUE", 
     "toMAGENTA", "toCYAN", "toWHITE", "toDEFAULT", "toGRAY", 
     "toBRIGHT_RED", "toBRIGHT_GREEN", "toBRIGHT_YELLOW", "toBRIGHT_BLUE", 
-    "toBRIGHT_MAGENTA", "toBRIGHT_CYAN", "toBRIGHT_WHITE"
+    "toBRIGHT_MAGENTA", "toBRIGHT_CYAN", "toBRIGHT_WHITE",
+    "check_all_toCOLOR"
 ]
 
 def _enable_vts():
@@ -98,3 +99,10 @@ toBRIGHT_BLUE    = _toCOLOR_create(color="BRIGHT_BLUE")
 toBRIGHT_MAGENTA = _toCOLOR_create(color="BRIGHT_MAGENTA")
 toBRIGHT_CYAN    = _toCOLOR_create(color="BRIGHT_CYAN")
 toBRIGHT_WHITE   = _toCOLOR_create(color="BRIGHT_WHITE")
+
+def check_all_toCOLOR(word="Hello, World!"):
+    func_names = [f for f in __all__ if f.startswith("to")]
+    digit = max([len(f) for f in func_names])
+    for func_name in __all__:
+        func = globals().get(func_name)
+        print(f"{func_name:<{digit}}: {func(word, is_bg=False)}\t{func(word, is_bg=True)}")  

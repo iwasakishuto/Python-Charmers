@@ -93,6 +93,7 @@ from .print_utils import Table
 from .print_utils import format_spec_create
 from .print_utils import print_func_create
 from .print_utils import print_dict_tree
+from .print_utils import pretty_3quote
 
 from .soup_utils import str2soup
 from .soup_utils import split_section

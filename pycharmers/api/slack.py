@@ -87,6 +87,7 @@ import urllib
 import mimetypes
 
 from ..__meta__ import __version__, __module_name__
+from ..utils import pretty_3quote, toBLUE, toGREEN
 
 class SlackClient():
     """A Slack WebClient for `Using the Slack Web API <https://api.slack.com/web#basics>`_
@@ -98,9 +99,6 @@ class SlackClient():
         token (str)    : A string specifying an xoxp or xoxb token.
         base_url (str) : A string representing the Slack API base URL.(default= ``"https://www.slack.com/api/"``)
         header (dict)  : A header.
-
-    Methods:
-        api_call: Constructs a request and executes the API call to Slack.
     """
     def __init__(self, token=None, timeout=30):
         self.base_url = "https://www.slack.com/api/"
@@ -121,15 +119,16 @@ class SlackClient():
         Raises:
             ValueError : If token is not valid.
         """
-        if (token is None) or (token[:4] in ["xoxp", "xoxb"]):
-            raise ValueError(
-                "Please create a token." + \
-                "\n1. Access https://api.slack.com/apps" + \
-                "\n2. Create New App"
-                "\n3. Set Permission Scopes."
-                "\n4. Install App To Team."
-                "\n5. Access https://api.slack.com/apps"
-            )
+        if (token is None) or (token[:4] not in ["xoxp", "xoxb"]):
+            raise ValueError(*pretty_3quote(f"""
+            Please create a token. (If you have already created, start from 5)
+                1. Access {toBLUE("https://api.slack.com/apps")}.
+                2. Click {toGREEN("[Create New App]")} to create your Slack App.
+                3. Click {toGREEN("[Basic Information]")} -> {toGREEN("[Add features and functionality]")} -> {toGREEN("[Permissions]")} to set your desired Permission Scopes.
+                4. Click {toGREEN("[Basic Information]")} -> {toGREEN("[Install your app]")} -> {toGREEN("[Install to Workspace]")} to install this App to your Workspace.
+                5. Visit {toBLUE("https://api.slack.com/apps")} again.
+                6. Click {toGREEN("[Basic Information]")} -> {toGREEN("[Add features and functionality]")} -> {toGREEN("[Permissions]")} and check {toGREEN("OAuth & Permissions")} to get {toGREEN("Bot User OAuth Access Token")} (xoxb-XXXX)
+            """))
         self.token = token
 
     def _api_wrapper(self, api_method, http_method="POST", content_types=["application/x-www-form-urlencoded"], **params):

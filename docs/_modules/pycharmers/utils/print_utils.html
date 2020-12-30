@@ -50,6 +50,7 @@
             
   <h1>Source code for pycharmers.utils.print_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">_toCOLOR_create</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
 
@@ -285,6 +286,25 @@
                 <span class="n">print_dict_tree</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">marks</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">indent</span><span class="o">*</span><span class="n">rank</span><span class="si">}{</span><span class="n">marks</span><span class="p">[</span><span class="n">rank</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">marks</span><span class="p">)]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="pretty_3quote"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.pretty_3quote">[docs]</a><span class="k">def</span> <span class="nf">pretty_3quote</span><span class="p">(</span><span class="o">*</span><span class="n">value</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;pretty 3 quote string.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        indent (int)  : If indent is a non-negative integer, then multiple lines will be pretty-printed with that indent level.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pretty_3quote</span>
+<span class="sd">        &gt;&gt;&gt; print(*pretty_3quote(\&quot;\&quot;\&quot;</span>
+<span class="sd">            When I was 17, I read a quote that went something like: </span>
+<span class="sd">            “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">            It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">        \&quot;\&quot;\&quot;))</span>
+<span class="sd">        When I was 17, I read a quote that went something like: </span>
+<span class="sd">        “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">        It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\n\s+&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="o">+</span><span class="sa">r</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">indent</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span></div>
 </pre></div>
 
             <div class="clearer"></div>

@@ -138,6 +138,7 @@
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 
 <span class="kn">from</span> <span class="nn">..__meta__</span> <span class="kn">import</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">__module_name__</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span><span class="p">,</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
 
 <div class="viewcode-block" id="SlackClient"><a class="viewcode-back" href="../../../pycharmers.api.slack.html#pycharmers.api.slack.SlackClient">[docs]</a><span class="k">class</span> <span class="nc">SlackClient</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;A Slack WebClient for `Using the Slack Web API &lt;https://api.slack.com/web#basics&gt;`_</span>
@@ -149,9 +150,6 @@
 <span class="sd">        token (str)    : A string specifying an xoxp or xoxb token.</span>
 <span class="sd">        base_url (str) : A string representing the Slack API base URL.(default= ``&quot;https://www.slack.com/api/&quot;``)</span>
 <span class="sd">        header (dict)  : A header.</span>
-
-<span class="sd">    Methods:</span>
-<span class="sd">        api_call: Constructs a request and executes the API call to Slack.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://www.slack.com/api/&quot;</span>
@@ -172,15 +170,16 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError : If token is not valid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">token</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;xoxp&quot;</span><span class="p">,</span> <span class="s2">&quot;xoxb&quot;</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Please create a token.&quot;</span> <span class="o">+</span> \
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Access https://api.slack.com/apps&quot;</span> <span class="o">+</span> \
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Create New App&quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Set Permission Scopes.&quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">4. Install App To Team.&quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">5. Access https://api.slack.com/apps&quot;</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">token</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;xoxp&quot;</span><span class="p">,</span> <span class="s2">&quot;xoxb&quot;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            Please create a token. (If you have already created, start from 5)</span>
+<span class="s2">                1. Access </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;https://api.slack.com/apps&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">                2. Click </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Create New App]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to create your Slack App.</span>
+<span class="s2">                3. Click </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Basic Information]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Add features and functionality]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Permissions]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to set your desired Permission Scopes.</span>
+<span class="s2">                4. Click </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Basic Information]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Install your app]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Install to Workspace]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to install this App to your Workspace.</span>
+<span class="s2">                5. Visit </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;https://api.slack.com/apps&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> again.</span>
+<span class="s2">                6. Click </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Basic Information]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Add features and functionality]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[Permissions]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> and check </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;OAuth &amp; Permissions&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to get </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;Bot User OAuth Access Token&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> (xoxb-XXXX)</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span></div>
 
     <span class="k">def</span> <span class="nf">_api_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_method</span><span class="p">,</span> <span class="n">http_method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>

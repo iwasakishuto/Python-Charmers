@@ -163,7 +163,7 @@
 <span class="c">      type,</span>
 <span class="c">      is_required,</span>
 <span class="c">      default,</span>
-<span class="c">      example,</span>
+<span class="c">      example_prefix,</span>
 <span class="c">      description,</span>
 <span class="c">      name_type</span>
 <span class="c">    }</span>
@@ -175,18 +175,12 @@
 
 
 <span class="c">--&gt;</span>{%- endif -%}
-def {{ func_name }}({%- if is_method -%}self{%- if arguments|length &gt; 0 %}, {% endif -%}{%- endif -%}
-{%- for argname,argmeta in arguments.items() -%}
-    {{ argname }}
-    {%- if not argmeta.is_required -%}=
-        {%- set default = argmeta.default -%}
-        {%- if default is string -%}
-            {% set default = &#39;&quot;&#39; + default + &#39;&quot;&#39; %}
-        {%- endif -%}
-        {{ default }}
-    {%- endif -%}
-    {%- if not loop.last %}, {% endif -%}
-{%- endfor -%}
+{%- from &quot;_macros/utils.html&quot; import pythonalization -%}
+def {{ func_name }}(
+    {%- if is_method -%}self{%- if arguments|length &gt; 0 %}, {% endif %}{% endif -%}
+    {%- for argname,argmeta in arguments.items() -%}
+        {{ argname }}{% if not argmeta.is_required %}={{ pythonalization(argmeta.default) }}{% endif %}{% if not loop.last %}, {% endif -%}
+    {%- endfor -%}
 ):
     &quot;&quot;&quot;{% if short_description and short_description | length &gt; 0 %}{{ short_description }}
     {% endif %}
@@ -197,20 +191,13 @@ def {{ func_name }}({%- if is_method -%}self{%- if arguments|length &gt; 0 %}, {
 
     Args:
     {%- for argname,argmeta in arguments.items()%}
-        {{ argmeta.name_type.ljust(argwidth) }} : {{ argmeta.description }}
-        {%- if argmeta.default %}
-            {%- set default = argmeta.default -%}
-            {%- if default is string -%}
-                {% set default = &#39;&quot;&#39; + default + &#39;&quot;&#39; %}
-            {%- endif -%}
-            (default= ``{{ default }}`` )
-        {%- endif %}
+        {{ argmeta.name_type.ljust(argwidth) }} : {{ argmeta.description }} {% if argmeta.default %}(default= ``{{ pythonalization(argmeta.default) }}`` ){% endif %}
     {%- endfor %}
 
     {%- if returns %}
 
     Returns:
-        {{ returns }}
+        {{ returns | indent(width=8, first=Faslse) }}
     {%- endif %}
 
     {%- if examples %}
@@ -218,14 +205,10 @@ def {{ func_name }}({%- if is_method -%}self{%- if arguments|length &gt; 0 %}, {
     Examples:
         {{ example_prefix | indent(width=8, first=Faslse) }}
         {%- for argname,argmeta in arguments.items()%}
-            {%- set example = argmeta.example %}
-            {%- if example is string %}
-                {%- set example = &#39;&quot;&#39; + example + &#39;&quot;&#39; %}
-            {%- endif %}
-        ...     {{ argname }}={{ example }},
+        ...     {{ argname }}={{ pythonalization(argmeta.example) }},
         {%- endfor %}
         &gt;&gt;&gt; )
-        {{ example_suffix }}
+        {{ example_suffix | indent(width=8, first=Faslse) }}
     {%- endif %}
     &quot;&quot;&quot;
 </pre></div>
