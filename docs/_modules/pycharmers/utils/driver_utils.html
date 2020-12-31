@@ -68,7 +68,7 @@
 
 <span class="n">SUPPORTED_DRIVER_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="s2">&quot;remote&quot;</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="p">,</span> <span class="n">driver_type</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="p">,</span> <span class="n">driver_type</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Print logs.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_succeed</span><span class="p">:</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;[success]&quot;</span><span class="p">)</span>
@@ -76,7 +76,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">toRED</span><span class="p">(</span><span class="s2">&quot;[failure]&quot;</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;driver can&#39;t be built.&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">state</span><span class="p">,</span> <span class="n">driver_type</span><span class="p">,</span> <span class="n">msg</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">state</span><span class="p">,</span> <span class="n">driver_type</span><span class="p">,</span> <span class="n">msg</span><span class="p">]))</span>
 
 <div class="viewcode-block" id="get_chrome_options"><a class="viewcode-back" href="../../../pycharmers.utils.driver_utils.html#pycharmers.utils.driver_utils.get_chrome_options">[docs]</a><span class="k">def</span> <span class="nf">get_chrome_options</span><span class="p">(</span><span class="n">browser</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get default chrome options.</span>
@@ -124,7 +124,7 @@
 
     <span class="k">return</span> <span class="n">chrome_options</span></div>
 
-<span class="k">def</span> <span class="nf">_check_driver</span><span class="p">(</span><span class="n">selenium_port</span><span class="o">=</span><span class="s2">&quot;4444&quot;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_check_driver</span><span class="p">(</span><span class="n">selenium_port</span><span class="o">=</span><span class="s2">&quot;4444&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check the available drivers. (if one of the drivers is built, there is no problem)&quot;&quot;&quot;</span>
     <span class="n">DRIVER_TYPE</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">chrome_options</span> <span class="o">=</span> <span class="n">get_chrome_options</span><span class="p">(</span><span class="n">browser</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -132,9 +132,9 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">eval</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_get_driver_</span><span class="si">{</span><span class="n">driver_type</span><span class="si">}</span><span class="s2">(chrome_options, selenium_port=selenium_port)&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">driver</span><span class="p">:</span>
                 <span class="n">DRIVER_TYPE</span> <span class="o">=</span> <span class="n">driver_type</span>
-                <span class="n">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">driver_type</span><span class="o">=</span><span class="n">driver_type</span><span class="p">)</span>
+                <span class="n">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">driver_type</span><span class="o">=</span><span class="n">driver_type</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">driver_type</span><span class="o">=</span><span class="n">driver_type</span><span class="p">)</span>
+            <span class="n">_print_driver_check_log</span><span class="p">(</span><span class="n">is_succeed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">driver_type</span><span class="o">=</span><span class="n">driver_type</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">DRIVER_TYPE</span>
 
 <span class="k">def</span> <span class="nf">_get_driver_local</span><span class="p">(</span><span class="n">chrome_options</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -157,8 +157,8 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="n">__DRIVER_SETUP__</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">DRIVER_TYPE</span> <span class="o">=</span> <span class="n">_check_driver</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DRIVER_TYPE: </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">DRIVER_TYPE</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">DRIVER_TYPE</span> <span class="o">=</span> <span class="n">_check_driver</span><span class="p">(</span><span class="n">selenium_port</span><span class="o">=</span><span class="s2">&quot;4444&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># print(f&quot;DRIVER_TYPE: {toGREEN(DRIVER_TYPE)}&quot;)</span>
     <span class="n">__DRIVER_SETUP__</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="n">DRIVER_TYPE</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Fails to launch all supported drivers.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">DriverNotFoundWarning</span><span class="p">)</span>

@@ -17,7 +17,7 @@ from .generic_utils import try_wrapper, handleKeyError
 
 SUPPORTED_DRIVER_TYPES = ["local", "remote"]
 
-def _print_driver_check_log(is_succeed, driver_type):
+def _print_driver_check_log(is_succeed, driver_type, verbose=True):
     """Print logs."""
     if is_succeed:
         state = toGREEN("[success]")
@@ -25,7 +25,7 @@ def _print_driver_check_log(is_succeed, driver_type):
     else:
         state = toRED("[failure]")
         msg = "driver can't be built."
-    print(" ".join([state, driver_type, msg]))
+    if verbose: print(" ".join([state, driver_type, msg]))
 
 def get_chrome_options(browser=False):
     """Get default chrome options.
@@ -73,7 +73,7 @@ def get_chrome_options(browser=False):
 
     return chrome_options
 
-def _check_driver(selenium_port="4444"):
+def _check_driver(selenium_port="4444", verbose=True):
     """Check the available drivers. (if one of the drivers is built, there is no problem)"""
     DRIVER_TYPE = ""
     chrome_options = get_chrome_options(browser=False)
@@ -81,9 +81,9 @@ def _check_driver(selenium_port="4444"):
         try:
             with eval(f"_get_driver_{driver_type}(chrome_options, selenium_port=selenium_port)") as driver:
                 DRIVER_TYPE = driver_type
-                _print_driver_check_log(is_succeed=True, driver_type=driver_type)
+                _print_driver_check_log(is_succeed=True, driver_type=driver_type, verbose=verbose)
         except Exception as e:
-            _print_driver_check_log(is_succeed=False, driver_type=driver_type)
+            _print_driver_check_log(is_succeed=False, driver_type=driver_type, verbose=verbose)
     return DRIVER_TYPE
 
 def _get_driver_local(chrome_options, **kwargs):
@@ -106,8 +106,8 @@ def _get_driver_remote(chrome_options, **kwargs):
 try:
     __DRIVER_SETUP__
 except NameError:
-    DRIVER_TYPE = _check_driver()
-    print(f"DRIVER_TYPE: {toGREEN(DRIVER_TYPE)}")
+    DRIVER_TYPE = _check_driver(selenium_port="4444", verbose=False)
+    # print(f"DRIVER_TYPE: {toGREEN(DRIVER_TYPE)}")
     __DRIVER_SETUP__ = True
     if DRIVER_TYPE == "":
         warnings.warn(message="Fails to launch all supported drivers.", category=DriverNotFoundWarning)

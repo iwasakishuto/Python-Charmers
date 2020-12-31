@@ -103,6 +103,6 @@ toBRIGHT_WHITE   = _toCOLOR_create(color="BRIGHT_WHITE")
 def check_all_toCOLOR(word="Hello, World!"):
     func_names = [f for f in __all__ if f.startswith("to")]
     digit = max([len(f) for f in func_names])
-    for func_name in __all__:
+    for func_name in func_names:
         func = globals().get(func_name)
         print(f"{func_name:<{digit}}: {func(word, is_bg=False)}\t{func(word, is_bg=True)}")  

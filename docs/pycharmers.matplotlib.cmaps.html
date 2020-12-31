@@ -69,6 +69,69 @@
   <div class="section" id="module-pycharmers.matplotlib.cmaps">
 <span id="pycharmers-matplotlib-cmaps-module"></span><h1>pycharmers.matplotlib.cmaps module<a class="headerlink" href="#module-pycharmers.matplotlib.cmaps" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.matplotlib.cmaps.plot_color_palettes">
+<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_color_palettes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">palette_name</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_color_palettes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_color_palettes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot color palettes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>palette_name</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_color_palettes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">&quot;xkcd&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color maps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.matplotlib.cmaps.plot_cmap_samples">
+<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmap_name</span><span class="o">=</span><span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot color map samples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmap_name</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – The resolution of the figure. (The size of matrix.)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color maps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot color map with different dpi (Dots per inch)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;Pastel1&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.matplotlib.cmaps.plot_cmap_category_samples">
+<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_category_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_category_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_category_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot all colormap samples in a category</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>category</strong> (<em>str</em>) – the name of a color map category.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map category</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;Sequential&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color map categories</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.matplotlib.cmaps.color_dict_create">
 <code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">color_dict_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keys</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'jet'</span></em>, <em class="sig-param"><span class="n">reverse</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_val</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#color_dict_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.color_dict_create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a color dict.</p>
@@ -103,69 +166,6 @@
 <span class="go">{&#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
 <span class="go">&#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
 <span class="go">&#39;a&#39;: (0.5, 0.0, 0.0, 1.0)}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.matplotlib.cmaps.plot_cmap_category_samples">
-<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_category_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_category_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_category_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot all colormap samples in a category</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>category</strong> (<em>str</em>) – the name of a color map category.</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map category</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;Sequential&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color map categories</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_category_samples</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.matplotlib.cmaps.plot_cmap_samples">
-<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_cmap_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmap_name</span><span class="o">=</span><span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_cmap_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_cmap_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot color map samples</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cmap_name</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
-<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
-<li><p><strong>dpi</strong> (<em>int</em>) – The resolution of the figure. (The size of matrix.)</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_cmap_samples</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color maps</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot color map with different dpi (Dots per inch)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_cmap_samples</span><span class="p">(</span><span class="n">cmap_name</span><span class="o">=</span><span class="s2">&quot;Pastel1&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.matplotlib.cmaps.plot_color_palettes">
-<code class="sig-prename descclassname">pycharmers.matplotlib.cmaps.</code><code class="sig-name descname">plot_color_palettes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">palette_name</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/cmaps.html#plot_color_palettes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.cmaps.plot_color_palettes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot color palettes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>palette_name</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_color_palettes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot specified color map</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">&quot;xkcd&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot All color maps</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_color_palettes</span><span class="p">(</span><span class="n">palette_name</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -214,7 +214,13 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.matplotlib.cmaps module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.layout.html">pycharmers.matplotlib.layout module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.plot2d.html">pycharmers.matplotlib.plot2d module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.plot3d.html">pycharmers.matplotlib.plot3d module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.matplotlib.html#module-pycharmers.matplotlib">Module contents</a></li>
 </ul>
 </li>

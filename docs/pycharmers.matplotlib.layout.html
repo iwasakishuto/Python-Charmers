@@ -108,6 +108,35 @@ ax (Axes)    : <code class="docutils literal notranslate"><span class="pre">ax</
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.matplotlib.layout.set_ax_info">
+<code class="sig-prename descclassname">pycharmers.matplotlib.layout.</code><code class="sig-name descname">set_ax_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/layout.html#set_ax_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.layout.set_ax_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Axes information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
+<li><p><strong>kwargs</strong> – <code class="docutils literal notranslate"><span class="pre">key</span></code> indicate the method which is start with <code class="docutils literal notranslate"><span class="pre">set_</span></code>, and the method takes arguments (<code class="docutils literal notranslate"><span class="pre">val</span></code>) according to the type of <code class="docutils literal notranslate"><span class="pre">val</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ax (Axes)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">set_ax_info</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">set_ax_info</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Xlabel&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Ylabel&quot;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ticks&quot;</span><span class="p">:[]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.matplotlib.layout.clear_grid">
 <code class="sig-prename descclassname">pycharmers.matplotlib.layout.</code><code class="sig-name descname">clear_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">['x', 'y']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/layout.html#clear_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.layout.clear_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear a grid</p>
@@ -173,35 +202,6 @@ total_figsize (tuple) : The total figure size.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.matplotlib.layout.set_ax_info">
-<code class="sig-prename descclassname">pycharmers.matplotlib.layout.</code><code class="sig-name descname">set_ax_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/layout.html#set_ax_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.layout.set_ax_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set Axes information</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
-<li><p><strong>kwargs</strong> – <code class="docutils literal notranslate"><span class="pre">key</span></code> indicate the method which is start with <code class="docutils literal notranslate"><span class="pre">set_</span></code>, and the method takes arguments (<code class="docutils literal notranslate"><span class="pre">val</span></code>) according to the type of <code class="docutils literal notranslate"><span class="pre">val</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ax (Axes)</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">set_ax_info</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">set_ax_info</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Xlabel&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Ylabel&quot;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ticks&quot;</span><span class="p">:[]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pycharmers.matplotlib.layout.show_all_fonts">
 <code class="sig-prename descclassname">pycharmers.matplotlib.layout.</code><code class="sig-name descname">show_all_fonts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/layout.html#show_all_fonts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.layout.show_all_fonts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show all fonts available in <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> .</p>
@@ -251,7 +251,13 @@ total_figsize (tuple) : The total figure size.</p>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.cmaps.html">pycharmers.matplotlib.cmaps module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.matplotlib.layout module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.plot2d.html">pycharmers.matplotlib.plot2d module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.plot3d.html">pycharmers.matplotlib.plot3d module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.matplotlib.html#module-pycharmers.matplotlib">Module contents</a></li>
 </ul>
 </li>

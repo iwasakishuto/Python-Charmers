@@ -69,47 +69,6 @@
   <div class="section" id="module-pycharmers.utils.color_utils">
 <span id="pycharmers-utils-color-utils-module"></span><h1>pycharmers.utils.color_utils module<a class="headerlink" href="#module-pycharmers.utils.color_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="pycharmers.utils.color_utils.choose_text_color">
-<code class="sig-prename descclassname">pycharmers.utils.color_utils.</code><code class="sig-name descname">choose_text_color</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">max_val</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/color_utils.html#choose_text_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.color_utils.choose_text_color" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select an easy-to-read text color from the given color.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>color</strong> (<em>tuple / str</em>) – color code.</p>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<p><a class="reference external" href="https://www.w3.org/TR/WCAG20/">WCAG</a></p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">choose_text_color</span>
-<span class="go"># BLACK</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(255, 255, 255)</span>
-<span class="go"># RED</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(255, 255, 255)</span>
-<span class="go"># GREEN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">128</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-<span class="go"># YELLOW</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-<span class="go"># BLUE</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-<span class="go"># MAGENTA</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-<span class="go"># CYAN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-<span class="go"># WHITE</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-<span class="go">(0, 0, 0)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pycharmers.utils.color_utils.detect_color_code_type">
 <code class="sig-prename descclassname">pycharmers.utils.color_utils.</code><code class="sig-name descname">detect_color_code_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/color_utils.html#detect_color_code_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.color_utils.detect_color_code_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect Color Code type</p>
@@ -229,6 +188,47 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.color_utils.choose_text_color">
+<code class="sig-prename descclassname">pycharmers.utils.color_utils.</code><code class="sig-name descname">choose_text_color</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">max_val</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/color_utils.html#choose_text_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.color_utils.choose_text_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select an easy-to-read text color from the given color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color</strong> (<em>tuple / str</em>) – color code.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://www.w3.org/TR/WCAG20/">WCAG</a></p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">choose_text_color</span>
+<span class="go"># BLACK</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(255, 255, 255)</span>
+<span class="go"># RED</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(255, 255, 255)</span>
+<span class="go"># GREEN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">128</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+<span class="go"># YELLOW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+<span class="go"># BLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+<span class="go"># MAGENTA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+<span class="go"># CYAN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>   <span class="mi">0</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+<span class="go"># WHITE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">choose_text_color</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="go">(0, 0, 0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -275,7 +275,22 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.argparse_utils.html">pycharmers.utils.argparse_utils module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.color_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pandas_utils.html">pycharmers.utils.pandas_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
 </ul>
 </li>

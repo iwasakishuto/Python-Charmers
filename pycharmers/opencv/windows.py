@@ -1,8 +1,10 @@
+"""Define functions and classes to make OpenCV window easier to use. """
 #coding: utf-8
 import os
 import re
 import sys
 import cv2
+from tabulate import tabulate
 
 from ._path import save_dir_create
 from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_generator_concat,
@@ -10,165 +12,231 @@ from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_
 from .drawing import draw_text_with_bg, draw_bboxes_create
 from .tracking import tracker_create, BBoxLogger
 from ..utils.generic_utils import now_str, flatten_dual, handleKeyError
-from ..utils._colorings import toBLUE, toGREEN, toACCENT
+from ..utils._colorings import toRED, toBLUE, toGREEN, toACCENT
 
 DEFAULT_CV_KEYS = {
-    "MOVING": {"left": "h", "right": "l", "down": "j", "up": "k"},
-    "RATIO" : {"expansion" : "+", "reduction" : "-"},
-    "POS"   : {"fullscreen": "f", "topleft": "o"},
-    "INFO"  : {"": "i"},
-    "QUIT"  : {"1": ("\x1b", "<esc>"), "2": "q"},
-    "DELETE": {"": ("\x08", "<delete>")},
-    "ENTER" : {"": ("\r", "<enter>")},
-    "NUMBER": {str(i):str(i) for i in range(10)},
+    "BASE": ["To send the window the command '{name}'", {
+        "info": "i",
+        "quit": "q",
+        "delete": "<delete>",
+        "enter": "<enter>",
+    }],
+    "MOVING" : ["To move the window to the '{name}'", {
+        "left": "h", 
+        "right": "l",
+        "down": "j", 
+        "up": "k",
+    }],
+    "RATIO" : ["To '{name}' the window", {
+        "expansion" : "+", 
+        "reduction" : "-",
+    }],
+    "POSITION" : ["To set/know the window '{name}'", {
+        "fullscreen": "f", 
+        "topleft": "o",
+        "rectangle": "r",
+    }],
 }
-DEFAULT_FRAME_KEYS = DEFAULT_CV_KEYS.copy()
-DEFAULT_FRAME_KEYS.update({
-    "FRAME" : {"advance": "w", "back": "b", "jump": "@"},
-    "RANGE" : {"start": "s", "end": "e"},
-    "TAKE"  : {"picture": "p", "video": "v"},
-})
-DEFAULT_TRACKING_KEYS = DEFAULT_FRAME_KEYS.copy()
-DEFAULT_TRACKING_KEYS.update({
-    "TRACKING" : {"start": "t", "stop": "c", "init": "n"},
-})
-DEFAULT_CASCADE_KEYS = DEFAULT_FRAME_KEYS.copy()
+DEFAULT_FRAME_KEYS = {
+    "FRAME" : ["", {
+        "advance": "w", 
+        "back": "b", 
+        "jump": "@"
+    }],
+    "RANGE" : ["", {
+        "start": "s",
+        "end": "e"
+    }],
+    "TAKE"  : ["",{
+        "picture": "p", 
+        "video": "v"
+    }],
+}
+DEFAULT_TRACKING_KEYS = {
+    "TRACKING" : ["", {
+        "start": "t", 
+        "stop": "c", 
+        "init": "n"
+    }],
+}
 
 class cvKeys():
     """Keys for using openCV
 
+    Args:
+        cv_keys (dict) : Key information. See :meth:`set_keys <pycharmers.opencv.windows.cvKeys.set_keys>` . ``{group: [fmt, {name1:key1, name2:key2,...}]}``
+
+    Attributes:
+        info_table (list)         : List-style Information. This strings are used in method :meth:`describe <pycharmers.opencv.windows.cvKeys.describe>`
+        groups (list)             : Group list.
+        GROUP_NAME_KEY (str)      : Key for a command.
+        GROUP_NAME_KEY_ORD (int)  : Ord of the Key ( ``GROUP_NAME_KEY`` )
+        GROUP_KEYS (list)         : Keys for a group commands.
+        GROUP_KEYS_ORD (list)     : Ords of the all Keys in a group ( ``GROUP_KEYS`` )
+        ALL_KEYS (list)           : All Keys for commands.
+        ALL_KEYS_ORD (list)       : All ords of the all Keys (``ALL_KEYS``)
+
     Examples:
         >>> from pycharmers.opencv import cvKeys, DEFAULT_CV_KEYS
         >>> cvKey = cvKeys(**DEFAULT_CV_KEYS)
-        >>> cvKey.QUIT_1_KEY,        cvKey.QUIT_1_KEY_ORD
-        ('\x1b', 27)
-        >>> cvKey.QUIT_1_KEY_STR,    cvKey.QUIT_1_KEY_STR_ORD
-        ('<esc>', -1)
-        >>> cvKey.QUIT_KEYS,         cvKey.QUIT_KEYS_ORD
-        (['\x1b', 'q'], [27, 113])
-        >>> cvKey.QUIT_KEYS_STR,     cvKey.QUIT_KEYS_STR_ORD
-        (['<esc>', 'q'], [-1, 113])
-        >>> cvKey.HOGE_PIYO_KEY,     cvKey.HOGE_PIYO_KEY_ORD
-        (None, -1)
-        >>> cvKey.HOGE_PIYO_KEY_STR, cvKey.HOGE_PIYO_KEY_STR_ORD
-        (None, -1)
-        >>> cvKey.HOGE_KEYS,         cvKey.HOGE_KEYS_ORD
-        ([], [])
-        >>> cvKey.HOGE_KEYS_STR,     cvKey.HOGE_KEYS_STR_ORD
-        ([], [])
-        # You can find out all the keys used.
-        >>> sorted(cvKey.ALL_KEYS)
-    """
-    
-    def __init__(self, **cv_keys):
-        self.group_prefixes = []
-        for prefix, keys in cv_keys.items():
-            if isinstance(keys, dict):
-                self.set_keys(prefix=prefix, **keys)
-            else:
-                self.__dict__.update({prefix: keys})
-    
-    @staticmethod
-    def ord(c):
-        """Return the Unicode code point for a one-character string."""
-        return ord(c) if (c is not None) and (len(c)==1) else -1
-    
-    def __getattr__(self, key):
-        if key.endswith("_ORD"):
-            key = key[:-4] # key.rstrip("_ORD")
-            try:
-                val = self.__getattribute__(key)  
-            except AttributeError:
-                val = self.__getattr__(key)
-            return [self.ord(e) for e in val] if isinstance(val, list) else self.ord(val)
-        return [] if (key.endswith("KEYS") or key.endswith("KEYS_STR")) else None
+        >>> cvKey.MOVING_LEFT_KEY
+        'h'
+        >>> cvKey.MOVING_LEFT_KEY_ORD
+        104
+        >>> cvKey.MOVING_KEYS
+        ['h', 'l', 'j', 'k']
+        >>> cvKey.MOVING_KEYS_ORD
+        [104, 108, 106, 107]
+        >>> cvKey.ALL_KEYS
+        ['i', 'q', '<delete>', '<enter>', 'h', 'l', 'j', 'k', '+', '-', 'f', 'o']
+        >>> cvKey.ALL_KEYS_ORD
+        [105, 113, 8, 13, 104, 108, 106, 107, 43, 45, 102, 111]
 
-            
-    def set_keys(self, prefix, **keys):
-        prefix = prefix.upper()
-        self.group_prefixes.append(prefix)
+    """    
+    def __init__(self, **cv_keys):
+        self.groups = []; self.info_table = []
+        for group,(fmt,keys) in cv_keys.items():
+            self.set_keys(group=group, fmt=fmt, **keys)
+
+    def __getattr__(self, name):
+        """When suffix of attribute is 
+
+        * XXX_KEYS_ORD, return the Unicode code points for XXX_KEYS. (list)
+        * XXX_KEY_ORD, return the Unicode code point for XXX_KEY. (int)
+        """
+        ord_match = re.match(pattern=r"^(.+_KEYS?)_ORD$", string=name)
+        if ord_match:
+            key_str = self.__getattribute__(ord_match.group(1))
+            if isinstance(key_str, list):
+                return [self.ord(key) for key in key_str]
+            else: # isinstance(key, str)
+                return self.ord(key_str)
+
+    def set_keys(self, group, fmt, **keys):
+        """Set keys.
+
+        Args:
+            group (str) : A group name. (ex. ``"MOVING"`` )
+            fmt (str)   : How to describe group keys. Need to contain "{name}" (ex. ``"To move the window to the {name}"`` )
+            keys (dict) : {name1:key1, name2:key2,...}
+                        * name (str)  : A name in the ``group`` . (ex. ``"left"`` )
+                        * key (str)   : A key corresponding to the ``name`` . (ex. ``"l"``)
+        """
+        group = group.upper()
+        self.groups.append(group)
+        self.info_table.append([toRED(group), "", ""])
+        for name, key in keys.items():
+            self.info_table.append(["", fmt.format(name=toGREEN(name)), f"press {toBLUE(key)}"])
+            setattr(self, f"{group}_{name.upper()}_KEY", key)
+        setattr(self.__class__, f"{group}_KEYS", property(fget=lambda self: self._get_group_keys(group=group)))
+
+    @property
+    def info(self):
+        return tabulate(self.info_table, headers=["group", f"description ('{toGREEN('name')}')", "key"], tablefmt="grid")
+
+    def describe(self):
+        """Describe Key information."""
+        print(self.info)
+
+    def _get_group_keys(self, group=""):
+        return [key for name,key in self.__dict__.items() if re.match(pattern=fr"^{group.upper()}.+$", string=name)]
+
+    @staticmethod
+    def ord(c=None):
+        """Return the Unicode code point for a one-character string.
         
-        for key,val in keys.items():
-            key = key.upper()
-            setattr(self, f"__{prefix}_{key}_KEY",   val)
-            setattr(self, f"{prefix}_{key}_KEY",     val[0])
-            setattr(self, f"{prefix}_{key}_KEY_STR", val[-1])
-                       
-        setattr(self.__class__, f"{prefix}_KEYS",     property(lambda self: self.get_group_keys(prefix=prefix, suffix="_KEY")))
-        setattr(self.__class__, f"{prefix}_KEYS_STR", property(lambda self: self.get_group_keys(prefix=prefix, suffix="_KEY_STR")))
-        
-    def get_group_keys(self, prefix="", suffix=""):
-        prefix = prefix.upper()
-        group_keys = [key for name,key in self.__dict__.items() if re.match(pattern=fr"^{prefix}.+{suffix}$", string=name)]
-        return group_keys
+        Args:
+            c (str) : A character
+
+        Return:
+            i (int) : Unicode code point
+
+        Examples:
+            >>> from pycharmers.opencv import cvKeys
+            >>> cvKey = cvKeys()
+            >>> cvKey.ord("l") == ord("l")
+            True
+            >>> cvKey.ord("<delete>")
+            8
+            >>> ord("<delete>")
+            TypeError: ord() expected a character, but string of length 8 found
+        """
+        c = re.sub(pattern=r"<(.+)>",repl=lambda m:{"delete":"\x08","enter":"\r"}[m.group(1)], string=str(c))
+        return ord(c) if len(c)==1 else -1
     
     @property
     def ALL_KEYS(self):
-        return flatten_dual([self.get_group_keys(prefix=prefix, suffix="KEY") for prefix in self.group_prefixes])
+        """Return all the keys that have been set."""
+        return flatten_dual([self._get_group_keys(group=group) for group in self.groups])
 
-def wait_for_input(fmt="Your input : {}", cvKey=cvKeys(**DEFAULT_CV_KEYS)):
+def wait_for_input(fmt="Your input : {val}", cvKey=cvKeys(**DEFAULT_CV_KEYS)):
     """Wait until the valid input is entered.
+
+    Args:
+        fmt (str)      : Format to show your current input value. ( ``"{val}"`` must be included.)
+        cvKey (cvKeys) : Instance of :class:`cvKeys <pycharmers.opencv.windows.cvKeys>`
+
+    Returns:
+        curt_val (str) : Input string.
 
     Examples:
         >>> import cv2
-        >>> from pycharmers.opencv.windows import wait_for_input
-        >>> from pycharmers.opencv import SAMPLE_LENA_IMG
+        >>> from pycharmers.opencv import wait_for_input, SAMPLE_LENA_IMG
         >>> cv2.imshow("lena.png", cv2.imread(SAMPLE_LENA_IMG))
         >>> val = wait_for_input()
         >>> cv2.destroyAllWindows()
     """
-    curt_val = ""
     def print_log(curt_val):
-        sys.stdout.write("\033[2K\033[G" + fmt.format(curt_val))
+        sys.stdout.write("\033[2K\033[G" + fmt.format(val=curt_val))
         sys.stdout.flush()
-    key = cv2.waitKey(0)
-    while key not in cvKey.ENTER_KEYS_ORD:
-        if key in cvKey.DELETE_KEYS_ORD:
+
+    curt_val = ""; print_log(curt_val)
+    while True:
+        key = cv2.waitKey(0)
+        if key == cvKey.BASE_ENTER_KEY_ORD:
+            break
+        elif key == cvKey.BASE_DELETE_KEY_ORD:
             curt_val = curt_val[:-1]
         else:
             curt_val += chr(key)
-        print_log(curt_val)
-        key = cv2.waitKey(0)
+        print_log(curt_val)    
     print()
     if len(curt_val) == 0:
+        # Process recursively
         curt_val = wait_for_input()
     return curt_val
 
-def wait_for_choice(*keys):
+def wait_for_choice(*choices):
     """Wait until choicing the one of the keys.
 
     Args:
-        *keys: Keys.
+        choices (tuple): Choices.
+
+    Returns:
+        choice (element) : The ith element in ``choices`` . ( ``i`` means Your input. )
 
     Examples:
         >>> import cv2
-        >>> from pycharmers.opencv.windows import wait_for_choice
-        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> from pycharmers.opencv import wait_for_choice, SAMPLE_LENA_IMG
         >>> cv2.imshow("lena.png", cv2.imread(SAMPLE_LENA_IMG))
         >>> val = wait_for_choice(*list("ltrb"))
         >>> cv2.destroyAllWindows()
     """
-    num_choices = len(keys)
-    max_len = len(max(keys, key=len))
-    int2key = dict(zip(range(num_choices), keys))
-
-    print("\nPlease input the corresponding number.")
-    for i,k in int2key.items():
-        print(f" - {k:<{max_len}}: {i}")
-
+    max_val = len(choices)-1
+    print(tabulate([[i,c] for i,c in enumerate(choices)], headers=["Input", "Choice"], tablefmt="pretty"))
     while True:
         i = int(wait_for_input())
-        if 0 <= i < num_choices:
+        if 0 <= i <= max_val:
             break
         else:
-            print(f"* Please input from 0 to {num_choices-1} (got {i})")
-    return keys[i]
+            print(f"[ERROR] Please input from 0 to {max_val} (got {i})")
+    return choices[i]
 
 class cvWindow():
     """Window & Image Location
 
-    - ``Ix,Iy,Iw,Ih = cv2.getWindowImageRect(winname)``
-    - ``cv2.moveWindow(winname, Wx, Wy)``
+    - Ix,Iy,Iw,Ih = :meth:`getWindowImageRect <pycharmers.opencv.windows.cvWindow.getWindowImageRect>`
+    - :meth:`moveWindow <pycharmers.opencv.windows.cvWindow.moveWindow>` make the window left top to ``(x,y)``
 
     Variable Names::
 
@@ -192,7 +260,17 @@ class cvWindow():
         img_save_dir (str)     : ``Path/to/created_image/directory``
         reduction_rate (float) :  ``1./expansion_rate``
         cvKey (cvKeys)         : Keys that can be used with OpenCV.
-        iIh, iIw (int)         : 
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv import cvWindow
+        >>> window = cvWindow()
+        >>> while True:
+        ...     key = cv2.waitKey(0)
+        ...     is_break = window.recieveKey(key)
+        ...     if is_break:
+        ...         break
+        >>> cv2.destroyAllWindows()
     """
     no = 0
 
@@ -204,20 +282,13 @@ class cvWindow():
             dirname (str)          : dirname for saved image or directory.
             move_distance (int)    : Moving distance. (px)
             expansion_rate (float) : Expansion Rate.
-            cv_keys (dict)         : ``<pycharmers.opencv.windows.cvKeys object>``.
-
-        Examples:
-            >>> from pycharmers.opencv import cvWindow
-            >>> window = cvWindow()
+            cvKey (dict)           : Instance of :class:`cvKeys <pycharmers.opencv.windows.cvKeys>`.
         """
         self.setup(winname=winname, dirname=dirname)
-
         self.move_distance = move_distance
         self.expansion_rate = expansion_rate
         self.cvKey = cvKey
-
-        self.iIh = None
-        self.iIw = None
+        self.describe()
 
     @property
     def reduction_rate(self):
@@ -241,6 +312,7 @@ class cvWindow():
         cv2.namedWindow(winname, cv2.WINDOW_NORMAL)
         # Decide the location of the directory to save image.
         self.img_save_dir, self.video_save_dir = save_dir_create(dirname=dirname, image=True, video=True, json=False)
+        self.Iw, self.Ih = self.image_size
 
     @property
     def frame_size(self):
@@ -291,9 +363,8 @@ class cvWindow():
         """ Get the ``(Wx,Wy,Fw,Fh)`` 
         
         Notes:
-            - ``self.getWindowImageRect()`` gets the rectangle of image in the window.
-            - ``self.moveWindow(x, y)`` make the window left top to ``(x,y)``
-        
+            - :meth:`getWindowImageRect <pycharmers.opencv.windows.cvWindow.getWindowImageRect>` gets the rectangle of image in the window.
+            - :meth:`moveWindow <pycharmers.opencv.windows.cvWindow.moveWindow>` make the window left top to ``(x,y)``
         """
         Ix,Iy,_,_ = self.getWindowImageRect()
         self.moveWindow(Ix, Iy)
@@ -311,33 +382,14 @@ class cvWindow():
         Args:
             mat (np.ndarray): Image to be shown.
         """
-        if self.iIh is None or (self.iIh, self.iIw) != mat.shape[:2]:
-            self.iIh, self.iIw, _ = mat.shape
-            self.Ih,  self.Iw,  _ = mat.shape
-            self.resizeWindow(height=self.iIh, width=self.iIw)
+        if (self.Ih, self.Iw) != mat.shape[:2]:
+            self.Ih, self.Iw,  _ = mat.shape
+            self.resizeWindow(height=self.Ih, width=self.Iw)
         cv2.imshow(winname=self.winname, mat=mat)
 
     def _ret_info(self):
         """ Return Key Information. """
-        cvKey = self.cvKey
-        return f"""
-        {toACCENT(f'[Window Name {self.winname}]')}
-        # Move window : {toBLUE(str(self.move_distance) + 'px')}
-        - To move {toBLUE('left')+',':<15} press {toGREEN(cvKey.MOVING_LEFT_KEY_STR)}
-        - To move {toBLUE('right')+',':<15} press {toGREEN(cvKey.MOVING_RIGHT_KEY_STR)}
-        - To move {toBLUE('down')+',':<15} press {toGREEN(cvKey.MOVING_DOWN_KEY_STR)}
-        - To move {toBLUE('up')+',':<15} press {toGREEN(cvKey.MOVING_UP_KEY_STR)}
-        # window position
-        - To align {toBLUE('top & left')}, press {toGREEN(cvKey.POS_TOPLEFT_KEY_STR)}
-        - To make the window {toBLUE('fullscreen')}, press {toGREEN(cvKey.POS_FULLSCREEN_KEY_STR)}
-        # Expansion & Reduction : {toBLUE(f'{self.expansion_rate:.1%}')}
-        - To {toBLUE('expand')} window, press {toGREEN(cvKey.RATIO_EXPANSION_KEY_STR)}
-        - To {toBLUE('shrink')} window, press {toGREEN(cvKey.RATIO_REDUCTION_KEY_STR)}
-        # Quit
-        - To {toBLUE('quit')}, press {', '.join([toGREEN(e) for e in cvKey.QUIT_KEYS_STR])}
-        # Info
-        - To get the window rectangle, press {toGREEN(cvKey.INFO__KEY_STR)}
-        """
+        return self.cvKey.info
 
     def describe(self):
         """Describe Key info."""
@@ -356,10 +408,15 @@ class cvWindow():
         cvKey = self.cvKey
         winname = self.winname
 
-        if key in cvKey.QUIT_KEYS_ORD:
-            cv2.destroyWindow(winname)
-            is_break = True
+        # Quit.
+        if key == cvKey.BASE_KEYS_ORD:
+            if key == cvKey.BASE_QUIT_KEY_ORD:
+                cv2.destroyWindow(winname)
+                is_break = True
+            elif key == cvKey.BASE_INFO_KEY_ORD:
+                self.describe()
 
+        # MOVING
         elif key in cvKey.MOVING_KEYS_ORD:
             Wx,Wy,_,_ = self.get_anchors()
 
@@ -374,6 +431,7 @@ class cvWindow():
 
             self.moveWindow(Wx, Wy)
 
+        # RATIO
         elif key in cvKey.RATIO_KEYS_ORD:
             if key == cvKey.RATIO_EXPANSION_KEY_ORD:
                 rate = self.expansion_rate
@@ -384,14 +442,11 @@ class cvWindow():
             self.Iw = int(rate*self.Iw)
             self.resizeWindow(width=self.Iw, height=self.Ih)
 
-        elif key in cvKey.INFO_KEYS_ORD:
-            print(f"Window Rectangle: {self.getWindowRect()}")
-
-        elif key in cvKey.POS_KEYS_ORD:
-            if key == cvKey.POS_FULLSCREEN_KEY_ORD:
+        elif key in cvKey.POSITION_KEYS_ORD:
+            if key == cvKey.POSITION_FULLSCREEN_KEY_ORD:
                 """
-                ``cv2.WINDOW_NORMAL = 0``
-                ``cv2.WINDOW_FULLSCREEN = 1``
+                - ``cv2.WINDOW_NORMAL`` = ``0``
+                - ``cv2.WINDOW_FULLSCREEN = ``1``
                 """
                 cv2.setWindowProperty(
                     winname=winname,
@@ -401,8 +456,10 @@ class cvWindow():
                         prop_id=cv2.WND_PROP_FULLSCREEN,
                     )
                 )
-            else:
+            elif key == cvKey.POSITION_TOPLEFT_KEY_ORD:
                 self.moveWindow(0, 0)
+            elif key == cvKey.POSITION_RECTANGLE_KEY_ORD:
+                print(f"Window Rectangle: {self.getWindowRect()}")
 
         return is_break
 
@@ -662,3 +719,5 @@ class TrackingWindow(FrameWindow):
         - To {toGREEN('initialize')+' bbox,':<25} press '{toBLUE(cvKey.TRACKING_INIT_KEY_STR)}'
         """
         return info
+
+# __doc__ += "\n"+cvKeys(**DEFAULT_CV_KEYS).info

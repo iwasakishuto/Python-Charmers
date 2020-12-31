@@ -99,44 +99,38 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.opencv.drawing.cv2plot">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">cv2plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clear_pos</span><span class="o">=</span><span class="default_value">['l', 't', 'r', 'b']</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#cv2plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.cv2plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot Image using OpenCV</p>
+<dt id="pycharmers.opencv.drawing.draw_bboxes_create">
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#draw_bboxes_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.drawing.draw_bboxes_xywh">
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_xywh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_xywh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drawing Inference results on frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>str/np.ndarray</em>) – path to an image, or image. (BGR)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
-<li><p><strong>clear_pos</strong> (<em>list</em>) – Positions to clean a grid</p></li>
-<li><p><strong>**kwargs</strong> – </p></li>
+<li><p><strong>frame</strong> (<em>ndarray</em>) – Image. shape=(H,W,ch)</p></li>
+<li><p><strong>bboxes</strong> (<em>list</em>) – Each element is the coordinate (x,y,w,h)</p></li>
+<li><p><strong>infos</strong> (<em>list</em>) – Each element is dictionary. (<code class="docutils literal notranslate"><span class="pre">key</span></code> is <code class="docutils literal notranslate"><span class="pre">color</span></code>, or <code class="docutils literal notranslate"><span class="pre">text</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.cv2plot</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;path/to/image.png&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">draw_bboxes_xywh</span><span class="p">,</span> <span class="n">cv2read_mpl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="s2">&quot;path/to/img.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_bboxes_xywh</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">frame</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">80</span><span class="p">),(</span><span class="mi">220</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">infos</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person1&quot;</span><span class="p">},{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person2&quot;</span><span class="p">}]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.opencv.drawing.cv2read_mpl">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">cv2read_mpl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">flags</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#cv2read_mpl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.cv2read_mpl" title="Permalink to this definition">¶</a></dt>
-<dd><p>loads an image from the specified file and returns it as RGB format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Name of file to be loaded.</p></li>
-<li><p><strong>flags</strong> (<em>int</em>) – Flags.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.opencv.drawing.draw_bboxes_create">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#draw_bboxes_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.opencv.drawing.draw_bboxes_ltrb">
@@ -168,30 +162,36 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.opencv.drawing.draw_bboxes_xywh">
-<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">draw_bboxes_xywh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">bboxes</span></em>, <em class="sig-param"><span class="n">infos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.opencv.drawing.draw_bboxes_xywh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Drawing Inference results on frame.</p>
+<dt id="pycharmers.opencv.drawing.cv2read_mpl">
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">cv2read_mpl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">flags</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#cv2read_mpl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.cv2read_mpl" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads an image from the specified file and returns it as RGB format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>ndarray</em>) – Image. shape=(H,W,ch)</p></li>
-<li><p><strong>bboxes</strong> (<em>list</em>) – Each element is the coordinate (x,y,w,h)</p></li>
-<li><p><strong>infos</strong> (<em>list</em>) – Each element is dictionary. (<code class="docutils literal notranslate"><span class="pre">key</span></code> is <code class="docutils literal notranslate"><span class="pre">color</span></code>, or <code class="docutils literal notranslate"><span class="pre">text</span></code>)</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Name of file to be loaded.</p></li>
+<li><p><strong>flags</strong> (<em>int</em>) – Flags.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.drawing.cv2plot">
+<code class="sig-prename descclassname">pycharmers.opencv.drawing.</code><code class="sig-name descname">cv2plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clear_pos</span><span class="o">=</span><span class="default_value">['l', 't', 'r', 'b']</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/drawing.html#cv2plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.drawing.cv2plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Image using OpenCV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>str/np.ndarray</em>) – path to an image, or image. (BGR)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
+<li><p><strong>clear_pos</strong> (<em>list</em>) – Positions to clean a grid</p></li>
+<li><p><strong>**kwargs</strong> – </p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">draw_bboxes_xywh</span><span class="p">,</span> <span class="n">cv2read_mpl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="s2">&quot;path/to/img.png&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_bboxes_xywh</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">frame</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">80</span><span class="p">),(</span><span class="mi">220</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">100</span><span class="p">)],</span>
-<span class="gp">... </span>    <span class="n">infos</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person1&quot;</span><span class="p">},{</span><span class="s2">&quot;color&quot;</span><span class="p">:(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;person2&quot;</span><span class="p">}]</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.cv2plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;path/to/image.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -272,7 +272,17 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.drawing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
 </ul>
 </li>

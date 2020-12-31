@@ -65,6 +65,72 @@
   <div class="section" id="module-pycharmers.utils.templates">
 <span id="pycharmers-utils-templates-module"></span><h1>pycharmers.utils.templates module<a class="headerlink" href="#module-pycharmers.utils.templates" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.utils.templates.render_template">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template_name_or_string</span></em>, <em class="sig-param"><span class="n">context</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">searchpath</span><span class="o">=</span><span class="default_value">'/Users/iwasakishuto/Github/portfolio/Python-Charmers/pycharmers/templates'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">envkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.render_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render Template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_name_or_string</strong> (<em>str</em>) – The name of the template to be rendered or a string.</p></li>
+<li><p><strong>context</strong> (<em>dict</em>) – The variables that should be available in the context of the template.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – If given, output to <code class="docutils literal notranslate"><span class="pre">path</span></code> file.</p></li>
+<li><p><strong>searchpath</strong> (<em>str</em>) – (Default= <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">render_template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">render_template</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<span class="go">    &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
+<span class="go">    &lt;ul&gt;</span>
+<span class="go">    &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
+<span class="go">    &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
+<span class="go">    :</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.utils.templates.defFunction">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">defFunction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func_name</span></em>, <em class="sig-param"><span class="n">short_description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">is_method</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_example">
+<code class="sig-name descname">set_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_example" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_returns">
+<code class="sig-name descname">set_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_returns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_returns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.sort_arguments">
+<code class="sig-name descname">sort_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.sort_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.sort_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_argument">
+<code class="sig-name descname">set_argument</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default</em>, <em class="sig-param">example=None</em>, <em class="sig-param">description=''</em>, <em class="sig-param">type=&lt;class 'str'&gt;</em>, <em class="sig-param">is_required=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_argument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_argument" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_arguments">
+<code class="sig-name descname">set_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">arguments</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.templates.base_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">base_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.base_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
@@ -106,42 +172,6 @@
 {%- endif -%}
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py class">
-<dt id="pycharmers.utils.templates.defFunction">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">defFunction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func_name</span></em>, <em class="sig-param"><span class="n">short_description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">is_method</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.create">
-<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.set_argument">
-<code class="sig-name descname">set_argument</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default</em>, <em class="sig-param">example=None</em>, <em class="sig-param">description=''</em>, <em class="sig-param">type=&lt;class 'str'&gt;</em>, <em class="sig-param">is_required=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_argument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_argument" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.set_arguments">
-<code class="sig-name descname">set_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">arguments</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_arguments" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.set_example">
-<code class="sig-name descname">set_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_example" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.set_returns">
-<code class="sig-name descname">set_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_returns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_returns" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.utils.templates.defFunction.sort_arguments">
-<code class="sig-name descname">sort_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.sort_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.sort_arguments" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py function">
@@ -243,36 +273,6 @@ def {{ func_name }}(
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.utils.templates.render_template">
-<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template_name_or_string</span></em>, <em class="sig-param"><span class="n">context</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">searchpath</span><span class="o">=</span><span class="default_value">'/Users/iwasakishuto/Github/portfolio/Python-Charmers/pycharmers/templates'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">envkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.render_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Render Template.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>template_name_or_string</strong> (<em>str</em>) – The name of the template to be rendered or a string.</p></li>
-<li><p><strong>context</strong> (<em>dict</em>) – The variables that should be available in the context of the template.</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – If given, output to <code class="docutils literal notranslate"><span class="pre">path</span></code> file.</p></li>
-<li><p><strong>searchpath</strong> (<em>str</em>) – (Default= <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code> )</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">render_template</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">render_template</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="go">    &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
-<span class="go">    &lt;ul&gt;</span>
-<span class="go">    &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
-<span class="go">    &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
-<span class="go">    :</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pycharmers.utils.templates.style_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">style_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.style_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
@@ -341,7 +341,22 @@ def {{ func_name }}(
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.argparse_utils.html">pycharmers.utils.argparse_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.color_utils.html">pycharmers.utils.color_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pandas_utils.html">pycharmers.utils.pandas_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.templates module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
 </ul>
 </li>

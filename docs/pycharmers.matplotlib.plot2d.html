@@ -69,29 +69,27 @@
   <div class="section" id="module-pycharmers.matplotlib.plot2d">
 <span id="pycharmers-matplotlib-plot2d-module"></span><h1>pycharmers.matplotlib.plot2d module<a class="headerlink" href="#module-pycharmers.matplotlib.plot2d" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="pycharmers.matplotlib.plot2d.plot_classification_performance">
-<code class="sig-prename descclassname">pycharmers.matplotlib.plot2d.</code><code class="sig-name descname">plot_classification_performance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cm</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_true</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_pred</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'RdBu'</span></em>, <em class="sig-param"><span class="n">answer_label</span><span class="o">=</span><span class="default_value">'answer'</span></em>, <em class="sig-param"><span class="n">predict_label</span><span class="o">=</span><span class="default_value">'predict'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/plot2d.html#plot_classification_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.plot2d.plot_classification_performance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot model’s classification performance.</p>
+<dt id="pycharmers.matplotlib.plot2d.plot_hist">
+<code class="sig-prename descclassname">pycharmers.matplotlib.plot2d.</code><code class="sig-name descname">plot_hist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">roffset</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">hist_color</span><span class="o">=</span><span class="default_value">'blue'</span></em>, <em class="sig-param"><span class="n">anno_color</span><span class="o">=</span><span class="default_value">'green'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/plot2d.html#plot_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.plot2d.plot_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Histogram</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cm</strong> (<em>array</em>) – Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and prediced label being j-th class.</p></li>
-<li><p><strong>y_true</strong> (<em>array</em>) – Ground truth (correct) target values.</p></li>
-<li><p><strong>y_pred</strong> (<em>array</em>) – Estimated targets as returned by a classifier.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
-<li><p><strong>answer_label</strong> (<em>str</em>) – The label name on the correct answer side.</p></li>
-<li><p><strong>predict_label</strong> (<em>str</em>) – The label name on the prediction side.</p></li>
+<li><p><strong>data</strong> (<em>array</em>) – Array-like sample data.</p></li>
+<li><p><strong>bins</strong> (<em>int</em>) – Defines the number of equal-width bins in the range.</p></li>
+<li><p><strong>ax</strong> (<em>AxesSubplot</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
+<li><p><strong>roffset</strong> (<em>float</em>) – Offset from histogram to annotation text.</p></li>
+<li><p><strong>hist_color</strong> (<em>str</em>) – The histogram color.</p></li>
+<li><p><strong>anno_color</strong> (<em>str</em>) – The annotation text color.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_classification_performance</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_classification_performance</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_hist</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_hist</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -130,27 +128,29 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.matplotlib.plot2d.plot_hist">
-<code class="sig-prename descclassname">pycharmers.matplotlib.plot2d.</code><code class="sig-name descname">plot_hist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">roffset</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">hist_color</span><span class="o">=</span><span class="default_value">'blue'</span></em>, <em class="sig-param"><span class="n">anno_color</span><span class="o">=</span><span class="default_value">'green'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/plot2d.html#plot_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.plot2d.plot_hist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot Histogram</p>
+<dt id="pycharmers.matplotlib.plot2d.plot_classification_performance">
+<code class="sig-prename descclassname">pycharmers.matplotlib.plot2d.</code><code class="sig-name descname">plot_classification_performance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cm</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_true</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_pred</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'RdBu'</span></em>, <em class="sig-param"><span class="n">answer_label</span><span class="o">=</span><span class="default_value">'answer'</span></em>, <em class="sig-param"><span class="n">predict_label</span><span class="o">=</span><span class="default_value">'predict'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/matplotlib/plot2d.html#plot_classification_performance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.matplotlib.plot2d.plot_classification_performance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot model’s classification performance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>array</em>) – Array-like sample data.</p></li>
-<li><p><strong>bins</strong> (<em>int</em>) – Defines the number of equal-width bins in the range.</p></li>
-<li><p><strong>ax</strong> (<em>AxesSubplot</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
-<li><p><strong>roffset</strong> (<em>float</em>) – Offset from histogram to annotation text.</p></li>
-<li><p><strong>hist_color</strong> (<em>str</em>) – The histogram color.</p></li>
-<li><p><strong>anno_color</strong> (<em>str</em>) – The annotation text color.</p></li>
+<li><p><strong>cm</strong> (<em>array</em>) – Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and prediced label being j-th class.</p></li>
+<li><p><strong>y_true</strong> (<em>array</em>) – Ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> (<em>array</em>) – Estimated targets as returned by a classifier.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – The name of a color map known to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></li>
+<li><p><strong>answer_label</strong> (<em>str</em>) – The label name on the correct answer side.</p></li>
+<li><p><strong>predict_label</strong> (<em>str</em>) – The label name on the prediction side.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Example</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_hist</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot_hist</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.matplotlib</span> <span class="kn">import</span> <span class="n">plot_classification_performance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_classification_performance</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -248,7 +248,13 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.matplotlib.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.cmaps.html">pycharmers.matplotlib.cmaps module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.layout.html">pycharmers.matplotlib.layout module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.matplotlib.plot2d module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.matplotlib.plot3d.html">pycharmers.matplotlib.plot3d module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.matplotlib.html#module-pycharmers.matplotlib">Module contents</a></li>
 </ul>
 </li>
