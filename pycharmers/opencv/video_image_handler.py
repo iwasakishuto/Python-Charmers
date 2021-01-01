@@ -10,12 +10,12 @@ from ._path import save_dir_create
 
 IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
 
-def mono_frame_generator(path, frame_num=0):
+def mono_frame_generator(path, frame_no=0):
     """Mono frame Generator which displays a single frame in a video or single image in a directory.
     
     Args:
         path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``
-        frame_num (int) : If specified (``>0``), the image can be displayed from a specific positions.
+        frame_no (int)  : If specified (``>0``), the image can be displayed from a specific positions.
 
     Returns:
         generator
@@ -29,7 +29,7 @@ def mono_frame_generator(path, frame_num=0):
     """
     if os.path.isfile(path):
         video = cv2.VideoCapture(path)
-        video.set(cv2.CAP_PROP_POS_FRAMES, frame_num)
+        video.set(cv2.CAP_PROP_POS_FRAMES, frame_no)
         while True:
             ret, frame = video.read()
             if not ret:
@@ -37,19 +37,19 @@ def mono_frame_generator(path, frame_num=0):
             yield frame
         video.release()
     else:
-        fn_list = sorted(os.listdir(path))[frame_num:]
+        fn_list = sorted(os.listdir(path))[frame_no:]
         for fn in fn_list:
             frame = cv2.imread(os.path.join(path, fn))
             if frame is None:
                 continue
             yield frame
 
-def multi_frame_generator_sepa(*path, frame_num=0):
+def multi_frame_generator_sepa(*path, frame_no=0):
     """Multiple frame generator. (separatory)
     
     Args:
-        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``
-        frame_num (int) : If specified (``>0``), the image can be displayed from a specific positions.
+        path (str)     : ``path/to/images/directory`` or ``path/to/video.mp4``
+        frame_no (int) : If specified (``>0``), the image can be displayed from a specific positions.
 
     Returns:
         generator
@@ -62,14 +62,14 @@ def multi_frame_generator_sepa(*path, frame_num=0):
         ...     print(len(img), img[0].shape)
         2 (512, 512, 3)
     """
-    return zip(*[mono_frame_generator(p, frame_num=frame_num) for p in path])
+    return zip(*[mono_frame_generator(p, frame_no=frame_no) for p in path])
 
-def multi_frame_generator_concat(*paths, frame_num=0, grid=None):
+def multi_frame_generator_concat(*paths, frame_no=0, grid=None):
     """Multiple frame generator. (In a connected state)
         
     Args:
         path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``
-        frame_num (int) : If specified (``>0``), the image can be displayed from a specific positions.
+        frame_no (int)  : If specified (``>0``), the image can be displayed from a specific positions.
         grid (tuple)    : How to concatenate the multiple frames. (ncols, nrows)
 
     Returns:
@@ -95,7 +95,7 @@ def multi_frame_generator_concat(*paths, frame_num=0, grid=None):
     frame = gen.__next__()
     balck_frames = tuple(np.zeros_like(frame))*num_black_frame
 
-    gens = multi_frame_generator_sepa(*paths, frame_num=frame_num)
+    gens = multi_frame_generator_sepa(*paths, frame_no=frame_no)
     for frames in gens:
         frames += balck_frames
         concated_frame = vconcat_resize_min(*[
@@ -107,13 +107,10 @@ def count_frame_num(path):
     """Count the number of frames.
 
     Args:
-        path (str) : 
-            - image directory.
-            - video file path.
+        path (str) : path to video file, or directory which stores sequential images.
 
     Examples:
-        >>> from pycharmers.opencv import count_frame_num
-        >>> from pycharmers.opencv import SAMPLE_VTEST_VIDEO, PYCHARMERS_OPENCV_IMAGE_DIR
+        >>> from pycharmers.opencv import count_frame_num, SAMPLE_VTEST_VIDEO, PYCHARMERS_OPENCV_IMAGE_DIR
         >>> count_frame_num(SAMPLE_VTEST_VIDEO)
         795
         >>> count_frame_num(PYCHARMERS_OPENCV_IMAGE_DIR)
@@ -123,14 +120,14 @@ def count_frame_num(path):
         video = cv2.VideoCapture(path)
         frame_num = video.get(cv2.CAP_PROP_FRAME_COUNT)
     else:
-        frame_num = sum([1 for fn in os.listdir(path) if re.search(IMAGE_FILE_PATTERN, fn, re.IGNORECASE)])
+        frame_num = len(list(filter(lambda fn: re.search(IMAGE_FILE_PATTERN, fn, re.IGNORECASE), os.listdir(path))))
     return int(frame_num)
 
 def basenaming(path):
-    """ Base Naming
+    """Returns the final component of a pathname.
 
-    - if path is to video file (``path/to/sample.mp4``) -> ``sample``
-    - if path is to directory (``path/to/sample``) -> ``sample``
+    - If ``path`` indicates video file (``path/to/sample.mp4``) -> ``sample``
+    - If ``path`` indicates directory (``path/to/sample``) -> ``sample``
   
     Args:
         path (str) : path to video file, or directory which stores sequential images.
