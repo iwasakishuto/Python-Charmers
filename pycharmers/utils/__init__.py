@@ -71,6 +71,7 @@ from .generic_utils import try_wrapper
 from .generic_utils import list2name
 from .generic_utils import infer_types
 from .generic_utils import html2reStructuredText
+from .generic_utils import int2ordinal
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json

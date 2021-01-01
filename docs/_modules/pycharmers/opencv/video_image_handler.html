@@ -61,12 +61,12 @@
 
 <span class="n">IMAGE_FILE_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;.*\.(jpg|png|bmp|jpeg)&quot;</span>
 
-<div class="viewcode-block" id="mono_frame_generator"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.mono_frame_generator">[docs]</a><span class="k">def</span> <span class="nf">mono_frame_generator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="mono_frame_generator"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.mono_frame_generator">[docs]</a><span class="k">def</span> <span class="nf">mono_frame_generator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mono frame Generator which displays a single frame in a video or single image in a directory.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
 <span class="sd">        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
-<span class="sd">        frame_num (int) : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
+<span class="sd">        frame_no (int)  : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        generator</span>
@@ -80,7 +80,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">video</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_POS_FRAMES</span><span class="p">,</span> <span class="n">frame_num</span><span class="p">)</span>
+        <span class="n">video</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_POS_FRAMES</span><span class="p">,</span> <span class="n">frame_no</span><span class="p">)</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
@@ -88,19 +88,19 @@
             <span class="k">yield</span> <span class="n">frame</span>
         <span class="n">video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">fn_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">))[</span><span class="n">frame_num</span><span class="p">:]</span>
+        <span class="n">fn_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">))[</span><span class="n">frame_no</span><span class="p">:]</span>
         <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">fn_list</span><span class="p">:</span>
             <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">yield</span> <span class="n">frame</span></div>
 
-<div class="viewcode-block" id="multi_frame_generator_sepa"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="multi_frame_generator_sepa"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multiple frame generator. (separatory)</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
-<span class="sd">        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
-<span class="sd">        frame_num (int) : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
+<span class="sd">        path (str)     : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
+<span class="sd">        frame_no (int) : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        generator</span>
@@ -113,14 +113,14 @@
 <span class="sd">        ...     print(len(img), img[0].shape)</span>
 <span class="sd">        2 (512, 512, 3)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">mono_frame_generator</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="n">frame_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">mono_frame_generator</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="n">frame_no</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="multi_frame_generator_concat"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_concat">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_concat</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="multi_frame_generator_concat"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_concat">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_concat</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multiple frame generator. (In a connected state)</span>
 <span class="sd">        </span>
 <span class="sd">    Args:</span>
 <span class="sd">        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
-<span class="sd">        frame_num (int) : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
+<span class="sd">        frame_no (int)  : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
 <span class="sd">        grid (tuple)    : How to concatenate the multiple frames. (ncols, nrows)</span>
 
 <span class="sd">    Returns:</span>
@@ -146,7 +146,7 @@
     <span class="n">frame</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
     <span class="n">balck_frames</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span><span class="o">*</span><span class="n">num_black_frame</span>
 
-    <span class="n">gens</span> <span class="o">=</span> <span class="n">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_num</span><span class="o">=</span><span class="n">frame_num</span><span class="p">)</span>
+    <span class="n">gens</span> <span class="o">=</span> <span class="n">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="n">frame_no</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">frames</span> <span class="ow">in</span> <span class="n">gens</span><span class="p">:</span>
         <span class="n">frames</span> <span class="o">+=</span> <span class="n">balck_frames</span>
         <span class="n">concated_frame</span> <span class="o">=</span> <span class="n">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
@@ -158,13 +158,10 @@
     <span class="sd">&quot;&quot;&quot;Count the number of frames.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str) : </span>
-<span class="sd">            - image directory.</span>
-<span class="sd">            - video file path.</span>
+<span class="sd">        path (str) : path to video file, or directory which stores sequential images.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import count_frame_num</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_VTEST_VIDEO, PYCHARMERS_OPENCV_IMAGE_DIR</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import count_frame_num, SAMPLE_VTEST_VIDEO, PYCHARMERS_OPENCV_IMAGE_DIR</span>
 <span class="sd">        &gt;&gt;&gt; count_frame_num(SAMPLE_VTEST_VIDEO)</span>
 <span class="sd">        795</span>
 <span class="sd">        &gt;&gt;&gt; count_frame_num(PYCHARMERS_OPENCV_IMAGE_DIR)</span>
@@ -174,14 +171,14 @@
         <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="n">frame_num</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">frame_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">IMAGE_FILE_PATTERN</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)])</span>
+        <span class="n">frame_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">fn</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">IMAGE_FILE_PATTERN</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">))))</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame_num</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="basenaming"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.basenaming">[docs]</a><span class="k">def</span> <span class="nf">basenaming</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Base Naming</span>
+    <span class="sd">&quot;&quot;&quot;Returns the final component of a pathname.</span>
 
-<span class="sd">    - if path is to video file (``path/to/sample.mp4``) -&gt; ``sample``</span>
-<span class="sd">    - if path is to directory (``path/to/sample``) -&gt; ``sample``</span>
+<span class="sd">    - If ``path`` indicates video file (``path/to/sample.mp4``) -&gt; ``sample``</span>
+<span class="sd">    - If ``path`` indicates directory (``path/to/sample``) -&gt; ``sample``</span>
 <span class="sd">  </span>
 <span class="sd">    Args:</span>
 <span class="sd">        path (str) : path to video file, or directory which stores sequential images.</span>

@@ -598,3 +598,38 @@ def html2reStructuredText(html, base_url=""):
         href = urllib.parse.urljoin(base=base_url, url=href)
         return f'`{inner_text} <{href}>`_'
     return re.sub(pattern=r'<a.*?href="(.*?)">(.*?)</a>',  repl=repl, string=html)
+
+def int2ordinal(num):
+    """Convert a natural number to a ordinal number.
+
+    Args:
+        num (int): natural number
+
+    Returns:
+        str: ordinal number, like 0th, 1st, 2nd,...
+
+    Examples:
+        >>> from pycharmers.utils import int2ordinal
+        >>> int2ordinal(0)
+        '0th'
+        >>> int2ordinal(1)
+        '1st'
+        >>> int2ordinal(2)
+        '2nd'
+        >>> int2ordinal(3)
+        '3rd'
+        >>> int2ordinal(4)
+        '4th'
+        >>> int2ordinal(11)
+        '11th'
+        >>> int2ordinal(21)
+        '21st'
+        >>> int2ordinal(111)
+        '111th'
+        >>> int2ordinal(121)
+        '121st'
+    """
+    q, mod = divmod(int(num), 10)
+    # if num == XXX1X, use "th"
+    suffix = "th" if q % 10 == 1 else {1: "st", 2: "nd", 3: "rd"}.get(mod,"th")
+    return f"{num}{suffix}"
