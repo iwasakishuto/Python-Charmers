@@ -72,7 +72,7 @@
 <dt id="pycharmers.utils.print_utils.format_spec_create">
 <code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">format_spec_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#format_spec_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.format_spec_create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a function which returns a formatted text.</p>
-<p><cite>format_spec = [[fill]align][sign][#][0][width][grouping_option][.precision][type]</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">format_spec</span> <span class="pre">=</span> <span class="pre">[[fill]align][sign][#][0][width][grouping_option][.precision][type]</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -113,13 +113,43 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycharmers.utils.print_utils.align_text">
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">align_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'left'</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#align_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.align_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Align text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – Strig.</p></li>
+<li><p><strong>align</strong> (<em>str</em>) – How to align the string.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Aligned text.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string (str)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">align_text</span><span class="p">,</span> <span class="n">toBLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align_text</span><span class="p">(</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span>
+<span class="go">   Hello world!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align_text</span><span class="p">(</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span>
+<span class="go">   [34mHello world![0m</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.print_utils.print_func_create">
-<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">print_func_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="n">left_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">right_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#print_func_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.print_func_create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">print_func_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">is_bg</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">left_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">right_side_bar</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">'\n'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#print_func_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.print_func_create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a function which prints a formatted text. Please see also the function <cite>format_spec_create</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str</em>) – color</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – color.</p></li>
+<li><p><strong>is_bg</strong> (<em>bool</em>) – Whether to add color to the background or not.</p></li>
 <li><p><strong>left</strong> (<em>right</em><em>)</em><em>_margin</em><em> (</em><em>int</em>) – Characters to output to the Left/Right side.</p></li>
 <li><p><strong>left</strong> – Left/Right side margin</p></li>
 <li><p><strong>end</strong> (<em>str</em>) – string appended after the last value, default a newline.</p></li>
@@ -150,9 +180,14 @@
 
 <dl class="py class">
 <dt id="pycharmers.utils.print_utils.Table">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">Table</code><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.Table" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">enable_colspan</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.Table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Create a beautiful table and show.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>enable_colspan</strong> (<em>bool</em>) – Whether to enable <code class="docutils literal notranslate"><span class="pre">colspan</span></code> or not.</p>
+</dd>
+</dl>
 <dl class="simple">
 <dt>Properties:</dt><dd><p>ncols(int) : the number of columns.</p>
 </dd>
@@ -170,16 +205,20 @@
 </dd></dl>
 
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">Table</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">toBLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">enable_colspan</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">],</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">([</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;de&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;GREEN&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="go">|id|col.2|</span>
-<span class="go">==========</span>
-<span class="go">| 0|    a|</span>
-<span class="go">| 1|    b|</span>
-<span class="go">| 2|    c|</span>
+<span class="go">+----+-------+</span>
+<span class="go">| id | col.2 |</span>
+<span class="go">+====+=======+</span>
+<span class="go">|  1 |   [34mabc[0m |</span>
+<span class="go">+----+       +</span>
+<span class="go">|  2 |       |</span>
+<span class="go">+    +-------+</span>
+<span class="go">|    |    [32mde[0m |</span>
+<span class="go">+----+-------+</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -189,14 +228,13 @@
 
 <dl class="py method">
 <dt id="id0">
-<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">table_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mark</span><span class="o">=</span><span class="default_value">'='</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">head</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">table_width</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show a table</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>head</strong> (<em>str</em>) – Show the first <code class="docutils literal notranslate"><span class="pre">head</span></code> rows for the table.</p></li>
 <li><p><strong>table_width</strong> (<em>int</em>) – The table width.</p></li>
-<li><p><strong>mark</strong> (<em>str</em>) – border mark. (default “=”)</p></li>
 </ul>
 </dd>
 </dl>
@@ -204,7 +242,7 @@
 
 <dl class="py method">
 <dt id="id1">
-<code class="sig-name descname">set_cols</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">colname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">'black'</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table.set_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_cols</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">colname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'&gt;'</span></em>, <em class="sig-param"><span class="n">sign</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">zero_padding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">grouping_option</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">left_margin</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">right_margin</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#Table.set_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set values to a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,6 +255,36 @@
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.print_utils.tabulate">
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">tabulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tabular_data</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">headers</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">tablefmt</span><span class="o">=</span><span class="default_value">'simple'</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">'left'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#tabulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.tabulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a fixed width table for pretty printing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tabular_data</strong> (<em>list</em>) – tbody contents. Must be a dual list.</p></li>
+<li><p><strong>headers</strong> (<em>list</em>) – thead contents.</p></li>
+<li><p><strong>tablefmt</strong> (<em>str</em>) – Table format for <a class="reference internal" href="#pycharmers.utils.print_utils.Table" title="pycharmers.utils.print_utils.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p></li>
+<li><p><strong>align</strong> (<em>str</em>) – How to align values.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tabulate</span><span class="p">([[</span><span class="n">i</span><span class="o">*</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)])</span>
+<span class="go">+-------+-------+-------+</span>
+<span class="go">| col.1 | col.2 | col.3 |</span>
+<span class="go">+=======+=======+=======+</span>
+<span class="go">|     1 |     2 |     3 |</span>
+<span class="go">+-------+-------+-------+</span>
+<span class="go">|     2 |     4 |     6 |</span>
+<span class="go">+-------+-------+-------+</span>
+<span class="go">|     3 |     6 |     9 |</span>
+<span class="go">+-------+-------+-------+</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -274,6 +342,60 @@
 <span class="go">When I was 17, I read a quote that went something like:</span>
 <span class="go">“If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
 <span class="go">It made an impression on me, and since then, for the past 33 years,</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.print_utils.strip_invisible">
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">strip_invisible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#strip_invisible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.strip_invisible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove invisible ANSI color codes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – String.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>String with invisible code removed.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>s (str)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">strip_invisible</span><span class="p">,</span> <span class="n">toBLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strip_invisible</span><span class="p">(</span><span class="s2">&quot;[31mhello[0m&quot;</span><span class="p">)</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strip_invisible</span><span class="p">(</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">))</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">strip_invisible</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="go">&#39;hello&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.print_utils.visible_width">
+<code class="sig-prename descclassname">pycharmers.utils.print_utils.</code><code class="sig-name descname">visible_width</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/print_utils.html#visible_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.print_utils.visible_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visible width of a printed string. ANSI color codes are removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – String.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Visible width</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>width (int)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">visible_width</span><span class="p">,</span> <span class="n">toBLUE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">visible_width</span><span class="p">(</span><span class="n">toBLUE</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">))</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">visible_width</span><span class="p">(</span><span class="s2">&quot;こんにちは&quot;</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">visible_width</span><span class="p">(</span><span class="s2">&quot;hello 世界。&quot;</span><span class="p">)</span>
+<span class="go">12</span>
 </pre></div>
 </div>
 </dd></dl>

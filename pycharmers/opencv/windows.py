@@ -1,4 +1,74 @@
-"""Define functions and classes to make OpenCV window easier to use. """
+"""Define functions and classes to make OpenCV window easier to use. 
+
+This KEY table is created by the following programs.
+
+.. code-block:: python
+
+    >>> from pycharmers.utils import tabulate
+    >>> from pycharmers.opencv import *
+    >>> lst = []
+    >>> for DEFAULT_KEY_NAME in list(filter(lambda x:x.startswith("DEFAULT_") and x.endswith("_KEYS"), globals().keys())):
+    >>>     for group,(fmt,keys) in eval(DEFAULT_KEY_NAME).items():
+    >>>         for name, key in keys.items():
+    >>>             lst.append([DEFAULT_KEY_NAME, group, fmt.format(name=name), f"'{key}'"])
+    >>>             DEFAULT_KEY_NAME, group = ("", "")
+    >>> tabulate(lst, headers=["VARNAME", "group", "description ('name')", "key"], tablefmt="grid")
+
++-----------------------+----------+-----------------------------------------+------------+
+|        VARNAME        |  group   |          description ('name')           |    key     |
++=======================+==========+=========================================+============+
+|       DEFAULT_CV_KEYS |     BASE |   To send the window the command 'info' |        'i' |
++                       +          +-----------------------------------------+------------+
+|                       |          |   To send the window the command 'quit' |        'q' |
++                       +          +-----------------------------------------+------------+
+|                       |          | To send the window the command 'delete' | '<delete>' |
++                       +          +-----------------------------------------+------------+
+|                       |          |  To send the window the command 'enter' |  '<enter>' |
++                       +----------+-----------------------------------------+------------+
+|                       |   MOVING |        To move the window to the 'left' |        'h' |
++                       +          +-----------------------------------------+------------+
+|                       |          |       To move the window to the 'right' |        'l' |
++                       +          +-----------------------------------------+------------+
+|                       |          |        To move the window to the 'down' |        'j' |
++                       +          +-----------------------------------------+------------+
+|                       |          |          To move the window to the 'up' |        'k' |
++                       +----------+-----------------------------------------+------------+
+|                       |    RATIO |               To 'expansion' the window |        '+' |
++                       +          +-----------------------------------------+------------+
+|                       |          |               To 'reduction' the window |        '-' |
++                       +----------+-----------------------------------------+------------+
+|                       | POSITION |     To set/know the window 'fullscreen' |        'f' |
++                       +          +-----------------------------------------+------------+
+|                       |          |        To set/know the window 'topleft' |        'o' |
++                       +          +-----------------------------------------+------------+
+|                       |          |      To set/know the window 'rectangle' |        'r' |
++-----------------------+----------+-----------------------------------------+------------+
+|    DEFAULT_FRAME_KEYS |    FRAME |                      To 'advance' frame |        'w' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To 'back' frame |        'b' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To 'jump' frame |        '@' |
++                       +----------+-----------------------------------------+------------+
+|                       |    RANGE |                 To select range 'start' |        's' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                   To select range 'end' |        'e' |
++                       +----------+-----------------------------------------+------------+
+|                       |     TAKE |                       To take 'picture' |        'p' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To take 'video' |        'v' |
++-----------------------+----------+-----------------------------------------+------------+
+| DEFAULT_REALTIME_KEYS |     TAKE |                       To take 'picture' |        'p' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To take 'video' |        'v' |
++-----------------------+----------+-----------------------------------------+------------+
+| DEFAULT_TRACKING_KEYS | TRACKING |                        To track 'start' |        't' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To track 'stop' |        'c' |
++                       +          +-----------------------------------------+------------+
+|                       |          |                         To track 'init' |        'n' |
++-----------------------+----------+-----------------------------------------+------------+
+
+"""
 #coding: utf-8
 import os
 import re
@@ -52,6 +122,12 @@ DEFAULT_FRAME_KEYS = {
         "picture": "p", 
         "video": "v"
     }],
+}
+DEFAULT_REALTIME_KEYS = {
+    "TAKE" : ["To take '{name}'",{
+        "picture": "p", 
+        "video": "v"
+    }],   
 }
 DEFAULT_TRACKING_KEYS = {
     "TRACKING" : ["To track '{name}'", {
@@ -121,7 +197,7 @@ class cvKeys():
         Args:
             other (cvKeys) : Instance of :class:`cvKeys <pycharmers.opencv.windows.cvKeys>`
         """
-        for group,(fmt,keys) in self.cv_keys.items():
+        for group,(fmt,keys) in other.cv_keys.items():
             if group not in self.groups:
                 self.set_keys(group=group, fmt=fmt, **keys)
 
@@ -476,7 +552,98 @@ class cvWindow():
 
         return is_break
 
-# class RealTimeWindow(cvWindow):
+class RealTimeWindow(cvWindow):
+    """OpenCV window for RealiTime Video.
+
+    Args:
+        ext (str)  : File extension. (default= ``".jpg"`` )
+        cam (int)  : The id of the web camera.
+
+    Attributes:
+        basenames (str)            : Concatenate of the final components of ``path``
+        gen (gen)                  : ``cv2.VideoCapture(cam)``
+        crt_frame (ndarray)        : The current image.
+        crt_fname (str)            : The current image name.
+        is_capture (bool)          : Whether capturing or not.
+
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv import RealTimeWindow
+        >>> window = RealTimeWindow()
+        >>> while True:
+        ...     key = cv2.waitKey(0)
+        ...     is_break = window.recieveKey(key)
+        ...     if is_break:
+        ...         break
+        >>> cv2.destroyAllWindows()
+    """
+    def __init__(self, winname=None, dirname=None, ext=".jpg", move_distance=10, expansion_rate=1.1, cam=0, cvKey=cvKeys(**DEFAULT_REALTIME_KEYS)):
+        self.basenames = "realtime"
+        self.ext = ext
+        super().__init__(
+            winname=winname,
+            dirname=dirname,
+            move_distance=move_distance,
+            expansion_rate=expansion_rate,
+            cvKey=cvKeys(**DEFAULT_CV_KEYS),
+        )
+        self.cvKey.update(cvKey)
+        self.input_path = path
+        self.gen = cv2.VideoCapture(cam)
+        _, self.crt_frame = self.gen.read()
+        self.crt_fname = now_str()
+        self.show()
+        self.is_capture = False
+
+    def show(self, mat=None):
+        """Displays an image in the specified window. (``self.winname``)
+        
+        Args:
+            mat (np.ndarray): Image to be shown.
+        """
+        if mat is None: mat = self.crt_frame
+        draw_text_with_bg(
+            img=mat, text=now_str(),
+            org=(50, 50), fontFace=self.crt_fname,
+            fontScale=3, color=(0,0,0), bgcolor=(255,255,255),
+            color_type="css4", thickness=1,
+        )
+        super().show(mat)
+
+    def recieveKey(self, key):
+        """Response according to Recieved key.
+
+        Args:
+            key (int): Input Key. (= ``cv2.waitKey(0)``)
+
+        Returns:
+            is_break (bool) Whether loop break or not. If break, destroy the window.
+        """
+        is_break = False
+        cvKey = self.cvKey
+        
+        if self.is_capture:
+            cv2.imwrite(filename=os.path.join(self.video_save_dir, self.crt_fname), img=self.crt_frame)
+
+        # Take a picture of the current frame.
+        if key in cvKey.TAKE_KEYS_ORD:
+            if key == cvKey.TAKE_PICTURE_KEY_ORD:
+                cv2.imwrite(filename=os.path.join(self.img_save_dir, self.crt_fname), img=self.crt_frame)
+                print(f"Take a screenshot of {self.crt_fname} frame.")
+            elif key == cvKey.TAKE_VIDEO_KEY_ORD:
+                end, start = ("start", "end")[:: 1 if self.is_capture else -1]
+                self.is_capture = not self.is_capture
+                print(f"{start.capitalize()} taking a video. (If you want to {end}, please press {toBLUE(cvKey.TAKE_VIDEO_KEY)} again.)")            
+        # Super Class function.
+        else:
+            is_break = super().recieveKey(key)
+        if is_break:
+            self.gen.release()
+        else:
+            _, self.crt_frame = self.gen.read()
+            self.crt_fname = now_str()
+            self.show()
+        return is_break
 
 class FrameWindow(cvWindow):
     """OpenCV window for Frames (images or video).
@@ -641,14 +808,13 @@ class FrameWindow(cvWindow):
         else:
             print(f"{toGREEN('range_start')} must be an earlier frame than {toGREEN('range_end')}.")
 
-class TrackingWindow(FrameWindow):
+class TrackingWindow(FrameWindow, RealTimeWindow):
     """OpenCV window for Trackings (images or video).
 
     Examples:
         >>> import cv2
         >>> from pycharmers.opencv import TrackingWindow, SAMPLE_VTEST_VIDEO
         >>> window = TrackingWindow(path=SAMPLE_VTEST_VIDEO, tracker="boosting", coord_type="xywh")
-        >>> # window.describe()
         >>> while True:
         ...     key = cv2.waitKey(0)
         ...     is_break = window.recieveKey(key)
@@ -733,5 +899,3 @@ class TrackingWindow(FrameWindow):
         else:
             is_break = super().recieveKey(key)
         return is_break
-
-# __doc__ += "\n"+cvKeys(**DEFAULT_CV_KEYS).info

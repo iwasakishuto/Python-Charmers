@@ -38,30 +38,32 @@ except NameError:
     else:
         __WINDOWS_VTS_SETUP__ = True
 
-def _toCOLOR_create(color):
-    if __WINDOWS_VTS_SETUP__:
-        color = color.upper()
-        charcode = {
-            "ACCENT"        : ('\x1b[01m', '\x1b[01m'),
-            "BLACK"         : ('\x1b[30m', '\x1b[40m'),
-            "RED"           : ('\x1b[31m', '\x1b[41m'),
-            "GREEN"         : ('\x1b[32m', '\x1b[42m'),
-            "YELLOW"        : ('\x1b[33m', '\x1b[43m'),
-            "BLUE"          : ('\x1b[34m', '\x1b[44m'),
-            "MAGENTA"       : ('\x1b[35m', '\x1b[45m'),
-            "CYAN"          : ('\x1b[36m', '\x1b[46m'),
-            "WHITE"         : ('\x1b[37m', '\x1b[47m'),
-            "DEFAULT"       : ('\x1b[39m', '\x1b[49m'),
-            "GRAY"          : ('\x1b[90m', '\x1b[100m'),
-            "BRIGHT_RED"    : ('\x1b[91m', '\x1b[101m'),
-            "BRIGHT_GREEN"  : ('\x1b[92m', '\x1b[102m'),
-            "BRIGHT_YELLOW" : ('\x1b[93m', '\x1b[103m'),
-            "BRIGHT_BLUE"   : ('\x1b[94m', '\x1b[104m'),
-            "BRIGHT_MAGENTA": ('\x1b[95m', '\x1b[105m'),
-            "BRIGHT_CYAN"   : ('\x1b[96m', '\x1b[106m'),
-            "BRIGHT_WHITE"  : ('\x1b[97m', '\x1b[107m'),
-            # "END"           : ('\x1b[0m',  '\x1b[0m'),
-        }.get(color, "\x1b[34m")
+SUPPORTED_COLORINGS = {
+    "ACCENT"        : ('\x1b[01m', '\x1b[01m'),
+    "BLACK"         : ('\x1b[30m', '\x1b[40m'),
+    "RED"           : ('\x1b[31m', '\x1b[41m'),
+    "GREEN"         : ('\x1b[32m', '\x1b[42m'),
+    "YELLOW"        : ('\x1b[33m', '\x1b[43m'),
+    "BLUE"          : ('\x1b[34m', '\x1b[44m'),
+    "MAGENTA"       : ('\x1b[35m', '\x1b[45m'),
+    "CYAN"          : ('\x1b[36m', '\x1b[46m'),
+    "WHITE"         : ('\x1b[37m', '\x1b[47m'),
+    "DEFAULT"       : ('\x1b[39m', '\x1b[49m'),
+    "GRAY"          : ('\x1b[90m', '\x1b[100m'),
+    "BRIGHT_RED"    : ('\x1b[91m', '\x1b[101m'),
+    "BRIGHT_GREEN"  : ('\x1b[92m', '\x1b[102m'),
+    "BRIGHT_YELLOW" : ('\x1b[93m', '\x1b[103m'),
+    "BRIGHT_BLUE"   : ('\x1b[94m', '\x1b[104m'),
+    "BRIGHT_MAGENTA": ('\x1b[95m', '\x1b[105m'),
+    "BRIGHT_CYAN"   : ('\x1b[96m', '\x1b[106m'),
+    "BRIGHT_WHITE"  : ('\x1b[97m', '\x1b[107m'),
+    # "END"           : ('\x1b[0m',  '\x1b[0m'),
+}
+
+def _toCOLOR_create(color=""):
+    color = color.upper()
+    if __WINDOWS_VTS_SETUP__ and (color in SUPPORTED_COLORINGS.keys()):
+        charcode = SUPPORTED_COLORINGS[color]
         func = lambda x,is_bg=False: f"{charcode[is_bg]}{str(x)}\x1b[0m"
         func.__doc__ = f"""Convert the output color to {color}
 
@@ -77,7 +79,7 @@ def _toCOLOR_create(color):
             {func('hoge', is_bg=True)}
         """
     else:
-        func = lambda x:str(x)
+        func = lambda x,is_bg=False:str(x)
         func.__doc__ = "Convert to string."
     return func
 

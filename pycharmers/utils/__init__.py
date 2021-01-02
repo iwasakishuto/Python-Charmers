@@ -90,11 +90,15 @@ from .pil_utils import pilread
 from .pil_utils import roughen_img
 from .pil_utils import draw_text
 
+from .print_utils import tabulate
 from .print_utils import Table
 from .print_utils import format_spec_create
 from .print_utils import print_func_create
+from .print_utils import align_text
 from .print_utils import print_dict_tree
 from .print_utils import pretty_3quote
+from .print_utils import visible_width
+from .print_utils import strip_invisible
 
 from .soup_utils import str2soup
 from .soup_utils import split_section

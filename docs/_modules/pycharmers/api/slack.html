@@ -56,73 +56,73 @@
 
 <span class="sd">.. code-block:: python</span>
 
-<span class="sd">    &gt;&gt;&gt;  import urllib</span>
-<span class="sd">    &gt;&gt;&gt;  import pandas as pd</span>
-<span class="sd">    &gt;&gt;&gt;  from pycharmers.utils import infer_types, get_soup, defFunction, render_template, html2reStructuredText, find_target_text</span>
-<span class="sd">    ...  </span>
-<span class="sd">    &gt;&gt;&gt;  def slack_method_create(url):</span>
-<span class="sd">    ...     soup = get_soup(url)    </span>
-<span class="sd">    ...     table = soup.find(name=&quot;table&quot;, class_=&quot;small full_width no_bottom_margin no_bottom_padding&quot;)</span>
-<span class="sd">    ...     </span>
-<span class="sd">    ...     tds = table.find_all(name=&quot;td&quot;)</span>
-<span class="sd">    ...     api_method             = tds.pop(0).get_text().replace(&quot;https://slack.com/api/&quot;, &quot;&quot;); func_name = api_method.replace(&quot;.&quot;, &quot;_&quot;)</span>
-<span class="sd">    ...     http_method            = tds.pop(0).get_text()</span>
-<span class="sd">    ...     accepted_content_types = tds.pop(0).get_text().split(&quot;, &quot;)</span>
-<span class="sd">    ...     </span>
-<span class="sd">    ...     description=&quot;&quot;</span>
-<span class="sd">    ...     if len(tds)&gt;1:</span>
-<span class="sd">    ...         df = pd.read_html(str(tds[1].find(name=&quot;table&quot;)).replace(&quot;Â\\xa0 &quot;, &quot;``, ``&quot;))[0]</span>
-<span class="sd">    ...         df[&quot;Required scope(s)&quot;] = df[&quot;Required scope(s)&quot;].apply(lambda x: &quot;``&quot;+x+&quot;``&quot; ).apply(lambda x: x[:-6] if x[-6:] == &quot;, ````&quot; else x )</span>
-<span class="sd">    ...         description = df.to_markdown(index=False, tablefmt=&quot;grid&quot;).replace(&quot;\\n&quot;, &quot;\\n    &quot;)</span>
-<span class="sd">    ...     </span>
-<span class="sd">    ...     def_func = defFunction(</span>
-<span class="sd">    ...         func_name=func_name, </span>
-<span class="sd">    ...         short_description=find_target_text(soup=soup.find(name=&quot;section&quot;, class_=&quot;tab_pane selected clearfix large_bottom_padding&quot;), name=&quot;p&quot;, default=&quot;&quot;),</span>
-<span class="sd">    ...         description=description,</span>
-<span class="sd">    ...         is_method=True,</span>
-<span class="sd">    ...     )</span>
-<span class="sd">    ...     </span>
-<span class="sd">    ...     for argument in soup.find(name=&quot;div&quot;, class_=&quot;method_arguments full_width&quot;).find_all(name=&quot;div&quot;, class_=&quot;method_argument&quot;)[1:]:</span>
-<span class="sd">    ...         name = find_target_text(soup=argument, name=&quot;span&quot;, class_=&quot;arg_name&quot;)</span>
-<span class="sd">    ...         if name==&quot;team_id&quot;:</span>
-<span class="sd">    ...             example = &quot;T1234567890&quot;</span>
-<span class="sd">    ...         else:</span>
-<span class="sd">    ...             example = argument.find(name=&quot;span&quot;, class_=&quot;arg_example&quot;)</span>
-<span class="sd">    ...             if example != None:</span>
-<span class="sd">    ...                 example = example.find(name=&quot;code&quot;)</span>
-<span class="sd">    ...                 if example != None:</span>
-<span class="sd">    ...                     example = example.text</span>
-<span class="sd">    ...                     if len(example)&gt;0:</span>
-<span class="sd">    ...                         if example[0] in [&quot;[&quot;, &quot;{&quot;]:</span>
-<span class="sd">    ...                             example = { &quot;first_name&quot;: &quot;John&quot; } if example == &#39;{ first_name: &quot;John&quot;, ... }&#39; else eval(example)</span>
-<span class="sd">    ...                         else:</span>
-<span class="sd">    ...                             example = {</span>
-<span class="sd">    ...                                 &quot;true&quot; : True,</span>
-<span class="sd">    ...                                 &quot;false&quot; : False</span>
-<span class="sd">    ...                             }.get(example, example)</span>
-<span class="sd">    ...         type = infer_types(example)</span>
-<span class="sd">    ...         if example is not None:</span>
-<span class="sd">    ...             try:</span>
-<span class="sd">    ...                 example = type(example)</span>
-<span class="sd">    ...             except:</span>
-<span class="sd">    ...                 pass</span>
-<span class="sd">    ...         def_func.set_argument(</span>
-<span class="sd">    ...             name=name,</span>
-<span class="sd">    ...             type=type, </span>
-<span class="sd">    ...             is_required=find_target_text(soup=argument, name=&quot;span&quot;, class_=&quot;arg_requirement&quot;) == &quot;Required&quot;, </span>
-<span class="sd">    ...             default=example,</span>
-<span class="sd">    ...             example=example,</span>
-<span class="sd">    ...             description=html2reStructuredText(</span>
-<span class="sd">    ...                 html=str(argument.find(name=&quot;p&quot;))[3:-4], </span>
-<span class="sd">    ...                 base_url=url</span>
-<span class="sd">    ...             ).replace(&quot;below&quot;, &quot;here&quot;).replace(&quot;false&quot;, &quot;False&quot;).replace(&quot;true&quot;, &quot;True&quot;).replace(&quot;none&quot;, &quot;None&quot;)</span>
-<span class="sd">    ...         )</span>
-<span class="sd">    ...        </span>
-<span class="sd">    ...     def_func.set_example(prefix=&quot;\\n&quot;.join([&quot;&gt;&gt;&gt; import os&quot;, &quot;&gt;&gt;&gt; from pycharmers.api import SlackClient&quot;, &#39;&gt;&gt;&gt; client = SlackClient(token=os.environ[&quot;SLACK_BOT_TOKEN&quot;])&#39;, &quot;&gt;&gt;&gt; res = client.{func_name}(&quot;]))</span>
-<span class="sd">    ...     def_func.create()</span>
-<span class="sd">    ...     </span>
-<span class="sd">    ...     render_template(template_name_or_string=&#39;{%- from &quot;_macros/utils.html&quot; import pythonalization %}    params = locals()\\n    params.pop(&quot;self&quot;)\\n    self._api_wrapper(\\n        api_method={{ pythonalization(api_method) }}, \\n        http_method={{ pythonalization(http_method) }}, \\n        content_types={{ pythonalization(content_types) }},\\n        **params,        \\n    )&#39;, context={&quot;api_method&quot;: api_method, &quot;http_method&quot;: http_method, &quot;content_types&quot;: accepted_content_types})</span>
-<span class="sd">    ...     </span>
+<span class="sd">    &gt;&gt;&gt; import urllib</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; from pycharmers.utils import infer_types, get_soup, defFunction, render_template, html2reStructuredText, find_target_text</span>
+<span class="sd">    ... </span>
+<span class="sd">    &gt;&gt;&gt; def slack_method_create(url):</span>
+<span class="sd">    ...    soup = get_soup(url)    </span>
+<span class="sd">    ...    table = soup.find(name=&quot;table&quot;, class_=&quot;small full_width no_bottom_margin no_bottom_padding&quot;)</span>
+<span class="sd">    ...    </span>
+<span class="sd">    ...    tds = table.find_all(name=&quot;td&quot;)</span>
+<span class="sd">    ...    api_method             = tds.pop(0).get_text().replace(&quot;https://slack.com/api/&quot;, &quot;&quot;); func_name = api_method.replace(&quot;.&quot;, &quot;_&quot;)</span>
+<span class="sd">    ...    http_method            = tds.pop(0).get_text()</span>
+<span class="sd">    ...    accepted_content_types = tds.pop(0).get_text().split(&quot;, &quot;)</span>
+<span class="sd">    ...    </span>
+<span class="sd">    ...    description=&quot;&quot;</span>
+<span class="sd">    ...    if len(tds)&gt;1:</span>
+<span class="sd">    ...        df = pd.read_html(str(tds[1].find(name=&quot;table&quot;)).replace(&quot;Â\\xa0 &quot;, &quot;``, ``&quot;))[0]</span>
+<span class="sd">    ...        df[&quot;Required scope(s)&quot;] = df[&quot;Required scope(s)&quot;].apply(lambda x: &quot;``&quot;+x+&quot;``&quot; ).apply(lambda x: x[:-6] if x[-6:] == &quot;, ````&quot; else x )</span>
+<span class="sd">    ...        description = df.to_markdown(index=False, tablefmt=&quot;grid&quot;).replace(&quot;\\n&quot;, &quot;\\n    &quot;)</span>
+<span class="sd">    ...    </span>
+<span class="sd">    ...    def_func = defFunction(</span>
+<span class="sd">    ...        func_name=func_name, </span>
+<span class="sd">    ...        short_description=find_target_text(soup=soup.find(name=&quot;section&quot;, class_=&quot;tab_pane selected clearfix large_bottom_padding&quot;), name=&quot;p&quot;, default=&quot;&quot;),</span>
+<span class="sd">    ...        description=description,</span>
+<span class="sd">    ...        is_method=True,</span>
+<span class="sd">    ...    )</span>
+<span class="sd">    ...    </span>
+<span class="sd">    ...    for argument in soup.find(name=&quot;div&quot;, class_=&quot;method_arguments full_width&quot;).find_all(name=&quot;div&quot;, class_=&quot;method_argument&quot;)[1:]:</span>
+<span class="sd">    ...        name = find_target_text(soup=argument, name=&quot;span&quot;, class_=&quot;arg_name&quot;)</span>
+<span class="sd">    ...        if name==&quot;team_id&quot;:</span>
+<span class="sd">    ...            example = &quot;T1234567890&quot;</span>
+<span class="sd">    ...        else:</span>
+<span class="sd">    ...            example = argument.find(name=&quot;span&quot;, class_=&quot;arg_example&quot;)</span>
+<span class="sd">    ...            if example != None:</span>
+<span class="sd">    ...                example = example.find(name=&quot;code&quot;)</span>
+<span class="sd">    ...                if example != None:</span>
+<span class="sd">    ...                    example = example.text</span>
+<span class="sd">    ...                    if len(example)&gt;0:</span>
+<span class="sd">    ...                        if example[0] in [&quot;[&quot;, &quot;{&quot;]:</span>
+<span class="sd">    ...                            example = { &quot;first_name&quot;: &quot;John&quot; } if example == &#39;{ first_name: &quot;John&quot;, ... }&#39; else eval(example)</span>
+<span class="sd">    ...                        else:</span>
+<span class="sd">    ...                            example = {</span>
+<span class="sd">    ...                                &quot;true&quot; : True,</span>
+<span class="sd">    ...                                &quot;false&quot; : False</span>
+<span class="sd">    ...                            }.get(example, example)</span>
+<span class="sd">    ...        type = infer_types(example)</span>
+<span class="sd">    ...        if example is not None:</span>
+<span class="sd">    ...            try:</span>
+<span class="sd">    ...                example = type(example)</span>
+<span class="sd">    ...            except:</span>
+<span class="sd">    ...                pass</span>
+<span class="sd">    ...        def_func.set_argument(</span>
+<span class="sd">    ...            name=name,</span>
+<span class="sd">    ...            type=type, </span>
+<span class="sd">    ...            is_required=find_target_text(soup=argument, name=&quot;span&quot;, class_=&quot;arg_requirement&quot;) == &quot;Required&quot;, </span>
+<span class="sd">    ...            default=example,</span>
+<span class="sd">    ...            example=example,</span>
+<span class="sd">    ...            description=html2reStructuredText(</span>
+<span class="sd">    ...                html=str(argument.find(name=&quot;p&quot;))[3:-4], </span>
+<span class="sd">    ...                base_url=url</span>
+<span class="sd">    ...            ).replace(&quot;below&quot;, &quot;here&quot;).replace(&quot;false&quot;, &quot;False&quot;).replace(&quot;true&quot;, &quot;True&quot;).replace(&quot;none&quot;, &quot;None&quot;)</span>
+<span class="sd">    ...        )</span>
+<span class="sd">    ...       </span>
+<span class="sd">    ...    def_func.set_example(prefix=&quot;\\n&quot;.join([&quot;&gt;&gt;&gt; import os&quot;, &quot;&gt;&gt;&gt; from pycharmers.api import SlackClient&quot;, &#39;&gt;&gt;&gt; client = SlackClient(token=os.environ[&quot;SLACK_BOT_TOKEN&quot;])&#39;, &quot;&gt;&gt;&gt; res = client.{func_name}(&quot;]))</span>
+<span class="sd">    ...    def_func.create()</span>
+<span class="sd">    ...    </span>
+<span class="sd">    ...    render_template(template_name_or_string=&#39;{%- from &quot;_macros/utils.html&quot; import pythonalization %}    params = locals()\\n    params.pop(&quot;self&quot;)\\n    self._api_wrapper(\\n        api_method={{ pythonalization(api_method) }}, \\n        http_method={{ pythonalization(http_method) }}, \\n        content_types={{ pythonalization(content_types) }},\\n        **params,        \\n    )&#39;, context={&quot;api_method&quot;: api_method, &quot;http_method&quot;: http_method, &quot;content_types&quot;: accepted_content_types})</span>
+<span class="sd">    ...    </span>
 <span class="sd">    &gt;&gt;&gt; url = &quot;https://api.slack.com/methods&quot;</span>
 <span class="sd">    &gt;&gt;&gt; soup = get_soup(url)</span>
 <span class="sd">    &gt;&gt;&gt; for i,aTag in enumerate(soup.find(name=&quot;div&quot;, class_=&quot;tab_pane selected&quot;).find_all(name=&quot;a&quot;)[1:-3]):</span>

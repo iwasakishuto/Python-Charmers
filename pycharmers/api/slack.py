@@ -5,73 +5,73 @@ This class is created by the following programs.
 
 .. code-block:: python
 
-    >>>  import urllib
-    >>>  import pandas as pd
-    >>>  from pycharmers.utils import infer_types, get_soup, defFunction, render_template, html2reStructuredText, find_target_text
-    ...  
-    >>>  def slack_method_create(url):
-    ...     soup = get_soup(url)    
-    ...     table = soup.find(name="table", class_="small full_width no_bottom_margin no_bottom_padding")
-    ...     
-    ...     tds = table.find_all(name="td")
-    ...     api_method             = tds.pop(0).get_text().replace("https://slack.com/api/", ""); func_name = api_method.replace(".", "_")
-    ...     http_method            = tds.pop(0).get_text()
-    ...     accepted_content_types = tds.pop(0).get_text().split(", ")
-    ...     
-    ...     description=""
-    ...     if len(tds)>1:
-    ...         df = pd.read_html(str(tds[1].find(name="table")).replace("Â\\xa0 ", "``, ``"))[0]
-    ...         df["Required scope(s)"] = df["Required scope(s)"].apply(lambda x: "``"+x+"``" ).apply(lambda x: x[:-6] if x[-6:] == ", ````" else x )
-    ...         description = df.to_markdown(index=False, tablefmt="grid").replace("\\n", "\\n    ")
-    ...     
-    ...     def_func = defFunction(
-    ...         func_name=func_name, 
-    ...         short_description=find_target_text(soup=soup.find(name="section", class_="tab_pane selected clearfix large_bottom_padding"), name="p", default=""),
-    ...         description=description,
-    ...         is_method=True,
-    ...     )
-    ...     
-    ...     for argument in soup.find(name="div", class_="method_arguments full_width").find_all(name="div", class_="method_argument")[1:]:
-    ...         name = find_target_text(soup=argument, name="span", class_="arg_name")
-    ...         if name=="team_id":
-    ...             example = "T1234567890"
-    ...         else:
-    ...             example = argument.find(name="span", class_="arg_example")
-    ...             if example != None:
-    ...                 example = example.find(name="code")
-    ...                 if example != None:
-    ...                     example = example.text
-    ...                     if len(example)>0:
-    ...                         if example[0] in ["[", "{"]:
-    ...                             example = { "first_name": "John" } if example == '{ first_name: "John", ... }' else eval(example)
-    ...                         else:
-    ...                             example = {
-    ...                                 "true" : True,
-    ...                                 "false" : False
-    ...                             }.get(example, example)
-    ...         type = infer_types(example)
-    ...         if example is not None:
-    ...             try:
-    ...                 example = type(example)
-    ...             except:
-    ...                 pass
-    ...         def_func.set_argument(
-    ...             name=name,
-    ...             type=type, 
-    ...             is_required=find_target_text(soup=argument, name="span", class_="arg_requirement") == "Required", 
-    ...             default=example,
-    ...             example=example,
-    ...             description=html2reStructuredText(
-    ...                 html=str(argument.find(name="p"))[3:-4], 
-    ...                 base_url=url
-    ...             ).replace("below", "here").replace("false", "False").replace("true", "True").replace("none", "None")
-    ...         )
-    ...        
-    ...     def_func.set_example(prefix="\\n".join([">>> import os", ">>> from pycharmers.api import SlackClient", '>>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])', ">>> res = client.{func_name}("]))
-    ...     def_func.create()
-    ...     
-    ...     render_template(template_name_or_string='{%- from "_macros/utils.html" import pythonalization %}    params = locals()\\n    params.pop("self")\\n    self._api_wrapper(\\n        api_method={{ pythonalization(api_method) }}, \\n        http_method={{ pythonalization(http_method) }}, \\n        content_types={{ pythonalization(content_types) }},\\n        **params,        \\n    )', context={"api_method": api_method, "http_method": http_method, "content_types": accepted_content_types})
-    ...     
+    >>> import urllib
+    >>> import pandas as pd
+    >>> from pycharmers.utils import infer_types, get_soup, defFunction, render_template, html2reStructuredText, find_target_text
+    ... 
+    >>> def slack_method_create(url):
+    ...    soup = get_soup(url)    
+    ...    table = soup.find(name="table", class_="small full_width no_bottom_margin no_bottom_padding")
+    ...    
+    ...    tds = table.find_all(name="td")
+    ...    api_method             = tds.pop(0).get_text().replace("https://slack.com/api/", ""); func_name = api_method.replace(".", "_")
+    ...    http_method            = tds.pop(0).get_text()
+    ...    accepted_content_types = tds.pop(0).get_text().split(", ")
+    ...    
+    ...    description=""
+    ...    if len(tds)>1:
+    ...        df = pd.read_html(str(tds[1].find(name="table")).replace("Â\\xa0 ", "``, ``"))[0]
+    ...        df["Required scope(s)"] = df["Required scope(s)"].apply(lambda x: "``"+x+"``" ).apply(lambda x: x[:-6] if x[-6:] == ", ````" else x )
+    ...        description = df.to_markdown(index=False, tablefmt="grid").replace("\\n", "\\n    ")
+    ...    
+    ...    def_func = defFunction(
+    ...        func_name=func_name, 
+    ...        short_description=find_target_text(soup=soup.find(name="section", class_="tab_pane selected clearfix large_bottom_padding"), name="p", default=""),
+    ...        description=description,
+    ...        is_method=True,
+    ...    )
+    ...    
+    ...    for argument in soup.find(name="div", class_="method_arguments full_width").find_all(name="div", class_="method_argument")[1:]:
+    ...        name = find_target_text(soup=argument, name="span", class_="arg_name")
+    ...        if name=="team_id":
+    ...            example = "T1234567890"
+    ...        else:
+    ...            example = argument.find(name="span", class_="arg_example")
+    ...            if example != None:
+    ...                example = example.find(name="code")
+    ...                if example != None:
+    ...                    example = example.text
+    ...                    if len(example)>0:
+    ...                        if example[0] in ["[", "{"]:
+    ...                            example = { "first_name": "John" } if example == '{ first_name: "John", ... }' else eval(example)
+    ...                        else:
+    ...                            example = {
+    ...                                "true" : True,
+    ...                                "false" : False
+    ...                            }.get(example, example)
+    ...        type = infer_types(example)
+    ...        if example is not None:
+    ...            try:
+    ...                example = type(example)
+    ...            except:
+    ...                pass
+    ...        def_func.set_argument(
+    ...            name=name,
+    ...            type=type, 
+    ...            is_required=find_target_text(soup=argument, name="span", class_="arg_requirement") == "Required", 
+    ...            default=example,
+    ...            example=example,
+    ...            description=html2reStructuredText(
+    ...                html=str(argument.find(name="p"))[3:-4], 
+    ...                base_url=url
+    ...            ).replace("below", "here").replace("false", "False").replace("true", "True").replace("none", "None")
+    ...        )
+    ...       
+    ...    def_func.set_example(prefix="\\n".join([">>> import os", ">>> from pycharmers.api import SlackClient", '>>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])', ">>> res = client.{func_name}("]))
+    ...    def_func.create()
+    ...    
+    ...    render_template(template_name_or_string='{%- from "_macros/utils.html" import pythonalization %}    params = locals()\\n    params.pop("self")\\n    self._api_wrapper(\\n        api_method={{ pythonalization(api_method) }}, \\n        http_method={{ pythonalization(http_method) }}, \\n        content_types={{ pythonalization(content_types) }},\\n        **params,        \\n    )', context={"api_method": api_method, "http_method": http_method, "content_types": accepted_content_types})
+    ...    
     >>> url = "https://api.slack.com/methods"
     >>> soup = get_soup(url)
     >>> for i,aTag in enumerate(soup.find(name="div", class_="tab_pane selected").find_all(name="a")[1:-3]):
