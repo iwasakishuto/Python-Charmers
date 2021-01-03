@@ -108,7 +108,7 @@ def cv2plot(x, ax=None, clear_pos=list("ltrb"), cmap=None, **kwargs):
     ax = clear_grid(ax, pos=clear_pos)
     return ax
 
-def draw_text_with_bg(img, text, org=(10,10), offset=(10, -25),
+def draw_text_with_bg(img, text, org=(10,10), offset=(10, 10),
                       fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1,
                       color=COLOR_BLACK, bgcolor=COLOR_WHITE, color_type="css4",
                       thickness=2, **kwargs):
@@ -139,18 +139,17 @@ def draw_text_with_bg(img, text, org=(10,10), offset=(10, -25),
     if isinstance(bgcolor, str):
         bgcolor = FAMOUS_COLOR_PALETTES.get(color_type).get(bgcolor, COLOR_WHITE)
 
-    (text_W, text_H) = cv2.getTextSize(
-        text, fontFace, fontScale=fontScale, thickness=thickness
-    )[0]
+    text_W, text_H = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)[0]
     text_off_x, text_off_y = offset
-    text_off_y += img.shape[0]
+    org_x, org_y = org
 
     box_coords = (
-        (text_off_x, text_off_y), (text_off_x+text_W+2, text_off_y-text_H-2)
+        (org_x          - text_off_x, org_y          + text_off_y), 
+        (org_x + text_W + text_off_x, org_y - text_H - text_off_y)
     )
     cv2.rectangle(img, *box_coords, bgcolor, cv2.FILLED)
     cv2.putText(
-        img, text, (text_off_x, text_off_y), fontFace=fontFace,
-        fontScale=fontScale, color=color, thickness=thickness
+        img=img, text=text, org=org, fontFace=fontFace,
+        fontScale=fontScale, color=color, thickness=thickness, **kwargs
     )
 

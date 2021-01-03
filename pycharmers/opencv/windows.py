@@ -588,7 +588,6 @@ class RealTimeWindow(cvWindow):
             cvKey=cvKeys(**DEFAULT_CV_KEYS),
         )
         self.cvKey.update(cvKey)
-        self.input_path = path
         self.gen = cv2.VideoCapture(cam)
         _, self.crt_frame = self.gen.read()
         self.crt_fname = now_str()
@@ -603,8 +602,8 @@ class RealTimeWindow(cvWindow):
         """
         if mat is None: mat = self.crt_frame
         draw_text_with_bg(
-            img=mat, text=now_str(),
-            org=(50, 50), fontFace=self.crt_fname,
+            img=mat, text=self.crt_fname,
+            org=(50, 50), fontFace=3,
             fontScale=3, color=(0,0,0), bgcolor=(255,255,255),
             color_type="css4", thickness=1,
         )
