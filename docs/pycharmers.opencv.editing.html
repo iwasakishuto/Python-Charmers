@@ -69,6 +69,36 @@
   <div class="section" id="module-pycharmers.opencv.editing">
 <span id="pycharmers-opencv-editing-module"></span><h1>pycharmers.opencv.editing module<a class="headerlink" href="#module-pycharmers.opencv.editing" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.opencv.editing.cv2paste">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">cv2paste</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bg_img</span></em>, <em class="sig-param"><span class="n">fg_img</span></em>, <em class="sig-param"><span class="n">points</span><span class="o">=</span><span class="default_value">0, 0</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#cv2paste"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.cv2paste" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pastes <code class="docutils literal notranslate"><span class="pre">fg_image</span></code> into <code class="docutils literal notranslate"><span class="pre">bg_image</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bg_img</strong> (<em>ndarray</em>) – Background Image. shape=(H,W,ch)</p></li>
+<li><p><strong>fg_img</strong> (<em>ndarray</em>) – Background Image. shape=(H,W,ch)</p></li>
+<li><p><strong>points</strong> (<em>tuple</em>) – Coordinates to paste. (x,y)</p></li>
+<li><p><strong>inplace</strong> (<em>bool</em>) – Whether to transform input ( <code class="docutils literal notranslate"><span class="pre">bg_img</span></code> ) using no auxiliary data structure.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pasted image.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bg_img (ndarray)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">cv2read_mpl</span><span class="p">,</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">cv2paste</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bg_img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fg_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">bg_img</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">cv2paste</span><span class="p">(</span><span class="n">bg_img</span><span class="p">,</span> <span class="n">fg_img</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">)))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.opencv.editing.vconcat_resize_min">
 <code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">vconcat_resize_min</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">images</span></em>, <em class="sig-param"><span class="n">interpolation</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#vconcat_resize_min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.vconcat_resize_min" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concat vertically while resizing to the smallest width.</p>
@@ -161,6 +191,7 @@
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>

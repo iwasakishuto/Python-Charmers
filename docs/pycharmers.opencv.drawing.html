@@ -34,7 +34,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pycharmers.opencv.editing module" href="pycharmers.opencv.editing.html" />
-    <link rel="prev" title="pycharmers.opencv.cascade module" href="pycharmers.opencv.cascade.html" /> 
+    <link rel="prev" title="pycharmers.opencv.cvui module" href="pycharmers.opencv.cvui.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -49,7 +49,7 @@
           <a href="pycharmers.opencv.editing.html" title="pycharmers.opencv.editing module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
+          <a href="pycharmers.opencv.cvui.html" title="pycharmers.opencv.cvui module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -190,8 +190,8 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.cv2plot</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;path/to/image.png&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cv2plot</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -218,8 +218,8 @@
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">draw_text_with_bg</span><span class="p">,</span> <span class="n">cv2read_mpl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;path/to/img.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">draw_text_with_bg</span><span class="p">,</span> <span class="n">cv2read_mpl</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">draw_text_with_bg</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="o">-</span><span class="mi">100</span><span class="p">),</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;My name is Shuto&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -275,6 +275,7 @@
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
@@ -295,8 +296,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.opencv.cascade.html"
-                        title="previous chapter">pycharmers.opencv.cascade module</a></p>
+  <p class="topless"><a href="pycharmers.opencv.cvui.html"
+                        title="previous chapter">pycharmers.opencv.cvui module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pycharmers.opencv.editing.html"
                         title="next chapter">pycharmers.opencv.editing module</a></p>
@@ -334,7 +335,7 @@
           <a href="pycharmers.opencv.editing.html" title="pycharmers.opencv.editing module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
+          <a href="pycharmers.opencv.cvui.html" title="pycharmers.opencv.cvui module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     

@@ -11,6 +11,7 @@
 from ._path import *
 from ._path import save_dir_create
 from . import backsub
+from . import cvui
 from . import cascade
 from . import drawing
 from . import editing
@@ -18,7 +19,6 @@ from . import morphology
 from . import tracking
 from . import video_image_handler
 from . import windows
-
 
 from .backsub import background_subtractor_create
 
@@ -33,6 +33,7 @@ from .drawing import draw_bboxes_xywh
 from .drawing import draw_bboxes_ltrb
 from .drawing import draw_text_with_bg
 
+from .editing import cv2paste
 from .editing import vconcat_resize_min
 from .editing import hconcat_resize_min
 

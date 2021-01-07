@@ -1,0 +1,7 @@
+pycharmers.opencv.cvui module
+=============================
+
+.. automodule:: pycharmers.opencv.cvui
+   :members:
+   :undoc-members:
+   :show-inheritance:

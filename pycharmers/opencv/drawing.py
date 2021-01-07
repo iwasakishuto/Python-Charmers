@@ -98,8 +98,8 @@ def cv2plot(x, ax=None, clear_pos=list("ltrb"), cmap=None, **kwargs):
         **kwargs           : 
 
     Examples:
-        >>> from pycharmers.opencv.cv2plot
-        >>> ax = cv2plot(x="path/to/image.png")
+        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> ax = cv2plot(x=SAMPLE_LENA_IMG)
     """
     fig, ax = FigAxes_create(ax=ax)
     if isinstance(x, str):
@@ -128,8 +128,8 @@ def draw_text_with_bg(img, text, org=(10,10), offset=(10, 10),
     
     Examples:
         >>> import matplotlib.pyplot as plt
-        >>> from pycharmers.opencv import draw_text_with_bg, cv2read_mpl
-        >>> img = cv2read_mpl(filename="path/to/img.png")
+        >>> from pycharmers.opencv import draw_text_with_bg, cv2read_mpl, SAMPLE_LENA_IMG
+        >>> img = cv2read_mpl(filename=SAMPLE_LENA_IMG)
         >>> draw_text_with_bg(img=img, offset=(100,-100), text="My name is Shuto")
         >>> plt.imshow(img)
         >>> plt.show()
