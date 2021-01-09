@@ -66,12 +66,19 @@ ul.social li {
 }
 ul.social a {
   display: inline-block;
-  width: 36px;
-  height: 36px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   text-align: center;
-  font-size: .8em;
-  line-height: 40px;
+  font-size: 1em;
+  line-height: 45px;
+  transition: 0.5s;
+}
+ul.social a:hover {
+  -moz-transform: scale(1.5, 1.5);
+  -webkit-transform: scale(1.5, 1.5);
+  -o-transform: scale(1.5, 1.5);
+  -ms-transform: scale(1.5, 1.5);
 }
 ul.social a.sc-github, ul.social a.sc-github-alt {
   background-color: #111010;
@@ -130,4 +137,15 @@ span.viewcode-link:after {
 table.docutils td, table.docutils th {
   border: 1.8px solid black!important;
   font-family: monaco;
+}
+
+div.sphinxsidebarwrapper span.package-name {
+  color:greenyellow;
+}
+div.sphinxsidebarwrapper span.program-name {
+  color:aqua;
+}
+div.sphinxsidebarwrapper span.package-subtitle {
+  color:white;
+  text-decoration: underline;
 }
