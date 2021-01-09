@@ -1,10 +1,6 @@
 """Utility programs for `OpenCV <https://opencv.org/>`_
 
-    OpenCV (Open Source Computer Vision Library) is a library of programming 
-    functions mainly aimed at real-time computer vision. Originally developed 
-    by Intel, it was later supported by Willow Garage then Itseez (which was later 
-    acquired by Intel). The library is cross-platform and free for use under the 
-    open-source BSD license.
+OpenCV (Open Source Computer Vision Library) is a library of programming functions mainly aimed at real-time computer vision. Originally developed by Intel, it was later supported by Willow Garage then Itseez (which was later acquired by Intel). The library is cross-platform and free for use under the open-source BSD license.
 """
 
 # coding: utf-8
@@ -32,6 +28,7 @@ from .drawing import draw_bboxes_create
 from .drawing import draw_bboxes_xywh
 from .drawing import draw_bboxes_ltrb
 from .drawing import draw_text_with_bg
+from .drawing import plot_cv2fontFaces
 
 from .editing import cv2paste
 from .editing import vconcat_resize_min

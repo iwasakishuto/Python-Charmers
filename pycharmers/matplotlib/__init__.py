@@ -5,8 +5,7 @@ from . import plot2d
 from . import plot3d
 
 
-from .cmaps import (COLOR_BLACK, COLOR_BLUE, COLOR_CYAN, COLOR_GREEN, COLOR_MAGENTA, COLOR_RED, COLOR_WHITE, COLOR_YELLOW, 
-                    BASE_COLORS, CSS4_COLORS, XKCD_COLORS, TABLEAU_COLORS, FAMOUS_COLOR_PALETTES)
+from .cmaps import (BASE_COLORS, CSS4_COLORS, XKCD_COLORS, TABLEAU_COLORS, FAMOUS_COLOR_PALETTES)
 from .cmaps import plot_color_palettes
 from .cmaps import plot_cmap_samples
 from .cmaps import plot_cmap_category_samples

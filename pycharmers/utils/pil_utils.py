@@ -60,7 +60,7 @@ def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
     Args:
         text (str)       : Text to be drawn to ``img``.
         img (PIL.Image)  : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
-        ttfontname (str) : A filename or file-like object containing a TrueType font.
+        ttfontname (str) : A filename or file-like object containing a TrueType font. (default = ``os.listdir("/System/Library/Fonts")[0]``)
         img_size (tuple) : The image size.
         text_width (int) : The length of characters in one line.
         fontsize (int)   : The requested size, in points.
@@ -72,7 +72,7 @@ def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
         tuple (PIL.Image, int): img, Length from top to bottom text line.
     
     Example:
-        >>> from pycharmers.utils import take_centers
+        >>> from pycharmers.utils import draw_text
         >>> img, y = draw_text("Hello World!!")
         >>> img.save("sample.png")
     """

@@ -31,14 +31,6 @@ FAMOUS_COLOR_PALETTES = {
     "xkcd"    : XKCD_COLORS,
     "tableau" : TABLEAU_COLORS,
 }
-COLOR_BLACK   = (0,     0,   0)
-COLOR_RED     = (0,     0, 255)
-COLOR_GREEN   = (0,   128,   0)
-COLOR_YELLOW  = (0,   255, 255)
-COLOR_BLUE    = (255,   0,   0)
-COLOR_MAGENTA = (255,   0, 255)
-COLOR_CYAN    = (255, 255,   0)
-COLOR_WHITE   = (255, 255, 255)
 #==============================
 
 def plot_color_palettes(palette_name="all"):

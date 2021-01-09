@@ -10,6 +10,17 @@ Welcome to Python-Charmers's documentation!
 
 A collection of useful python programs.
 
+.. |header| image:: https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true
+   :target: https://github.com/iwasakishuto/Python-Charmers
+.. |PyPI version| image:: https://badge.fury.io/py/Python-Charmers.svg
+   :target: https://pypi.org/project/Python-Charmers/
+.. |GitHub version| image:: https://badge.fury.io/gh/iwasakishuto%2FPython-Charmers.svg
+   :target: https://github.com/iwasakishuto/Python-Charmers
+.. |Python package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Python%20package/badge.svg
+.. |Upload Python Package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Upload%20Python%20Package/badge.svg
+.. |license| image:: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
+   :target: https://github.com/iwasakishuto/Python-Charmers/blob/master/LICENSE
+
 Installation
 ------------
 
@@ -26,23 +37,6 @@ There are two ways to install **Python-Charmers**:
        $ git clone https://github.com/iwasakishuto/Python-Charmers.git
        $ cd Python-Charmers
        $ sudo python setup.py install
-
-.. |header| image:: https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true
-   :target: https://github.com/iwasakishuto/Python-Charmers
-.. |PyPI version| image:: https://badge.fury.io/py/Python-Charmers.svg
-   :target: https://pypi.org/project/Python-Charmers/
-.. |GitHub version| image:: https://badge.fury.io/gh/iwasakishuto%2FPython-Charmers.svg
-   :target: https://github.com/iwasakishuto/Python-Charmers
-.. |Python package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Python%20package/badge.svg
-.. |Upload Python Package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Upload%20Python%20Package/badge.svg
-.. |license| image:: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
-   :target: https://github.com/iwasakishuto/Python-Charmers/blob/master/LICENSE
-
-Quick example
--------------
-
--  `example
-   notebooks <https://nbviewer.jupyter.org/github/iwasakishuto/Python-Charmers/blob/master/examples/>`__
 
 Contents
 --------
