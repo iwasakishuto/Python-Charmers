@@ -83,7 +83,7 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 		...  	
 		... 	# You can also specify the size of the text and its color
 		... 	# using hex 0xRRGGBB CSS-like style.
-		... 	cvui.text(frame, 200, 30, "Use hex 0xRRGGBB colors easily", 0.4, 0xff0000)
+		... 	cvui.text(frame, 200, 30, "Use hex 0xRRGGBB colors easily", fontScale=0.4, color=0xff0000)
 		...  	
 		... 	# Sometimes you want to show text that is not that simple, e.g. strings + numbers.
 		... 	# You can use cvui.printf for that. It accepts a variable number of parameter, pretty
@@ -462,7 +462,7 @@ def checkbox(where=None, x=0, y=0, label="", state=[], color=0xCECECE):
 		>>> from pycharmers.opencv import cvui
 		>>> from pycharmers.utils import now_str
 		...  
-		>>> WINDOW_NAME	= 'Text'
+		>>> WINDOW_NAME	= 'Check Box'
 		>>> frame = np.zeros(shape=(100, 150, 3), dtype=np.uint8)
 		>>> cvui.init(WINDOW_NAME)
 		>>> checked = [True]
@@ -488,6 +488,61 @@ def checkbox(where=None, x=0, y=0, label="", state=[], color=0xCECECE):
 		y += block.anchor.y
 
 	return __internal.checkbox(block, x, y, label, state, color)
+
+def radiobox(where=None, x=0, y=0, labels=[""], states=[], color=0xCECECE):
+	"""Display a radiobox. You can use the ``states`` parameter to check which radio button is checked.
+
+	Args:
+		where (np.ndarray) : image/frame where the component should be rendered.
+		x (int)            : Position X where the component should be placed.
+		y (int)            : Position Y where the component should be placed.
+		labels ([str])     : Text displayed besides the each clickable radiobox square.
+		states ([bool])    : Array or List of booleans whose first position, i.e. ``state[0]``, will be used to store the current state of the checkbox: ``True`` means the checkbox is checked.
+		color (uint)       : Color of the label in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+
+	Returns:
+		value (int)        : Which radio button is checked ( ``True`` ).
+	
+	Examples:
+		>>> import cv2
+		>>> import numpy as np
+		>>> from pycharmers.opencv import cvui, cv2RED, cv2BLUE, cv2GREEN
+		>>> from pycharmers.utils import now_str
+		... 
+		>>> WINDOW_NAME	= 'Radio Box'
+		>>> frame = np.zeros(shape=(150, 200, 3), dtype=np.uint8)
+		>>> cvui.init(WINDOW_NAME)
+		... 
+		>>> radio_labels = ["red", "blue", "green"]
+		>>> radio_states = [True, False, False]
+		>>> bg_colors    = [cv2RED, cv2BLUE, cv2GREEN]
+		>>> idx = 0
+
+		>>> while (True):
+		... 	frame[:] = (49, 52, 49)
+		... 	
+		... 	cvui.beginRow(frame, x=10, y=10, width=180, height=130, bgColor=bg_colors[idx])
+		... 	idx = cvui.radiobox(x=10, y=10, labels=radio_labels, states=radio_states)
+		... 	cvui.printf(where=frame, x=10, y=100, fontScale=0.4, color=0xCECECE, fmt="Current bgColor: %s", fmtArgs=(radio_labels[idx]))
+		... 	cvui.endRow()
+
+		... 	cvui.update()
+		... 	cv2.imshow(WINDOW_NAME, frame)
+		... 	if cv2.waitKey(20) == cvui.ESCAPE:
+		... 		break
+		... cv2.destroyAllWindows()
+	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
+	if isinstance(where, np.ndarray):
+		__internal.screen.where = where
+		block = __internal.screen
+	else:
+		block = __internal.topBlock()
+		x += block.anchor.x
+		y += block.anchor.y
+
+	return __internal.radiobox(block, x, y, labels, states, color)
+
 
 def mouse(windowName=None, button=None, query=None):
 	"""Query the mouse for events in a particular button in a particular window. This function behave exactly like ``mouse(int button, int query)``, with the difference that queries are targeted at  particular mouse button in a particular window instead.
@@ -1557,17 +1612,17 @@ class Internal:
 		return aLabel
 
 	def text(self, block, x, y, text, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8, updateLayout=True):
-		sizeInfo, aBaseline = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
+		(text_width,text_height), _ = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
 
-		aTextSize = Size(sizeInfo[0], sizeInfo[1])
-		aPos = Point(x, y + aTextSize.height)
+		text_size = Size(text_width, text_height)
+		aPos = Point(x, y + text_size.height)
 
 		self._render.text(block, text, aPos, fontFace=fontFace, fontScale=fontScale, color=color, thickness=thickness, lineType=lineType)
 
 		if updateLayout:
 			# Add an extra pixel to the height to overcome OpenCV font size problems.
-			aTextSize.height += 1
-			self.updateLayoutFlow(block, aTextSize)
+			text_size.height += 1
+			self.updateLayoutFlow(block, text_size)
 
 	def counter(self, block, x, y, value, step, fmt):
 		aContentArea = Rect(x + 22, y, 48, 22)
@@ -1588,22 +1643,22 @@ class Internal:
 		return value[0]
 
 	def checkbox(self, block, x, y, label, state, color):
-		aMouse = self.getContext().mouse
+		mouse = self.getContext().mouse
 		aRect = Rect(x, y, 15, 15)
-		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
-		aHitArea = Rect(x, y, aRect.width + aTextSize.width + 6, aRect.height)
-		aMouseIsOver = aHitArea.contains(aMouse.position)
+		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		text_size = Rect(0, 0, text_width, text_height)
+		aHitArea = Rect(x, y, aRect.width + text_size.width + 6, aRect.height)
+		mouseIsOver = aHitArea.contains(mouse.position)
 
-		if aMouseIsOver:
+		if mouseIsOver:
 			self._render.checkbox(block, OVER, aRect)
 
-			if aMouse.anyButton.justReleased:
+			if mouse.anyButton.justReleased:
 				state[0] = not state[0]
 		else:
 			self._render.checkbox(block, OUT, aRect)
 
-		self._render.checkboxLabel(block, aRect, label, aTextSize, color)
+		self._render.checkboxLabel(block, aRect, label, text_size, color)
 
 		if state[0]:
 			self._render.checkboxCheck(block, aRect)
@@ -1613,6 +1668,54 @@ class Internal:
 		self.updateLayoutFlow(block, size)
 
 		return state[0]
+
+	def radiobox(self, block, x, y, labels, states, color):
+
+		if len(labels) != len(states):
+			self.error(6, f"`states` and `labels` should have the same length, but got ({len(labels)}!={len(states)})")
+		if states.count(True) != 1:
+			self.error(6, f"`states` should have only 1 True value, but got ({states.count(True)})")
+
+		mouse = self.getContext().mouse
+		
+		crt_state = -1
+		width = 0
+		for i,label in enumerate(labels):        
+			
+			aRect = Rect(x, y+i*20, 15, 15)
+			(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+			text_size = Rect(0, 0, text_width, text_height)
+			aHitArea = Rect(x, y+i*20, aRect.width + text_size.width + 6, aRect.height)
+			mouseIsOver = aHitArea.contains(mouse.position)
+
+			if mouseIsOver:
+				self._render.checkbox(block, OVER, aRect)
+
+				if mouse.anyButton.justReleased:
+					crt_state = i
+					states[crt_state] = True
+			else:
+				self._render.checkbox(block, OUT, aRect)
+
+			self._render.checkboxLabel(block, aRect, label, text_size, color)
+			width = max(aHitArea.width, width)
+		height = (aHitArea.y - y) + aHitArea.height
+			
+		# Choose only one of a predefined set of mutually exclusive options.
+		if crt_state>=0:
+			for i in range(len(states)):
+				if i!=crt_state:
+					states[i] = False
+					
+		for i,state in enumerate(states):
+			if state:
+				aRect = Rect(x, y+i*20, 15, 15)
+				self._render.checkboxCheck(block, aRect)
+
+		# Update the layout flow
+		self.updateLayoutFlow(block, Size(width, height))
+
+		return states.index(True)
 
 	def clamp01(self, value):
 		return min(max(value, 0.), 1.)
@@ -1636,30 +1739,30 @@ class Internal:
 		return int(aPixelsX)
 
 	def iarea(self, x, y, width, height):
-		aMouse = self.getContext().mouse
+		mouse = self.getContext().mouse
 
 		# By default, return that the mouse is out of the interaction area.
-		aRet = OUT
+		ret = OUT
 
 		# Check if the mouse is over the interaction area.
-		aMouseIsOver = Rect(x, y, width, height).contains(aMouse.position)
+		mouseIsOver = Rect(x, y, width, height).contains(mouse.position)
 
-		if aMouseIsOver:
-			if aMouse.anyButton.pressed:
-				aRet = DOWN
+		if mouseIsOver:
+			if mouse.anyButton.pressed:
+				ret = DOWN
 			else:
-				aRet = OVER
+				ret = OVER
 
 		# Tell if the button was clicked or not
-		if aMouseIsOver and aMouse.anyButton.justReleased:
-			aRet = CLICK
+		if mouseIsOver and mouse.anyButton.justReleased:
+			ret = CLICK
 
-		return aRet
+		return ret
 
 	def buttonWH(self, block, x, y, width, height, label, updateLayout):
 		# Calculate the space that the label will fill
-		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
+		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		text_size = Rect(0, 0, text_width, text_height)
 
 		# Make the button big enough to house the label
 		aRect = Rect(x, y, width, height)
@@ -1667,7 +1770,7 @@ class Internal:
 		# Render the button according to mouse interaction, e.g. OVER, DOWN, OUT.
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
 		self._render.button(block, aStatus, aRect, label)
-		self._render.buttonLabel(block, aStatus, aRect, label, aTextSize)
+		self._render.buttonLabel(block, aStatus, aRect, label, text_size)
 
 		# Update the layout flow according to button size
 		# if we were told to update.
@@ -1689,17 +1792,15 @@ class Internal:
 
 	def button(self, block, x, y, label):
 		# Calculate the space that the label will fill
-		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
+		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		text_size = Rect(0, 0, text_width, text_height)
 
 		# Create a button based on the size of the text
-		return self.buttonWH(block, x, y, aTextSize.width + 30, aTextSize.height + 18, label, True)
+		return self.buttonWH(block, x, y, text_size.width + 30, text_size.height + 18, label, True)
 
 	def buttonI(self, block, x, y, idle, over, down, updateLayout):
-		aIdleRows =idle.shape[0]
-		aIdleCols =idle.shape[1]
-
-		aRect = Rect(x, y, aIdleCols, aIdleRows)
+		idle_height, idle_width = idle.shape[:2]
+		aRect = Rect(x, y, idle_width, idle_height)
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
 
 		if   aStatus == OUT:  self._render.image(block, aRect, idle)
@@ -1716,28 +1817,26 @@ class Internal:
 		return aStatus == CLICK
 
 	def image(self, block, x, y, image):
-		aImageRows = image.shape[0]
-		aImageCols = image.shape[1]
-
-		aRect = Rect(x, y, aImageCols, aImageRows)
+		img_height, img_width = image.shape[:2]
+		aRect = Rect(x, y, img_width, img_height)
 
 		# TODO: check for render outside the frame area
 		self._render.image(block, aRect, image)
 
 		# Update the layout flow according to image size
-		size = Size(aImageCols, aImageRows)
+		size = Size(img_width, img_height)
 		self.updateLayoutFlow(block, size)
 
 	def trackbar(self, block, x, y, width, value, params):
-		aMouse = self.getContext().mouse
+		mouse = self.getContext().mouse
 		aContentArea = Rect(x, y, width, 45)
-		aMouseIsOver = aContentArea.contains(aMouse.position)
+		mouseIsOver = aContentArea.contains(mouse.position)
 		aValue = value[0]
 
-		self._render.trackbar(block, OVER if aMouseIsOver else OUT, aContentArea, value[0], params)
+		self._render.trackbar(block, OVER if mouseIsOver else OUT, aContentArea, value[0], params)
 
-		if aMouse.anyButton.pressed and aMouseIsOver:
-			value[0] = self.trackbarXPixelToValue(params, aContentArea, aMouse.position.x)
+		if mouse.anyButton.pressed and mouseIsOver:
+			value[0] = self.trackbarXPixelToValue(params, aContentArea, mouse.position.x)
 
 			if self.bitsetHas(params.options, TRACKBAR_DISCRETE):
 				self.trackbarForceValuesAsMultiplesOfSmallStep(params, value)
@@ -1875,10 +1974,10 @@ class Render:
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29), CVUI_FILLED) # fill
 		self.rectangle(block.where, shape, (0x45, 0x45, 0x45))              # border
 
-		sizeInfo, aBaseline = cv2.getTextSize(text=value, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
-		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
+		(text_width,text_height), _ = cv2.getTextSize(text=value, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
+		text_size = Rect(0, 0, text_width, text_height)
 
-		aPos = Point(shape.x + shape.width / 2 - aTextSize.width / 2, shape.y + aTextSize.height / 2 + shape.height / 2)
+		aPos = Point(shape.x + shape.width / 2 - text_size.width / 2, shape.y + text_size.height / 2 + shape.height / 2)
 		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hexToScalar(color), thickness=thickness, lineType=lineType)
 
 	def button(self, block, state, shape, label):
@@ -1904,26 +2003,26 @@ class Render:
 
 	def putText(self, block, state, color, text, position):
 		afontScale = 0.39 if state == DOWN else 0.4
-		aTextSize = Rect()
+		text_size = Rect()
 
 		if text != '':
 			aPosition = (int(position.x), int(position.y))
 			cv2.putText(block.where, text, aPosition, cv2.FONT_HERSHEY_SIMPLEX, afontScale, color, 1, CVUI_ANTIALISED)
 
-			sizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
-			aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
+			(text_width,text_height), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
+			text_size = Rect(0, 0, text_width, text_height)
 
-		return aTextSize.width
+		return text_size.width
 
 	def putTextCentered(self, block, position, text):
 		afontScale = 0.3
 
-		sizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
-		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
-		aPositionDecentered = Point(position.x - aTextSize.width / 2, position.y)
+		(text_width,text_height), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
+		text_size = Rect(0, 0, text_width, text_height)
+		aPositionDecentered = Point(position.x - text_size.width / 2, position.y)
 		cv2.putText(block.where, text, (int(aPositionDecentered.x), int(aPositionDecentered.y)), cv2.FONT_HERSHEY_SIMPLEX, afontScale, (0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED)
 
-		return aTextSize.width
+		return text_size.width
 
 	def buttonLabel(self, block, state, rect, label, textSize):
 		aPos = Point(rect.x + rect.width / 2 - textSize.width / 2, rect.y + rect.height / 2 + textSize.height / 2)

@@ -76,7 +76,7 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-11&#64;00.01.49'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-11&#64;01.25.23'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <cite>cv2.waitKey()</cite> within <cite>cvui.update()</cite>, so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
@@ -114,7 +114,7 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># You can also specify the size of the text and its color</span>
 <span class="gp">... </span>    <span class="c1"># using hex 0xRRGGBB CSS-like style.</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Use hex 0xRRGGBB colors easily&quot;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Use hex 0xRRGGBB colors easily&quot;</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># Sometimes you want to show text that is not that simple, e.g. strings + numbers.</span>
 <span class="gp">... </span>    <span class="c1"># You can use cvui.printf for that. It accepts a variable number of parameter, pretty</span>
@@ -451,7 +451,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">now_str</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Text&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Check Box&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">checked</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span>
@@ -467,6 +467,60 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.cvui.radiobox">
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">radiobox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">['']</span></em>, <em class="sig-param"><span class="n">states</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#radiobox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.radiobox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a radiobox. You can use the <code class="docutils literal notranslate"><span class="pre">states</span></code> parameter to check which radio button is checked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>where</strong> (<em>np.ndarray</em>) – image/frame where the component should be rendered.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>labels</strong> (<em>[</em><em>str</em><em>]</em>) – Text displayed besides the each clickable radiobox square.</p></li>
+<li><p><strong>states</strong> (<em>[</em><em>bool</em><em>]</em>) – Array or List of booleans whose first position, i.e. <code class="docutils literal notranslate"><span class="pre">state[0]</span></code>, will be used to store the current state of the checkbox: <code class="docutils literal notranslate"><span class="pre">True</span></code> means the checkbox is checked.</p></li>
+<li><p><strong>color</strong> (<em>uint</em>) – Color of the label in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Which radio button is checked ( <code class="docutils literal notranslate"><span class="pre">True</span></code> ).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>value (int)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span><span class="p">,</span> <span class="n">cv2RED</span><span class="p">,</span> <span class="n">cv2BLUE</span><span class="p">,</span> <span class="n">cv2GREEN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">now_str</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Radio Box&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">radio_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">radio_states</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bg_colors</span>    <span class="o">=</span> <span class="p">[</span><span class="n">cv2RED</span><span class="p">,</span> <span class="n">cv2BLUE</span><span class="p">,</span> <span class="n">cv2GREEN</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">beginRow</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span> <span class="n">bgColor</span><span class="o">=</span><span class="n">bg_colors</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">idx</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">radiobox</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">radio_labels</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">radio_states</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Current bgColor: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">radio_labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">endRow</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>…     cvui.update()
+…     cv2.imshow(WINDOW_NAME, frame)
+…     if cv2.waitKey(20) == cvui.ESCAPE:
+…             break
+… cv2.destroyAllWindows()</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1827,6 +1881,11 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.checkbox">
 <code class="sig-name descname">checkbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.checkbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.checkbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.radiobox">
+<code class="sig-name descname">radiobox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">labels</span></em>, <em class="sig-param"><span class="n">states</span></em>, <em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.radiobox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.radiobox" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
