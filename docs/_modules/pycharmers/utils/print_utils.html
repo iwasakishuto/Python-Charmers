@@ -50,18 +50,24 @@
             
   <h1>Source code for pycharmers.utils.print_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">wcwidth</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">_toCOLOR_create</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
 
-<span class="n">f_aligns</span>           <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">]</span>
+<span class="n">f_aligns</span>           <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">]</span>
 <span class="n">f_signs</span>            <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
 <span class="n">f_grouping_options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
 <span class="n">f_types</span>            <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">]</span>
+<span class="n">invisible_codes</span>       <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\x1b\[\d+[;\d]*m|\x1b\[\d*\;\d*\;\d*m&quot;</span><span class="p">)</span>  <span class="c1"># ANSI color codes</span>
+<span class="n">invisible_codes_bytes</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x1b\\</span><span class="s2">[</span><span class="se">\\</span><span class="s2">d+</span><span class="se">\\</span><span class="s2">[;</span><span class="se">\\</span><span class="s2">d]*m|</span><span class="se">\x1b\\</span><span class="s2">[</span><span class="se">\\</span><span class="s2">d*;</span><span class="se">\\</span><span class="s2">d*;</span><span class="se">\\</span><span class="s2">d*m&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="format_spec_create"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.format_spec_create">[docs]</a><span class="k">def</span> <span class="nf">format_spec_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a function which returns a formatted text.</span>
 
-<span class="sd">    `format_spec = [[fill]align][sign][#][0][width][grouping_option][.precision][type]`</span>
+<span class="sd">    ``format_spec = [[fill]align][sign][#][0][width][grouping_option][.precision][type]``</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        width</span>
@@ -98,16 +104,49 @@
         <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_types</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">zero</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="k">if</span> <span class="n">zero_padding</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
     <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">fill</span> <span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fill</span><span class="si">:{</span><span class="n">align</span><span class="si">}{</span><span class="n">sign</span><span class="si">}{</span><span class="n">zero</span><span class="si">}{</span><span class="n">width</span><span class="si">}{</span><span class="n">grouping_option</span><span class="si">}{</span><span class="n">fmt</span><span class="si">}}</span><span class="s2">&quot;</span></div>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">fill</span> <span class="p">:</span> <span class="n">align_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fill</span><span class="si">:{</span><span class="n">sign</span><span class="si">}{</span><span class="n">zero</span><span class="si">}{</span><span class="n">grouping_option</span><span class="si">}{</span><span class="n">fmt</span><span class="si">}}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="align_text"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.align_text">[docs]</a><span class="k">def</span> <span class="nf">align_text</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Align text</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        string (str) : Strig.</span>
+<span class="sd">        align (str)  : How to align the string.</span>
+<span class="sd">        width (int)  : Width.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        string (str) : Aligned text.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import align_text, toBLUE</span>
+<span class="sd">        &gt;&gt;&gt; print(align_text(&quot;Hello world!&quot;, align=&quot;&gt;&quot;, width=15))</span>
+<span class="sd">           Hello world!</span>
+<span class="sd">        &gt;&gt;&gt; print(align_text(toBLUE(&quot;Hello world!&quot;), align=&quot;&gt;&quot;, width=15))</span>
+<span class="sd">           \x1b[34mHello world!\x1b[0m</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">f_aligns</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">)</span>
+    <span class="n">s_width</span> <span class="o">=</span> <span class="n">visible_width</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="n">width</span> <span class="o">-</span> <span class="n">s_width</span>
+    <span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;&quot;</span>     <span class="p">:</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>           <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">pad</span><span class="p">),</span>
+        <span class="s2">&quot;&gt;&quot;</span>     <span class="p">:</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">pad</span><span class="p">,</span>      <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;^&quot;</span>     <span class="p">:</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">-</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">)),</span>    
+        <span class="s2">&quot;=&quot;</span>     <span class="p">:</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">-</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">)),</span>    
+        <span class="s2">&quot;left&quot;</span>  <span class="p">:</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>           <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">pad</span><span class="p">),</span>
+        <span class="s2">&quot;right&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span>           <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">pad</span><span class="p">),</span>
+        <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="o">-</span><span class="n">pad</span><span class="o">//</span><span class="mi">2</span><span class="p">)),</span>   
+    <span class="p">}[</span><span class="n">align</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">string</span> <span class="o">+</span> <span class="n">suffix</span></div>
 
 <div class="viewcode-block" id="print_func_create"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.print_func_create">[docs]</a><span class="k">def</span> <span class="nf">print_func_create</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
-                      <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                      <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">is_bg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                       <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
                       <span class="n">left_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a function which prints a formatted text. Please see also the function `format_spec_create`.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
-<span class="sd">        color (str)                : color</span>
+<span class="sd">        color (str)                : color.</span>
+<span class="sd">        is_bg (bool)               : Whether to add color to the background or not.</span>
 <span class="sd">        left(right)_side_bar (str) : Characters to output to the Left/Right side.</span>
 <span class="sd">        left(right)_margin (int)   : Left/Right side margin</span>
 <span class="sd">        end (str)                  : string appended after the last value, default a newline.</span>
@@ -135,13 +174,16 @@
     <span class="n">toCOLOR</span> <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">print_func</span><span class="p">(</span><span class="n">fill</span><span class="p">):</span>
         <span class="n">info</span>  <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">left_side_bar</span><span class="si">}{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">left_margin</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">info</span> <span class="o">+=</span> <span class="n">toCOLOR</span><span class="p">(</span><span class="n">format_spec</span><span class="p">(</span><span class="n">fill</span><span class="p">))</span>
+        <span class="n">info</span> <span class="o">+=</span> <span class="n">toCOLOR</span><span class="p">(</span><span class="n">format_spec</span><span class="p">(</span><span class="n">fill</span><span class="p">),</span> <span class="n">is_bg</span><span class="o">=</span><span class="n">is_bg</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">right_margin</span><span class="si">}{</span><span class="n">right_side_bar</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">print_func</span></div>
 
 <div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Create a beautiful table and show.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        enable_colspan (bool) : Whether to enable ``colspan`` or not.</span>
 
 <span class="sd">    Properties:</span>
 <span class="sd">        ncols(int) : the number of columns.</span>
@@ -151,64 +193,95 @@
 <span class="sd">        show     : Show a table.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import Table</span>
-<span class="sd">        &gt;&gt;&gt; table = Table()</span>
-<span class="sd">        &gt;&gt;&gt; table.set_cols(range(3), colname=&quot;id&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; table.set_cols(list(&quot;abc&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import Table, toBLUE</span>
+<span class="sd">        &gt;&gt;&gt; table = Table(enable_colspan=True)</span>
+<span class="sd">        &gt;&gt;&gt; table.set_cols([1,2,&quot;&quot;], colname=&quot;id&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; table.set_cols([toBLUE(&quot;abc&quot;), &quot;&quot;, &quot;de&quot;], color=&quot;GREEN&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; table.show()</span>
-<span class="sd">        |id|col.2|</span>
-<span class="sd">        ==========</span>
-<span class="sd">        | 0|    a|</span>
-<span class="sd">        | 1|    b|</span>
-<span class="sd">        | 2|    c|</span>
+<span class="sd">        +----+-------+</span>
+<span class="sd">        | id | col.2 |</span>
+<span class="sd">        +====+=======+</span>
+<span class="sd">        |  1 |   \x1b[34mabc\x1b[0m |</span>
+<span class="sd">        +----+       +</span>
+<span class="sd">        |  2 |       |</span>
+<span class="sd">        +    +-------+</span>
+<span class="sd">        |    |    \x1b[32mde\x1b[0m |</span>
+<span class="sd">        +----+-------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable_colspan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_colspan</span> <span class="o">=</span> <span class="n">enable_colspan</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ncols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_disp_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_print_thead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print headers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vedge (str) : The symbol of the vertical edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;print_values&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">print_func</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;print_title&quot;</span><span class="p">)</span>
-            <span class="n">print_func</span><span class="p">(</span><span class="n">colname</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">options</span><span class="p">[</span><span class="s2">&quot;print_title&quot;</span><span class="p">](</span><span class="n">colname</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_disp_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
-        <span class="n">table_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="k">if</span> <span class="n">table_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">table_width</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">mark</span><span class="o">*</span><span class="n">table_width</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_print_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print border.</span>
 
-    <span class="k">def</span> <span class="nf">_disp_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span>
+<span class="sd">        Args:</span>
+<span class="sd">            vertex (str) : The symbol of vertex.</span>
+<span class="sd">            hedge (str)  : The symbol of the horizontal edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_next_has_vals</span> <span class="o">=</span> <span class="n">is_next_has_vals</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span>
+        <span class="n">border</span> <span class="o">=</span> <span class="n">vertex</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">colname</span><span class="p">,</span> <span class="n">options</span><span class="p">),</span><span class="n">is_next_has_val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span><span class="n">is_next_has_vals</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_colspan</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_next_has_val</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">+=</span> <span class="n">hedge</span><span class="o">*</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;colwidth&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vertex</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">border</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;colwidth&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vertex</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">border</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_print_tbody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print Values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            head (int)  : How many lines to display.</span>
+<span class="sd">            vedge (str) : The symbol of the vertical edge.</span>
+<span class="sd">            hedge (str) : The symbol of the horizontal edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">head</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span>
+        <span class="n">loop_not_last</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> <span class="n">loop_not_last</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">is_next_has_vals</span><span class="o">=</span><span class="p">[]</span>
             <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="s2">&quot;print_values&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">print_func</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;print_values&quot;</span><span class="p">)</span>
-                <span class="n">val</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;values&quot;</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">print_func</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;print_values&quot;</span><span class="p">](</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">loop_not_last</span><span class="p">:</span> <span class="n">is_next_has_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">loop_not_last</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="n">hedge</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="n">is_next_has_vals</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show a table</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
 <span class="sd">            table_width (int) : The table width.</span>
-<span class="sd">            mark (str)        : border mark. (default &quot;=&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_title</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_border</span><span class="p">(</span><span class="n">table_width</span><span class="o">=</span><span class="n">table_width</span><span class="p">,</span> <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disp_values</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_thead</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_tbody</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.set_cols"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.set_cols">[docs]</a>    <span class="k">def</span> <span class="nf">set_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-                 <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-                 <span class="n">left_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.set_cols"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.set_cols">[docs]</a>    <span class="k">def</span> <span class="nf">set_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">left_margin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set values to a table.</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -217,26 +290,24 @@
 <span class="sd">            **kwargs       : See also ``print_func_create``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">colname</span> <span class="o">=</span> <span class="n">colname</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;col.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">title_width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">colname</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span>
-                <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span>
-                <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span>
-            <span class="p">)</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">format_spec</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">title_width</span><span class="p">)</span>
+        <span class="n">title_width</span> <span class="o">=</span> <span class="n">visible_width</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">colname</span><span class="p">))</span>
+        <span class="n">format_spec</span> <span class="o">=</span> <span class="n">format_spec_create</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span>
+            <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span>
+        <span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">([</span><span class="n">visible_width</span><span class="p">(</span><span class="n">format_spec</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]),</span> <span class="n">title_width</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="o">+=</span> <span class="n">width</span> <span class="o">+</span> <span class="n">left_margin</span> <span class="o">+</span> <span class="n">right_margin</span> <span class="o">+</span> <span class="mi">1</span>
 
+        <span class="n">print_title</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span>
+            <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> 
+            <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">left_margin</span><span class="o">=</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="n">right_margin</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">print_values</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span>
             <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="n">zero_padding</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
             <span class="n">grouping_option</span><span class="o">=</span><span class="n">grouping_option</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">left_margin</span><span class="o">=</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="n">right_margin</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">print_title</span> <span class="o">=</span> <span class="n">print_func_create</span><span class="p">(</span>
-            <span class="n">align</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> 
-            <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;ACCENT&quot;</span><span class="p">,</span>
-            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">left_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">right_side_bar</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">left_margin</span><span class="o">=</span><span class="n">left_margin</span><span class="p">,</span> <span class="n">right_margin</span><span class="o">=</span><span class="n">right_margin</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
@@ -244,11 +315,42 @@
                 <span class="s2">&quot;print_values&quot;</span> <span class="p">:</span> <span class="n">print_values</span><span class="p">,</span>
                 <span class="s2">&quot;print_title&quot;</span>  <span class="p">:</span> <span class="n">print_title</span><span class="p">,</span>
                 <span class="s2">&quot;values&quot;</span>       <span class="p">:</span> <span class="n">values</span><span class="p">,</span>
+                <span class="s2">&quot;colwidth&quot;</span>     <span class="p">:</span> <span class="n">width</span><span class="o">+</span><span class="n">left_margin</span><span class="o">+</span><span class="n">right_margin</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">})</span>
         <span class="n">nrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">==-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">nrows</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">nrows</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nrows</span></div></div>
+
+<div class="viewcode-block" id="tabulate"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.tabulate">[docs]</a><span class="k">def</span> <span class="nf">tabulate</span><span class="p">(</span><span class="n">tabular_data</span><span class="o">=</span><span class="p">[[]],</span> <span class="n">headers</span><span class="o">=</span><span class="p">[],</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Format a fixed width table for pretty printing.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        tabular_data (list) : tbody contents. Must be a dual list.</span>
+<span class="sd">        headers (list)      : thead contents.</span>
+<span class="sd">        tablefmt (str)      : Table format for :py:class:`Table &lt;pycharmers.utils.print_utils.Table&gt;`</span>
+<span class="sd">        align (str)         : How to align values.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import tabulate</span>
+<span class="sd">        &gt;&gt;&gt; tabulate([[i*j for i in range(1,4)] for j in range(1,4)])</span>
+<span class="sd">        +-------+-------+-------+</span>
+<span class="sd">        | col.1 | col.2 | col.3 |</span>
+<span class="sd">        +=======+=======+=======+</span>
+<span class="sd">        |     1 |     2 |     3 |</span>
+<span class="sd">        +-------+-------+-------+</span>
+<span class="sd">        |     2 |     4 |     6 |</span>
+<span class="sd">        +-------+-------+-------+</span>
+<span class="sd">        |     3 |     6 |     9 |</span>
+<span class="sd">        +-------+-------+-------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ncols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tabular_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">nheaders</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">ncols</span><span class="o">-</span><span class="n">nheaders</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col_value</span><span class="p">,</span> <span class="n">header</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tabular_data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">col_value</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="print_dict_tree"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.print_dict_tree">[docs]</a><span class="k">def</span> <span class="nf">print_dict_tree</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;Print Dictionary as a Tree.</span>
@@ -285,6 +387,71 @@
                 <span class="n">print_dict_tree</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">marks</span><span class="o">=</span><span class="n">marks</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">indent</span><span class="o">*</span><span class="n">rank</span><span class="si">}{</span><span class="n">marks</span><span class="p">[</span><span class="n">rank</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">marks</span><span class="p">)]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="pretty_3quote"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.pretty_3quote">[docs]</a><span class="k">def</span> <span class="nf">pretty_3quote</span><span class="p">(</span><span class="o">*</span><span class="n">value</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;pretty 3 quote string.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        indent (int)  : If indent is a non-negative integer, then multiple lines will be pretty-printed with that indent level.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pretty_3quote</span>
+<span class="sd">        &gt;&gt;&gt; print(*pretty_3quote(\&quot;\&quot;\&quot;</span>
+<span class="sd">            When I was 17, I read a quote that went something like: </span>
+<span class="sd">            “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">            It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">        \&quot;\&quot;\&quot;))</span>
+<span class="sd">        When I was 17, I read a quote that went something like: </span>
+<span class="sd">        “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">        It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\n\s+&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="o">+</span><span class="sa">r</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">indent</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="strip_invisible"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.strip_invisible">[docs]</a><span class="k">def</span> <span class="nf">strip_invisible</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove invisible ANSI color codes.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        s (str) : String.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        s (str) : String with invisible code removed.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import strip_invisible, toBLUE</span>
+<span class="sd">        &gt;&gt;&gt; strip_invisible(&quot;\x1b[31mhello\x1b[0m&quot;)</span>
+<span class="sd">        &#39;hello&#39;</span>
+<span class="sd">        &gt;&gt;&gt; strip_invisible(toBLUE(&quot;hello&quot;))</span>
+<span class="sd">        &#39;hello&#39;</span>
+<span class="sd">        &gt;&gt;&gt; strip_invisible(&quot;hello&quot;)</span>
+<span class="sd">        &#39;hello&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">invisible_codes</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">invisible_codes_bytes</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="visible_width"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.visible_width">[docs]</a><span class="k">def</span> <span class="nf">visible_width</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Visible width of a printed string. ANSI color codes are removed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        s (str) : String.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        width (int) : Visible width</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import visible_width, toBLUE</span>
+<span class="sd">        &gt;&gt;&gt; visible_width(toBLUE(&quot;hello&quot;))</span>
+<span class="sd">        5</span>
+<span class="sd">        &gt;&gt;&gt; visible_width(&quot;こんにちは&quot;)</span>
+<span class="sd">        10</span>
+<span class="sd">        &gt;&gt;&gt; visible_width(&quot;hello 世界。&quot;)</span>
+<span class="sd">        12</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="n">strip_invisible</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span></div>
 </pre></div>
 
             <div class="clearer"></div>

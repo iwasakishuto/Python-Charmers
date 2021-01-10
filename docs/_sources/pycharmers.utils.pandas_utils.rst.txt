@@ -1,0 +1,7 @@
+pycharmers.utils.pandas\_utils module
+=====================================
+
+.. automodule:: pycharmers.utils.pandas_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -11,17 +11,27 @@ A collection of useful python programs.
 
 ## Installation
 
-There are two ways to install **Python-Charmers**:
-
-- **Install from PyPI (recommended):**
+1. Install **`Python-Charmers`** (There are two ways to install):
+    - **Install from PyPI (recommended):**
+        ```sh
+        $ sudo pip install Python-Charmers
+        ```
+    - **Alternatively: install PyGuitar from the GitHub source:**
+        ```sh
+        $ git clone https://github.com/iwasakishuto/Python-Charmers.git
+        $ cd Python-Charmers
+        $ sudo python setup.py install
+        ```
+2. Install **driver** for `selenium`:
+**`Selenium`** requires a driver to interface with the chosen browser, so please visit the [documentation](https://selenium-python.readthedocs.io/installation.html#drivers) to install it.
     ```sh
-    $ sudo pip install Python-Charmers
-    ```
-- **Alternatively: install PyGuitar from the GitHub source:**
-    ```sh
-    $ git clone https://github.com/iwasakishuto/Python-Charmers.git
-    $ cd Python-Charmers
-    $ sudo python setup.py install
+    # Example: Chrome
+    # visit "chrome://settings/help" to check your chrome version.
+    # visit "https://chromedriver.chromium.org/downloads" to check <Suitable.Driver.Version> for your chrome.
+    $ wget https://chromedriver.storage.googleapis.com/<Suitable.Driver.Version>/chromedriver_mac64.zip
+    $ unzip chromedriver_mac64.zip
+    $ mv chromedriver /usr/local/bin/chromedriver
+    $ chmod +x /usr/local/bin/chromedriver
     ```
 
 ## CLI
@@ -30,7 +40,11 @@ There are two ways to install **Python-Charmers**:
 
 |Command|Description|
 |:-:|:-|
-|`pycharmers-show`|Show all Python-Charmers's command line programs.|
+| `pycharmers-show`    | Show all Python-Charmers's command line programs. |
+| `regexp-replacement` | String replacement in a file using regular expression. |
+| `render-template`    | Render templates. |
+| `cv-window`          | Handle OpenCV Windows. |
+| `pdfmine`            | Mine a PDF file. |
 
 ## Quick example
 

@@ -54,12 +54,15 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
 <span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="ne">KeyError</span>
+
+<span class="n">NoneType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="handleKeyError"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.handleKeyError">[docs]</a><span class="k">def</span> <span class="nf">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check whether all ``kwargs.values()`` in the ``lst``.</span>
@@ -101,12 +104,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;class &#39;(.*?)&#39;&gt;&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">class_</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="handleTypeError"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.handleTypeError">[docs]</a><span class="k">def</span> <span class="nf">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="handleTypeError"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.handleTypeError">[docs]</a><span class="k">def</span> <span class="nf">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check whether all types of ``kwargs.values()`` match any of ``types``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        lst (list) : candidate types.</span>
-<span class="sd">        kwargs     : ``key`` is the varname that is easy to understand when an error occurs</span>
+<span class="sd">        types (list) : Candidate types.</span>
+<span class="sd">        kwargs       : ``key`` is the varname that is easy to understand when an error occurs</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import handleTypeError</span>
@@ -121,9 +124,9 @@
 <span class="sd">    Raise:</span>
 <span class="sd">        TypeError: If the types of ``kwargs.values()`` are none of the ``types``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">types</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">NoneType</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">types</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="nb">tuple</span><span class="p">(</span><span class="n">types</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
             <span class="n">str_true_types</span>  <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">class2str</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">])</span>
             <span class="n">srt_false_type</span> <span class="o">=</span> <span class="n">class2str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
@@ -503,6 +506,186 @@
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">webbrowser</span><span class="o">.</span><span class="n">open_new_tab</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="remove_invalid_fn"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.remove_invalid_fn">[docs]</a><span class="k">def</span> <span class="nf">remove_invalid_fn</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove invalid file name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fn (str) : filename</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import remove_invalid_fn</span>
+<span class="sd">        &gt;&gt;&gt; remove_invalid_fn(fn=&quot;Is plasticity of synapses the mechanism of long-term memory storage?&quot;)</span>
+<span class="sd">        &#39;Is plasticity of synapses the mechanism of long-term memory storage&#39;</span>
+<span class="sd">        &gt;&gt;&gt; remove_invalid_fn(fn=&quot;siDirect 2.0: updated software for designing functional siRNA with reduced seed-dependent off-target effect&quot;)</span>
+<span class="sd">        &#39;siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">\/\?\*\|&lt;&gt;&quot;:;]+&#39;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="try_wrapper"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.try_wrapper">[docs]</a><span class="k">def</span> <span class="nf">try_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ret_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">msg_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">verbose_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrap ``func(*args, **kwargs)`` with ``try-`` and ``except`` blocks.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        func (functions) : functions.</span>
+<span class="sd">        args (tuple)     : ``*args`` for ``func``.</span>
+<span class="sd">        kwargs (kwargs)  : ``*kwargs`` for ``func``.</span>
+<span class="sd">        ret_ (any)       : default ret val.</span>
+<span class="sd">        msg_ (str)       : message to print.</span>
+<span class="sd">        verbose_ (bool)  : Whether to print message or not. (default= ``True``) </span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import try_wrapper</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 2, msg_=&quot;divide&quot;)</span>
+<span class="sd">        Succeeded to divide</span>
+<span class="sd">        &gt;&gt;&gt; ret</span>
+<span class="sd">        0.5</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 0, msg_=&quot;divide&quot;)</span>
+<span class="sd">        [division by zero] Failed to divide</span>
+<span class="sd">        &gt;&gt;&gt; ret is None</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; ret = try_wrapper(lambda x,y: x/y, 1, 0, ret_=1, msg_=&quot;divide&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; ret is None</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; ret</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ret_</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;Succeeded to &quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">toRED</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">] Failed to &quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">msg_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret_</span></div>
+
+<div class="viewcode-block" id="list2name"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.list2name">[docs]</a><span class="k">def</span> <span class="nf">list2name</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;snake&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Naming convention.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list) : List.</span>
+<span class="sd">        how (str)  : How to convert list elements to string name.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import list2name</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;camel&quot;)</span>
+<span class="sd">        &#39;iwasakiShuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;pascal&quot;)</span>
+<span class="sd">        &#39;IwasakiShuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;snake&quot;)</span>
+<span class="sd">        &#39;iwasaki_shuto&#39;</span>
+<span class="sd">        &gt;&gt;&gt; list2name(lst=[&quot;iwasaki&quot;, &quot;shuto&quot;], how=&quot;kebab&quot;)</span>
+<span class="sd">        &#39;iwasaki-shuto&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">how</span> <span class="o">=</span> <span class="n">how</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lower camel&quot;</span><span class="p">,</span> <span class="s2">&quot;camel&quot;</span><span class="p">,</span> <span class="s2">&quot;upper camel&quot;</span><span class="p">,</span> <span class="s2">&quot;pascal&quot;</span><span class="p">,</span> <span class="s2">&quot;snake&quot;</span><span class="p">,</span> <span class="s2">&quot;kebab&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="n">how</span><span class="p">)</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">how</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;lower camel&quot;</span><span class="p">,</span> <span class="s2">&quot;camel&quot;</span><span class="p">]:</span>
+        <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="o">!=</span><span class="mi">0</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst</span><span class="p">)]</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;upper camel&quot;</span><span class="p">,</span> <span class="s2">&quot;pascal&quot;</span><span class="p">]:</span>
+        <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span><span class="o">==</span><span class="s2">&quot;snake&quot;</span><span class="p">:</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span>
+    <span class="k">elif</span> <span class="n">how</span><span class="o">==</span><span class="s2">&quot;kebab&quot;</span><span class="p">:</span>
+        <span class="n">joint</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
+    <span class="k">return</span> <span class="n">joint</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="infer_types"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.infer_types">[docs]</a><span class="k">def</span> <span class="nf">infer_types</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Infer data types by evaluate the given source.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        val (str)      : data</span>
+<span class="sd">        default (type) : Default type.</span>
+<span class="sd">        </span>
+<span class="sd">    Return:</span>
+<span class="sd">        type (type) : data type.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import infer_types</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(1)</span>
+<span class="sd">        int</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(1.1)</span>
+<span class="sd">        float</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(&quot;1e3&quot;)</span>
+<span class="sd">        float</span>
+<span class="sd">        &gt;&gt;&gt; infer_types(&quot;Hello&quot;)</span>
+<span class="sd">        str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">default</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="html2reStructuredText"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.html2reStructuredText">[docs]</a><span class="k">def</span> <span class="nf">html2reStructuredText</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert html string to reStructuredText</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        html (str)     : html string.</span>
+<span class="sd">        base_url (str) : base URL.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        reStructuredText (str) : reStructuredText.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import html2reStructuredText</span>
+<span class="sd">        &gt;&gt;&gt; html2reStructuredText(&quot;&lt;code&gt;CODE&lt;/code&gt;&quot;)</span>
+<span class="sd">        &#39; ``CODE`` &#39;      </span>
+<span class="sd">        &gt;&gt;&gt; html2reStructuredText(</span>
+<span class="sd">        ...     html=&#39;&lt;a class=&quot;reference internal&quot; href=&quot;pycharmers.html&quot;&gt;pycharmers package&lt;/a&gt;&#39;,</span>
+<span class="sd">        ...     base_url=&quot;https://iwasakishuto.github.io/Python-Charmers/&quot;</span>
+<span class="sd">        &gt;&gt;&gt; )</span>
+<span class="sd">        &#39;`pycharmers package &lt;https://iwasakishuto.github.io/Python-Charmers/pycharmers.html&gt;`_&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;code&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot; ``&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;/code&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;`` &quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">repl</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;How to replacement Match object.</span>
+<span class="sd">        Args: </span>
+<span class="sd">            m (Match object) : The result of re.match() and re.search()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">href</span><span class="p">,</span><span class="n">inner_text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="c1"># TODO: Conbine code block and link.</span>
+        <span class="k">if</span> <span class="n">inner_text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;``&quot;</span><span class="p">:</span> <span class="k">return</span> <span class="n">inner_text</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">href</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">inner_text</span><span class="si">}</span><span class="s1"> &lt;</span><span class="si">{</span><span class="n">href</span><span class="si">}</span><span class="s1">&gt;`_&#39;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;&lt;a.*?href=&quot;(.*?)&quot;&gt;(.*?)&lt;/a&gt;&#39;</span><span class="p">,</span>  <span class="n">repl</span><span class="o">=</span><span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">html</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="int2ordinal"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.int2ordinal">[docs]</a><span class="k">def</span> <span class="nf">int2ordinal</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a natural number to a ordinal number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num (int): natural number</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: ordinal number, like 0th, 1st, 2nd,...</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import int2ordinal</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(0)</span>
+<span class="sd">        &#39;0th&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(1)</span>
+<span class="sd">        &#39;1st&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(2)</span>
+<span class="sd">        &#39;2nd&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(3)</span>
+<span class="sd">        &#39;3rd&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(4)</span>
+<span class="sd">        &#39;4th&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(11)</span>
+<span class="sd">        &#39;11th&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(21)</span>
+<span class="sd">        &#39;21st&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(111)</span>
+<span class="sd">        &#39;111th&#39;</span>
+<span class="sd">        &gt;&gt;&gt; int2ordinal(121)</span>
+<span class="sd">        &#39;121st&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">mod</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># if num == XXX1X, use &quot;th&quot;</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;th&quot;</span> <span class="k">if</span> <span class="n">q</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span><span class="s2">&quot;th&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
 </pre></div>
 
             <div class="clearer"></div>

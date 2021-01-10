@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.utils.colorings &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.colorings</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.utils.colorings</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;toACCENT&quot;</span><span class="p">,</span> <span class="s2">&quot;toBLACK&quot;</span><span class="p">,</span> <span class="s2">&quot;toRED&quot;</span><span class="p">,</span> <span class="s2">&quot;toGREEN&quot;</span><span class="p">,</span> <span class="s2">&quot;toYELLOW&quot;</span><span class="p">,</span> <span class="s2">&quot;toBLUE&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;toMAGENTA&quot;</span><span class="p">,</span> <span class="s2">&quot;toCYAN&quot;</span><span class="p">,</span> <span class="s2">&quot;toWHITE&quot;</span><span class="p">,</span> <span class="s2">&quot;toDEFAULT&quot;</span><span class="p">,</span> <span class="s2">&quot;toGRAY&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;toBRIGHT_RED&quot;</span><span class="p">,</span> <span class="s2">&quot;toBRIGHT_GREEN&quot;</span><span class="p">,</span> <span class="s2">&quot;toBRIGHT_YELLOW&quot;</span><span class="p">,</span> <span class="s2">&quot;toBRIGHT_BLUE&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;toBRIGHT_MAGENTA&quot;</span><span class="p">,</span> <span class="s2">&quot;toBRIGHT_CYAN&quot;</span><span class="p">,</span> <span class="s2">&quot;toBRIGHT_WHITE&quot;</span>
+<span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">_enable_vts</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Enable Virtual Terminal Sequences (ANSI escape sequences) in Windows10.&quot;&quot;&quot;</span>
+    <span class="n">INVALID_HANDLE_VALUE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">STD_INPUT_HANDLE</span>     <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+    <span class="n">STD_OUTPUT_HANDLE</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">11</span>
+    <span class="n">STD_ERROR_HANDLE</span>     <span class="o">=</span> <span class="o">-</span><span class="mi">12</span>
+    <span class="n">ENABLE_VIRTUAL_TERMINAL_PROCESSING</span> <span class="o">=</span> <span class="mh">0x0004</span>
+    <span class="n">ENABLE_LVB_GRID_WORLDWIDE</span> <span class="o">=</span> <span class="mh">0x0010</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">windll</span><span class="p">,</span> <span class="n">wintypes</span><span class="p">,</span> <span class="n">byref</span>
+        <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+        <span class="n">hOut</span> <span class="o">=</span> <span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">GetStdHandle</span><span class="p">(</span><span class="n">STD_OUTPUT_HANDLE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hOut</span> <span class="o">==</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">dwMode</span> <span class="o">=</span> <span class="n">wintypes</span><span class="o">.</span><span class="n">DWORD</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">GetConsoleMode</span><span class="p">(</span><span class="n">hOut</span><span class="p">,</span> <span class="n">byref</span><span class="p">(</span><span class="n">dwMode</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">dwMode</span><span class="o">.</span><span class="n">value</span> <span class="o">|=</span> <span class="n">ENABLE_VIRTUAL_TERMINAL_PROCESSING</span> <span class="c1"># ENABLE_LVB_GRID_WORLDWIDE</span>
+        <span class="k">if</span> <span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">SetConsoleMode</span><span class="p">(</span><span class="n">hOut</span><span class="p">,</span> <span class="n">dwMode</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">__WINDOWS_VTS_SETUP__</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+        <span class="n">__WINDOWS_VTS_SETUP__</span> <span class="o">=</span> <span class="n">_enable_vts</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">__WINDOWS_VTS_SETUP__</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">def</span> <span class="nf">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">__WINDOWS_VTS_SETUP__</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">charcode</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ACCENT&quot;</span>        <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[01m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[01m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BLACK&quot;</span>         <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[30m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[40m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;RED&quot;</span>           <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[31m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[41m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;GREEN&quot;</span>         <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[32m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[42m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;YELLOW&quot;</span>        <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[33m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[43m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BLUE&quot;</span>          <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[34m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[44m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;MAGENTA&quot;</span>       <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[35m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[45m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;CYAN&quot;</span>          <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[36m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[46m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;WHITE&quot;</span>         <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[37m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[47m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;DEFAULT&quot;</span>       <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[39m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[49m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;GRAY&quot;</span>          <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[90m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[100m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_RED&quot;</span>    <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[91m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[101m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_GREEN&quot;</span>  <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[92m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[102m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_YELLOW&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[93m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[103m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_BLUE&quot;</span>   <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[94m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[104m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_MAGENTA&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[95m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[105m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_CYAN&quot;</span>   <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[96m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[106m&#39;</span><span class="p">),</span>
+            <span class="s2">&quot;BRIGHT_WHITE&quot;</span>  <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[97m&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">[107m&#39;</span><span class="p">),</span>
+            <span class="c1"># &quot;END&quot;           : (&#39;\x1b[0m&#39;,  &#39;\x1b[0m&#39;),</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\x1b</span><span class="s2">[34m&quot;</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">is_bg</span><span class="o">=</span><span class="kc">False</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">charcode</span><span class="p">[</span><span class="n">is_bg</span><span class="p">]</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="se">\x1b</span><span class="s2">[0m&quot;</span>
+        <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Convert the output color to </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">        Args:</span>
+<span class="s2">            x (str)      : string</span>
+<span class="s2">            is_bg (bool) : Whether to change the background color or not.</span>
+<span class="s2">            </span>
+<span class="s2">        Examples:</span>
+<span class="s2">            &gt;&gt;&gt; from pycharmers.utils import to</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            &gt;&gt;&gt; print(to</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">(&quot;hoge&quot;), is_bg=False)</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;hoge&#39;</span><span class="p">,</span> <span class="n">is_bg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            &gt;&gt;&gt; print(to</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">(&quot;hoge&quot;), is_bg=True)</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">func</span><span class="p">(</span><span class="s1">&#39;hoge&#39;</span><span class="p">,</span> <span class="n">is_bg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &quot;&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Convert to string.&quot;</span>
+    <span class="k">return</span> <span class="n">func</span>
+
+<span class="n">toACCENT</span>         <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;ACCENT&quot;</span><span class="p">)</span>
+<span class="n">toBLACK</span>          <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BLACK&quot;</span><span class="p">)</span>
+<span class="n">toRED</span>            <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;RED&quot;</span><span class="p">)</span>
+<span class="n">toGREEN</span>          <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;GREEN&quot;</span><span class="p">)</span>
+<span class="n">toYELLOW</span>         <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;YELLOW&quot;</span><span class="p">)</span>
+<span class="n">toBLUE</span>           <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BLUE&quot;</span><span class="p">)</span>
+<span class="n">toMAGENTA</span>        <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;MAGENTA&quot;</span><span class="p">)</span>
+<span class="n">toCYAN</span>           <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+<span class="n">toWHITE</span>          <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;WHITE&quot;</span><span class="p">)</span>
+<span class="n">toDEFAULT</span>        <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;DEFAULT&quot;</span><span class="p">)</span>
+<span class="n">toGRAY</span>           <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;GRAY&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_RED</span>     <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_RED&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_GREEN</span>   <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_GREEN&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_YELLOW</span>  <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_YELLOW&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_BLUE</span>    <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_BLUE&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_MAGENTA</span> <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_MAGENTA&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_CYAN</span>    <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_CYAN&quot;</span><span class="p">)</span>
+<span class="n">toBRIGHT_WHITE</span>   <span class="o">=</span> <span class="n">_toCOLOR_create</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;BRIGHT_WHITE&quot;</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.colorings</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Shuto.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

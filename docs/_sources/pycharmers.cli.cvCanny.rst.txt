@@ -1,0 +1,7 @@
+pycharmers.cli.cvCanny module
+=============================
+
+.. automodule:: pycharmers.cli.cvCanny
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,7 +1,0 @@
-pycharmers.opencv.binary module
-===============================
-
-.. automodule:: pycharmers.opencv.binary
-   :members:
-   :undoc-members:
-   :show-inheritance:

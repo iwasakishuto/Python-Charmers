@@ -3,12 +3,15 @@ import os
 import re
 import json
 import math
+import urllib
 import datetime
 import webbrowser
 from pathlib import Path
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
+
+NoneType = type(None)
 
 def handleKeyError(lst, **kwargs):
     """Check whether all ``kwargs.values()`` in the ``lst``.
@@ -50,12 +53,12 @@ def class2str(class_):
     """
     return re.sub(r"<class '(.*?)'>", r"\1", str(class_))
 
-def handleTypeError(types, **kwargs):
+def handleTypeError(types=[], **kwargs):
     """Check whether all types of ``kwargs.values()`` match any of ``types``.
 
     Args:
-        lst (list) : candidate types.
-        kwargs     : ``key`` is the varname that is easy to understand when an error occurs
+        types (list) : Candidate types.
+        kwargs       : ``key`` is the varname that is easy to understand when an error occurs
 
     Examples:
         >>> from pycharmers.utils import handleTypeError
@@ -70,9 +73,9 @@ def handleTypeError(types, **kwargs):
     Raise:
         TypeError: If the types of ``kwargs.values()`` are none of the ``types``
     """
-    types = tuple(types)
+    types = tuple([NoneType if e is None else e for e in types])
     for k,v in kwargs.items():
-        if not isinstance(v,tuple(types)):
+        if not isinstance(v, types):
             str_true_types  = ', '.join([f"'{toGREEN(class2str(t))}'" for t in types])
             srt_false_type = class2str(type(v))
             if len(types)==1:
@@ -452,3 +455,183 @@ def open_new_tab(url):
     if os.path.exists(url):
         url = "file://" + os.path.abspath(url)
     return webbrowser.open_new_tab(url)
+
+def remove_invalid_fn(fn):
+    """Remove invalid file name.
+
+    Args:
+        fn (str) : filename
+
+    Example:
+        >>> from pycharmers.utils import remove_invalid_fn
+        >>> remove_invalid_fn(fn="Is plasticity of synapses the mechanism of long-term memory storage?")
+        'Is plasticity of synapses the mechanism of long-term memory storage'
+        >>> remove_invalid_fn(fn="siDirect 2.0: updated software for designing functional siRNA with reduced seed-dependent off-target effect")
+        'siDirect 2.0 updated software for designing functional siRNA with reduced seed-dependent off-target effect'
+    """
+    return re.sub(pattern=r'[\\\/\?\*\|<>":;]+', repl='', string=fn)
+
+def try_wrapper(func, *args, ret_=None, msg_="", verbose_=True, **kwargs):
+    """Wrap ``func(*args, **kwargs)`` with ``try-`` and ``except`` blocks.
+
+    Args:
+        func (functions) : functions.
+        args (tuple)     : ``*args`` for ``func``.
+        kwargs (kwargs)  : ``*kwargs`` for ``func``.
+        ret_ (any)       : default ret val.
+        msg_ (str)       : message to print.
+        verbose_ (bool)  : Whether to print message or not. (default= ``True``) 
+    
+    Examples:
+        >>> from pycharmers.utils import try_wrapper
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 2, msg_="divide")
+        Succeeded to divide
+        >>> ret
+        0.5
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 0, msg_="divide")
+        [division by zero] Failed to divide
+        >>> ret is None
+        True
+        >>> ret = try_wrapper(lambda x,y: x/y, 1, 0, ret_=1, msg_="divide")
+        >>> ret is None
+        False
+        >>> ret
+        1
+    """
+    try:
+        ret_ = func(*args, **kwargs)
+        prefix = toGREEN("Succeeded to ")
+    except Exception as e:
+        prefix = toRED(f"[{str_strip(e)}] Failed to ")
+    if verbose_: print(prefix + msg_)
+    return ret_
+
+def list2name(lst, how="snake"):
+    """Naming convention.
+
+    Args:
+        lst (list) : List.
+        how (str)  : How to convert list elements to string name.
+
+    Examples:
+        >>> from pycharmers.utils import list2name
+        >>> list2name(lst=["iwasaki", "shuto"], how="camel")
+        'iwasakiShuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="pascal")
+        'IwasakiShuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="snake")
+        'iwasaki_shuto'
+        >>> list2name(lst=["iwasaki", "shuto"], how="kebab")
+        'iwasaki-shuto'
+    """
+    how = how.lower()
+    handleKeyError(lst=["lower camel", "camel", "upper camel", "pascal", "snake", "kebab"], how=how)
+    lst = [str(e) for e in lst]
+    if how in ["lower camel", "camel"]:
+        lst = [e.capitalize() if i!=0 else e for i,e in enumerate(lst)]
+        joint = ""
+    elif how in ["upper camel", "pascal"]:
+        lst = [e.capitalize() for e in lst]
+        joint = ""
+    elif how=="snake":
+        joint = "_"
+    elif how=="kebab":
+        joint = "-"
+    return joint.join(lst)
+    
+def infer_types(val, default=str):
+    """Infer data types by evaluate the given source.
+    
+    Args:
+        val (str)      : data
+        default (type) : Default type.
+        
+    Return:
+        type (type) : data type.
+        
+    Examples:
+        >>> from pycharmers.utils import infer_types
+        >>> infer_types(1)
+        int
+        >>> infer_types(1.1)
+        float
+        >>> infer_types("1e3")
+        float
+        >>> infer_types("Hello")
+        str
+    """
+    t = default
+    if val is not None:
+        try:
+            t = type(eval(str(val), {"__builtins__":None}))
+        except:
+            pass
+    return t
+
+def html2reStructuredText(html, base_url=""):
+    """Convert html string to reStructuredText
+    
+    Args:
+        html (str)     : html string.
+        base_url (str) : base URL.
+        
+    Returns:
+        reStructuredText (str) : reStructuredText.
+        
+    Examples:
+        >>> from pycharmers.utils import html2reStructuredText
+        >>> html2reStructuredText("<code>CODE</code>")
+        ' ``CODE`` '      
+        >>> html2reStructuredText(
+        ...     html='<a class="reference internal" href="pycharmers.html">pycharmers package</a>',
+        ...     base_url="https://iwasakishuto.github.io/Python-Charmers/"
+        >>> )
+        '`pycharmers package <https://iwasakishuto.github.io/Python-Charmers/pycharmers.html>`_'
+    """
+    html = html.replace("<code>", " ``").replace("</code>", "`` ")
+    def repl(m):
+        """How to replacement Match object.
+        Args: 
+            m (Match object) : The result of re.match() and re.search()
+        """
+        href,inner_text = m.groups()
+        # TODO: Conbine code block and link.
+        if inner_text[1:3]=="``": return inner_text
+        href = urllib.parse.urljoin(base=base_url, url=href)
+        return f'`{inner_text} <{href}>`_'
+    return re.sub(pattern=r'<a.*?href="(.*?)">(.*?)</a>',  repl=repl, string=html)
+
+def int2ordinal(num):
+    """Convert a natural number to a ordinal number.
+
+    Args:
+        num (int): natural number
+
+    Returns:
+        str: ordinal number, like 0th, 1st, 2nd,...
+
+    Examples:
+        >>> from pycharmers.utils import int2ordinal
+        >>> int2ordinal(0)
+        '0th'
+        >>> int2ordinal(1)
+        '1st'
+        >>> int2ordinal(2)
+        '2nd'
+        >>> int2ordinal(3)
+        '3rd'
+        >>> int2ordinal(4)
+        '4th'
+        >>> int2ordinal(11)
+        '11th'
+        >>> int2ordinal(21)
+        '21st'
+        >>> int2ordinal(111)
+        '111th'
+        >>> int2ordinal(121)
+        '121st'
+    """
+    q, mod = divmod(int(num), 10)
+    # if num == XXX1X, use "th"
+    suffix = "th" if q % 10 == 1 else {1: "st", 2: "nd", 3: "rd"}.get(mod,"th")
+    return f"{num}{suffix}"

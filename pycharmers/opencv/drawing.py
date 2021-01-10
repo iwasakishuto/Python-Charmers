@@ -1,12 +1,22 @@
 #coding: utf-8
+import re
 import cv2
 import math
+import numpy as np
 
 from ..utils.generic_utils import handleKeyError
-from ..matplotlib.cmaps import COLOR_WHITE, COLOR_BLACK, FAMOUS_COLOR_PALETTES
+from ..matplotlib.cmaps import FAMOUS_COLOR_PALETTES, color_dict_create
 from ..matplotlib.layout import FigAxes_create, clear_grid
 
 SUPPORTED_COORD_TYPES = ["xywh", "ltrb"]
+cv2BLACK   = (0,     0,   0)
+cv2RED     = (0,     0, 255)
+cv2GREEN   = (0,   128,   0)
+cv2YELLOW  = (0,   255, 255)
+cv2BLUE    = (255,   0,   0)
+cv2MAGENTA = (255,   0, 255)
+cv2CYAN    = (255, 255,   0)
+cv2WHITE   = (255, 255, 255)
 
 def convert_coords(bbox, to_type, from_type=""):
     """Convert coordinates::
@@ -88,69 +98,93 @@ def cv2read_mpl(filename, *flags):
     """
     return cv2.cvtColor(cv2.imread(filename, *flags), cv2.COLOR_BGR2RGB) 
 
-def cv2plot(x, ax=None, clear_pos=list("ltrb"), cmap=None, **kwargs):
+def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, figkeywargs={}, plotkeywargs={}):
     """Plot Image using OpenCV
 
     Args:
-        x (str/np.ndarray) : path to an image, or image. (BGR)
-        ax (Axes)          : The ``Axes`` instance.
-        clear_pos (list)   : Positions to clean a grid
-        **kwargs           : 
+        x (str/np.ndarray)  : path to an image, or image. (BGR)
+        ax (Axes)           : The ``Axes`` instance.
+        clear_pos (list)    : Positions to clean a grid
+        is_cv2 (bool)       : Whether ``x`` is BGR (OpenCV format) or not.
+        figkeywargs (dict)  : Keyword arguments for :meth:`FigAxes_create <pycharmers.matplotlib.layout.FigAxes_create>`
+        plotkeywargs (dict) : Keyword arguments for ``ax.imshow`` .
 
     Examples:
-        >>> from pycharmers.opencv.cv2plot
-        >>> ax = cv2plot(x="path/to/image.png")
+        >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
+        >>> ax = cv2plot(x=SAMPLE_LENA_IMG)
     """
-    fig, ax = FigAxes_create(ax=ax)
+    fig, ax = FigAxes_create(ax=ax, **figkeywargs)
     if isinstance(x, str):
         x = cv2read_mpl(x)
-    ax.imshow(X=x, **kwargs)
+    elif is_cv2:
+        x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB) 
+    ax.imshow(X=x, **plotkeywargs)
     ax = clear_grid(ax, pos=clear_pos)
     return ax
 
-def draw_text_with_bg(img, text, org=(10,10), offset=(10, -25),
+def draw_text_with_bg(img, text, org=(10,10), offset=(10, 10),
                       fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1,
-                      color=COLOR_BLACK, bgcolor=COLOR_WHITE, color_type="css4",
+                      color=cv2BLACK, bgcolor=cv2WHITE, color_type="css4",
                       thickness=2, **kwargs):
     """Put text with background color.
 
     Args:
-        img (np.ndarray)  : Image.
-        text (str)        : Text string to be drawn.
-        org (tuple)       : Bottom-left corner of the text string in the image.
-        fontFace (int)    : Font type.
-        fontScale (int)   : Font scale factor that is multiplied by the font-specific base size.
-        color (str/tuple) : Text color.
-        thickness (int)   : Thickness of the lines used to draw a text.
-        **kwargs          : ``lineType``, ``bottomLeftOrigin``
-            - ``lineType``         : Line type.
-            - ``bottomLeftOrigin`` : When true, the image data origin is at the bottom-left corner. Otherwise, it is at the top-left corner.
+        img (np.ndarray)        : Image.
+        text (str)              : Text string to be drawn.
+        org (tuple)             : Bottom-left corner of the text string in the image.
+        fontFace (int)          : Font type.
+        fontScale (int)         : Font scale factor that is multiplied by the font-specific base size.
+        color (str/tuple)       : Text color.
+        thickness (int)         : Thickness of the lines used to draw a text.
+        lineType (int)          : Line type.
+        bottomLeftOrigin (bool) : When ``True`, the image data origin is at the bottom-left corner. Otherwise, it is at the top-left corner.
     
     Examples:
         >>> import matplotlib.pyplot as plt
-        >>> from pycharmers.opencv import draw_text_with_bg, cv2read_mpl
-        >>> img = cv2read_mpl(filename="path/to/img.png")
+        >>> from pycharmers.opencv import draw_text_with_bg, cv2read_mpl, SAMPLE_LENA_IMG
+        >>> img = cv2read_mpl(filename=SAMPLE_LENA_IMG)
         >>> draw_text_with_bg(img=img, offset=(100,-100), text="My name is Shuto")
         >>> plt.imshow(img)
         >>> plt.show()
     """
     if isinstance(color, str):
-        color = FAMOUS_COLOR_PALETTES.get(color_type).get(color, COLOR_BLACK)
+        color = FAMOUS_COLOR_PALETTES.get(color_type).get(color, cv2BLACK)
     if isinstance(bgcolor, str):
-        bgcolor = FAMOUS_COLOR_PALETTES.get(color_type).get(bgcolor, COLOR_WHITE)
+        bgcolor = FAMOUS_COLOR_PALETTES.get(color_type).get(bgcolor, cv2WHITE)
 
-    (text_W, text_H) = cv2.getTextSize(
-        text, fontFace, fontScale=fontScale, thickness=thickness
-    )[0]
+    text_W, text_H = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)[0]
     text_off_x, text_off_y = offset
-    text_off_y += img.shape[0]
+    org_x, org_y = org
 
     box_coords = (
-        (text_off_x, text_off_y), (text_off_x+text_W+2, text_off_y-text_H-2)
+        (org_x          - text_off_x, org_y          + text_off_y), 
+        (org_x + text_W + text_off_x, org_y - text_H - text_off_y)
     )
     cv2.rectangle(img, *box_coords, bgcolor, cv2.FILLED)
     cv2.putText(
-        img, text, (text_off_x, text_off_y), fontFace=fontFace,
-        fontScale=fontScale, color=color, thickness=thickness
+        img=img, text=text, org=org, fontFace=fontFace,
+        fontScale=fontScale, color=color, thickness=thickness, **kwargs
     )
 
+def plot_cv2fontFaces(bgcolor=(50,50,50), cmap="Pastel1"):
+    """Plot All ``fontFace`` supported by OpenCV.
+
+    Args:
+        bgcolor (tuple) : background color (RGB)
+        cmap (str)      : The name of a color map known to ``matplotlib``
+
+    Examples:
+        >>> from pycharmers.opencv import plot_cv2fontFaces
+        >>> plot_cv2fontFaces()
+    """
+    i=0; img = np.full(shape=(400,1400,3), fill_value=bgcolor, dtype=np.uint8)
+    color_dict = color_dict_create(keys=range(8), cmap=cmap, max_val=255)
+    for name,val in cv2.__dict__.items():
+        m = re.match(pattern=r"^FONT_(?!.*ITALIC$).+$", string=name)
+        if m:
+            cv2.putText(img=img, text=f"{val:>02} {name}", org=(20,  35+50*i), fontScale=1, color=color_dict[i%8], fontFace=val)
+            cv2.putText(img=img, text=f"{val | cv2.FONT_ITALIC:>02} {name}", org=(720, 35+50*i), fontScale=1, color=color_dict[i%8], fontFace=val | cv2.FONT_ITALIC)
+            i+=1
+    ax = cv2plot(img, figkeywargs={"figsize": (14,49)}, is_cv2=False)
+    ax.set_title("OpenCV fontFace [left: normal, right: FONT_ITALICK]", size=20)
+    return ax

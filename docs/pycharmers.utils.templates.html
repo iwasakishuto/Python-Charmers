@@ -33,7 +33,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pycharmers.utils.print_utils module" href="pycharmers.utils.print_utils.html" /> 
+    <link rel="prev" title="pycharmers.utils.soup_utils module" href="pycharmers.utils.soup_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -45,7 +45,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+          <a href="pycharmers.utils.soup_utils.html" title="pycharmers.utils.soup_utils module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -65,9 +65,75 @@
   <div class="section" id="module-pycharmers.utils.templates">
 <span id="pycharmers-utils-templates-module"></span><h1>pycharmers.utils.templates module<a class="headerlink" href="#module-pycharmers.utils.templates" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.utils.templates.render_template">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template_name_or_string</span></em>, <em class="sig-param"><span class="n">context</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">searchpath</span><span class="o">=</span><span class="default_value">'/Users/iwasakishuto/Github/portfolio/Python-Charmers/pycharmers/templates'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">envkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.render_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render Template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_name_or_string</strong> (<em>str</em>) – The name of the template to be rendered or a string.</p></li>
+<li><p><strong>context</strong> (<em>dict</em>) – The variables that should be available in the context of the template.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – If given, output to <code class="docutils literal notranslate"><span class="pre">path</span></code> file.</p></li>
+<li><p><strong>searchpath</strong> (<em>str</em>) – (Default= <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">render_template</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">render_template</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<span class="go">    &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
+<span class="go">    &lt;ul&gt;</span>
+<span class="go">    &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
+<span class="go">    &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
+<span class="go">    :</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.utils.templates.defFunction">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">defFunction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func_name</span></em>, <em class="sig-param"><span class="n">short_description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">is_method</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_example">
+<code class="sig-name descname">set_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_example" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_returns">
+<code class="sig-name descname">set_returns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_returns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_returns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.sort_arguments">
+<code class="sig-name descname">sort_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.sort_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.sort_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_argument">
+<code class="sig-name descname">set_argument</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default</em>, <em class="sig-param">example=None</em>, <em class="sig-param">description=''</em>, <em class="sig-param">type=&lt;class 'str'&gt;</em>, <em class="sig-param">is_required=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_argument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_argument" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.set_arguments">
+<code class="sig-name descname">set_arguments</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">arguments</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.set_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.set_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.templates.defFunction.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#defFunction.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.defFunction.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.templates.base_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">base_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.base_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/base.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -76,45 +142,113 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><p>&lt;!DOCTYPE html&gt;
-&lt;html lang=”en”&gt;</p>
-<blockquote>
-<div><dl class="simple">
-<dt>&lt;head&gt;</dt><dd><p>&lt;meta charset=”UTF-8” /&gt;
-&lt;meta name=”viewport” content=”width=device-width, initial-scale=1.0” /&gt;
-&lt;meta name=”twitter:card” content=”summary” /&gt;
-&lt;meta name=”twitter:site” content=”&#64;cabernet_rock” /&gt;
-&lt;meta name=”twitter:image:src” content=”https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png”&gt;
-&lt;meta property=”og:url” content=”https://github.com/iwasakishuto/Python-Charmers” /&gt;
-&lt;meta property=”og:site_name” content=”Python-Charmers” /&gt;
-&lt;meta property=”og:title” content=”Python-Charmers” /&gt;
-&lt;meta property=”og:description” content=”Translation Gummy is a collection of useful python programs.” /&gt;
-&lt;meta property=”og:image” content=”https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true” /&gt;
-&lt;title&gt;{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}&lt;/title&gt;
-&lt;link rel=”shortcut icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png”/&gt;
-&lt;link rel=”apple-touch-icon” href=”https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png” sizes=”152x152”&gt;
-{% include ‘style.html’ %}</p>
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{%- if add_base -%}
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:card&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;summary&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:site&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;@cabernet_rock&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:image:src&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://github.com/iwasakishuto/Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:site_name&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Python-Charmers&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Translation Gummy is a collection of useful python programs.&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;shortcut icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png&quot;</span><span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;apple-touch-icon&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png&quot;</span> <span class="na">sizes</span><span class="o">=</span><span class="s">&quot;152x152&quot;</span><span class="p">&gt;</span>
+    {% include &#39;style.html&#39; %}
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+{%- endif -%}
+    {%- block content %}
+    {%- endblock %}
+{%- if add_base -%}
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+{%- endif -%}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.templates.def_html">
+<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">def_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.def_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/def.html</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Where this file is.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>&lt;/head&gt;
-&lt;body&gt;</p>
-<blockquote>
-<div><p>{%- block content %}
-{%- endblock %}</p>
-</div></blockquote>
-<p>&lt;/body&gt;</p>
-</div></blockquote>
-<p>&lt;/html&gt;</p>
-</div></blockquote>
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{%- if __comment -%}<span class="c">&lt;!--</span>
+<span class="c">  arguments={</span>
+<span class="c">    argname: {</span>
+<span class="c">      type,</span>
+<span class="c">      is_required,</span>
+<span class="c">      default,</span>
+<span class="c">      example_prefix,</span>
+<span class="c">      description,</span>
+<span class="c">      name_type</span>
+<span class="c">    }</span>
+<span class="c">  },</span>
+<span class="c">  short_description</span>
+<span class="c">  description</span>
+<span class="c">  is_method</span>
+
+
+
+<span class="c">--&gt;</span>{%- endif -%}
+{%- from &quot;_macros/utils.html&quot; import pythonalization -%}
+def {{ func_name }}(
+    {%- if is_method -%}self{%- if arguments|length &gt; 0 %}, {% endif %}{% endif -%}
+    {%- for argname,argmeta in arguments.items() -%}
+        {{ argname }}{% if not argmeta.is_required %}={{ pythonalization(argmeta.default) }}{% endif %}{% if not loop.last %}, {% endif -%}
+    {%- endfor -%}
+):
+    &quot;&quot;&quot;{% if short_description and short_description | length &gt; 0 %}{{ short_description }}
+    {% endif %}
+
+    {%- if description and description | length &gt; 0 %}
+    {{ description }}
+    {%- endif %}
+
+    Args:
+    {%- for argname,argmeta in arguments.items()%}
+        {{ argmeta.name_type.ljust(argwidth) }} : {{ argmeta.description }} {% if argmeta.default %}(default= ``{{ pythonalization(argmeta.default) }}`` ){% endif %}
+    {%- endfor %}
+
+    {%- if returns %}
+
+    Returns:
+        {{ returns | indent(width=8, first=Faslse) }}
+    {%- endif %}
+
+    {%- if examples %}
+
+    Examples:
+        {{ example_prefix | indent(width=8, first=Faslse) }}
+        {%- for argname,argmeta in arguments.items()%}
+        ...     {{ argname }}={{ pythonalization(argmeta.example) }},
+        {%- endfor %}
+        &gt;&gt;&gt; )
+        {{ example_suffix | indent(width=8, first=Faslse) }}
+    {%- endif %}
+    &quot;&quot;&quot;
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.utils.templates.fonts_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">fonts_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.fonts_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/fonts.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/fonts.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -123,35 +257,25 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><p>{% extends ‘base.html’ %}
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% extends &#39;base.html&#39; %}
 {% block title %}All Fonts{% endblock title %}
-{%- block content %}</p>
-<blockquote>
-<div><p>&lt;h1&gt;Available Fonts&lt;/h1&gt;
-&lt;ul&gt;</p>
-<blockquote>
-<div><p>{%- for font in fonts %}
-&lt;li&gt;{{ font }}: &lt;span style=’font-family:{{ font }}; font-size: 2em;’&gt;{{ font }}&lt;/li&gt;
-{%- endfor %}</p>
-</div></blockquote>
-<p>&lt;/ul&gt;</p>
-</div></blockquote>
-<p>{%- endblock %}</p>
-</div></blockquote>
+{%- block content %}
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Available Fonts<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+      {%- for font in fonts %}
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>{{ font }}: <span class="p">&lt;</span><span class="nt">span</span> <span class="na">style</span><span class="o">=</span><span class="s">&#39;font-family:{{ font }}; font-size: 2em;&#39;</span><span class="p">&gt;</span>{{ font }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      {%- endfor %}
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+{%- endblock %}
+</pre></div>
+</div>
 </dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.utils.templates.render_template">
-<code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">render_template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">content</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">searchpath</span><span class="o">=</span><span class="default_value">'/Users/iwasakishuto/Github/portfolio/Python-Charmers/pycharmers/templates'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">envkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/templates.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.templates.render_template" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.utils.templates.style_html">
 <code class="sig-prename descclassname">pycharmers.utils.templates.</code><code class="sig-name descname">style_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycharmers.utils.templates.style_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
+<dd><p>Return the path to <code class="docutils literal notranslate"><span class="pre">TEMPLATES_DIR</span></code>/style.html</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Where this file is.</p>
@@ -160,20 +284,15 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-<p>The contents of the file are as follows:
-.. code-block:: html</p>
-<blockquote>
-<div><dl>
-<dt>&lt;style&gt;</dt><dd><dl class="simple">
-<dt>body {</dt><dd><p>font-family: “Times New Roman”, “Helvetica Neue”, Meiryo, monospace, -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Oxygen, Ubuntu, Cantarell, IPAexMincho, “Open Sans”, “Helvetica Neue”, sans-serif, serif;
-margin: 0;</p>
-</dd>
-</dl>
-<p>}</p>
-</dd>
-</dl>
-<p>&lt;/style&gt;</p>
-</div></blockquote>
+<p>The contents of the file are as follows:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="nt">body</span> <span class="p">{</span>
+    <span class="k">font-family</span><span class="p">:</span> <span class="s2">&quot;Times New Roman&quot;</span><span class="p">,</span> <span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="n">Meiryo</span><span class="p">,</span> <span class="kc">monospace</span><span class="p">,</span> <span class="o">-</span><span class="n">apple-system</span><span class="p">,</span> <span class="n">BlinkMacSystemFont</span><span class="p">,</span> <span class="s2">&quot;Segoe UI&quot;</span><span class="p">,</span> <span class="n">Roboto</span><span class="p">,</span> <span class="n">Oxygen</span><span class="p">,</span> <span class="n">Ubuntu</span><span class="p">,</span> <span class="n">Cantarell</span><span class="p">,</span> <span class="n">IPAexMincho</span><span class="p">,</span> <span class="s2">&quot;Open Sans&quot;</span><span class="p">,</span> <span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">,</span> <span class="kc">serif</span><span class="p">;</span>
+    <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
@@ -222,7 +341,22 @@ margin: 0;</p>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.argparse_utils.html">pycharmers.utils.argparse_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.color_utils.html">pycharmers.utils.color_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pandas_utils.html">pycharmers.utils.pandas_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.templates module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
 </ul>
 </li>
@@ -234,8 +368,8 @@ margin: 0;</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.utils.print_utils.html"
-                        title="previous chapter">pycharmers.utils.print_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.soup_utils.html"
+                        title="previous chapter">pycharmers.utils.soup_utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -267,7 +401,7 @@ margin: 0;</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
+          <a href="pycharmers.utils.soup_utils.html" title="pycharmers.utils.soup_utils module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     

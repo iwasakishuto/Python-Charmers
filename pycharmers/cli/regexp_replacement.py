@@ -11,7 +11,7 @@ from ..utils._colorings import toBLUE, toGREEN
 from ..utils.generic_utils import pycat
 
 def regexp_replacement(argv=sys.argv[1:]):
-    """String replacement using regular expression
+    """String replacement in a file using regular expression
 
     - ``.json`` path can be specified by "``json-dir`` / ``json-file``" or "``json-path``"
     - output file path can be specified by "``output-path``" or "``input-path`` + ``suffix``"

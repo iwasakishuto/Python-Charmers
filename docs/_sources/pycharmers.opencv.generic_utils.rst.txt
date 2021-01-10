@@ -1,7 +1,0 @@
-pycharmers.opencv.generic\_utils module
-=======================================
-
-.. automodule:: pycharmers.opencv.generic_utils
-   :members:
-   :undoc-members:
-   :show-inheritance:

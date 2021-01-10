@@ -1,8 +1,56 @@
 # coding: utf-8
 import os
+import urllib
 import string
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
+
+def pilread(img=None, path=None):
+    """Opens and identifies the given image file.
+    
+    Args:
+        img (PIL.Image) : PIL Image object
+        path (str)      : Path or URL to image file.
+        
+    Returns
+        img (PIL.Image) : PIL Image object
+        
+    Examples:
+        >>> from pycharmers.utils import pilread
+        >>> img = pilread(img=None, path="https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png")
+        >>> img == pilread(img=img, path=None)
+        True
+    """
+    if path is not None:
+        if isinstance(path, str) and (not os.path.exists(path)):
+            with urllib.request.urlopen(path) as web_file:
+                img = Image.open(web_file)
+        else:
+            img = Image.open(path)
+    return img
+
+def roughen_img(img=None, path=None, rrate=5):
+    """Roughen the Image.
+    
+    Args:
+        img (PIL.Image) : image file.
+        path (str)      : Path or URL to image file.
+        rrate (float)   : Reduction rate. 
+
+    Returns
+        img (PIL.Image) : Roughened PIL Image object
+
+    Examples:
+        >>> from pycharmers.utils import roughen_img, pilread
+        >>> img = pilread(path="https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png")
+        >>> roughened_img = roughen_img(img=img, rrate=5)
+        >>> img.size == roughened_img.size
+        True
+    """
+    img = pilread(img=img, path=path)
+    img_size_origin = img._size
+    img_size_small  = [int(s/rrate) for s in img_size_origin]
+    return img.resize(size=img_size_small).resize(size=img_size_origin)
 
 def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
               img_size=(250, 250), text_width=None, fontsize=16, margin=10,
@@ -12,7 +60,7 @@ def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
     Args:
         text (str)       : Text to be drawn to ``img``.
         img (PIL.Image)  : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
-        ttfontname (str) : A filename or file-like object containing a TrueType font.
+        ttfontname (str) : A filename or file-like object containing a TrueType font. (default = ``os.listdir("/System/Library/Fonts")[0]``)
         img_size (tuple) : The image size.
         text_width (int) : The length of characters in one line.
         fontsize (int)   : The requested size, in points.
@@ -24,7 +72,7 @@ def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
         tuple (PIL.Image, int): img, Length from top to bottom text line.
     
     Example:
-        >>> from pycharmers.utils import take_centers
+        >>> from pycharmers.utils import draw_text
         >>> img, y = draw_text("Hello World!!")
         >>> img.save("sample.png")
     """

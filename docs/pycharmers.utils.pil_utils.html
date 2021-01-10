@@ -34,7 +34,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pycharmers.utils.print_utils module" href="pycharmers.utils.print_utils.html" />
-    <link rel="prev" title="pycharmers.utils.numpy_utils module" href="pycharmers.utils.numpy_utils.html" /> 
+    <link rel="prev" title="pycharmers.utils.pandas_utils module" href="pycharmers.utils.pandas_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -49,7 +49,7 @@
           <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
+          <a href="pycharmers.utils.pandas_utils.html" title="pycharmers.utils.pandas_utils module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -69,6 +69,58 @@
   <div class="section" id="module-pycharmers.utils.pil_utils">
 <span id="pycharmers-utils-pil-utils-module"></span><h1>pycharmers.utils.pil_utils module<a class="headerlink" href="#module-pycharmers.utils.pil_utils" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
+<dt id="pycharmers.utils.pil_utils.pilread">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">pilread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#pilread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.pilread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens and identifies the given image file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – PIL Image object</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path or URL to image file.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>img (PIL.Image) : PIL Image object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pilread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">==</span> <span class="n">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.pil_utils.roughen_img">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">roughen_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rrate</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#roughen_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.roughen_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roughen the Image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – image file.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path or URL to image file.</p></li>
+<li><p><strong>rrate</strong> (<em>float</em>) – Reduction rate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>img (PIL.Image) : Roughened PIL Image object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">roughen_img</span><span class="p">,</span> <span class="n">pilread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">pilread</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roughened_img</span> <span class="o">=</span> <span class="n">roughen_img</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">rrate</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">roughened_img</span><span class="o">.</span><span class="n">size</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycharmers.utils.pil_utils.draw_text">
 <code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ttfontname</span><span class="o">=</span><span class="default_value">'SFNSTextCondensed-Bold.otf'</span></em>, <em class="sig-param"><span class="n">img_size</span><span class="o">=</span><span class="default_value">250, 250</span></em>, <em class="sig-param"><span class="n">text_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="o">=</span><span class="default_value">16</span></em>, <em class="sig-param"><span class="n">margin</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">bgRGB</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="o">=</span><span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw text in <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object.</p>
@@ -77,7 +129,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<em>str</em>) – Text to be drawn to <code class="docutils literal notranslate"><span class="pre">img</span></code>.</p></li>
 <li><p><strong>img</strong> (<em>PIL.Image</em>) – The image to draw in. If this argment is <code class="docutils literal notranslate"><span class="pre">None</span></code>, img will be created using <code class="docutils literal notranslate"><span class="pre">img_size</span></code> and <code class="docutils literal notranslate"><span class="pre">bgRGB</span></code> arguments.</p></li>
-<li><p><strong>ttfontname</strong> (<em>str</em>) – A filename or file-like object containing a TrueType font.</p></li>
+<li><p><strong>ttfontname</strong> (<em>str</em>) – A filename or file-like object containing a TrueType font. (default = <code class="docutils literal notranslate"><span class="pre">os.listdir(&quot;/System/Library/Fonts&quot;)[0]</span></code>)</p></li>
 <li><p><strong>img_size</strong> (<em>tuple</em>) – The image size.</p></li>
 <li><p><strong>text_width</strong> (<em>int</em>) – The length of characters in one line.</p></li>
 <li><p><strong>fontsize</strong> (<em>int</em>) – The requested size, in points.</p></li>
@@ -94,7 +146,7 @@
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">take_centers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">draw_text</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">draw_text</span><span class="p">(</span><span class="s2">&quot;Hello World!!&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;sample.png&quot;</span><span class="p">)</span>
 </pre></div>
@@ -147,7 +199,22 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.argparse_utils.html">pycharmers.utils.argparse_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.color_utils.html">pycharmers.utils.color_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pandas_utils.html">pycharmers.utils.pandas_utils module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.pil_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
 </ul>
 </li>
@@ -159,8 +226,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.utils.numpy_utils.html"
-                        title="previous chapter">pycharmers.utils.numpy_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.pandas_utils.html"
+                        title="previous chapter">pycharmers.utils.pandas_utils module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pycharmers.utils.print_utils.html"
                         title="next chapter">pycharmers.utils.print_utils module</a></p>
@@ -198,7 +265,7 @@
           <a href="pycharmers.utils.print_utils.html" title="pycharmers.utils.print_utils module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.numpy_utils.html" title="pycharmers.utils.numpy_utils module"
+          <a href="pycharmers.utils.pandas_utils.html" title="pycharmers.utils.pandas_utils module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     

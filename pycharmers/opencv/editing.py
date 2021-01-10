@@ -1,6 +1,38 @@
 # coding: utf-8
 import cv2
 
+def cv2paste(bg_img, fg_img, points=(0,0), inplace=False):
+    """Pastes ``fg_image`` into ``bg_image``
+    
+    Args:
+        bg_img (ndarray) : Background Image. shape=(H,W,ch)
+        fg_img (ndarray) : Background Image. shape=(H,W,ch)
+        points (tuple)   : Coordinates to paste. (x,y)
+        inplace (bool)   : Whether to transform input ( ``bg_img`` ) using no auxiliary data structure.
+        
+    Returns:
+        bg_img (ndarray) : pasted image.
+        
+    Examples:
+        >>> import cv2
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG, cv2read_mpl, cv2plot, cv2paste
+        >>> bg_img = cv2read_mpl(SAMPLE_LENA_IMG)
+        >>> fg_img = cv2.resize(bg_img, dsize=(256,256))
+        >>> ax = cv2plot(cv2paste(bg_img, fg_img, points=(128,128)))
+    """
+    if not inplace:
+        bg_img = bg_img.copy()
+        
+    x,y = points
+    bg_h, bg_w, _ = bg_img.shape
+    fg_h, fg_w, _ = fg_img.shape
+    
+    if ((-fg_w < x < bg_w) and (-fg_h < y < bg_h)):
+        if not inplace:
+            bg_img = bg_img.copy()            
+            bg_img[max(0,y):min(y+fg_h, bg_h), max(0,x):min(x+fg_w, bg_w), :] = fg_img[max(0,0-y):bg_h-y, max(0,0-x):bg_w-x, :]
+    return bg_img
+
 def vconcat_resize_min(*images, interpolation=cv2.INTER_CUBIC):
     """Concat vertically while resizing to the smallest width.
 

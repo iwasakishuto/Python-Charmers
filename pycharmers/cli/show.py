@@ -6,7 +6,7 @@ import argparse
 from ..utils._path import REPO_DIR
 from ..utils.print_utils import Table
 
-with open(os.path.join(REPO_DIR,"console_scripts.txt"), mode="r") as f:
+with open(os.path.join(REPO_DIR, "console_scripts.txt"), mode="r") as f:
     CONSOLE_SCRIPTS = [line.rstrip("\n") for line in f.readlines() if line[0]!=("#")]
 
 def show_command_line_programs(argv=sys.argv[1:]):
@@ -24,20 +24,31 @@ def show_command_line_programs(argv=sys.argv[1:]):
 
     Examples:
         >>> $ pycharmers-show
-        >>> |    command     |                     path                      |
-        >>> ==================================================================
-        >>> |pycharmers-show | pycharmers.cli.show:show_command_line_programs|
-
+            +---------------------+-------------------------------------------------------+
+            |       command       |                         path                          |
+            +=====================+=======================================================+
+            |    pycharmers-show  |        pycharmers.cli.show:show_command_line_programs |
+            +---------------------+-------------------------------------------------------+
+            | regexp-replacement  |  pycharmers.cli.regexp_replacement:regexp_replacement |
+            +---------------------+-------------------------------------------------------+
+            |    render-template  |        pycharmers.cli.render_template:render_template |
+            +---------------------+-------------------------------------------------------+
+            |          cv-window  |                      pycharmers.cli.cvWindow:cvWindow |
+            +---------------------+-------------------------------------------------------+
+            |           cv-canny  |                        pycharmers.cli.cvCanny:cvCanny |
+            +---------------------+-------------------------------------------------------+
+            |            pdfmine  |                        pycharmers.cli.pdfmine:pdfmine |
+            +---------------------+-------------------------------------------------------+
     """
     parser = argparse.ArgumentParser(prog="pycharmers-show", add_help=True)
     parser.add_argument("-H", "--head",  type=int, help="Show the first ``head`` rows for the table.")
     parser.add_argument("-W", "--width", type=int, help="Table width.")
-    parser.add_argument("--mark",        type=str, default="=", help='The border mark. (default "=")')
+    # parser.add_argument("--mark",        type=str, default="=", help='The border mark. (default "=")')
     args = parser.parse_args(argv)
 
     head = args.head
     table_width = args.width
-    mark = args.mark
+    # mark = args.mark
 
     commands = []
     paths = []
@@ -48,4 +59,4 @@ def show_command_line_programs(argv=sys.argv[1:]):
     table = Table()
     table.set_cols(values=commands, colname="command", color="GREEN")
     table.set_cols(values=paths, colname="path", color="BLUE")
-    table.show(head=head, table_width=table_width, mark=mark)
+    table.show(head=head, table_width=table_width)

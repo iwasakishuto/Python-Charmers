@@ -9,6 +9,7 @@ Submodules
 
    pycharmers.opencv.backsub
    pycharmers.opencv.cascade
+   pycharmers.opencv.cvui
    pycharmers.opencv.drawing
    pycharmers.opencv.editing
    pycharmers.opencv.morphology

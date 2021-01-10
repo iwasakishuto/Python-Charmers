@@ -71,7 +71,7 @@
 <span class="sd">        nrows (int)      : The number of rows</span>
 <span class="sd">        ncols (int)      : The number of columns.</span>
 <span class="sd">        axis (int)       : ``0`` or ``1`` Direction to arrange axes.</span>
-<span class="sd">        **kwargs         : ``kwargs`` for add_subplot(*args, **kwargs) method of ``matplotlib.figure.Figure`` instance.</span>
+<span class="sd">        \*\*kwargs         : ``kwargs`` for add_subplot(\*args, \*\*kwargs) method of ``matplotlib.figure.Figure`` instance.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        fig (Figure) : The ``Figure`` instance</span>
@@ -199,11 +199,12 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="show_all_fonts"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.show_all_fonts">[docs]</a><span class="k">def</span> <span class="nf">show_all_fonts</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Show all fonts available in ``matplotlib`` .&quot;&quot;&quot;</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="s2">&quot;matplotlib.font_manager.fontManager.ttflist.html&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PYCHARMERS_HTML_DIR</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
     <span class="n">render_template</span><span class="p">(</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span> 
-        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))},</span>
+        <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span> 
+        <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))},</span>
         <span class="n">path</span><span class="o">=</span><span class="n">path</span>
     <span class="p">)</span>
     <span class="n">open_new_tab</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>

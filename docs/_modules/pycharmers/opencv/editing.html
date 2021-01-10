@@ -52,6 +52,38 @@
 <span></span><span class="c1"># coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 
+<div class="viewcode-block" id="cv2paste"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.cv2paste">[docs]</a><span class="k">def</span> <span class="nf">cv2paste</span><span class="p">(</span><span class="n">bg_img</span><span class="p">,</span> <span class="n">fg_img</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pastes ``fg_image`` into ``bg_image``</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        bg_img (ndarray) : Background Image. shape=(H,W,ch)</span>
+<span class="sd">        fg_img (ndarray) : Background Image. shape=(H,W,ch)</span>
+<span class="sd">        points (tuple)   : Coordinates to paste. (x,y)</span>
+<span class="sd">        inplace (bool)   : Whether to transform input ( ``bg_img`` ) using no auxiliary data structure.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        bg_img (ndarray) : pasted image.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG, cv2read_mpl, cv2plot, cv2paste</span>
+<span class="sd">        &gt;&gt;&gt; bg_img = cv2read_mpl(SAMPLE_LENA_IMG)</span>
+<span class="sd">        &gt;&gt;&gt; fg_img = cv2.resize(bg_img, dsize=(256,256))</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(cv2paste(bg_img, fg_img, points=(128,128)))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">inplace</span><span class="p">:</span>
+        <span class="n">bg_img</span> <span class="o">=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span>
+    <span class="n">bg_h</span><span class="p">,</span> <span class="n">bg_w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">fg_h</span><span class="p">,</span> <span class="n">fg_w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">fg_img</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="o">-</span><span class="n">fg_w</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">bg_w</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="o">-</span><span class="n">fg_h</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">bg_h</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inplace</span><span class="p">:</span>
+            <span class="n">bg_img</span> <span class="o">=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>            
+            <span class="n">bg_img</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="p">):</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">fg_h</span><span class="p">,</span> <span class="n">bg_h</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="p">):</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">fg_w</span><span class="p">,</span> <span class="n">bg_w</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fg_img</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">-</span><span class="n">y</span><span class="p">):</span><span class="n">bg_h</span><span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">-</span><span class="n">x</span><span class="p">):</span><span class="n">bg_w</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">bg_img</span></div>
+
 <div class="viewcode-block" id="vconcat_resize_min"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.vconcat_resize_min">[docs]</a><span class="k">def</span> <span class="nf">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">images</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_CUBIC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Concat vertically while resizing to the smallest width.</span>
 
