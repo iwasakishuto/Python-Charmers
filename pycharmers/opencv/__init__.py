@@ -21,6 +21,7 @@ from .backsub import background_subtractor_create
 from .cascade import cascade_creator
 from .cascade import cascade_detection_create
 
+from .drawing import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE)  
 from .drawing import cv2read_mpl
 from .drawing import cv2plot
 from .drawing import convert_coords

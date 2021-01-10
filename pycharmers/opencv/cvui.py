@@ -12,7 +12,9 @@ Licensed under the `MIT license <https://github.com/Dovyski/cvui/blob/master/LIC
 import sys
 import cv2
 import numpy as np
-from ..utils.generic_utils import now_str
+
+from ..utils.generic_utils import now_str, handleTypeError, NoneType
+from ..utils._colorings import toRED
 
 # Constants regarding component interactions
 ROW = 0
@@ -54,12 +56,12 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 	Args:
 		WindowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.
 		numWindows (int)          : How many window names exist in the `windowNames` array.
-		delayWaitKey (int)        : Delay value passed to `cv2.waitKey()`. If a negative value is informed (default is `-1`), cvui will not automatically call `cv2.waitKey()` within `cvui.update()`, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
+		delayWaitKey (int)        : Delay value passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
 		createNamedWindows (bool) : If OpenCV windows named according to `windowNames` should be created during the initialization. Windows are created using `cv2.namedWindow()`. If this parameter is `False`, ensure you call `cv2.namedWindow(WINDOW_NAME)` for all windows *before* initializing cvui, otherwise it will not be able to track UI interactions.
 	
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		>>> from pycharmers.__meta__ import __version__
 		... 
@@ -73,75 +75,76 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 		>>> cvui.init(WINDOW_NAME)
 		... 
 		>>> while (True):
-		>>> 	# Fill the frame with a nice color
-		>>> 	frame[:] = (49, 52, 49)
+		... 	# Fill the frame with a nice color
+		... 	frame[:] = (49, 52, 49)
 		... 
-		>>> 	# Show some pieces of text.
-		>>> 	cvui.text(frame, 50, 30, "Hey there!")
+		... 	# Show some pieces of text.
+		... 	cvui.text(frame, 50, 30, "Hey there!")
 		...  	
-		>>> 	# You can also specify the size of the text and its color
-		>>> 	# using hex 0xRRGGBB CSS-like style.
-		>>> 	cvui.text(frame, 200, 30, "Use hex 0xRRGGBB colors easily", 0.4, 0xff0000)
+		... 	# You can also specify the size of the text and its color
+		... 	# using hex 0xRRGGBB CSS-like style.
+		... 	cvui.text(frame, 200, 30, "Use hex 0xRRGGBB colors easily", 0.4, 0xff0000)
 		...  	
-		>>> 	# Sometimes you want to show text that is not that simple, e.g. strings + numbers.
-		>>> 	# You can use cvui.printf for that. It accepts a variable number of parameter, pretty
-		>>> 	# much like printf does.
-		>>> 	cvui.printf(frame, 200, 50, 0.4, 0x00ff00, "Use printf formatting: %d + %.2f = %f", 2, 3.2, 5.2)
+		... 	# Sometimes you want to show text that is not that simple, e.g. strings + numbers.
+		... 	# You can use cvui.printf for that. It accepts a variable number of parameter, pretty
+		... 	# much like printf does.
+		... 	cvui.printf(frame, 200, 50, fontScale=0.4, color=0x00ff00, fmt="Use printf formatting: %d + %.2f = %f", fmtArgs=(2, 3.2, 5.2))
 		... 
-		>>> 	# Buttons will return true if they were clicked, which makes
-		>>> 	# handling clicks a breeze.
-		>>> 	if cvui.button(frame, 50, 60, "Button"):
-		>>> 		print("Button clicked")
+		... 	# Buttons will return true if they were clicked, which makes
+		... 	# handling clicks a breeze.
+		... 	if cvui.button(frame, 50, 60, "Button"):
+		... 		print("Button clicked")
 		... 
-		>>> 	# If you do not specify the button width/height, the size will be
-		>>> 	# automatically adjusted to properly house the label.
-		>>> 	cvui.button(frame, 200, 70, "Button with large label")
+		... 	# If you do not specify the button width/height, the size will be
+		... 	# automatically adjusted to properly house the label.
+		... 	cvui.button(frame, 200, 70, "Button with large label")
 		...  	
-		>>> 	# You can tell the width and height you want
-		>>> 	cvui.button(frame, 410, 70, "x", 15, 15)
+		... 	# You can tell the width and height you want
+		... 	cvui.button(frame, 410, 70, "x", 15, 15)
 		... 
-		>>> 	# Window components are useful to create HUDs and similars. At the
-		>>> 	# moment, there is no implementation to constraint content within a
-		>>> 	# a window.
-		>>> 	cvui.window(frame, 50, 120, 120, 100, "Window")
+		... 	# Window components are useful to create HUDs and similars. At the
+		... 	# moment, there is no implementation to constraint content within a
+		... 	# a window.
+		... 	cvui.window(frame, 50, 120, 120, 100, "Window")
 		...  	
-		>>> 	# The counter component can be used to alter int variables. Use
-		>>> 	# the 4th parameter of the function to point it to the variable
-		>>> 	# to be changed.
-		>>> 	cvui.counter(frame, 200, 120, count)
+		... 	# The counter component can be used to alter int variables. Use
+		... 	# the 4th parameter of the function to point it to the variable
+		... 	# to be changed.
+		... 	cvui.counter(frame, 200, 120, count)
 		... 
-		>>> 	# Counter can be used with doubles too. You can also specify
-		>>> 	# the counter's step (how much it should change
-		>>> 	# its value after each button press), as well as the format
-		>>> 	# used to print the value.
-		>>> 	cvui.counter(frame, 320, 120, countFloat, 0.1, "%.1f")
+		... 	# Counter can be used with doubles too. You can also specify
+		... 	# the counter's step (how much it should change
+		... 	# its value after each button press), as well as the format
+		... 	# used to print the value.
+		... 	cvui.counter(frame, 320, 120, countFloat, 0.1, "%.1f")
 		... 
-		>>> 	# The trackbar component can be used to create scales.
-		>>> 	# It works with all numerical types (including chars).
-		>>> 	cvui.trackbar(frame, 420, 110, 150, trackbarValue, 0., 50.)
+		... 	# The trackbar component can be used to create scales.
+		... 	# It works with all numerical types (including chars).
+		... 	cvui.trackbar(frame, 420, 110, 150, trackbarValue, 0., 50.)
 		...  	
-		>>> 	# Checkboxes also accept a pointer to a variable that controls
-		>>> 	# the state of the checkbox (checked or not). cvui.checkbox() will
-		>>> 	# automatically update the value of the boolean after all
-		>>> 	# interactions, but you can also change it by yourself. Just
-		>>> 	# do "checked = [True]" somewhere and the checkbox will change
-		>>> 	# its appearance.
-		>>> 	cvui.checkbox(frame, 200, 160, "Checkbox", checked)
-		>>> 	cvui.checkbox(frame, 200, 190, "A checked checkbox", checked2)
+		... 	# Checkboxes also accept a pointer to a variable that controls
+		... 	# the state of the checkbox (checked or not). cvui.checkbox() will
+		... 	# automatically update the value of the boolean after all
+		... 	# interactions, but you can also change it by yourself. Just
+		... 	# do "checked = [True]" somewhere and the checkbox will change
+		... 	# its appearance.
+		... 	cvui.checkbox(frame, 200, 160, "Checkbox", checked)
+		... 	cvui.checkbox(frame, 200, 190, "A checked checkbox", checked2)
 		... 
-		>>> 	# Display the lib version at the bottom of the screen
-		>>> 	cvui.printf(frame, 600-80, 300-20, 0.4, 0xCECECE, "pycharmers v.%s", __version__)
+		... 	# Display the lib version at the bottom of the screen
+		... 	cvui.printf(frame, 600-150, 300-20, fontScale=0.4, color=0xCECECE, fmt="pycharmers v.%s", fmtArgs=(__version__))
 		... 
-		>>> 	# This function must be called *AFTER* all UI components. It does
-		>>> 	# all the behind the scenes magic to handle mouse clicks, etc.
-		>>> 	cvui.update()
+		... 	# This function must be called *AFTER* all UI components. It does
+		... 	# all the behind the scenes magic to handle mouse clicks, etc.
+		... 	cvui.update()
 		... 
-		>>> 	# Show everything on the screen
-		>>> 	cv2.imshow(WINDOW_NAME, frame)
+		... 	# Show everything on the screen
+		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 
-		>>> 	# Check if ESC key was pressed
-		>>> 	if cv2.waitKey(20) == cvui.ESCAPE:
-		>>> 		break
+		... 	# Check if ESC key was pressed
+		... 	if cv2.waitKey(20) == cvui.ESCAPE:
+		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
 	if isinstance(windowNames, str):
 		windowNames = [windowNames]
@@ -295,10 +298,10 @@ def update(windowName=""):
 	if __internal.delayWaitKey > 0:
 		__internal.lastKeyPressed = cv2.waitKey(__internal.delayWaitKey)
 
-	if __internal.blockStackEmpty() == False:
+	if not __internal.isblockStackEmpty:
 		__internal.error(2, 'Calling update() before finishing all begin*()/end*() calls. Did you forget to call a begin*() or an end*()? Check if every begin*() has an appropriate end*() call before you call update().')
 
-def text(where=None, x=0, y=0, text="", FontScale=0.4, color=0xCECECE):
+def text(where=None, x=0, y=0, text="", fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8):
 	"""Display a piece of text.
 
 	Args:
@@ -306,15 +309,18 @@ def text(where=None, x=0, y=0, text="", FontScale=0.4, color=0xCECECE):
 		x (int)            : Position X where the component should be placed.
 		y (int)            : Position Y where the component should be placed.
 		text (str)         : The text content.
-		FontScale (float)  : Size of the text.
+		fontFace (int)     : Font type. (default= ``cv2.FONT_HERSHEY_SIMPLEX`` )
+		fontScale (float)  : Font scale factor that is multiplied by the font-specific base size.
 		color (uint)       : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+		thickness (int)    : Thickness of the lines used to draw a text.
+		lineType (int)     : Line type. (default= ``cv2.LINE_8`` )
 	
 	Examples:
 		>>> import cv2
 		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		...  
-		>>> WINDOW_NAME	= 'Text'
+		>>> WINDOW_NAME	= "Text"
 		>>> frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)
 		>>> cvui.init(WINDOW_NAME)
 		...  
@@ -325,32 +331,38 @@ def text(where=None, x=0, y=0, text="", FontScale=0.4, color=0xCECECE):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
-	__internal.text(block, x, y, text, FontScale, color, True)
+	__internal.text(block, x, y, text, fontFace, fontScale, color, thickness, lineType, updateLayout=True)
 
-def printf(where=None, x=0, y=0, FontScale=0.4, color=0xCECECE, fmt="Text: %d and %f", *fmtArgs):
+def printf(where=None, x=0, y=0, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8, fmt="Text: %s", fmtArgs=("")):
 	"""Display a piece of text that can be formated using ``C stdio's printf()`` style. For instance if you want to display text mixed with numbers, you can use:
 
-	.. code-block:: c
+	.. code-block:: python
 
-		printf(frame, 10, 15, 0.4, 0xff0000, 'Text: %d and %f', 7, 3.1415)
-
+		>>> print("Text: %d and %f" % (7, 3.1415))
+		
 	Args:
-		where (np.ndarray)   : image/frame where the component should be rendered.
-		x (int)              : Position X where the component should be placed.
-		y (int)              : Position Y where the component should be placed.
-		FontScale (float)    : Size of the text.
-		color (uint)         : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
-		fmt (str)            : Formating string as it would be supplied for ``stdio's printf()``, e.g. ``'Text: %d and %f', 7, 3.1415``.
-	
+		where (np.ndarray) : image/frame where the component should be rendered.
+		x (int)            : Position X where the component should be placed.
+		y (int)            : Position Y where the component should be placed.
+		fontFace (int)     : Font type. (default= ``cv2.FONT_HERSHEY_SIMPLEX`` )
+		fontScale (float)  : Font scale factor that is multiplied by the font-specific base size.
+		color (uint)       : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+		thickness (int)    : Thickness of the lines used to draw a text.
+		lineType (int)     : Line type. (default= ``cv2.LINE_8`` )
+		fmt (str)          : Formating string as it would be supplied for stdio's ``printf()``, e.g. ``'Text: %d and %f', 7, 3.1415``.
+		fmtArgs (tuple)    : Arguments for ``fmt`` . 
+
 	Examples:
 		>>> import cv2
 		>>> import numpy as np
@@ -363,22 +375,23 @@ def printf(where=None, x=0, y=0, FontScale=0.4, color=0xCECECE, fmt="Text: %d an
 		... 
 		>>> while (True):
 		...  	frame[:] = (49, 52, 49)
-		...  	cvui.printf(frame, 20, 20, 0.4, 0xCECECE, "Date: %s", now_str())
+		...  	cvui.printf(frame, 20, 20, fontScale=0.4, color=0xCECECE, fmt="Date: %s", fmtArgs=(now_str()))
 		...  	cvui.update()
 		...  	cv2.imshow(WINDOW_NAME, frame)
 		...  	if cv2.waitKey(20) == cvui.ESCAPE:
 		...  		break
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	text = fmt % fmtArgs
-	__internal.text(block, x, y, text, FontScale, color, True)
+	__internal.text(block, x, y, text, fontFace, fontScale, color, thickness, lineType, updateLayout=True)	
 
 def counter(where=None, x=0, y=0, value=[], step=1, fmt=""):
 	"""Display a counter for integer values that the user can increase/descrease by clicking the up and down arrows.
@@ -408,19 +421,21 @@ def counter(where=None, x=0, y=0, value=[], step=1, fmt=""):
 		>>> while (True):
 		... 	frame[:] = (49, 52, 49)
 		... 	cvui.counter(frame, 10, 10, countFloat, 0.1, '%.1f')
-		... 	cvui.printf(frame,  10, 50, 0.4, 0xCECECE, "Current value: %.1f", countFloat[0])
+		... 	cvui.printf(frame,  10, 50, fontScale=0.4, color=0xCECECE, fmt="Current value: %.1f", fmtArgs=(countFloat[0]))
 		... 	cvui.update()
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	if len(fmt)==0:
 		fmt = "%d" if (isinstance(value[0], int) and isinstance(step, int)) else "%.1f"
@@ -455,20 +470,22 @@ def checkbox(where=None, x=0, y=0, label="", state=[], color=0xCECECE):
 		>>> while (True):
 		... 	frame[:] = (49, 52, 49)
 		... 	cvui.checkbox(frame, 10, 10, 'Checkbox', checked)
-		... 	cvui.printf(frame,  10, 50, 0.4, 0xCECECE, "Current value: %s", checked[0])
+		... 	cvui.printf(frame,  10, 50, fontScale=0.4, color=0xCECECE, fmt="Current value: %s", fmtArgs=(checked[0]))
 		... 	cvui.update()
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	return __internal.checkbox(block, x, y, label, state, color)
 
@@ -485,8 +502,8 @@ def mouse(windowName=None, button=None, query=None):
 		isMouseButton (bool) : (otherwise) Whether the ``button`` and ``query`` are match.
 
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		... 
 		>>> WINDOW_NAME	= "Mouse"
@@ -500,7 +517,7 @@ def mouse(windowName=None, button=None, query=None):
 		... 
 		... 	# Show the coordinates of the mouse pointer on the screen
 		... 	cvui.text(frame, 10, 30, 'Click (any) mouse button and drag the pointer around to select an area.')
-		... 	cvui.printf(frame, 10, 50, 0.4, 0xff0000, 'Mouse pointer is at (%d,%d)', cvui.mouse().x, cvui.mouse().y)
+		... 	cvui.printf(frame, 10, 50, fontScale=0.4, color=0xff0000, fmt='Mouse pointer is at (%d,%d)', fmtArgs=(cvui.mouse().x, cvui.mouse().y))
 		... 
 		... 	# The function "bool cvui.mouse(int query)" allows you to query the mouse for events.
 		... 	# E.g. cvui.mouse(cvui.DOWN)
@@ -524,8 +541,8 @@ def mouse(windowName=None, button=None, query=None):
 		... 		rectangle.height = cvui.mouse().y - rectangle.y
 		... 
 		... 		# Show the rectangle coordinates and size
-		... 		cvui.printf(frame, rectangle.x + 5, rectangle.y + 5, 0.3, 0xff0000, '(%d,%d)', rectangle.x, rectangle.y)
-		... 		cvui.printf(frame, cvui.mouse().x + 5, cvui.mouse().y + 5, 0.3, 0xff0000, 'w:%d, h:%d', rectangle.width, rectangle.height)
+		... 		cvui.printf(frame, rectangle.x    + 5, rectangle.y    + 5, fontScale=0.3, color=0xff0000, fmt='(%d,%d)',    fmtArgs=(rectangle.x, rectangle.y))
+		... 		cvui.printf(frame, cvui.mouse().x + 5, cvui.mouse().y + 5, fontScale=0.3, color=0xff0000, fmt='w:%d, h:%d', fmtArgs=(rectangle.width, rectangle.height))
 		... 
 		... 	# Did any mouse button go up?
 		... 	if cvui.mouse(query=cvui.UP):
@@ -550,6 +567,7 @@ def mouse(windowName=None, button=None, query=None):
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
 	if query is None:
 		return __internal.mouseW(windowName or "")
@@ -583,8 +601,8 @@ def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=No
 
 	Examples:	
 		>>> #=== If you use "width", "height", "label" ===
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		... 
 		>>> WINDOW_NAME	= 'Button shortcut'
@@ -613,10 +631,11 @@ def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=No
 		... 	# will do it automatically.
 		... 	cvui.update()
 		... 	cv2.imshow(WINDOW_NAME, frame)
+		>>> cv2.destroyAllWindows()
 		...
 		>>> #=== If you use "idle", "over", "down" ===
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui, SAMPLE_LENA_IMG, cv2read_mpl
 		...
 		>>> WINDOW_NAME	= 'Image button'
@@ -652,14 +671,16 @@ def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=No
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	if width*height>0:
 		return __internal.buttonWH(block, x, y, width, height, label, True)
@@ -678,10 +699,9 @@ def image(where=None, x=0, y=0, image=None):
 		image (np.ndarray) : Image to be rendered in the specified destination.
 	
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui, SAMPLE_LENA_IMG
-		>>> import random
 		... 
 		>>> WINDOW_NAME	= 'Image'
 		>>> frame = np.zeros(shape=(1200, 512, 3), dtype=np.uint8)
@@ -705,14 +725,16 @@ def image(where=None, x=0, y=0, image=None):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	__internal.image(block, x, y, image)
 
@@ -733,8 +755,8 @@ def trackbar(where=None, x=0, y=0, width=50, value=[], min=0., max=25., segments
 		discreteStep (number) : Amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option ``cvui.TRACKBAR_DISCRETE`` is ON)
 
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		... 
 		>>> WINDOW_NAME	= 'Trackbar'
@@ -803,14 +825,16 @@ def trackbar(where=None, x=0, y=0, width=50, value=[], min=0., max=25., segments
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	params = TrackbarParams(min, max, discreteStep, segments, labelfmt, options)
 	return __internal.trackbar(block, x, y, width, value, params)
@@ -848,14 +872,16 @@ def window(where=None, x=0, y=0, width=640, height=480, title=""):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	__internal.window(block, x, y, width, height, title)
 
@@ -944,13 +970,14 @@ def rect(where=None, x=0, y=0, width=160, height=120, borderColor=0xff0000, fill
 		...     if cv2.waitKey(20) == 27:
 		...         break
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	__internal.rect(block, x, y, width, height, borderColor, fillingColor)
 
@@ -967,8 +994,8 @@ def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00
 		color (uint)       : Color of sparkline in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
 	
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		... 
 		>>> WINDOW_NAME	= 'Sparkline'
@@ -995,18 +1022,20 @@ def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
 	__internal.sparkline(block, x, y, values, width, height, color)
 
-def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0):
+def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=None):
 	"""Start a new row.
 
 	One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don't have to think about assigning a ``x`` and ``y`` coordinate. Instead you just add components and cvui will place them as you go.
@@ -1022,10 +1051,11 @@ def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0):
 		width (int)        : Width of the row. If a negative value is specified, the width of the row will be automatically calculated based on the content of the block.
 		height (int)       : Height of the row. If a negative value is specified, the height of the row will be automatically calculated based on the content of the block.
 		padding (int)      : Space, in pixels, among the components of the block.
+		bgColor (tuple)    : Background Color.
 	
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		... 
 		>>> WINDOW_NAME	= 'Nested columns'
@@ -1055,22 +1085,24 @@ def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
-	__internal.begin(ROW, block.where, x, y, width, height, padding)
+	__internal.begin(ROW, block.where, x, y, width, height, padding, bgColor)
 
 def endRow():
 	"""End a row. You must call this function only if you have previously called its counter part, the ``beginRow()`` function."""
 	__internal.end(ROW)
 
-def beginColumn(where=None, x=0, y=0, width=-1, height=-1, padding=0):
+def beginColumn(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=None):
 	"""Start a new column.
 
 	One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don't have to think about assigning a X and Y coordinate. Instead you just add components and cvui will place them as you go.
@@ -1084,10 +1116,11 @@ def beginColumn(where=None, x=0, y=0, width=-1, height=-1, padding=0):
 		width (int)        : Width of the column. If a negative value is specified, the width of the column will be automatically calculated based on the content of the block.
 		height (int)       : Height of the column. If a negative value is specified, the height of the column will be automatically calculated based on the content of the block.
 		padding (int)      : Space, in pixels, among the components of the block.
+		bgColor (tuple)    : Background Color.
 	
 	Examples:
-		>>> import numpy as np
 		>>> import cv2
+		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
 		...  
 		>>> WINDOW_NAME	= 'Nested columns'
@@ -1122,16 +1155,18 @@ def beginColumn(where=None, x=0, y=0, width=-1, height=-1, padding=0):
 		... 
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
 		__internal.screen.where = where
 		block = __internal.screen
 	else:
 		block = __internal.topBlock()
-		x = block.anchor.x
-		y = block.anchor.y
+		x += block.anchor.x
+		y += block.anchor.y
 
-	__internal.begin(COLUMN, block.where, x, y, width, height, padding)
+	__internal.begin(COLUMN, block.where, x, y, width, height, padding, bgColor)
 
 def endColumn():
 	"""End a column. You must call this function only if you have previously called its counter part, i.e. ``beginColumn()``"""
@@ -1301,17 +1336,28 @@ class TrackbarParams:
 		self.labelfmt = labelfmt
 
 class Internal:
-	"""This class contains all stuff that cvui uses internally to render and control interaction with components."""
+	"""This class contains all stuff that cvui uses internally to render and control interaction with components.
+	
+	Attributes:
+		defaultContext (str)  : Default window name.
+		currentContext (str)  : Current (active) window name.
+		contexts (dict)       : Indexed by the window name.
+		lastKeyPressed (int)  : Last key that was pressed. TODO: collect it per window
+		delayWaitKey (int)    : Delay value (milliseconds) passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
+		screen (Block)        : Block structure.
+		stack (list)          : Block stack.
+		trackbarMarginX (int) : X-axis Margin of trackbar.
+		_render (Render)      : contains all rendering methods. ( ``_render._internal = self`` )
+	"""
 	def __init__(self):
 		self.defaultContext = ''
 		self.currentContext = ''
-		self.contexts = {}             # indexed by the window name.
-		self.buffer = []
-		self.lastKeyPressed = -1       # TODO: collect it per window
+		self.contexts = {}
+		# self.buffer = []
+		self.lastKeyPressed = -1
 		self.delayWaitKey = -1
 		self.screen = Block()
-		self.stack = [Block() for i in range(100)] # TODO: make it dynamic
-		self.stackCount = -1
+		self.stack = []
 		self.trackbarMarginX = 14
 
 		self._render = Render()
@@ -1333,7 +1379,7 @@ class Internal:
 		"""Return the last position of the mouse.
 
 		Args:
-			windowName (str) : Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in ``cvui.init()`).
+			windowName (str) : Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in ``cvui.init()`` ).
 		
 		Returns:
 			point (Point) : A point containing the position of the mouse cursor in the speficied window.
@@ -1418,7 +1464,7 @@ class Internal:
 		return (bitset & value) != 0
 
 	def error(self, errorId, message):
-		print('[CVUI] Fatal error (code ', errorId, '): ', message)
+		print(toRED(f"[CVUI] Fatal error (code {errorId}) :"), message)
 		cv2.waitKey(100000)
 		sys.exit(-1)
 
@@ -1441,6 +1487,7 @@ class Internal:
 			self.error(5, 'Unable to read context. Did you forget to call cvui.init()?')
 
 	def updateLayoutFlow(self, block, size):
+		"""Update layot for additional Rows or Columns."""
 		if block.type == ROW:
 			aValue = size.width + block.padding
 
@@ -1455,28 +1502,31 @@ class Internal:
 			block.fill.height += aValue
 			block.fill.width = max(size.width, block.fill.width)
 
-	def blockStackEmpty(self):
-		return self.stackCount == -1
+	@property
+	def isblockStackEmpty(self):
+		"""Is block stack ( ``self.stack`` ) is empty or not."""
+		return len(self.stack) == 0
+
+	@property
+	def stackCount(self):
+		"""The numeber of blocks in stack ( ``self.stack`` )"""
+		return len(self.stack)
 
 	def topBlock(self):
-		if self.stackCount < 0:
+		if self.isblockStackEmpty:
 			self.error(3, 'You are using a function that should be enclosed by begin*() and end*(), but you probably forgot to call begin*().')
-
-		return self.stack[self.stackCount]
+		return self.stack[-1]
 
 	def pushBlock(self):
-		self.stackCount += 1
-		return self.stack[self.stackCount]
+		block = Block()
+		self.stack.append(block)
+		return block
 
 	def popBlock(self):
 		# Check if there is anything to be popped out from the stack.
-		if self.stackCount < 0:
+		if self.isblockStackEmpty:
 			self.error(1, 'Mismatch in the number of begin*()/end*() calls. You are calling one more than the other.')
-
-		aIndex = self.stackCount
-		self.stackCount -= 1
-
-		return self.stack[aIndex]
+		return self.stack.pop()
 
 	def createLabel(self, label):
 		i = 0
@@ -1506,13 +1556,13 @@ class Internal:
 
 		return aLabel
 
-	def text(self, block, x, y, text, FontScale, color, updateLayout):
-		aSizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, FontScale, 1)
+	def text(self, block, x, y, text, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8, updateLayout=True):
+		sizeInfo, aBaseline = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
 
-		aTextSize = Size(aSizeInfo[0], aSizeInfo[1])
+		aTextSize = Size(sizeInfo[0], sizeInfo[1])
 		aPos = Point(x, y + aTextSize.height)
 
-		self._render.text(block, text, aPos, FontScale, color)
+		self._render.text(block, text, aPos, fontFace=fontFace, fontScale=fontScale, color=color, thickness=thickness, lineType=lineType)
 
 		if updateLayout:
 			# Add an extra pixel to the height to overcome OpenCV font size problems.
@@ -1532,16 +1582,16 @@ class Internal:
 			value[0] += step
 
 		# Update the layout flow
-		aSize = Size(22 * 2 + aContentArea.width, aContentArea.height)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(22 * 2 + aContentArea.width, aContentArea.height)
+		self.updateLayoutFlow(block, size)
 
 		return value[0]
 
 	def checkbox(self, block, x, y, label, state, color):
 		aMouse = self.getContext().mouse
 		aRect = Rect(x, y, 15, 15)
-		aSizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 		aHitArea = Rect(x, y, aRect.width + aTextSize.width + 6, aRect.height)
 		aMouseIsOver = aHitArea.contains(aMouse.position)
 
@@ -1559,8 +1609,8 @@ class Internal:
 			self._render.checkboxCheck(block, aRect)
 
 		# Update the layout flow
-		aSize = Size(aHitArea.width, aHitArea.height)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(aHitArea.width, aHitArea.height)
+		self.updateLayoutFlow(block, size)
 
 		return state[0]
 
@@ -1608,8 +1658,8 @@ class Internal:
 
 	def buttonWH(self, block, x, y, width, height, label, updateLayout):
 		# Calculate the space that the label will fill
-		aSizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 
 		# Make the button big enough to house the label
 		aRect = Rect(x, y, width, height)
@@ -1622,8 +1672,8 @@ class Internal:
 		# Update the layout flow according to button size
 		# if we were told to update.
 		if updateLayout:
-			aSize = Size(width, height)
-			self.updateLayoutFlow(block, aSize)
+			size = Size(width, height)
+			self.updateLayoutFlow(block, size)
 
 		aWasShortcutPressed = False
 
@@ -1639,8 +1689,8 @@ class Internal:
 
 	def button(self, block, x, y, label):
 		# Calculate the space that the label will fill
-		aSizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+		sizeInfo, aBaseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 
 		# Create a button based on the size of the text
 		return self.buttonWH(block, x, y, aTextSize.width + 30, aTextSize.height + 18, label, True)
@@ -1659,8 +1709,8 @@ class Internal:
 		# Update the layout flow according to button size
 		# if we were told to update.
 		if updateLayout:
-			aSize = Size(aRect.width, aRect.height)
-			self.updateLayoutFlow(block, aSize)
+			size = Size(aRect.width, aRect.height)
+			self.updateLayoutFlow(block, size)
 
 		# Return true if the button was clicked
 		return aStatus == CLICK
@@ -1675,8 +1725,8 @@ class Internal:
 		self._render.image(block, aRect, image)
 
 		# Update the layout flow according to image size
-		aSize = Size(aImageCols, aImageRows)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(aImageCols, aImageRows)
+		self.updateLayoutFlow(block, size)
 
 	def trackbar(self, block, x, y, width, value, params):
 		aMouse = self.getContext().mouse
@@ -1693,7 +1743,7 @@ class Internal:
 				self.trackbarForceValuesAsMultiplesOfSmallStep(params, value)
 
 		# Update the layout flow
-		# TODO: use aSize = aContentArea.size()?
+		# TODO: use size = aContentArea.size()?
 		self.updateLayoutFlow(block, aContentArea)
 
 		return value[0] != aValue
@@ -1705,8 +1755,8 @@ class Internal:
 		self._render.window(block, aTitleBar, aContent, title)
 
 		# Update the layout flow
-		aSize = Size(width, height)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(width, height)
+		self.updateLayoutFlow(block, size)
 
 	def rect(self, block, x, y, width, height, borderColor, fillingColor):
 		aAnchor = Point(x, y);
@@ -1720,8 +1770,8 @@ class Internal:
 		self._render.rect(block, aRect, borderColor, fillingColor)
 
 		# Update the layout flow
-		aSize = Size(aRect.width, aRect.height)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(aRect.width, aRect.height)
+		self.updateLayoutFlow(block, size)
 
 	def sparkline(self, block, x, y, values, width, height, color):
 		aRect = Rect(x, y, width, height)
@@ -1731,11 +1781,11 @@ class Internal:
 			aMin,aMax = self.findMinMax(values)
 			self._render.sparkline(block, values, aRect, aMin, aMax, color)
 		else:
-			self.text(block, x, y, 'No data.' if aHowManyValues == 0 else 'Insufficient data points.', 0.4, 0xCECECE, False)
+			self.text(block, x, y, 'No data.' if aHowManyValues == 0 else 'Insufficient data points.', fontScale=0.4, color=0xCECECE, updateLayout=False)
 
 		# Update the layout flow
-		aSize = Size(width, height)
-		self.updateLayoutFlow(block, aSize)
+		size = Size(width, height)
+		self.updateLayoutFlow(block, size)
 
 	def hexToScalar(self, color):
 		aAlpha = (color >> 24) & 0xff
@@ -1745,39 +1795,41 @@ class Internal:
 
 		return (aBlue, aGreen, aRed, aAlpha)
 
-	def begin(self, type, where, x, y, width, height, padding):
-		aBlock = self.pushBlock()
+	def begin(self, type, where, x, y, width, height, padding, bgColor=None):
+		if bgColor is not None: 
+			where[y:y+height, x:x+width, :] = bgColor
 
-		aBlock.where = where
+		block = self.pushBlock()
+		block.where = where
 
-		aBlock.rect.x = x
-		aBlock.rect.y = y
-		aBlock.rect.width = width
-		aBlock.rect.height = height
+		block.rect.x = x
+		block.rect.y = y
+		block.rect.width = width
+		block.rect.height = height
 
-		aBlock.fill = aBlock.rect
-		aBlock.fill.width = 0
-		aBlock.fill.height = 0
+		block.fill = block.rect
+		block.fill.width = 0
+		block.fill.height = 0
 
-		aBlock.anchor.x = x
-		aBlock.anchor.y = y
+		block.anchor.x = x
+		block.anchor.y = y
 
-		aBlock.padding = padding
-		aBlock.type = type
+		block.padding = padding
+		block.type = type
 
 	def end(self, type):
-		aBlock = self.popBlock()
+		block = self.popBlock()
 
-		if aBlock.type != type:
+		if block.type != type:
 			self.error(4, 'Calling wrong type of end*(). E.g. endColumn() instead of endRow(). Check if your begin*() calls are matched with their appropriate end*() calls.')
 
 		# If we still have blocks in the stack, we must update
 		# the current top with the dimensions that were filled by
 		# the newly popped block.
 
-		if self.blockStackEmpty() == False:
-			aTop = self.topBlock()
-			aSize = Size()
+		if not self.isblockStackEmpty:
+			top_block = self.topBlock()
+			size = Size()
 
 			# If the block has rect.width < 0 or rect.heigth < 0, it means the
 			# user don't want to calculate the block's width/height. It's up to
@@ -1786,10 +1838,10 @@ class Internal:
 			# zero, then the user is very specific about the desired size. In that
 			# case, we use the provided width/height, no matter what the fill rect
 			# actually is.
-			aSize.width = aBlock.fill.width if aBlock.rect.width < 0 else aBlock.rect.width
-			aSize.height = aBlock.fill.height if aBlock.rect.height < 0 else aBlock.rect.height
+			size.width = block.fill.width if block.rect.width < 0 else block.rect.width
+			size.height = block.fill.height if block.rect.height < 0 else block.rect.height
 
-			self.updateLayoutFlow(aTop, aSize)
+			self.updateLayoutFlow(top_block, size)
 
 	# Find the min and max values of a vector
 	def findMinMax(self, values):
@@ -1815,19 +1867,19 @@ class Render:
 
 		cv2.rectangle(where, aStartPoint, aEndPoint, color, Thickness, LineType)
 
-	def text(self, block, text, position, FontScale, color):
+	def text(self, block, text, position, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8):
 		aPosition = (int(position.x), int(position.y))
-		cv2.putText(block.where, text, aPosition, cv2.FONT_HERSHEY_SIMPLEX, FontScale, self._internal.hexToScalar(color), 1, cv2.LINE_AA)
+		cv2.putText(img=block.where, text=text, org=aPosition, fontFace=fontFace, fontScale=fontScale, color=self._internal.hexToScalar(color), thickness=thickness, lineType=lineType)
 
-	def counter(self, block, shape, value):
+	def counter(self, block, shape, value, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_AA):
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29), CVUI_FILLED) # fill
 		self.rectangle(block.where, shape, (0x45, 0x45, 0x45))              # border
 
-		aSizeInfo, aBaseline = cv2.getTextSize(value, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
-		aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+		sizeInfo, aBaseline = cv2.getTextSize(text=value, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
+		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 
 		aPos = Point(shape.x + shape.width / 2 - aTextSize.width / 2, shape.y + aTextSize.height / 2 + shape.height / 2)
-		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED)
+		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hexToScalar(color), thickness=thickness, lineType=lineType)
 
 	def button(self, block, state, shape, label):
 		# Outline
@@ -1851,25 +1903,25 @@ class Render:
 		block.where[rect.y: rect.y + rect.height, rect.x: rect.x + rect.width] = image
 
 	def putText(self, block, state, color, text, position):
-		aFontScale = 0.39 if state == DOWN else 0.4
+		afontScale = 0.39 if state == DOWN else 0.4
 		aTextSize = Rect()
 
 		if text != '':
 			aPosition = (int(position.x), int(position.y))
-			cv2.putText(block.where, text, aPosition, cv2.FONT_HERSHEY_SIMPLEX, aFontScale, color, 1, CVUI_ANTIALISED)
+			cv2.putText(block.where, text, aPosition, cv2.FONT_HERSHEY_SIMPLEX, afontScale, color, 1, CVUI_ANTIALISED)
 
-			aSizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, aFontScale, 1)
-			aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+			sizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
+			aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 
 		return aTextSize.width
 
 	def putTextCentered(self, block, position, text):
-		aFontScale = 0.3
+		afontScale = 0.3
 
-		aSizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, aFontScale, 1)
-		aTextSize = Rect(0, 0, aSizeInfo[0], aSizeInfo[1])
+		sizeInfo, aBaseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
+		aTextSize = Rect(0, 0, sizeInfo[0], sizeInfo[1])
 		aPositionDecentered = Point(position.x - aTextSize.width / 2, position.y)
-		cv2.putText(block.where, text, (int(aPositionDecentered.x), int(aPositionDecentered.y)), cv2.FONT_HERSHEY_SIMPLEX, aFontScale, (0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED)
+		cv2.putText(block.where, text, (int(aPositionDecentered.x), int(aPositionDecentered.y)), cv2.FONT_HERSHEY_SIMPLEX, afontScale, (0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED)
 
 		return aTextSize.width
 
@@ -2009,7 +2061,7 @@ class Render:
 
 		# Border
 		shape.x += 1
-		shape.y+=1
+		shape.y +=1
 		shape.width -= 2
 		shape.height -= 2
 		self.rectangle(block.where, shape, (0x17, 0x17, 0x17))
@@ -2023,7 +2075,7 @@ class Render:
 
 	def checkboxLabel(self, block, rect, label, textSize, color):
 		aPos = Point(rect.x + rect.width + 6, rect.y + textSize.height + rect.height / 2 - textSize.height / 2 - 1)
-		self.text(block, label, aPos, 0.4, color)
+		self.text(block, label, aPos, fontScale=0.4, color=color)
 
 	def checkboxCheck(self, block, shape):
 		shape.x += 1
@@ -2081,13 +2133,13 @@ class Render:
 		self.rectangle(block.where, position, aBorderColor)
 
 	def sparkline(self, block, values, rect, min, max, color):
-		aSize = len(values)
+		size = len(values)
 		i = 0
 		aScale = max - min
-		aGap = float(rect.width) / aSize
+		aGap = float(rect.width) / size
 		aPosX = rect.x
 
-		while i <= aSize - 2:
+		while i <= size - 2:
 			x = aPosX;
 			y = (values[i] - min) / aScale * -(rect.height - 5) + rect.y + rect.height - 5
 			aPoint1 = Point(x, y)

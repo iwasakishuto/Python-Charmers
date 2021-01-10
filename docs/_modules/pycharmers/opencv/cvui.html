@@ -63,7 +63,9 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span>
+
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span><span class="p">,</span> <span class="n">handleTypeError</span><span class="p">,</span> <span class="n">NoneType</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toRED</span>
 
 <span class="c1"># Constants regarding component interactions</span>
 <span class="n">ROW</span> <span class="o">=</span> <span class="mi">0</span>
@@ -105,12 +107,12 @@
 <span class="sd">	Args:</span>
 <span class="sd">		WindowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.</span>
 <span class="sd">		numWindows (int)          : How many window names exist in the `windowNames` array.</span>
-<span class="sd">		delayWaitKey (int)        : Delay value passed to `cv2.waitKey()`. If a negative value is informed (default is `-1`), cvui will not automatically call `cv2.waitKey()` within `cvui.update()`, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</span>
+<span class="sd">		delayWaitKey (int)        : Delay value passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</span>
 <span class="sd">		createNamedWindows (bool) : If OpenCV windows named according to `windowNames` should be created during the initialization. Windows are created using `cv2.namedWindow()`. If this parameter is `False`, ensure you call `cv2.namedWindow(WINDOW_NAME)` for all windows *before* initializing cvui, otherwise it will not be able to track UI interactions.</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.__meta__ import __version__</span>
 <span class="sd">		... </span>
@@ -124,75 +126,76 @@
 <span class="sd">		&gt;&gt;&gt; cvui.init(WINDOW_NAME)</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; while (True):</span>
-<span class="sd">		&gt;&gt;&gt; 	# Fill the frame with a nice color</span>
-<span class="sd">		&gt;&gt;&gt; 	frame[:] = (49, 52, 49)</span>
+<span class="sd">		... 	# Fill the frame with a nice color</span>
+<span class="sd">		... 	frame[:] = (49, 52, 49)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Show some pieces of text.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.text(frame, 50, 30, &quot;Hey there!&quot;)</span>
+<span class="sd">		... 	# Show some pieces of text.</span>
+<span class="sd">		... 	cvui.text(frame, 50, 30, &quot;Hey there!&quot;)</span>
 <span class="sd">		...  	</span>
-<span class="sd">		&gt;&gt;&gt; 	# You can also specify the size of the text and its color</span>
-<span class="sd">		&gt;&gt;&gt; 	# using hex 0xRRGGBB CSS-like style.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.text(frame, 200, 30, &quot;Use hex 0xRRGGBB colors easily&quot;, 0.4, 0xff0000)</span>
+<span class="sd">		... 	# You can also specify the size of the text and its color</span>
+<span class="sd">		... 	# using hex 0xRRGGBB CSS-like style.</span>
+<span class="sd">		... 	cvui.text(frame, 200, 30, &quot;Use hex 0xRRGGBB colors easily&quot;, 0.4, 0xff0000)</span>
 <span class="sd">		...  	</span>
-<span class="sd">		&gt;&gt;&gt; 	# Sometimes you want to show text that is not that simple, e.g. strings + numbers.</span>
-<span class="sd">		&gt;&gt;&gt; 	# You can use cvui.printf for that. It accepts a variable number of parameter, pretty</span>
-<span class="sd">		&gt;&gt;&gt; 	# much like printf does.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.printf(frame, 200, 50, 0.4, 0x00ff00, &quot;Use printf formatting: %d + %.2f = %f&quot;, 2, 3.2, 5.2)</span>
+<span class="sd">		... 	# Sometimes you want to show text that is not that simple, e.g. strings + numbers.</span>
+<span class="sd">		... 	# You can use cvui.printf for that. It accepts a variable number of parameter, pretty</span>
+<span class="sd">		... 	# much like printf does.</span>
+<span class="sd">		... 	cvui.printf(frame, 200, 50, fontScale=0.4, color=0x00ff00, fmt=&quot;Use printf formatting: %d + %.2f = %f&quot;, fmtArgs=(2, 3.2, 5.2))</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Buttons will return true if they were clicked, which makes</span>
-<span class="sd">		&gt;&gt;&gt; 	# handling clicks a breeze.</span>
-<span class="sd">		&gt;&gt;&gt; 	if cvui.button(frame, 50, 60, &quot;Button&quot;):</span>
-<span class="sd">		&gt;&gt;&gt; 		print(&quot;Button clicked&quot;)</span>
+<span class="sd">		... 	# Buttons will return true if they were clicked, which makes</span>
+<span class="sd">		... 	# handling clicks a breeze.</span>
+<span class="sd">		... 	if cvui.button(frame, 50, 60, &quot;Button&quot;):</span>
+<span class="sd">		... 		print(&quot;Button clicked&quot;)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# If you do not specify the button width/height, the size will be</span>
-<span class="sd">		&gt;&gt;&gt; 	# automatically adjusted to properly house the label.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.button(frame, 200, 70, &quot;Button with large label&quot;)</span>
+<span class="sd">		... 	# If you do not specify the button width/height, the size will be</span>
+<span class="sd">		... 	# automatically adjusted to properly house the label.</span>
+<span class="sd">		... 	cvui.button(frame, 200, 70, &quot;Button with large label&quot;)</span>
 <span class="sd">		...  	</span>
-<span class="sd">		&gt;&gt;&gt; 	# You can tell the width and height you want</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.button(frame, 410, 70, &quot;x&quot;, 15, 15)</span>
+<span class="sd">		... 	# You can tell the width and height you want</span>
+<span class="sd">		... 	cvui.button(frame, 410, 70, &quot;x&quot;, 15, 15)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Window components are useful to create HUDs and similars. At the</span>
-<span class="sd">		&gt;&gt;&gt; 	# moment, there is no implementation to constraint content within a</span>
-<span class="sd">		&gt;&gt;&gt; 	# a window.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.window(frame, 50, 120, 120, 100, &quot;Window&quot;)</span>
+<span class="sd">		... 	# Window components are useful to create HUDs and similars. At the</span>
+<span class="sd">		... 	# moment, there is no implementation to constraint content within a</span>
+<span class="sd">		... 	# a window.</span>
+<span class="sd">		... 	cvui.window(frame, 50, 120, 120, 100, &quot;Window&quot;)</span>
 <span class="sd">		...  	</span>
-<span class="sd">		&gt;&gt;&gt; 	# The counter component can be used to alter int variables. Use</span>
-<span class="sd">		&gt;&gt;&gt; 	# the 4th parameter of the function to point it to the variable</span>
-<span class="sd">		&gt;&gt;&gt; 	# to be changed.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.counter(frame, 200, 120, count)</span>
+<span class="sd">		... 	# The counter component can be used to alter int variables. Use</span>
+<span class="sd">		... 	# the 4th parameter of the function to point it to the variable</span>
+<span class="sd">		... 	# to be changed.</span>
+<span class="sd">		... 	cvui.counter(frame, 200, 120, count)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Counter can be used with doubles too. You can also specify</span>
-<span class="sd">		&gt;&gt;&gt; 	# the counter&#39;s step (how much it should change</span>
-<span class="sd">		&gt;&gt;&gt; 	# its value after each button press), as well as the format</span>
-<span class="sd">		&gt;&gt;&gt; 	# used to print the value.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.counter(frame, 320, 120, countFloat, 0.1, &quot;%.1f&quot;)</span>
+<span class="sd">		... 	# Counter can be used with doubles too. You can also specify</span>
+<span class="sd">		... 	# the counter&#39;s step (how much it should change</span>
+<span class="sd">		... 	# its value after each button press), as well as the format</span>
+<span class="sd">		... 	# used to print the value.</span>
+<span class="sd">		... 	cvui.counter(frame, 320, 120, countFloat, 0.1, &quot;%.1f&quot;)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# The trackbar component can be used to create scales.</span>
-<span class="sd">		&gt;&gt;&gt; 	# It works with all numerical types (including chars).</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.trackbar(frame, 420, 110, 150, trackbarValue, 0., 50.)</span>
+<span class="sd">		... 	# The trackbar component can be used to create scales.</span>
+<span class="sd">		... 	# It works with all numerical types (including chars).</span>
+<span class="sd">		... 	cvui.trackbar(frame, 420, 110, 150, trackbarValue, 0., 50.)</span>
 <span class="sd">		...  	</span>
-<span class="sd">		&gt;&gt;&gt; 	# Checkboxes also accept a pointer to a variable that controls</span>
-<span class="sd">		&gt;&gt;&gt; 	# the state of the checkbox (checked or not). cvui.checkbox() will</span>
-<span class="sd">		&gt;&gt;&gt; 	# automatically update the value of the boolean after all</span>
-<span class="sd">		&gt;&gt;&gt; 	# interactions, but you can also change it by yourself. Just</span>
-<span class="sd">		&gt;&gt;&gt; 	# do &quot;checked = [True]&quot; somewhere and the checkbox will change</span>
-<span class="sd">		&gt;&gt;&gt; 	# its appearance.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.checkbox(frame, 200, 160, &quot;Checkbox&quot;, checked)</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.checkbox(frame, 200, 190, &quot;A checked checkbox&quot;, checked2)</span>
+<span class="sd">		... 	# Checkboxes also accept a pointer to a variable that controls</span>
+<span class="sd">		... 	# the state of the checkbox (checked or not). cvui.checkbox() will</span>
+<span class="sd">		... 	# automatically update the value of the boolean after all</span>
+<span class="sd">		... 	# interactions, but you can also change it by yourself. Just</span>
+<span class="sd">		... 	# do &quot;checked = [True]&quot; somewhere and the checkbox will change</span>
+<span class="sd">		... 	# its appearance.</span>
+<span class="sd">		... 	cvui.checkbox(frame, 200, 160, &quot;Checkbox&quot;, checked)</span>
+<span class="sd">		... 	cvui.checkbox(frame, 200, 190, &quot;A checked checkbox&quot;, checked2)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Display the lib version at the bottom of the screen</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.printf(frame, 600-80, 300-20, 0.4, 0xCECECE, &quot;pycharmers v.%s&quot;, __version__)</span>
+<span class="sd">		... 	# Display the lib version at the bottom of the screen</span>
+<span class="sd">		... 	cvui.printf(frame, 600-150, 300-20, fontScale=0.4, color=0xCECECE, fmt=&quot;pycharmers v.%s&quot;, fmtArgs=(__version__))</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# This function must be called *AFTER* all UI components. It does</span>
-<span class="sd">		&gt;&gt;&gt; 	# all the behind the scenes magic to handle mouse clicks, etc.</span>
-<span class="sd">		&gt;&gt;&gt; 	cvui.update()</span>
+<span class="sd">		... 	# This function must be called *AFTER* all UI components. It does</span>
+<span class="sd">		... 	# all the behind the scenes magic to handle mouse clicks, etc.</span>
+<span class="sd">		... 	cvui.update()</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Show everything on the screen</span>
-<span class="sd">		&gt;&gt;&gt; 	cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">		... 	# Show everything on the screen</span>
+<span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; 	# Check if ESC key was pressed</span>
-<span class="sd">		&gt;&gt;&gt; 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
-<span class="sd">		&gt;&gt;&gt; 		break</span>
+<span class="sd">		... 	# Check if ESC key was pressed</span>
+<span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
+<span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">windowNames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 		<span class="n">windowNames</span> <span class="o">=</span> <span class="p">[</span><span class="n">windowNames</span><span class="p">]</span>
@@ -346,10 +349,10 @@
 	<span class="k">if</span> <span class="n">__internal</span><span class="o">.</span><span class="n">delayWaitKey</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">lastKeyPressed</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="n">__internal</span><span class="o">.</span><span class="n">delayWaitKey</span><span class="p">)</span>
 
-	<span class="k">if</span> <span class="n">__internal</span><span class="o">.</span><span class="n">blockStackEmpty</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">__internal</span><span class="o">.</span><span class="n">isblockStackEmpty</span><span class="p">:</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Calling update() before finishing all begin*()/end*() calls. Did you forget to call a begin*() or an end*()? Check if every begin*() has an appropriate end*() call before you call update().&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.text">[docs]</a><span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">FontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">):</span>
+<div class="viewcode-block" id="text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.text">[docs]</a><span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_8</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Display a piece of text.</span>
 
 <span class="sd">	Args:</span>
@@ -357,15 +360,18 @@
 <span class="sd">		x (int)            : Position X where the component should be placed.</span>
 <span class="sd">		y (int)            : Position Y where the component should be placed.</span>
 <span class="sd">		text (str)         : The text content.</span>
-<span class="sd">		FontScale (float)  : Size of the text.</span>
+<span class="sd">		fontFace (int)     : Font type. (default= ``cv2.FONT_HERSHEY_SIMPLEX`` )</span>
+<span class="sd">		fontScale (float)  : Font scale factor that is multiplied by the font-specific base size.</span>
 <span class="sd">		color (uint)       : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.</span>
+<span class="sd">		thickness (int)    : Thickness of the lines used to draw a text.</span>
+<span class="sd">		lineType (int)     : Line type. (default= ``cv2.LINE_8`` )</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
 <span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		...  </span>
-<span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Text&#39;</span>
+<span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &quot;Text&quot;</span>
 <span class="sd">		&gt;&gt;&gt; frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)</span>
 <span class="sd">		&gt;&gt;&gt; cvui.init(WINDOW_NAME)</span>
 <span class="sd">		...  </span>
@@ -376,32 +382,38 @@
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
-	<span class="n">__internal</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+	<span class="n">__internal</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">lineType</span><span class="p">,</span> <span class="n">updateLayout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="printf"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.printf">[docs]</a><span class="k">def</span> <span class="nf">printf</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">FontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Text: </span><span class="si">%d</span><span class="s2"> and </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">fmtArgs</span><span class="p">):</span>
+<div class="viewcode-block" id="printf"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.printf">[docs]</a><span class="k">def</span> <span class="nf">printf</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Text: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)):</span>
 	<span class="sd">&quot;&quot;&quot;Display a piece of text that can be formated using ``C stdio&#39;s printf()`` style. For instance if you want to display text mixed with numbers, you can use:</span>
 
-<span class="sd">	.. code-block:: c</span>
+<span class="sd">	.. code-block:: python</span>
 
-<span class="sd">		printf(frame, 10, 15, 0.4, 0xff0000, &#39;Text: %d and %f&#39;, 7, 3.1415)</span>
-
+<span class="sd">		&gt;&gt;&gt; print(&quot;Text: %d and %f&quot; % (7, 3.1415))</span>
+<span class="sd">		</span>
 <span class="sd">	Args:</span>
-<span class="sd">		where (np.ndarray)   : image/frame where the component should be rendered.</span>
-<span class="sd">		x (int)              : Position X where the component should be placed.</span>
-<span class="sd">		y (int)              : Position Y where the component should be placed.</span>
-<span class="sd">		FontScale (float)    : Size of the text.</span>
-<span class="sd">		color (uint)         : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.</span>
-<span class="sd">		fmt (str)            : Formating string as it would be supplied for ``stdio&#39;s printf()``, e.g. ``&#39;Text: %d and %f&#39;, 7, 3.1415``.</span>
-<span class="sd">	</span>
+<span class="sd">		where (np.ndarray) : image/frame where the component should be rendered.</span>
+<span class="sd">		x (int)            : Position X where the component should be placed.</span>
+<span class="sd">		y (int)            : Position Y where the component should be placed.</span>
+<span class="sd">		fontFace (int)     : Font type. (default= ``cv2.FONT_HERSHEY_SIMPLEX`` )</span>
+<span class="sd">		fontScale (float)  : Font scale factor that is multiplied by the font-specific base size.</span>
+<span class="sd">		color (uint)       : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.</span>
+<span class="sd">		thickness (int)    : Thickness of the lines used to draw a text.</span>
+<span class="sd">		lineType (int)     : Line type. (default= ``cv2.LINE_8`` )</span>
+<span class="sd">		fmt (str)          : Formating string as it would be supplied for stdio&#39;s ``printf()``, e.g. ``&#39;Text: %d and %f&#39;, 7, 3.1415``.</span>
+<span class="sd">		fmtArgs (tuple)    : Arguments for ``fmt`` . </span>
+
 <span class="sd">	Examples:</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
 <span class="sd">		&gt;&gt;&gt; import numpy as np</span>
@@ -414,22 +426,23 @@
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; while (True):</span>
 <span class="sd">		...  	frame[:] = (49, 52, 49)</span>
-<span class="sd">		...  	cvui.printf(frame, 20, 20, 0.4, 0xCECECE, &quot;Date: %s&quot;, now_str())</span>
+<span class="sd">		...  	cvui.printf(frame, 20, 20, fontScale=0.4, color=0xCECECE, fmt=&quot;Date: %s&quot;, fmtArgs=(now_str()))</span>
 <span class="sd">		...  	cvui.update()</span>
 <span class="sd">		...  	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		...  	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		...  		break</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">text</span> <span class="o">=</span> <span class="n">fmt</span> <span class="o">%</span> <span class="n">fmtArgs</span>
-	<span class="n">__internal</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+	<span class="n">__internal</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">lineType</span><span class="p">,</span> <span class="n">updateLayout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>	</div>
 
 <div class="viewcode-block" id="counter"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.counter">[docs]</a><span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Display a counter for integer values that the user can increase/descrease by clicking the up and down arrows.</span>
@@ -459,19 +472,21 @@
 <span class="sd">		&gt;&gt;&gt; while (True):</span>
 <span class="sd">		... 	frame[:] = (49, 52, 49)</span>
 <span class="sd">		... 	cvui.counter(frame, 10, 10, countFloat, 0.1, &#39;%.1f&#39;)</span>
-<span class="sd">		... 	cvui.printf(frame,  10, 50, 0.4, 0xCECECE, &quot;Current value: %.1f&quot;, countFloat[0])</span>
+<span class="sd">		... 	cvui.printf(frame,  10, 50, fontScale=0.4, color=0xCECECE, fmt=&quot;Current value: %.1f&quot;, fmtArgs=(countFloat[0]))</span>
 <span class="sd">		... 	cvui.update()</span>
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
 		<span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span>
@@ -506,20 +521,22 @@
 <span class="sd">		&gt;&gt;&gt; while (True):</span>
 <span class="sd">		... 	frame[:] = (49, 52, 49)</span>
 <span class="sd">		... 	cvui.checkbox(frame, 10, 10, &#39;Checkbox&#39;, checked)</span>
-<span class="sd">		... 	cvui.printf(frame,  10, 50, 0.4, 0xCECECE, &quot;Current value: %s&quot;, checked[0])</span>
+<span class="sd">		... 	cvui.printf(frame,  10, 50, fontScale=0.4, color=0xCECECE, fmt=&quot;Current value: %s&quot;, fmtArgs=(checked[0]))</span>
 <span class="sd">		... 	cvui.update()</span>
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="k">return</span> <span class="n">__internal</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span></div>
 
@@ -536,8 +553,8 @@
 <span class="sd">		isMouseButton (bool) : (otherwise) Whether the ``button`` and ``query`` are match.</span>
 
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &quot;Mouse&quot;</span>
@@ -551,7 +568,7 @@
 <span class="sd">		... </span>
 <span class="sd">		... 	# Show the coordinates of the mouse pointer on the screen</span>
 <span class="sd">		... 	cvui.text(frame, 10, 30, &#39;Click (any) mouse button and drag the pointer around to select an area.&#39;)</span>
-<span class="sd">		... 	cvui.printf(frame, 10, 50, 0.4, 0xff0000, &#39;Mouse pointer is at (%d,%d)&#39;, cvui.mouse().x, cvui.mouse().y)</span>
+<span class="sd">		... 	cvui.printf(frame, 10, 50, fontScale=0.4, color=0xff0000, fmt=&#39;Mouse pointer is at (%d,%d)&#39;, fmtArgs=(cvui.mouse().x, cvui.mouse().y))</span>
 <span class="sd">		... </span>
 <span class="sd">		... 	# The function &quot;bool cvui.mouse(int query)&quot; allows you to query the mouse for events.</span>
 <span class="sd">		... 	# E.g. cvui.mouse(cvui.DOWN)</span>
@@ -575,8 +592,8 @@
 <span class="sd">		... 		rectangle.height = cvui.mouse().y - rectangle.y</span>
 <span class="sd">		... </span>
 <span class="sd">		... 		# Show the rectangle coordinates and size</span>
-<span class="sd">		... 		cvui.printf(frame, rectangle.x + 5, rectangle.y + 5, 0.3, 0xff0000, &#39;(%d,%d)&#39;, rectangle.x, rectangle.y)</span>
-<span class="sd">		... 		cvui.printf(frame, cvui.mouse().x + 5, cvui.mouse().y + 5, 0.3, 0xff0000, &#39;w:%d, h:%d&#39;, rectangle.width, rectangle.height)</span>
+<span class="sd">		... 		cvui.printf(frame, rectangle.x    + 5, rectangle.y    + 5, fontScale=0.3, color=0xff0000, fmt=&#39;(%d,%d)&#39;,    fmtArgs=(rectangle.x, rectangle.y))</span>
+<span class="sd">		... 		cvui.printf(frame, cvui.mouse().x + 5, cvui.mouse().y + 5, fontScale=0.3, color=0xff0000, fmt=&#39;w:%d, h:%d&#39;, fmtArgs=(rectangle.width, rectangle.height))</span>
 <span class="sd">		... </span>
 <span class="sd">		... 	# Did any mouse button go up?</span>
 <span class="sd">		... 	if cvui.mouse(query=cvui.UP):</span>
@@ -601,6 +618,7 @@
 <span class="sd">		... 	# Check if ESC key was pressed</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="n">query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 		<span class="k">return</span> <span class="n">__internal</span><span class="o">.</span><span class="n">mouseW</span><span class="p">(</span><span class="n">windowName</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -634,8 +652,8 @@
 
 <span class="sd">	Examples:	</span>
 <span class="sd">		&gt;&gt;&gt; #=== If you use &quot;width&quot;, &quot;height&quot;, &quot;label&quot; ===</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Button shortcut&#39;</span>
@@ -664,10 +682,11 @@
 <span class="sd">		... 	# will do it automatically.</span>
 <span class="sd">		... 	cvui.update()</span>
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">		...</span>
 <span class="sd">		&gt;&gt;&gt; #=== If you use &quot;idle&quot;, &quot;over&quot;, &quot;down&quot; ===</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui, SAMPLE_LENA_IMG, cv2read_mpl</span>
 <span class="sd">		...</span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Image button&#39;</span>
@@ -703,14 +722,16 @@
 <span class="sd">		... 	# Check if ESC key was pressed</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="k">if</span> <span class="n">width</span><span class="o">*</span><span class="n">height</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
 		<span class="k">return</span> <span class="n">__internal</span><span class="o">.</span><span class="n">buttonWH</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -729,10 +750,9 @@
 <span class="sd">		image (np.ndarray) : Image to be rendered in the specified destination.</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui, SAMPLE_LENA_IMG</span>
-<span class="sd">		&gt;&gt;&gt; import random</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Image&#39;</span>
 <span class="sd">		&gt;&gt;&gt; frame = np.zeros(shape=(1200, 512, 3), dtype=np.uint8)</span>
@@ -756,14 +776,16 @@
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">__internal</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span></div>
 
@@ -784,8 +806,8 @@
 <span class="sd">		discreteStep (number) : Amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option ``cvui.TRACKBAR_DISCRETE`` is ON)</span>
 
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Trackbar&#39;</span>
@@ -854,14 +876,16 @@
 <span class="sd">		... 	# Check if ESC key was pressed</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">params</span> <span class="o">=</span> <span class="n">TrackbarParams</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">discreteStep</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">labelfmt</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">__internal</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
@@ -899,14 +923,16 @@
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">__internal</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span></div>
 
@@ -995,13 +1021,14 @@
 <span class="sd">		...     if cv2.waitKey(20) == 27:</span>
 <span class="sd">		...         break</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">__internal</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">borderColor</span><span class="p">,</span> <span class="n">fillingColor</span><span class="p">)</span></div>
 
@@ -1018,8 +1045,8 @@
 <span class="sd">		color (uint)       : Color of sparkline in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Sparkline&#39;</span>
@@ -1046,18 +1073,20 @@
 <span class="sd">		... 	# Check if ESC key was pressed</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
 	<span class="n">__internal</span><span class="o">.</span><span class="n">sparkline</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="beginRow"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.beginRow">[docs]</a><span class="k">def</span> <span class="nf">beginRow</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="beginRow"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.beginRow">[docs]</a><span class="k">def</span> <span class="nf">beginRow</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bgColor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Start a new row.</span>
 
 <span class="sd">	One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don&#39;t have to think about assigning a ``x`` and ``y`` coordinate. Instead you just add components and cvui will place them as you go.</span>
@@ -1073,10 +1102,11 @@
 <span class="sd">		width (int)        : Width of the row. If a negative value is specified, the width of the row will be automatically calculated based on the content of the block.</span>
 <span class="sd">		height (int)       : Height of the row. If a negative value is specified, the height of the row will be automatically calculated based on the content of the block.</span>
 <span class="sd">		padding (int)      : Space, in pixels, among the components of the block.</span>
+<span class="sd">		bgColor (tuple)    : Background Color.</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Nested columns&#39;</span>
@@ -1106,22 +1136,24 @@
 <span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
-	<span class="n">__internal</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ROW</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">)</span></div>
+	<span class="n">__internal</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ROW</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">bgColor</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="endRow"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.endRow">[docs]</a><span class="k">def</span> <span class="nf">endRow</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;End a row. You must call this function only if you have previously called its counter part, the ``beginRow()`` function.&quot;&quot;&quot;</span>
 	<span class="n">__internal</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">ROW</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="beginColumn"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.beginColumn">[docs]</a><span class="k">def</span> <span class="nf">beginColumn</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="beginColumn"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.beginColumn">[docs]</a><span class="k">def</span> <span class="nf">beginColumn</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bgColor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;Start a new column.</span>
 
 <span class="sd">	One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don&#39;t have to think about assigning a X and Y coordinate. Instead you just add components and cvui will place them as you go.</span>
@@ -1135,10 +1167,11 @@
 <span class="sd">		width (int)        : Width of the column. If a negative value is specified, the width of the column will be automatically calculated based on the content of the block.</span>
 <span class="sd">		height (int)       : Height of the column. If a negative value is specified, the height of the column will be automatically calculated based on the content of the block.</span>
 <span class="sd">		padding (int)      : Space, in pixels, among the components of the block.</span>
+<span class="sd">		bgColor (tuple)    : Background Color.</span>
 <span class="sd">	</span>
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
 <span class="sd">		...  </span>
 <span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Nested columns&#39;</span>
@@ -1173,16 +1206,18 @@
 <span class="sd">		... </span>
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 <span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 		<span class="n">__internal</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">screen</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">block</span> <span class="o">=</span> <span class="n">__internal</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">x</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span>
 
-	<span class="n">__internal</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">COLUMN</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">)</span></div>
+	<span class="n">__internal</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">COLUMN</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">bgColor</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="endColumn"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.endColumn">[docs]</a><span class="k">def</span> <span class="nf">endColumn</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;End a column. You must call this function only if you have previously called its counter part, i.e. ``beginColumn()``&quot;&quot;&quot;</span>
@@ -1352,17 +1387,28 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">labelfmt</span> <span class="o">=</span> <span class="n">labelfmt</span></div>
 
 <div class="viewcode-block" id="Internal"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal">[docs]</a><span class="k">class</span> <span class="nc">Internal</span><span class="p">:</span>
-	<span class="sd">&quot;&quot;&quot;This class contains all stuff that cvui uses internally to render and control interaction with components.&quot;&quot;&quot;</span>
+	<span class="sd">&quot;&quot;&quot;This class contains all stuff that cvui uses internally to render and control interaction with components.</span>
+<span class="sd">	</span>
+<span class="sd">	Attributes:</span>
+<span class="sd">		defaultContext (str)  : Default window name.</span>
+<span class="sd">		currentContext (str)  : Current (active) window name.</span>
+<span class="sd">		contexts (dict)       : Indexed by the window name.</span>
+<span class="sd">		lastKeyPressed (int)  : Last key that was pressed. TODO: collect it per window</span>
+<span class="sd">		delayWaitKey (int)    : Delay value (milliseconds) passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</span>
+<span class="sd">		screen (Block)        : Block structure.</span>
+<span class="sd">		stack (list)          : Block stack.</span>
+<span class="sd">		trackbarMarginX (int) : X-axis Margin of trackbar.</span>
+<span class="sd">		_render (Render)      : contains all rendering methods. ( ``_render._internal = self`` )</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">defaultContext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">currentContext</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">contexts</span> <span class="o">=</span> <span class="p">{}</span>             <span class="c1"># indexed by the window name.</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">lastKeyPressed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>       <span class="c1"># TODO: collect it per window</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">contexts</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="c1"># self.buffer = []</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lastKeyPressed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">delayWaitKey</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">Block</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span> <span class="c1"># TODO: make it dynamic</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">trackbarMarginX</span> <span class="o">=</span> <span class="mi">14</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span> <span class="o">=</span> <span class="n">Render</span><span class="p">()</span>
@@ -1384,7 +1430,7 @@
 		<span class="sd">&quot;&quot;&quot;Return the last position of the mouse.</span>
 
 <span class="sd">		Args:</span>
-<span class="sd">			windowName (str) : Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in ``cvui.init()`).</span>
+<span class="sd">			windowName (str) : Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in ``cvui.init()`` ).</span>
 <span class="sd">		</span>
 <span class="sd">		Returns:</span>
 <span class="sd">			point (Point) : A point containing the position of the mouse cursor in the speficied window.</span>
@@ -1469,7 +1515,7 @@
 		<span class="k">return</span> <span class="p">(</span><span class="n">bitset</span> <span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Internal.error"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.error">[docs]</a>	<span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errorId</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[CVUI] Fatal error (code &#39;</span><span class="p">,</span> <span class="n">errorId</span><span class="p">,</span> <span class="s1">&#39;): &#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">toRED</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[CVUI] Fatal error (code </span><span class="si">{</span><span class="n">errorId</span><span class="si">}</span><span class="s2">) :&quot;</span><span class="p">),</span> <span class="n">message</span><span class="p">)</span>
 		<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">100000</span><span class="p">)</span>
 		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
@@ -1492,6 +1538,7 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Unable to read context. Did you forget to call cvui.init()?&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Internal.updateLayoutFlow"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.updateLayoutFlow">[docs]</a>	<span class="k">def</span> <span class="nf">updateLayoutFlow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Update layot for additional Rows or Columns.&quot;&quot;&quot;</span>
 		<span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ROW</span><span class="p">:</span>
 			<span class="n">aValue</span> <span class="o">=</span> <span class="n">size</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">block</span><span class="o">.</span><span class="n">padding</span>
 
@@ -1506,28 +1553,31 @@
 			<span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">height</span> <span class="o">+=</span> <span class="n">aValue</span>
 			<span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Internal.blockStackEmpty"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.blockStackEmpty">[docs]</a>	<span class="k">def</span> <span class="nf">blockStackEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span></div>
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">isblockStackEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Is block stack ( ``self.stack`` ) is empty or not.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">stackCount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;The numeber of blocks in stack ( ``self.stack`` )&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Internal.topBlock"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.topBlock">[docs]</a>	<span class="k">def</span> <span class="nf">topBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isblockStackEmpty</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;You are using a function that should be enclosed by begin*() and end*(), but you probably forgot to call begin*().&#39;</span><span class="p">)</span>
-
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span><span class="p">]</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Internal.pushBlock"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.pushBlock">[docs]</a>	<span class="k">def</span> <span class="nf">pushBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">+=</span> <span class="mi">1</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span><span class="p">]</span></div>
+		<span class="n">block</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">block</span></div>
 
 <div class="viewcode-block" id="Internal.popBlock"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.popBlock">[docs]</a>	<span class="k">def</span> <span class="nf">popBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="c1"># Check if there is anything to be popped out from the stack.</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isblockStackEmpty</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Mismatch in the number of begin*()/end*() calls. You are calling one more than the other.&#39;</span><span class="p">)</span>
-
-		<span class="n">aIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">stackCount</span> <span class="o">-=</span> <span class="mi">1</span>
-
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="n">aIndex</span><span class="p">]</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Internal.createLabel"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.createLabel">[docs]</a>	<span class="k">def</span> <span class="nf">createLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1557,13 +1607,13 @@
 
 		<span class="k">return</span> <span class="n">aLabel</span></div>
 
-<div class="viewcode-block" id="Internal.text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.text">[docs]</a>	<span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">updateLayout</span><span class="p">):</span>
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="viewcode-block" id="Internal.text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.text">[docs]</a>	<span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_8</span><span class="p">,</span> <span class="n">updateLayout</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="n">fontScale</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
 
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 		<span class="n">aPos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 
-		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">aPos</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">aPos</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="n">fontScale</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">lineType</span><span class="p">)</span>
 
 		<span class="k">if</span> <span class="n">updateLayout</span><span class="p">:</span>
 			<span class="c1"># Add an extra pixel to the height to overcome OpenCV font size problems.</span>
@@ -1583,16 +1633,16 @@
 			<span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">step</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">22</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">aContentArea</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aContentArea</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">22</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">aContentArea</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aContentArea</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Internal.checkbox"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.checkbox">[docs]</a>	<span class="k">def</span> <span class="nf">checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 		<span class="n">aMouse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getContext</span><span class="p">()</span><span class="o">.</span><span class="n">mouse</span>
 		<span class="n">aRect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 		<span class="n">aHitArea</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 		<span class="n">aMouseIsOver</span> <span class="o">=</span> <span class="n">aHitArea</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">aMouse</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
 
@@ -1610,8 +1660,8 @@
 			<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">checkboxCheck</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aRect</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aHitArea</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aHitArea</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aHitArea</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aHitArea</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
@@ -1659,8 +1709,8 @@
 
 <div class="viewcode-block" id="Internal.buttonWH"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.buttonWH">[docs]</a>	<span class="k">def</span> <span class="nf">buttonWH</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">updateLayout</span><span class="p">):</span>
 		<span class="c1"># Calculate the space that the label will fill</span>
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 		<span class="c1"># Make the button big enough to house the label</span>
 		<span class="n">aRect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
@@ -1673,8 +1723,8 @@
 		<span class="c1"># Update the layout flow according to button size</span>
 		<span class="c1"># if we were told to update.</span>
 		<span class="k">if</span> <span class="n">updateLayout</span><span class="p">:</span>
-			<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span>
+			<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 		<span class="n">aWasShortcutPressed</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1690,8 +1740,8 @@
 
 <div class="viewcode-block" id="Internal.button"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.button">[docs]</a>	<span class="k">def</span> <span class="nf">button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 		<span class="c1"># Calculate the space that the label will fill</span>
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 		<span class="c1"># Create a button based on the size of the text</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buttonWH</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="mi">30</span><span class="p">,</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="mi">18</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
@@ -1710,8 +1760,8 @@
 		<span class="c1"># Update the layout flow according to button size</span>
 		<span class="c1"># if we were told to update.</span>
 		<span class="k">if</span> <span class="n">updateLayout</span><span class="p">:</span>
-			<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aRect</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span>
+			<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aRect</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
 
 		<span class="c1"># Return true if the button was clicked</span>
 		<span class="k">return</span> <span class="n">aStatus</span> <span class="o">==</span> <span class="n">CLICK</span></div>
@@ -1726,8 +1776,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aRect</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow according to image size</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aImageCols</span><span class="p">,</span> <span class="n">aImageRows</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span></div>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aImageCols</span><span class="p">,</span> <span class="n">aImageRows</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Internal.trackbar"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.trackbar">[docs]</a>	<span class="k">def</span> <span class="nf">trackbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 		<span class="n">aMouse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getContext</span><span class="p">()</span><span class="o">.</span><span class="n">mouse</span>
@@ -1744,7 +1794,7 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">trackbarForceValuesAsMultiplesOfSmallStep</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="c1"># TODO: use aSize = aContentArea.size()?</span>
+		<span class="c1"># TODO: use size = aContentArea.size()?</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aContentArea</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">aValue</span></div>
@@ -1756,8 +1806,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aTitleBar</span><span class="p">,</span> <span class="n">aContent</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span></div>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Internal.rect"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.rect">[docs]</a>	<span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">borderColor</span><span class="p">,</span> <span class="n">fillingColor</span><span class="p">):</span>
 		<span class="n">aAnchor</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
@@ -1771,8 +1821,8 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aRect</span><span class="p">,</span> <span class="n">borderColor</span><span class="p">,</span> <span class="n">fillingColor</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aRect</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span></div>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">aRect</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">aRect</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Internal.sparkline"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.sparkline">[docs]</a>	<span class="k">def</span> <span class="nf">sparkline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 		<span class="n">aRect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
@@ -1782,11 +1832,11 @@
 			<span class="n">aMin</span><span class="p">,</span><span class="n">aMax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findMinMax</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="o">.</span><span class="n">sparkline</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">aRect</span><span class="p">,</span> <span class="n">aMin</span><span class="p">,</span> <span class="n">aMax</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;No data.&#39;</span> <span class="k">if</span> <span class="n">aHowManyValues</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;Insufficient data points.&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xCECECE</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;No data.&#39;</span> <span class="k">if</span> <span class="n">aHowManyValues</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;Insufficient data points.&#39;</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">updateLayout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 		<span class="c1"># Update the layout flow</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span></div>
+		<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Internal.hexToScalar"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.hexToScalar">[docs]</a>	<span class="k">def</span> <span class="nf">hexToScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 		<span class="n">aAlpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">color</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
@@ -1796,39 +1846,41 @@
 
 		<span class="k">return</span> <span class="p">(</span><span class="n">aBlue</span><span class="p">,</span> <span class="n">aGreen</span><span class="p">,</span> <span class="n">aRed</span><span class="p">,</span> <span class="n">aAlpha</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Internal.begin"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.begin">[docs]</a>	<span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
-		<span class="n">aBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pushBlock</span><span class="p">()</span>
+<div class="viewcode-block" id="Internal.begin"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.begin">[docs]</a>	<span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">bgColor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">bgColor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+			<span class="n">where</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="n">height</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">width</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">bgColor</span>
 
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+		<span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pushBlock</span><span class="p">()</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
 
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
 
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">fill</span> <span class="o">=</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">fill</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">rect</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
 
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">anchor</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
 
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
-		<span class="n">aBlock</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span></div>
+		<span class="n">block</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+		<span class="n">block</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span></div>
 
 <div class="viewcode-block" id="Internal.end"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.end">[docs]</a>	<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
-		<span class="n">aBlock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">popBlock</span><span class="p">()</span>
+		<span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">popBlock</span><span class="p">()</span>
 
-		<span class="k">if</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Calling wrong type of end*(). E.g. endColumn() instead of endRow(). Check if your begin*() calls are matched with their appropriate end*() calls.&#39;</span><span class="p">)</span>
 
 		<span class="c1"># If we still have blocks in the stack, we must update</span>
 		<span class="c1"># the current top with the dimensions that were filled by</span>
 		<span class="c1"># the newly popped block.</span>
 
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockStackEmpty</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-			<span class="n">aTop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
-			<span class="n">aSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">()</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isblockStackEmpty</span><span class="p">:</span>
+			<span class="n">top_block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topBlock</span><span class="p">()</span>
+			<span class="n">size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">()</span>
 
 			<span class="c1"># If the block has rect.width &lt; 0 or rect.heigth &lt; 0, it means the</span>
 			<span class="c1"># user don&#39;t want to calculate the block&#39;s width/height. It&#39;s up to</span>
@@ -1837,10 +1889,10 @@
 			<span class="c1"># zero, then the user is very specific about the desired size. In that</span>
 			<span class="c1"># case, we use the provided width/height, no matter what the fill rect</span>
 			<span class="c1"># actually is.</span>
-			<span class="n">aSize</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span> <span class="k">if</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span>
-			<span class="n">aSize</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">aBlock</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span>
+			<span class="n">size</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">width</span> <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span>
+			<span class="n">size</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">height</span> <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">block</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span>
 
-			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">aTop</span><span class="p">,</span> <span class="n">aSize</span><span class="p">)</span></div>
+			<span class="bp">self</span><span class="o">.</span><span class="n">updateLayoutFlow</span><span class="p">(</span><span class="n">top_block</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span></div>
 
 	<span class="c1"># Find the min and max values of a vector</span>
 <div class="viewcode-block" id="Internal.findMinMax"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Internal.findMinMax">[docs]</a>	<span class="k">def</span> <span class="nf">findMinMax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
@@ -1866,19 +1918,19 @@
 
 		<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">aStartPoint</span><span class="p">,</span> <span class="n">aEndPoint</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">Thickness</span><span class="p">,</span> <span class="n">LineType</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Render.text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.text">[docs]</a>	<span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+<div class="viewcode-block" id="Render.text"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.text">[docs]</a>	<span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_8</span><span class="p">):</span>
 		<span class="n">aPosition</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
-		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">aPosition</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">FontScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal</span><span class="o">.</span><span class="n">hexToScalar</span><span class="p">(</span><span class="n">color</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span></div>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="n">aPosition</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="n">fontScale</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal</span><span class="o">.</span><span class="n">hexToScalar</span><span class="p">(</span><span class="n">color</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">lineType</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Render.counter"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.counter">[docs]</a>	<span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Render.counter"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.counter">[docs]</a>	<span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="mh">0x29</span><span class="p">,</span> <span class="mh">0x29</span><span class="p">,</span> <span class="mh">0x29</span><span class="p">),</span> <span class="n">CVUI_FILLED</span><span class="p">)</span> <span class="c1"># fill</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="mh">0x45</span><span class="p">,</span> <span class="mh">0x45</span><span class="p">,</span> <span class="mh">0x45</span><span class="p">))</span>              <span class="c1"># border</span>
 
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="n">fontScale</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 		<span class="n">aPos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">shape</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">aPos</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">aPos</span><span class="o">.</span><span class="n">y</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="p">(</span><span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CVUI_ANTIALISED</span><span class="p">)</span></div>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">aPos</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">aPos</span><span class="o">.</span><span class="n">y</span><span class="p">)),</span> <span class="n">fontFace</span><span class="o">=</span><span class="n">fontFace</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="n">fontScale</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal</span><span class="o">.</span><span class="n">hexToScalar</span><span class="p">(</span><span class="n">color</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">lineType</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Render.button"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.button">[docs]</a>	<span class="k">def</span> <span class="nf">button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 		<span class="c1"># Outline</span>
@@ -1902,25 +1954,25 @@
 		<span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">[</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span><span class="p">:</span> <span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">width</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span></div>
 
 <div class="viewcode-block" id="Render.putText"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.putText">[docs]</a>	<span class="k">def</span> <span class="nf">putText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-		<span class="n">aFontScale</span> <span class="o">=</span> <span class="mf">0.39</span> <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">DOWN</span> <span class="k">else</span> <span class="mf">0.4</span>
+		<span class="n">afontScale</span> <span class="o">=</span> <span class="mf">0.39</span> <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">DOWN</span> <span class="k">else</span> <span class="mf">0.4</span>
 		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">()</span>
 
 		<span class="k">if</span> <span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
 			<span class="n">aPosition</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
-			<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">aPosition</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">aFontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CVUI_ANTIALISED</span><span class="p">)</span>
+			<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">aPosition</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">afontScale</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CVUI_ANTIALISED</span><span class="p">)</span>
 
-			<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">aFontScale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-			<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+			<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">afontScale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 		<span class="k">return</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span></div>
 
 <div class="viewcode-block" id="Render.putTextCentered"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.putTextCentered">[docs]</a>	<span class="k">def</span> <span class="nf">putTextCentered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-		<span class="n">aFontScale</span> <span class="o">=</span> <span class="mf">0.3</span>
+		<span class="n">afontScale</span> <span class="o">=</span> <span class="mf">0.3</span>
 
-		<span class="n">aSizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">aFontScale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aSizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">sizeInfo</span><span class="p">,</span> <span class="n">aBaseline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTextSize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">afontScale</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">aTextSize</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizeInfo</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 		<span class="n">aPositionDecentered</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">aPositionDecentered</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">aPositionDecentered</span><span class="o">.</span><span class="n">y</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">aFontScale</span><span class="p">,</span> <span class="p">(</span><span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CVUI_ANTIALISED</span><span class="p">)</span>
+		<span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">aPositionDecentered</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">aPositionDecentered</span><span class="o">.</span><span class="n">y</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">afontScale</span><span class="p">,</span> <span class="p">(</span><span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CVUI_ANTIALISED</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">aTextSize</span><span class="o">.</span><span class="n">width</span></div>
 
@@ -2060,7 +2112,7 @@
 
 		<span class="c1"># Border</span>
 		<span class="n">shape</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
-		<span class="n">shape</span><span class="o">.</span><span class="n">y</span><span class="o">+=</span><span class="mi">1</span>
+		<span class="n">shape</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span><span class="mi">1</span>
 		<span class="n">shape</span><span class="o">.</span><span class="n">width</span> <span class="o">-=</span> <span class="mi">2</span>
 		<span class="n">shape</span><span class="o">.</span><span class="n">height</span> <span class="o">-=</span> <span class="mi">2</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="p">(</span><span class="mh">0x17</span><span class="p">,</span> <span class="mh">0x17</span><span class="p">,</span> <span class="mh">0x17</span><span class="p">))</span>
@@ -2074,7 +2126,7 @@
 
 <div class="viewcode-block" id="Render.checkboxLabel"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.checkboxLabel">[docs]</a>	<span class="k">def</span> <span class="nf">checkboxLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">textSize</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 		<span class="n">aPos</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">textSize</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">textSize</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">aPos</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">aPos</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Render.checkboxCheck"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.checkboxCheck">[docs]</a>	<span class="k">def</span> <span class="nf">checkboxCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
 		<span class="n">shape</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -2132,13 +2184,13 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">aBorderColor</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Render.sparkline"><a class="viewcode-back" href="../../../pycharmers.opencv.cvui.html#pycharmers.opencv.cvui.Render.sparkline">[docs]</a>	<span class="k">def</span> <span class="nf">sparkline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-		<span class="n">aSize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+		<span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 		<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="n">aScale</span> <span class="o">=</span> <span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span>
-		<span class="n">aGap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">aSize</span>
+		<span class="n">aGap</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">size</span>
 		<span class="n">aPosX</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">x</span>
 
-		<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">aSize</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+		<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
 			<span class="n">x</span> <span class="o">=</span> <span class="n">aPosX</span><span class="p">;</span>
 			<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="nb">min</span><span class="p">)</span> <span class="o">/</span> <span class="n">aScale</span> <span class="o">*</span> <span class="o">-</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">5</span>
 			<span class="n">aPoint1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>

@@ -76,7 +76,7 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-10&#64;00.01.24'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-11&#64;00.01.49'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <cite>cv2.waitKey()</cite> within <cite>cvui.update()</cite>, so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
@@ -85,14 +85,14 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>WindowNames</strong> (<em>str</em><em>,</em><em>list</em>) – Array containing the name of the windows where components will be added. Those windows will be automatically if <cite>createNamedWindows</cite> is <cite>True</cite>.</p></li>
 <li><p><strong>numWindows</strong> (<em>int</em>) – How many window names exist in the <cite>windowNames</cite> array.</p></li>
-<li><p><strong>delayWaitKey</strong> (<em>int</em>) – Delay value passed to <cite>cv2.waitKey()</cite>. If a negative value is informed (default is <cite>-1</cite>), cvui will not automatically call <cite>cv2.waitKey()</cite> within <cite>cvui.update()</cite>, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</p></li>
+<li><p><strong>delayWaitKey</strong> (<em>int</em>) – Delay value passed to <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code>. If a negative value is informed (default is <code class="docutils literal notranslate"><span class="pre">-1</span></code>), cvui will not automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code>, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</p></li>
 <li><p><strong>createNamedWindows</strong> (<em>bool</em>) – If OpenCV windows named according to <cite>windowNames</cite> should be created during the initialization. Windows are created using <cite>cv2.namedWindow()</cite>. If this parameter is <cite>False</cite>, ensure you call <cite>cv2.namedWindow(WINDOW_NAME)</cite> for all windows <em>before</em> initializing cvui, otherwise it will not be able to track UI interactions.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.__meta__</span> <span class="kn">import</span> <span class="n">__version__</span>
 <span class="gp">...</span>
@@ -106,75 +106,76 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Fill the frame with a nice color</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Fill the frame with a nice color</span>
+<span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Show some pieces of text.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Hey there!&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Show some pieces of text.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Hey there!&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># You can also specify the size of the text and its color</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># using hex 0xRRGGBB CSS-like style.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Use hex 0xRRGGBB colors easily&quot;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># You can also specify the size of the text and its color</span>
+<span class="gp">... </span>    <span class="c1"># using hex 0xRRGGBB CSS-like style.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;Use hex 0xRRGGBB colors easily&quot;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Sometimes you want to show text that is not that simple, e.g. strings + numbers.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># You can use cvui.printf for that. It accepts a variable number of parameter, pretty</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># much like printf does.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0x00ff00</span><span class="p">,</span> <span class="s2">&quot;Use printf formatting: </span><span class="si">%d</span><span class="s2"> + </span><span class="si">%.2f</span><span class="s2"> = </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Sometimes you want to show text that is not that simple, e.g. strings + numbers.</span>
+<span class="gp">... </span>    <span class="c1"># You can use cvui.printf for that. It accepts a variable number of parameter, pretty</span>
+<span class="gp">... </span>    <span class="c1"># much like printf does.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0x00ff00</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Use printf formatting: </span><span class="si">%d</span><span class="s2"> + </span><span class="si">%.2f</span><span class="s2"> = </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Buttons will return true if they were clicked, which makes</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># handling clicks a breeze.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;Button&quot;</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Button clicked&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Buttons will return true if they were clicked, which makes</span>
+<span class="gp">... </span>    <span class="c1"># handling clicks a breeze.</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;Button&quot;</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Button clicked&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># If you do not specify the button width/height, the size will be</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># automatically adjusted to properly house the label.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="s2">&quot;Button with large label&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># If you do not specify the button width/height, the size will be</span>
+<span class="gp">... </span>    <span class="c1"># automatically adjusted to properly house the label.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="s2">&quot;Button with large label&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># You can tell the width and height you want</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># You can tell the width and height you want</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Window components are useful to create HUDs and similars. At the</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># moment, there is no implementation to constraint content within a</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># a window.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Window&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Window components are useful to create HUDs and similars. At the</span>
+<span class="gp">... </span>    <span class="c1"># moment, there is no implementation to constraint content within a</span>
+<span class="gp">... </span>    <span class="c1"># a window.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Window&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># The counter component can be used to alter int variables. Use</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># the 4th parameter of the function to point it to the variable</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># to be changed.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># The counter component can be used to alter int variables. Use</span>
+<span class="gp">... </span>    <span class="c1"># the 4th parameter of the function to point it to the variable</span>
+<span class="gp">... </span>    <span class="c1"># to be changed.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Counter can be used with doubles too. You can also specify</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># the counter&#39;s step (how much it should change</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># its value after each button press), as well as the format</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># used to print the value.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="n">countFloat</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Counter can be used with doubles too. You can also specify</span>
+<span class="gp">... </span>    <span class="c1"># the counter&#39;s step (how much it should change</span>
+<span class="gp">... </span>    <span class="c1"># its value after each button press), as well as the format</span>
+<span class="gp">... </span>    <span class="c1"># used to print the value.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="n">countFloat</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># The trackbar component can be used to create scales.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># It works with all numerical types (including chars).</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">trackbarValue</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># The trackbar component can be used to create scales.</span>
+<span class="gp">... </span>    <span class="c1"># It works with all numerical types (including chars).</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">trackbarValue</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Checkboxes also accept a pointer to a variable that controls</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># the state of the checkbox (checked or not). cvui.checkbox() will</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># automatically update the value of the boolean after all</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># interactions, but you can also change it by yourself. Just</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># do &quot;checked = [True]&quot; somewhere and the checkbox will change</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># its appearance.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s2">&quot;Checkbox&quot;</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="s2">&quot;A checked checkbox&quot;</span><span class="p">,</span> <span class="n">checked2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Checkboxes also accept a pointer to a variable that controls</span>
+<span class="gp">... </span>    <span class="c1"># the state of the checkbox (checked or not). cvui.checkbox() will</span>
+<span class="gp">... </span>    <span class="c1"># automatically update the value of the boolean after all</span>
+<span class="gp">... </span>    <span class="c1"># interactions, but you can also change it by yourself. Just</span>
+<span class="gp">... </span>    <span class="c1"># do &quot;checked = [True]&quot; somewhere and the checkbox will change</span>
+<span class="gp">... </span>    <span class="c1"># its appearance.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="s2">&quot;Checkbox&quot;</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="s2">&quot;A checked checkbox&quot;</span><span class="p">,</span> <span class="n">checked2</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Display the lib version at the bottom of the screen</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">600</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">300</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xCECECE</span><span class="p">,</span> <span class="s2">&quot;pycharmers v.</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Display the lib version at the bottom of the screen</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">600</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">300</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;pycharmers v.</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">__version__</span><span class="p">))</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># This function must be called *AFTER* all UI components. It does</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># all the behind the scenes magic to handle mouse clicks, etc.</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="c1"># This function must be called *AFTER* all UI components. It does</span>
+<span class="gp">... </span>    <span class="c1"># all the behind the scenes magic to handle mouse clicks, etc.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Show everything on the screen</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Show everything on the screen</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Check if ESC key was pressed</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>            <span class="k">break</span>
+<span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -294,7 +295,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.text">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">text</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">FontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">text</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">8</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display a piece of text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -303,8 +304,11 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
 <li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
 <li><p><strong>text</strong> (<em>str</em>) – The text content.</p></li>
-<li><p><strong>FontScale</strong> (<em>float</em>) – Size of the text.</p></li>
+<li><p><strong>fontFace</strong> (<em>int</em>) – Font type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.FONT_HERSHEY_SIMPLEX</span></code> )</p></li>
+<li><p><strong>fontScale</strong> (<em>float</em>) – Font scale factor that is multiplied by the font-specific base size.</p></li>
 <li><p><strong>color</strong> (<em>uint</em>) – Color of the text in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+<li><p><strong>thickness</strong> (<em>int</em>) – Thickness of the lines used to draw a text.</p></li>
+<li><p><strong>lineType</strong> (<em>int</em>) – Line type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.LINE_8</span></code> )</p></li>
 </ul>
 </dd>
 </dl>
@@ -313,7 +317,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Text&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s2">&quot;Text&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -324,15 +328,16 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.printf">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">printf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">FontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'Text: %d and %f'</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">fmtArgs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#printf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.printf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">printf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">8</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'Text: %s'</span></em>, <em class="sig-param"><span class="n">fmtArgs</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#printf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.printf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display a piece of text that can be formated using <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">stdio's</span> <span class="pre">printf()</span></code> style. For instance if you want to display text mixed with numbers, you can use:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>printf(frame, 10, 15, 0.4, 0xff0000, &#39;Text: %d and %f&#39;, 7, 3.1415)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Text: </span><span class="si">%d</span><span class="s2"> and </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">3.1415</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -341,9 +346,13 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <li><p><strong>where</strong> (<em>np.ndarray</em>) – image/frame where the component should be rendered.</p></li>
 <li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
 <li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
-<li><p><strong>FontScale</strong> (<em>float</em>) – Size of the text.</p></li>
+<li><p><strong>fontFace</strong> (<em>int</em>) – Font type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.FONT_HERSHEY_SIMPLEX</span></code> )</p></li>
+<li><p><strong>fontScale</strong> (<em>float</em>) – Font scale factor that is multiplied by the font-specific base size.</p></li>
 <li><p><strong>color</strong> (<em>uint</em>) – Color of the text in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
-<li><p><strong>fmt</strong> (<em>str</em>) – Formating string as it would be supplied for <code class="docutils literal notranslate"><span class="pre">stdio's</span> <span class="pre">printf()</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">'Text:</span> <span class="pre">%d</span> <span class="pre">and</span> <span class="pre">%f',</span> <span class="pre">7,</span> <span class="pre">3.1415</span></code>.</p></li>
+<li><p><strong>thickness</strong> (<em>int</em>) – Thickness of the lines used to draw a text.</p></li>
+<li><p><strong>lineType</strong> (<em>int</em>) – Line type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.LINE_8</span></code> )</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – Formating string as it would be supplied for stdio’s <code class="docutils literal notranslate"><span class="pre">printf()</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">'Text:</span> <span class="pre">%d</span> <span class="pre">and</span> <span class="pre">%f',</span> <span class="pre">7,</span> <span class="pre">3.1415</span></code>.</p></li>
+<li><p><strong>fmtArgs</strong> (<em>tuple</em>) – Arguments for <code class="docutils literal notranslate"><span class="pre">fmt</span></code> .</p></li>
 </ul>
 </dd>
 </dl>
@@ -359,7 +368,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xCECECE</span><span class="p">,</span> <span class="s2">&quot;Date: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">now_str</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Date: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">now_str</span><span class="p">()))</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
@@ -404,11 +413,12 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">countFloat</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xCECECE</span><span class="p">,</span> <span class="s2">&quot;Current value: </span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">countFloat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Current value: </span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">countFloat</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -449,11 +459,12 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">checkbox</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Checkbox&#39;</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xCECECE</span><span class="p">,</span> <span class="s2">&quot;Current value: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">checked</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Current value: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">checked</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -479,8 +490,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s2">&quot;Mouse&quot;</span>
@@ -494,7 +505,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># Show the coordinates of the mouse pointer on the screen</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Click (any) mouse button and drag the pointer around to select an area.&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">,</span> <span class="s1">&#39;Mouse pointer is at (</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xff0000</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;Mouse pointer is at (</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># The function &quot;bool cvui.mouse(int query)&quot; allows you to query the mouse for events.</span>
 <span class="gp">... </span>    <span class="c1"># E.g. cvui.mouse(cvui.DOWN)</span>
@@ -518,8 +529,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>            <span class="n">rectangle</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span>
 <span class="gp">...</span>
 <span class="gp">... </span>            <span class="c1"># Show the rectangle coordinates and size</span>
-<span class="gp">... </span>            <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">,</span> <span class="s1">&#39;(</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-<span class="gp">... </span>            <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">,</span> <span class="s1">&#39;w:</span><span class="si">%d</span><span class="s1">, h:</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">x</span>    <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span>    <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xff0000</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;(</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">)&#39;</span><span class="p">,</span>    <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">rectangle</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="gp">... </span>            <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xff0000</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;w:</span><span class="si">%d</span><span class="s1">, h:</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">rectangle</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># Did any mouse button go up?</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">cvui</span><span class="o">.</span><span class="n">UP</span><span class="p">):</span>
@@ -544,6 +555,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -573,8 +585,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#=== If you use &quot;width&quot;, &quot;height&quot;, &quot;label&quot; ===</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Button shortcut&#39;</span>
@@ -603,10 +615,11 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># will do it automatically.</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">#=== If you use &quot;idle&quot;, &quot;over&quot;, &quot;down&quot; ===</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">cv2read_mpl</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Image button&#39;</span>
@@ -642,6 +655,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -661,10 +675,9 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Image&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
@@ -688,6 +701,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -714,8 +728,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Trackbar&#39;</span>
@@ -784,6 +798,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -826,6 +841,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -941,8 +957,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Sparkline&#39;</span>
@@ -969,13 +985,14 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.beginRow">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">beginRow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#beginRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.beginRow" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">beginRow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">bgColor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#beginRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.beginRow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start a new row.</p>
 <p>One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don’t have to think about assigning a <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate. Instead you just add components and cvui will place them as you go.</p>
 <p>You use <code class="docutils literal notranslate"><span class="pre">beginRow()</span></code> to start a group of elements. After <code class="docutils literal notranslate"><span class="pre">beginRow()</span></code> has been called, all subsequent component calls don’t have to specify the frame where the component should be rendered nor its position. The position of the component will be automatically calculated by cvui based on the components within the group. All components are placed side by side, from left to right</p>
@@ -989,12 +1006,13 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <li><p><strong>width</strong> (<em>int</em>) – Width of the row. If a negative value is specified, the width of the row will be automatically calculated based on the content of the block.</p></li>
 <li><p><strong>height</strong> (<em>int</em>) – Height of the row. If a negative value is specified, the height of the row will be automatically calculated based on the content of the block.</p></li>
 <li><p><strong>padding</strong> (<em>int</em>) – Space, in pixels, among the components of the block.</p></li>
+<li><p><strong>bgColor</strong> (<em>tuple</em>) – Background Color.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Nested columns&#39;</span>
@@ -1024,6 +1042,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1036,7 +1055,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.beginColumn">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">beginColumn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#beginColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.beginColumn" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">beginColumn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">bgColor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#beginColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.beginColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start a new column.</p>
 <p>One of the most annoying tasks when building UI is to calculate where each component should be placed on the screen. cvui has a set of methods that abstract the process of positioning components, so you don’t have to think about assigning a X and Y coordinate. Instead you just add components and cvui will place them as you go.</p>
 <p>You use <code class="docutils literal notranslate"><span class="pre">beginColumn()</span></code> to start a group of elements. After <code class="docutils literal notranslate"><span class="pre">beginColumn()</span></code> has been called, all subsequent component calls don’t have to specify the frame where the component should be rendered nor its position. The position of the component will be automatically calculated by cvui based on the components within the group. All components are placed below each other, from the top of the screen towards the bottom.</p>
@@ -1049,12 +1068,13 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <li><p><strong>width</strong> (<em>int</em>) – Width of the column. If a negative value is specified, the width of the column will be automatically calculated based on the content of the block.</p></li>
 <li><p><strong>height</strong> (<em>int</em>) – Height of the column. If a negative value is specified, the height of the column will be automatically calculated based on the content of the block.</p></li>
 <li><p><strong>padding</strong> (<em>int</em>) – Space, in pixels, among the components of the block.</p></li>
+<li><p><strong>bgColor</strong> (<em>tuple</em>) – Background Color.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Nested columns&#39;</span>
@@ -1089,6 +1109,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1524,6 +1545,105 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">Internal</code><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class contains all stuff that cvui uses internally to render and control interaction with components.</p>
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.defaultContext">
+<code class="sig-name descname">defaultContext</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.defaultContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default window name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.currentContext">
+<code class="sig-name descname">currentContext</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.currentContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current (active) window name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.contexts">
+<code class="sig-name descname">contexts</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.contexts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indexed by the window name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.lastKeyPressed">
+<code class="sig-name descname">lastKeyPressed</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.lastKeyPressed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last key that was pressed. TODO: collect it per window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.delayWaitKey">
+<code class="sig-name descname">delayWaitKey</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.delayWaitKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delay value (milliseconds) passed to <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code>. If a negative value is informed (default is <code class="docutils literal notranslate"><span class="pre">-1</span></code>), cvui will not automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code>, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.screen">
+<code class="sig-name descname">screen</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block">Block</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.stack">
+<code class="sig-name descname">stack</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.trackbarMarginX">
+<code class="sig-name descname">trackbarMarginX</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarMarginX" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-axis Margin of trackbar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal._render">
+<code class="sig-name descname">_render</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal._render" title="Permalink to this definition">¶</a></dt>
+<dd><p>contains all rendering methods. ( <code class="docutils literal notranslate"><span class="pre">_render._internal</span> <span class="pre">=</span> <span class="pre">self</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pycharmers.opencv.cvui.Render" title="pycharmers.opencv.cvui.Render">Render</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.isMouseButton">
 <code class="sig-name descname">isMouseButton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">button</span></em>, <em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.isMouseButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.isMouseButton" title="Permalink to this definition">¶</a></dt>
@@ -1535,7 +1655,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dd><p>Return the last position of the mouse.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>windowName</strong> (<em>str</em>) – Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in <a href="#id1"><span class="problematic" id="id2">``</span></a>cvui.init()`).</p>
+<dd class="field-odd"><p><strong>windowName</strong> (<em>str</em>) – Name of the window whose mouse cursor will be used. If nothing is informed (default), the function will return the position of the mouse cursor for the default window (the one informed in <code class="docutils literal notranslate"><span class="pre">cvui.init()</span></code> ).</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A point containing the position of the mouse cursor in the speficied window.</p>
@@ -1659,12 +1779,20 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.updateLayoutFlow">
 <code class="sig-name descname">updateLayoutFlow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.updateLayoutFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.updateLayoutFlow" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update layot for additional Rows or Columns.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.blockStackEmpty">
-<code class="sig-name descname">blockStackEmpty</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.blockStackEmpty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.blockStackEmpty" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pycharmers.opencv.cvui.Internal.isblockStackEmpty">
+<em class="property">property </em><code class="sig-name descname">isblockStackEmpty</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.isblockStackEmpty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is block stack ( <code class="docutils literal notranslate"><span class="pre">self.stack</span></code> ) is empty or not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.stackCount">
+<em class="property">property </em><code class="sig-name descname">stackCount</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.stackCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The numeber of blocks in stack ( <code class="docutils literal notranslate"><span class="pre">self.stack</span></code> )</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.topBlock">
@@ -1688,7 +1816,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.text">
-<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">FontScale</span></em>, <em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">updateLayout</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">8</span></em>, <em class="sig-param"><span class="n">updateLayout</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.text" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1773,7 +1901,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.begin">
-<code class="sig-name descname">begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">padding</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.begin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">bgColor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.begin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1800,12 +1928,12 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Render.text">
-<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">position</span></em>, <em class="sig-param"><span class="n">FontScale</span></em>, <em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">position</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">8</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.text" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Render.counter">
-<code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.counter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">16</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.counter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

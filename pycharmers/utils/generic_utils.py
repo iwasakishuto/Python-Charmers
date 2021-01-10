@@ -11,6 +11,8 @@ from pathlib import Path
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
 
+NoneType = type(None)
+
 def handleKeyError(lst, **kwargs):
     """Check whether all ``kwargs.values()`` in the ``lst``.
 
@@ -51,12 +53,12 @@ def class2str(class_):
     """
     return re.sub(r"<class '(.*?)'>", r"\1", str(class_))
 
-def handleTypeError(types, **kwargs):
+def handleTypeError(types=[], **kwargs):
     """Check whether all types of ``kwargs.values()`` match any of ``types``.
 
     Args:
-        lst (list) : candidate types.
-        kwargs     : ``key`` is the varname that is easy to understand when an error occurs
+        types (list) : Candidate types.
+        kwargs       : ``key`` is the varname that is easy to understand when an error occurs
 
     Examples:
         >>> from pycharmers.utils import handleTypeError
@@ -71,9 +73,9 @@ def handleTypeError(types, **kwargs):
     Raise:
         TypeError: If the types of ``kwargs.values()`` are none of the ``types``
     """
-    types = tuple(types)
+    types = tuple([NoneType if e is None else e for e in types])
     for k,v in kwargs.items():
-        if not isinstance(v,tuple(types)):
+        if not isinstance(v, types):
             str_true_types  = ', '.join([f"'{toGREEN(class2str(t))}'" for t in types])
             srt_false_type = class2str(type(v))
             if len(types)==1:
