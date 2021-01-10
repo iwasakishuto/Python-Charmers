@@ -39,7 +39,7 @@ def cascade_detection_create(cascade):
     """Create a ``cascade_detection`` function.
 
     Args:
-        cascade (str, cv2.CascadeClassifier) : 
+        cascade (str, cv2.CascadeClassifier) : Identifier for ``cv2.CascadeClassifier``
 
     Returns:
         ``cascade_detection``

@@ -3,4 +3,5 @@ regexp-replacement = pycharmers.cli.regexp_replacement:regexp_replacement
 render-template = pycharmers.cli.render_template:render_template
 cv-window = pycharmers.cli.cvWindow:cvWindow
 cv-canny = pycharmers.cli.cvCanny:cvCanny
+cv-cascades = pycharmers.cli.cvCascades:cvCascades
 pdfmine = pycharmers.cli.pdfmine:pdfmine

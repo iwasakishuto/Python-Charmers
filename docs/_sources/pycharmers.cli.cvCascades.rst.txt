@@ -1,0 +1,7 @@
+pycharmers.cli.cvCascades module
+================================
+
+.. automodule:: pycharmers.cli.cvCascades
+   :members:
+   :undoc-members:
+   :show-inheritance:

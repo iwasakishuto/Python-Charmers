@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pycharmers.cli.cvCanny
+   pycharmers.cli.cvCascades
    pycharmers.cli.cvWindow
    pycharmers.cli.pdfmine
    pycharmers.cli.regexp_replacement
