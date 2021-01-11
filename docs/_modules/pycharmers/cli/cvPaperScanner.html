@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.cli.cvPaperScanner &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.cvPaperScanner</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.cli.cvPaperScanner</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pycharmers.__meta__</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span><span class="p">,</span> <span class="n">draw_bboxes_xywh</span><span class="p">,</span> <span class="n">findBiggestContour</span><span class="p">,</span> <span class="n">draw_text_with_bg</span><span class="p">,</span> <span class="n">VideoCaptureCreate</span><span class="p">,</span> <span class="n">reorder_contour</span>
+
+<div class="viewcode-block" id="cvPaperScanner"><a class="viewcode-back" href="../../../pycharmers.cli.cvPaperScanner.html#pycharmers.cli.cvPaperScanner.cvPaperScanner">[docs]</a><span class="k">def</span> <span class="nf">cvPaperScanner</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot;Control the OpenCV cascade Examples.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        --winname (str)     : Window name.</span>
+<span class="sd">        --path (str)        : Path to video or image.</span>
+<span class="sd">        --cam (int)         : The ID of the web camera.</span>
+<span class="sd">        --radio-width (int) : The width of the radio boxes.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+
+<span class="sd">        $ cv-paper-scanner --cam 0 --radio-width 200</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;cv-PaperScan&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Paper Scanner&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--winname&quot;</span><span class="p">,</span>     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Paper Scanner (Pycharmers </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Window name.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--path&quot;</span><span class="p">,</span>        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to video or image.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--cam&quot;</span><span class="p">,</span>         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Define the id of the web camera. `cv2.VideoCapture( [ID] )`&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--radio-width&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The width of the radio boxes.&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">winname</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">winname</span>
+    <span class="n">radio_width</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">radio_width</span>
+    <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">cam</span><span class="p">)</span>
+    <span class="c1"># cap.set(cv2.CAP_PROP_BRIGHTNESS, 160)</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
+    <span class="n">bg_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">+</span><span class="n">radio_width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="s2">&quot;Gray&quot;</span><span class="p">,</span> <span class="s2">&quot;Canny Edge&quot;</span><span class="p">,</span> <span class="s2">&quot;Contours&quot;</span><span class="p">,</span> <span class="s2">&quot;Biggest Contour&quot;</span><span class="p">,</span> <span class="s2">&quot;Warp Prespective&quot;</span><span class="p">,</span> <span class="s2">&quot;Warp Gray&quot;</span><span class="p">,</span> <span class="s2">&quot;Adaptive Threshold&quot;</span><span class="p">]</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))]</span>
+    <span class="n">threshold1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+    <span class="n">threshold2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">]</span>
+    <span class="n">eta_counter</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">]</span>
+
+    <span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">winname</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">moveWindow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">bg_frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ret</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&amp;Quit&quot;</span><span class="p">):</span> 
+            <span class="k">break</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">radiobox</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>  <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">30</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;[Canny Edge]&quot;</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">290</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Low threshold&quot;</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;High threshold&quot;</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">30</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;[Biggest Counter]&quot;</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">470</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">)</span>
+        <span class="n">th1</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">310</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">threshold1</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">255.</span><span class="p">)</span>
+        <span class="n">th2</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">380</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">threshold2</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">255.</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">width</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">eta_counter</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">img_bgr</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Gray</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Convert image to Gray scale.</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        <span class="c1"># Canny Edge</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Add Gaussian Blur.</span>
+            <span class="n">img_blur</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sigmaX</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># APPLY Canny Blur.</span>
+            <span class="n">img_th</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">img_blur</span><span class="p">,</span> <span class="n">threshold1</span><span class="o">=</span><span class="n">th1</span><span class="p">,</span> <span class="n">threshold2</span><span class="o">=</span><span class="n">th2</span><span class="p">)</span>
+            <span class="c1"># Apply Dilation &amp; Erosion.</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">erode</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img_th</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+        <span class="c1"># Contours&quot;</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># Find All Contours.</span>
+            <span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span>
+            <span class="n">img_binary</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span> <span class="n">contourIdx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="c1"># Biggest Contour</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">4</span><span class="p">:</span>
+            <span class="c1"># Find the biggest Contour</span>
+            <span class="n">biggest_contour</span><span class="p">,</span> <span class="n">max_area</span> <span class="o">=</span> <span class="n">findBiggestContour</span><span class="p">(</span><span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">eta</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">max_area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">draw_text_with_bg</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Could not find the closed contours.&quot;</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Draw the biggest contour</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="n">img_binary</span>
+                <span class="n">biggest_contour</span> <span class="o">=</span> <span class="n">reorder_contour</span><span class="p">(</span><span class="n">biggest_contour</span><span class="p">)</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="n">biggest_contour</span><span class="p">,</span> <span class="n">contourIdx</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="c1"># Warp Prespective</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">5</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getPerspectiveTransform</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">biggest_contour</span><span class="p">),</span> <span class="n">dst</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],[</span><span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">],[</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">]]))</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img_bgr</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="n">matrix</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+        <span class="c1"># Warp Gray</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">6</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        <span class="c1"># Adaptive Threshold</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">&gt;=</span><span class="mi">7</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">adaptiveThreshold</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">maxValue</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">adaptiveMethod</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thresholdType</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blockSize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bitwise_not</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># draw_text_with_bg(img=frame, text=f&quot;Method: {labels[idx]}&quot;, org=(height-50,50))</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">beginRow</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">bg_frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">endRow</span><span class="p">()</span>
+        <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">winname</span><span class="p">,</span> <span class="n">bg_frame</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.cvPaperScanner</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Shuto.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

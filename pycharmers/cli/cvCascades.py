@@ -5,7 +5,7 @@ import argparse
 import cv2
 import numpy as np
 from pycharmers.__meta__ import __version__
-from pycharmers.opencv import cvui, cascade_creator, draw_bboxes_xywh
+from pycharmers.opencv import cvui, cascade_creator, draw_bboxes_xywh, VideoCaptureCreate
 from pycharmers.opencv.cascade import OPENCV_CASCADES
 
 def cvCascades(argv=sys.argv[1:]):
@@ -13,29 +13,25 @@ def cvCascades(argv=sys.argv[1:]):
 
     Args:
         --winname (str)     : Window name.
+        --path (str)        : Path to video or image.
         --cam (int)         : The ID of the web camera.
         --radio-width (int) : The width of the radio boxes.
 
     Note:
         When you run from the command line, execute as follows::
 
-        $ cv-Cascades --cam 0 --radio-width 200
+        $ cv-cascades --cam 0 --radio-width 200
     """
     parser = argparse.ArgumentParser(prog="cv-Cascades", description="OpenCV cascade Examples", add_help=True)
     parser.add_argument("--winname",     type=str, default=f"Cascade Example (Pycharmers {__version__})", help="Window name.")
-    parser.add_argument("--path",        type=str, help="Path to video.")
-    parser.add_argument("--cam",         type=int, default=0,   help="Define the id of the web camera. `cv2.VideoCapture( [ID] )`")
-    parser.add_argument("--radio-width", type=int, default=200, help="The width of the radio boxes.")
+    parser.add_argument("--path",        type=str, default=None, help="Path to video or image.")
+    parser.add_argument("--cam",         type=int, default=0,    help="Define the id of the web camera. `cv2.VideoCapture( [ID] )`")
+    parser.add_argument("--radio-width", type=int, default=200,  help="The width of the radio boxes.")
     args = parser.parse_args(argv)
 
     winname = args.winname
-    path = args.path
     radio_width = args.radio_width
-
-    if path is None:
-        cap = cv2.VideoCapture(args.cam)
-    else:
-        cap = cv2.VideoCapture(path)
+    cap = VideoCaptureCreate(path=args.path, cam=args.cam)
     width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     bg_frame = np.zeros(shape=(height, width+radio_width, 3), dtype=np.uint8)
 

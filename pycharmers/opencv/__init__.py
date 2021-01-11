@@ -7,6 +7,7 @@ OpenCV (Open Source Computer Vision Library) is a library of programming functio
 from ._path import *
 from ._path import save_dir_create
 from . import backsub
+from . import binary
 from . import cvui
 from . import cascade
 from . import drawing
@@ -17,6 +18,9 @@ from . import video_image_handler
 from . import windows
 
 from .backsub import background_subtractor_create
+
+from .binary import findBiggestContour
+from .binary import reorder_contour
 
 from .cascade import cascade_creator
 from .cascade import cascade_detection_create
@@ -47,6 +51,7 @@ from .video_image_handler import create_VideoWriter
 from .video_image_handler import mono_frame_generator
 from .video_image_handler import multi_frame_generator_concat
 from .video_image_handler import multi_frame_generator_sepa
+from .video_image_handler import VideoCaptureCreate
 
 from .windows import (DEFAULT_CV_KEYS, DEFAULT_FRAME_KEYS, DEFAULT_REALTIME_KEYS, DEFAULT_TRACKING_KEYS)
 from .windows import cvKeys

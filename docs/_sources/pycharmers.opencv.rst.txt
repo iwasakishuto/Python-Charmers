@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pycharmers.opencv.backsub
+   pycharmers.opencv.binary
    pycharmers.opencv.cascade
    pycharmers.opencv.cvui
    pycharmers.opencv.drawing

@@ -186,3 +186,46 @@ def create_VideoWriter(in_path, out_path=None, fps=30):
         H,W,_ = img.shape
     out_video = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc('m','p','4','v'), int(fps), (W, H))
     return out_video
+
+def VideoCaptureCreate(path=None, cam=0):
+    """Create a VideoCapture (mimic) object.
+
+    Args:
+        path (str) : path to video or image.
+        cam (int)  : The ID of the web camera
+
+    Returns:
+        cap (cv2.VideoCapture) : VideoCapture (mimic) object.
+
+    Examples:
+        >>> from pycharmers.opencv import VideoCaptureCreate, cv2plot
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO
+        >>> for path in [SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO, None]:
+        ...     cap = VideoCaptureCreate(path=path, cam=0)
+        ...     ret,frame = cap.read()
+        ...     cv2plot(frame)
+        ...     cap.release()
+    """
+    if path is None:
+        cap = cv2.VideoCapture(cam)
+    elif re.search(pattern=IMAGE_FILE_PATTERN, string=path, flags=re.IGNORECASE):
+        class VideoMimic():
+            def __init__(self, path):
+                frame = cv2.imread(path)
+                self.frame = frame
+                self.info = {
+                    cv2.CAP_PROP_FRAME_WIDTH  : frame.shape[1],
+                    cv2.CAP_PROP_FRAME_HEIGHT : frame.shape[0],
+                }
+            def read(self):
+                return True, self.frame
+            def release(self):
+                return True
+            def get(self, id):
+                return self.info.get(id)  
+            def set(self, id):
+                pass
+        cap = VideoMimic(path)
+    else:
+        cap = cv2.VideoCapture(path)
+    return cap

@@ -15,7 +15,7 @@ def cvCany(argv=sys.argv[1:]):
     Note:
         When you run from the command line, execute as follows::
         
-        $ cvCany path/tp/sample.png    
+        $ cvCany path/to/sample.png    
     """
     parser = argparse.ArgumentParser(prog="pdfmine", add_help=True)
     parser.add_argument("path",   type=str, help="Path/to/input image.")

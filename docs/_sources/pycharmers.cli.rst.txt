@@ -9,6 +9,7 @@ Submodules
 
    pycharmers.cli.cvCanny
    pycharmers.cli.cvCascades
+   pycharmers.cli.cvPaperScanner
    pycharmers.cli.cvWindow
    pycharmers.cli.pdfmine
    pycharmers.cli.regexp_replacement

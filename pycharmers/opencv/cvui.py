@@ -1845,7 +1845,7 @@ class Internal:
 		# TODO: use size = aContentArea.size()?
 		self.updateLayoutFlow(block, aContentArea)
 
-		return value[0] != aValue
+		return value[0]
 
 	def window(self, block, x, y, width, height, title):
 		aTitleBar = Rect(x, y, width, 20)
@@ -1887,12 +1887,13 @@ class Internal:
 		self.updateLayoutFlow(block, size)
 
 	def hexToScalar(self, color):
-		aAlpha = (color >> 24) & 0xff
-		aRed   = (color >> 16) & 0xff
-		aGreen = (color >> 8)  & 0xff
-		aBlue  = color & 0xff
-
-		return (aBlue, aGreen, aRed, aAlpha)
+		if isinstance(color, int):
+			aAlpha = (color >> 24) & 0xff
+			aRed   = (color >> 16) & 0xff
+			aGreen = (color >> 8)  & 0xff
+			aBlue  = color & 0xff
+			color = (aBlue, aGreen, aRed, aAlpha)
+		return color
 
 	def begin(self, type, where, x, y, width, height, padding, bgColor=None):
 		if bgColor is not None: 
@@ -1999,7 +2000,9 @@ class Render:
 		self.rectangle(block.where, shape, (0x42, 0x42, 0x42) if state == OUT else ((0x52, 0x52, 0x52) if state == OVER else (0x32, 0x32, 0x32)), CVUI_FILLED)
 
 	def image(self, block, rect, image):
-		block.where[rect.y: rect.y + rect.height, rect.x: rect.x + rect.width] = image
+		if image.ndim==2 and block.where.ndim==3:
+			image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+		block.where[rect.y : rect.y+rect.height, rect.x : rect.x+rect.width] = image
 
 	def putText(self, block, state, color, text, position):
 		afontScale = 0.39 if state == DOWN else 0.4

@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:title" content="pycharmers.opencv.tracking module" />
+  <meta property="og:title" content="pycharmers.opencv.binary module" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.tracking.html" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.binary.html" />
   <meta property="og:description" content="" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <title>pycharmers.opencv.tracking module &#8212; Python-Charmers  documentation</title>
+    <title>pycharmers.opencv.binary module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.opencv.video_image_handler module" href="pycharmers.opencv.video_image_handler.html" />
-    <link rel="prev" title="pycharmers.opencv.morphology module" href="pycharmers.opencv.morphology.html" /> 
+    <link rel="next" title="pycharmers.opencv.cascade module" href="pycharmers.opencv.cascade.html" />
+    <link rel="prev" title="pycharmers.opencv.backsub module" href="pycharmers.opencv.backsub.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.video_image_handler.html" title="pycharmers.opencv.video_image_handler module"
+          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.morphology.html" title="pycharmers.opencv.morphology module"
+          <a href="pycharmers.opencv.backsub.html" title="pycharmers.opencv.backsub module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -57,7 +57,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" accesskey="U">pycharmers.opencv package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.tracking module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.binary module</a></li> 
       </ul>
     </div>  
 
@@ -66,70 +66,50 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.opencv.tracking">
-<span id="pycharmers-opencv-tracking-module"></span><h1>pycharmers.opencv.tracking module<a class="headerlink" href="#module-pycharmers.opencv.tracking" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="pycharmers.opencv.tracking.BBoxLogger">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.tracking.</code><code class="sig-name descname">BBoxLogger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em>, <em class="sig-param"><span class="n">input_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Store Bounding Boxes logs.</p>
-<dl class="field-list simple">
+  <div class="section" id="module-pycharmers.opencv.binary">
+<span id="pycharmers-opencv-binary-module"></span><h1>pycharmers.opencv.binary module<a class="headerlink" href="#module-pycharmers.opencv.binary" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.binary.findBiggestContour">
+<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">findBiggestContour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contours</span></em>, <em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#findBiggestContour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.findBiggestContour" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_path</strong> (<em>str</em>) – Path to input image directory or video.</p></li>
-<li><p><strong>coord_type</strong> (<em>str</em>) – Coordinate types.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>contours</strong> (<em>list</em>) – Contours. (e.g. The return of <code class="docutils literal notranslate"><span class="pre">cv2.findContours</span></code> )</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Countour of the biggest area.
+max_area (int)       : Area of the biggest area.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>biggest (np.ndarray)</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pycat</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">BBoxLogger</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bbox_logger</span> <span class="o">=</span> <span class="n">BBoxLogger</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bbox_logger</span><span class="o">.</span><span class="n">add_bboxes</span><span class="p">(</span><span class="n">no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">out_path</span> <span class="o">=</span> <span class="n">bbox_logger</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="go">tracking info was saved at /Users/iwasakishuto/.pycharmers/opencv/json/2020-09-25@01.05.18.json</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pycat</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
-<span class="go">{</span>
-<span class="go">&quot;coord_type&quot;: &quot;xywh&quot;,</span>
-<span class="go">&quot;BBoxes&quot;: {</span>
-<span class="go">    &quot;1&quot;: [</span>
-<span class="go">    [</span>
-<span class="go">        120,</span>
-<span class="go">        120,</span>
-<span class="go">        40,</span>
-<span class="go">        40</span>
-<span class="go">    ]</span>
-<span class="go">    ]</span>
-<span class="go">}</span>
-<span class="go">}</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">findBiggestContour</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_th</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">img_th</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">biggest</span><span class="p">,</span> <span class="n">max_area</span> <span class="o">=</span> <span class="n">findBiggestContour</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_area</span>
+<span class="go">0 # There is no closed countour.</span>
 </pre></div>
 </div>
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.init">
-<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.init" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialization of the logs.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.add_bboxes">
-<code class="sig-name descname">add_bboxes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">no</span></em>, <em class="sig-param"><span class="n">bboxes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.add_bboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.add_bboxes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add Bounding Boxes</p>
+<dl class="py function">
+<dt id="pycharmers.opencv.binary.reorder_contour">
+<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">reorder_contour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#reorder_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.reorder_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder the points created by <code class="docutils literal notranslate"><span class="pre">cv2.approxPolyDP</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>no</strong> (<em>int</em>) – Frame number.</p></li>
-<li><p><strong>bboxes</strong> (<em>list</em>) – List of bounding boxes.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>points</strong> (<em>np.ndarray</em>) – Points.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Reordered Points.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret (np.ndarray)</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the results</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -179,13 +159,13 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
-<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.tracking module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
@@ -202,15 +182,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.opencv.morphology.html"
-                        title="previous chapter">pycharmers.opencv.morphology module</a></p>
+  <p class="topless"><a href="pycharmers.opencv.backsub.html"
+                        title="previous chapter">pycharmers.opencv.backsub module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.opencv.video_image_handler.html"
-                        title="next chapter">pycharmers.opencv.video_image_handler module</a></p>
+  <p class="topless"><a href="pycharmers.opencv.cascade.html"
+                        title="next chapter">pycharmers.opencv.cascade module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pycharmers.opencv.tracking.rst.txt"
+      <li><a href="_sources/pycharmers.opencv.binary.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -238,10 +218,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.video_image_handler.html" title="pycharmers.opencv.video_image_handler module"
+          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.opencv.morphology.html" title="pycharmers.opencv.morphology module"
+          <a href="pycharmers.opencv.backsub.html" title="pycharmers.opencv.backsub module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -249,7 +229,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" >pycharmers.opencv package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.tracking module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.binary module</a></li> 
       </ul>
     </div>
 

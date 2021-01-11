@@ -1,0 +1,7 @@
+pycharmers.cli.cvPaperScanner module
+====================================
+
+.. automodule:: pycharmers.cli.cvPaperScanner
+   :members:
+   :undoc-members:
+   :show-inheritance:
