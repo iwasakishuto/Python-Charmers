@@ -129,7 +129,7 @@ def cv2ArgumentParser(parser=None, prog="", description=None, add_help=True, **k
     parser.add_argument("--gui-width",    type=int, default=200, help="The width of the GUI tools.")
     parser.add_argument("--gui-margin",   type=int, default=10,  help="The margin of GUI control tools.")
     parser.add_argument("--ext",          type=str, default=".jpg", help="The extension for saved image.")
-    parser.add_argument("--monitor-size", action=ListParamProcessorCreate(type=int), default=(1080, 720), help="Monitor size. (width, height)")
+    parser.add_argument("--monitor-size", action=ListParamProcessorCreate(type=int), default=(1440, 960), help="Monitor size. (width, height)")
     parser.add_argument("--autofit",      action="store_true", help="Whether to fit display size to window size.")
     parser.add_argument("--twitter",      action="store_true", help="Whether you want to run for tweet. ( ``display_size`` will be ( ``1300`` , ``730`` ) ).")
     parser.add_argument("--capture",      action="store_true", help="Whether you want to save as video.")
