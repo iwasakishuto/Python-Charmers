@@ -16,6 +16,8 @@ def cvPaperScanner(argv=sys.argv[1:]):
         When you run from the command line, execute as follows::
 
         $ cv-paper-scanner --cam 0 --radio-width 200
+
+    .. image:: _images/prml.jpg
     """
     parser = cv2ArgumentParser(prog="cv-PaperScan", description="Paper Scanner", add_help=True)
     args = parser.parse_args(argv)

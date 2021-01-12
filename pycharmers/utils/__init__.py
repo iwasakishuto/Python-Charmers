@@ -39,6 +39,7 @@ from .color_utils import rgb2rgba
 from .color_utils import rgba2hex
 from .color_utils import rgba2rgb
 from .color_utils import choose_text_color
+from .color_utils import generateLightDarks
 
 from .download_utils import decide_extension
 from .download_utils import download_file

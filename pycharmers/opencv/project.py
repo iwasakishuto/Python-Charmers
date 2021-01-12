@@ -6,6 +6,7 @@ import numpy as np
 from . import cvui
 from ._path import PYCHARMERS_OPENCV_VIDEO_DIR
 from .editing import resize_aspect
+from .drawing import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE)
 from .video_image_handler import VideoCaptureCreate
 from ..utils.generic_utils import now_str
 from ..utils.subprocess_utils import get_monitor_size
@@ -79,6 +80,7 @@ class cv2Project():
         fps = cap.get(cv2.CAP_PROP_FPS)
         video_path = now_str()+".mp4"
         video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc('m','p','4','v'), fps, (monitor_width, monitor_height))
+        print(f"Created {toBLUE(video_path)}")
         cvui.init(self.winname)
         cv2.moveWindow(winname=self.winname, x=0, y=0)
 
@@ -97,16 +99,16 @@ class cv2Project():
             ret, frame = self.cap.read()
             if not ret: break
             frame = func(frame=frame, **params)
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-155, label="&Stop" if self.capture else "&Capture" ): 
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-155, label="&Stop" if self.capture else "&Capture", color=cv2RED if self.capture else cv2BLUE): 
                 self.capture = not self.capture
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-120, label="&Quit"): 
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-120, label="&Quit", color=cv2RED): 
                 break
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-85, label="&Save"): 
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-85, label="&Save", color=cv2BLUE): 
                 filename = now_str() + self.ext
                 cv2.imwrite(filename=filename, img=frame)
                 cv2.imshow(winname=filename, mat=resize_aspect(cv2.imread(filename), dsize=self.frame_halfsize))
                 print(f"Saved {toBLUE(filename)}")
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-50, label="&FullScreen"):
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-50, label="&FullScreen", color=cv2GREEN):
                 cv2.setWindowProperty(
                     winname=self.winname,
                     prop_id=cv2.WND_PROP_FULLSCREEN,
@@ -135,6 +137,4 @@ class cv2Project():
         self.cap.release()
         if os.path.getsize(self.video_path) <= 1000:
             os.remove(self.video_path)
-            print(f"Deleted {toBLUE(self.video_path)}")
-        else:
-            print(f"Deleted {toBLUE(self.video_path)}")
+            print(f"Deleted {toBLUE(self.video_path)} (because you didn't capture the window)")

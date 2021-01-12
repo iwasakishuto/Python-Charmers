@@ -76,14 +76,14 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-11&#64;20.14.13'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-12&#64;23.33.15'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <cite>cv2.waitKey()</cite> within <cite>cvui.update()</cite>, so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>WindowNames</strong> (<em>str</em><em>,</em><em>list</em>) – Array containing the name of the windows where components will be added. Those windows will be automatically if <cite>createNamedWindows</cite> is <cite>True</cite>.</p></li>
+<li><p><strong>windowNames</strong> (<em>str</em><em>,</em><em>list</em>) – Array containing the name of the windows where components will be added. Those windows will be automatically if <cite>createNamedWindows</cite> is <cite>True</cite>.</p></li>
 <li><p><strong>numWindows</strong> (<em>int</em>) – How many window names exist in the <cite>windowNames</cite> array.</p></li>
 <li><p><strong>delayWaitKey</strong> (<em>int</em>) – Delay value passed to <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code>. If a negative value is informed (default is <code class="docutils literal notranslate"><span class="pre">-1</span></code>), cvui will not automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code>, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</p></li>
 <li><p><strong>createNamedWindows</strong> (<em>bool</em>) – If OpenCV windows named according to <cite>windowNames</cite> should be created during the initialization. Windows are created using <cite>cv2.namedWindow()</cite>. If this parameter is <cite>False</cite>, ensure you call <cite>cv2.namedWindow(WINDOW_NAME)</cite> for all windows <em>before</em> initializing cvui, otherwise it will not be able to track UI interactions.</p></li>
@@ -262,9 +262,56 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>value (int)</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Interaction area&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">300</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rectangle</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Fill the frame with a nice color</span>
+<span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Render a rectangle on the screen.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Check what is the current status of the mouse cursor</span>
+<span class="gp">... </span>    <span class="c1"># regarding the previously rendered rectangle.</span>
+<span class="gp">... </span>    <span class="n">status</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">iarea</span><span class="p">(</span><span class="n">rectangle</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">height</span><span class="p">);</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># cvui.iarea() will return the current mouse status:</span>
+<span class="gp">... </span>    <span class="c1">#  CLICK : mouse just clicked the interaction are</span>
+<span class="gp">... </span>    <span class="c1">#  DOWN  : mouse button was pressed on the interaction area, but not released yet.</span>
+<span class="gp">... </span>    <span class="c1">#  OVER  : mouse cursor is over the interaction area</span>
+<span class="gp">... </span>    <span class="c1">#  OUT   : mouse cursor is outside the interaction area</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">CLICK</span><span class="p">:</span>  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rectangle was clicked!&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">DOWN</span><span class="p">:</span>   <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Mouse is: DOWN&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">OVER</span><span class="p">:</span>   <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Mouse is: OVER&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">OUT</span><span class="p">:</span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Mouse is: OUT&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Show the coordinates of the mouse pointer on the screen</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Mouse pointer is at (</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">mouse</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># This function must be called *AFTER* all UI components. It does</span>
+<span class="gp">... </span>    <span class="c1"># all the behind the scenes magic to handle mouse clicks, etc.</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Show everything on the screen</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -616,7 +663,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.button">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">idle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">over</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">down</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.button" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">idle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">over</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">down</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">3289650</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display a button whose graphics are images (np.ndarray). The button accepts three images to describe its states, which are idle (no mouse interaction), over (mouse is over the button) and down (mouse clicked the button). The button size will be defined by the width and height of the images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -780,6 +827,12 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <li><p><strong>discreteStep</strong> (<em>number</em>) – Amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option <code class="docutils literal notranslate"><span class="pre">cvui.TRACKBAR_DISCRETE</span></code> is ON)</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
@@ -828,8 +881,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># You can change the behavior of any tracker by using the options parameter.</span>
 <span class="gp">... </span>    <span class="c1"># Options are defined as a bitfield, so you can combine them.</span>
 <span class="gp">... </span>    <span class="c1"># E.g.</span>
-<span class="gp">... </span>    <span class="c1">#       TRACKBAR_DISCRETE                                                       # value changes are discrete</span>
-<span class="gp">... </span>    <span class="c1">#  TRACKBAR_DISCRETE | TRACKBAR_HIDE_LABELS     # discrete changes and no labels</span>
+<span class="gp">... </span>    <span class="c1"># TRACKBAR_DISCRETE                                                     # value changes are discrete</span>
+<span class="gp">... </span>    <span class="c1"># TRACKBAR_DISCRETE | TRACKBAR_HIDE_LABELS      # discrete changes and no labels</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="s1">&#39;double, step 0.1, option TRACKBAR_DISCRETE&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">doubleValue3</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%.1Lf</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">cvui</span><span class="o">.</span><span class="n">TRACKBAR_DISCRETE</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -869,7 +922,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
 <li><p><strong>width</strong> (<em>int</em>) – Width of the window.</p></li>
 <li><p><strong>height</strong> (<em>int</em>) – Height of the window.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – text displayed as the title of the window.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Text displayed as the title of the window.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1523,7 +1576,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py class">
 <dt id="pycharmers.opencv.cvui.TrackbarParams">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">TrackbarParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">min</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max</span><span class="o">=</span><span class="default_value">25.0</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">segments</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">labelfmt</span><span class="o">=</span><span class="default_value">'%.0Lf'</span></em>, <em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#TrackbarParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.TrackbarParams" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">TrackbarParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">min</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max</span><span class="o">=</span><span class="default_value">255.0</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">segments</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">labelfmt</span><span class="o">=</span><span class="default_value">'%.0Lf'</span></em>, <em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#TrackbarParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.TrackbarParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Describe the inner parts of the trackbar component.</p>
 <dl class="py attribute">
@@ -1701,7 +1754,8 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.isMouseButton">
 <code class="sig-name descname">isMouseButton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">button</span></em>, <em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.isMouseButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.isMouseButton" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get to know the relationship between the mouse and the <code class="docutils literal notranslate"><span class="pre">button</span></code> by returning the <code class="docutils literal notranslate"><span class="pre">button</span></code> state according to the <code class="docutils literal notranslate"><span class="pre">query</span></code></p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.mouseW">
@@ -1735,7 +1789,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Any mouse button just went down.</span>
 </pre></div>
 </div>
-<p>The window whose mouse will be queried depends on the context. If <code class="docutils literal notranslate"><span class="pre">cvui.mouse(query)</span></code> is being called after <code class="docutils literal notranslate"><span class="pre">cvui.context()</span></code>, the window informed in the context will be queried. If no context is available, the default window (informed in <cite>cvui::init()</cite>) will be used.</p>
+<p>The window whose mouse will be queried depends on the context. If <code class="docutils literal notranslate"><span class="pre">cvui.mouse(query)</span></code> is being called after <code class="docutils literal notranslate"><span class="pre">cvui.context()</span></code>, the window informed in the context will be queried. If no context is available, the default window (informed in <code class="docutils literal notranslate"><span class="pre">cvui.init()</span></code> ) will be used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>query</strong> (<em>int</em>) – An integer describing the intended mouse query. Available queries are <code class="docutils literal notranslate"><span class="pre">cvui.DOWN</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.UP</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.CLICK</span></code>, and <code class="docutils literal notranslate"><span class="pre">cvui.IS_DOWN</span></code>.</p>
@@ -1772,11 +1826,11 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.mouseBQ">
 <code class="sig-name descname">mouseBQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">button</span></em>, <em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.mouseBQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.mouseBQ" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query the mouse for events in a particular button. This function behave exactly like <cite>cvui::mouse(int query)</cite>, with the difference that queries are targeted at a particular mouse button instead.</p>
+<dd><p>Query the mouse for events in a particular button. This function behave exactly like <code class="docutils literal notranslate"><span class="pre">cvui.mouse(int</span> <span class="pre">query)</span></code>, with the difference that queries are targeted at a particular mouse button instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>button</strong> (<em>int</em>) – An integer describing the mouse button to be queried. Possible values are <cite>cvui::LEFT_BUTTON</cite>, <cite>cvui::MIDDLE_BUTTON</cite> and <cite>cvui::LEFT_BUTTON</cite>.</p></li>
+<li><p><strong>button</strong> (<em>int</em>) – An integer describing the mouse button to be queried. Possible values are <code class="docutils literal notranslate"><span class="pre">cvui.LEFT_BUTTON</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.MIDDLE_BUTTON</span></code> and <code class="docutils literal notranslate"><span class="pre">cvui.LEFT_BUTTON</span></code>.</p></li>
 <li><p><strong>query</strong> (<em>int</em>) – An integer describing the intended mouse query. Available queries are <code class="docutils literal notranslate"><span class="pre">cvui.DOWN</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.UP</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.CLICK</span></code>, and <code class="docutils literal notranslate"><span class="pre">cvui.IS_DOWN</span></code>.</p></li>
 </ul>
 </dd>
@@ -1792,12 +1846,12 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.mouseWBQ">
 <code class="sig-name descname">mouseWBQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowName</span></em>, <em class="sig-param"><span class="n">button</span></em>, <em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.mouseWBQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.mouseWBQ" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query the mouse for events in a particular button in a particular window. This function behave exactly like <cite>cvui::mouse(int button, int query)</cite>, with the difference that queries are targeted at a particular mouse button in a particular window instead.</p>
+<dd><p>Query the mouse for events in a particular button in a particular window. This function behave exactly like <code class="docutils literal notranslate"><span class="pre">cvui.mouse(int</span> <span class="pre">button,</span> <span class="pre">int</span> <span class="pre">query)</span></code>, with the difference that queries are targeted at a particular mouse button in a particular window instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>windowName</strong> (<em>str</em>) – Name of the window that will be queried.</p></li>
-<li><p><strong>button</strong> (<em>int</em>) – An integer describing the mouse button to be queried. Possible values are <cite>cvui::LEFT_BUTTON</cite>, <cite>cvui::MIDDLE_BUTTON</cite> and <cite>cvui::LEFT_BUTTON</cite>.</p></li>
+<li><p><strong>button</strong> (<em>int</em>) – An integer describing the mouse button to be queried. Possible values are <code class="docutils literal notranslate"><span class="pre">cvui.LEFT_BUTTON</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.MIDDLE_BUTTON</span></code> and <code class="docutils literal notranslate"><span class="pre">cvui.LEFT_BUTTON</span></code>.</p></li>
 <li><p><strong>query</strong> (<em>int</em>) – An integer describing the intended mouse query. Available queries are <code class="docutils literal notranslate"><span class="pre">cvui.DOWN</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.UP</span></code>, <code class="docutils literal notranslate"><span class="pre">cvui.CLICK</span></code>, and <code class="docutils literal notranslate"><span class="pre">cvui.IS_DOWN</span></code>.</p></li>
 </ul>
 </dd>
@@ -1813,27 +1867,74 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.init">
 <code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowName</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.init" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Initiallize the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>windowNames</strong> (<em>str</em><em>,</em><em>list</em>) – Array containing the name of the windows where components will be added. Those windows will be automatically if <cite>createNamedWindows</cite> is <cite>True</cite>.</p></li>
+<li><p><strong>delayWaitKey</strong> (<em>int</em>) – Delay value passed to <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code>. If a negative value is informed (default is <code class="docutils literal notranslate"><span class="pre">-1</span></code>), cvui will not automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code>, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using &amp; in a button label), you must specify a positive value for this param.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.bitsetHas">
 <code class="sig-name descname">bitsetHas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bitset</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.bitsetHas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.bitsetHas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Check whether <code class="docutils literal notranslate"><span class="pre">bitset</span></code> has the signal of <code class="docutils literal notranslate"><span class="pre">value</span></code> e.g. <code class="docutils literal notranslate"><span class="pre">cvui.TRACKBAR_HIDE_VALUE_LABEL</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bitset</strong> (<em>int</em>) – Binary value with various signals (= <code class="docutils literal notranslate"><span class="pre">1</span></code> )</p></li>
+<li><p><strong>value</strong> (<em>int</em>) – Binary value with only one <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether <code class="docutils literal notranslate"><span class="pre">bitset</span></code> has the signal of <code class="docutils literal notranslate"><span class="pre">value</span></code> or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.error">
 <code class="sig-name descname">error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">errorId</span></em>, <em class="sig-param"><span class="n">message</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Output the Error message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>errorId</strong> (<em>int</em>) – Error Id used in cvui.</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – An additional message.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.getContext">
 <code class="sig-name descname">getContext</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowName</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.getContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.getContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get Context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>windowName</strong> (<em>str</em>) – Name of the window whose UI interactions will be tracked.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.updateLayoutFlow">
 <code class="sig-name descname">updateLayoutFlow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">size</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.updateLayoutFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.updateLayoutFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update layot for additional Rows or Columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>size</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Size" title="pycharmers.opencv.cvui.Size"><em>Size</em></a>) – Represent the size of something.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1851,32 +1952,88 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.topBlock">
 <code class="sig-name descname">topBlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.topBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.topBlock" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the top (last) <code class="docutils literal notranslate"><span class="pre">Block</span></code> in <code class="docutils literal notranslate"><span class="pre">self.stack</span></code></p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.pushBlock">
-<code class="sig-name descname">pushBlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.pushBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.pushBlock" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">pushBlock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.pushBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.pushBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push a <code class="docutils literal notranslate"><span class="pre">Block</span></code> object into <code class="docutils literal notranslate"><span class="pre">self.stack</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.popBlock">
 <code class="sig-name descname">popBlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.popBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.popBlock" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Pop a <code class="docutils literal notranslate"><span class="pre">Block</span></code> object from <code class="docutils literal notranslate"><span class="pre">self.stack</span></code></p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.createLabel">
 <code class="sig-name descname">createLabel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.createLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.createLabel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a Label object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – Label string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Describe a component label, including info about a shortcut.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pycharmers.opencv.cvui.Label" title="pycharmers.opencv.cvui.Label">Label</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.text">
 <code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">fontFace</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fontScale</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">13553358</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">lineType</span><span class="o">=</span><span class="default_value">8</span></em>, <em class="sig-param"><span class="n">updateLayout</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.text" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display a piece of text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – The text content.</p></li>
+<li><p><strong>fontFace</strong> (<em>int</em>) – Font type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.FONT_HERSHEY_SIMPLEX</span></code> )</p></li>
+<li><p><strong>fontScale</strong> (<em>float</em>) – Font scale factor that is multiplied by the font-specific base size.</p></li>
+<li><p><strong>color</strong> (<em>uint</em>) – Color of the text in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+<li><p><strong>thickness</strong> (<em>int</em>) – Thickness of the lines used to draw a text.</p></li>
+<li><p><strong>lineType</strong> (<em>int</em>) – Line type. (default= <code class="docutils literal notranslate"><span class="pre">cv2.LINE_8</span></code> )</p></li>
+<li><p><strong>updateLayout</strong> (<em>bool</em>) – Whether updates layot or not.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.counter">
 <code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">fmt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.counter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display a counter for integer values that the user can increase/descrease by clicking the up and down arrows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>value</strong> (<em>[</em><em>number</em><em>]</em>) – Array or List of numbers whose first position, i.e. <code class="docutils literal notranslate"><span class="pre">value[0]</span></code>, will be used to store the current value of the counter.</p></li>
+<li><p><strong>step</strong> (<em>number</em>) – Amount that should be increased/decreased when the user interacts with the counter buttons</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – How the value of the counter should be presented, as it was printed by <code class="docutils literal notranslate"><span class="pre">stdio's</span> <span class="pre">printf()</span></code>. E.g. <code class="docutils literal notranslate"><span class="pre">'%d'</span></code> means the value will be displayed as an integer, <code class="docutils literal notranslate"><span class="pre">'%0d'</span></code> integer with one leading zero, etc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Number that corresponds to the current value of the counter.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>value (number)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.checkbox">
@@ -1889,89 +2046,327 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.clamp01">
-<code class="sig-name descname">clamp01</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.clamp01"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.clamp01" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.trackbarForceValuesAsMultiplesOfSmallStep">
-<code class="sig-name descname">trackbarForceValuesAsMultiplesOfSmallStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarForceValuesAsMultiplesOfSmallStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarForceValuesAsMultiplesOfSmallStep" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.trackbarXPixelToValue">
-<code class="sig-name descname">trackbarXPixelToValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">bounding</span></em>, <em class="sig-param"><span class="n">pixelX</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarXPixelToValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarXPixelToValue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.trackbarValueToXPixel">
-<code class="sig-name descname">trackbarValueToXPixel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">bounding</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarValueToXPixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarValueToXPixel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.iarea">
-<code class="sig-name descname">iarea</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.iarea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.iarea" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.buttonWH">
-<code class="sig-name descname">buttonWH</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">updateLayout</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.buttonWH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.buttonWH" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.button">
-<code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.button" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.buttonI">
-<code class="sig-name descname">buttonI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">idle</span></em>, <em class="sig-param"><span class="n">over</span></em>, <em class="sig-param"><span class="n">down</span></em>, <em class="sig-param"><span class="n">updateLayout</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.buttonI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.buttonI" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.image">
-<code class="sig-name descname">image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.image" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pycharmers.opencv.cvui.Internal.clip">
+<code class="sig-name descname">clip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">v_min</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">v_max</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.clip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.clip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an interval, values outside the interval are clipped to the interval edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>number</em>) – value.</p></li>
+<li><p><strong>v_min</strong> (<em>number</em>) – Minimum value.</p></li>
+<li><p><strong>v_max</strong> (<em>number</em>) – Maximum value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Clipped value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>number</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.trackbar">
 <code class="sig-name descname">trackbar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbar" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display a trackbar for numeric values that the user can increase/decrease by clicking and/or dragging the marker right or left. This component can use different types of data as its value, so it is imperative provide the right label format, e.g. ‘%d’ for ints, otherwise you might end up with weird errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the trackbar.</p></li>
+<li><p><strong>value</strong> (<em>[</em><em>number</em><em>]</em>) – Array or list of numbers whose first position, i.e. <code class="docutils literal notranslate"><span class="pre">value[0]</span></code>, will be used to store the current value of the trackbar. It will be modified when the user interacts with the trackbar. Any numeric type can be used, e.g. int, float, long double, etc.</p></li>
+<li><p><strong>params</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.TrackbarParams" title="pycharmers.opencv.cvui.TrackbarParams"><em>TrackbarParams</em></a>) – Describe the inner parts of the trackbar component.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.trackbarForceValuesAsMultiplesOfSmallStep">
+<code class="sig-name descname">trackbarForceValuesAsMultiplesOfSmallStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarForceValuesAsMultiplesOfSmallStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarForceValuesAsMultiplesOfSmallStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct the value when the trackbar allows only discrete changes ( <code class="docutils literal notranslate"><span class="pre">cvui.TRACKBAR_DISCRETE</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.TrackbarParams" title="pycharmers.opencv.cvui.TrackbarParams"><em>TrackbarParams</em></a>) – Describe the inner parts of the trackbar component.</p></li>
+<li><p><strong>value</strong> (<em>[</em><em>number</em><em>]</em>) – Array or List of numbers whose first position, i.e. <code class="docutils literal notranslate"><span class="pre">value[0]</span></code>, will be used to store the current value of the counter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.trackbarXPixelToValue">
+<code class="sig-name descname">trackbarXPixelToValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">bounding</span></em>, <em class="sig-param"><span class="n">pixelX</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarXPixelToValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarXPixelToValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the value from the position of the trackbar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.TrackbarParams" title="pycharmers.opencv.cvui.TrackbarParams"><em>TrackbarParams</em></a>) – Describe the inner parts of the trackbar component.</p></li>
+<li><p><strong>bounding</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Rect" title="pycharmers.opencv.cvui.Rect"><em>Rect</em></a>) – The area of trackbar.</p></li>
+<li><p><strong>pixelX</strong> (<em>int</em>) – The position in the trackbar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.trackbarValueToXPixel">
+<code class="sig-name descname">trackbarValueToXPixel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">bounding</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.trackbarValueToXPixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.trackbarValueToXPixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the position in the trackbar from the current value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.TrackbarParams" title="pycharmers.opencv.cvui.TrackbarParams"><em>TrackbarParams</em></a>) – Describe the inner parts of the trackbar component.</p></li>
+<li><p><strong>bounding</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Rect" title="pycharmers.opencv.cvui.Rect"><em>Rect</em></a>) – The area of trackbar.</p></li>
+<li><p><strong>value</strong> (<em>float</em>) – The current value in the trackbar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The position in the trackbar.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.iarea">
+<code class="sig-name descname">iarea</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.iarea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.iarea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an interaction area that reports activity with the mouse cursor. The tracked interactions are returned by the function and they are:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the interactive area should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the interactive area should be placed.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the interactive area.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – Height of the interactive area.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>An integer value representing the current state of interaction with the mouse cursor. It can be</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cvui.OUT</span></code> when the cursor is not over the iarea.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cvui.OVER</span></code> when the cursor is over the iarea.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cvui.DOWN</span></code> when the cursor is pressed over the iarea, but not released yet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cvui.CLICK</span></code> when the cursor clicked (pressed and released) within the iarea.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.buttonWH">
+<code class="sig-name descname">buttonWH</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">3289650</span></em>, <em class="sig-param"><span class="n">updateLayout</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.buttonWH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.buttonWH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a bottun using <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the button.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – Height of the button.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Text displayed inside the button.</p></li>
+<li><p><strong>color</strong> (<em>tuple</em>) – Button color.</p></li>
+<li><p><strong>updateLayout</strong> (<em>bool</em>) – Whether updates layot or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the button was clicked or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.button">
+<code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">3289650</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a bottun using <code class="xref py py-meth docutils literal notranslate"><span class="pre">buttonWH</span></code> by calculating <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> from <code class="docutils literal notranslate"><span class="pre">label</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Text displayed inside the button.</p></li>
+<li><p><strong>color</strong> (<em>tuple</em>) – Button color.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the button was clicked or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.buttonI">
+<code class="sig-name descname">buttonI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">idle</span></em>, <em class="sig-param"><span class="n">over</span></em>, <em class="sig-param"><span class="n">down</span></em>, <em class="sig-param"><span class="n">updateLayout</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.buttonI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.buttonI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a bottun using images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>idle</strong> (<em>np.ndarray</em>) – An image that will be rendered when the button is not interacting with the mouse cursor.</p></li>
+<li><p><strong>over</strong> (<em>np.ndarray</em>) – An image that will be rendered when the mouse cursor is over the button.</p></li>
+<li><p><strong>down</strong> (<em>np.ndarray</em>) – An image that will be rendered when the mouse cursor clicked the button (or is clicking).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the button was clicked or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.image">
+<code class="sig-name descname">image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display an image (np.ndarray).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>image</strong> (<em>np.ndarray</em>) – Image to be rendered in the specified destination.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.window">
 <code class="sig-name descname">window</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">title</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.window" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display a window (a block with a title and a body).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the window.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – Height of the window.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Text displayed as the title of the window.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.rect">
 <code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">borderColor</span></em>, <em class="sig-param"><span class="n">fillingColor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.rect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display a filled rectangle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the rectangle.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – Height of the rectangle.</p></li>
+<li><p><strong>borderColor</strong> (<em>uint</em>) – Color of rectangle’s border in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+<li><p><strong>fillingColor</strong> (<em>uint</em>) – Color of rectangle’s filling in the format <cite>0xAARRGGBB</cite>, e.g. <cite>0x00ff0000</cite> for red, <cite>0xff000000</cite> for transparent filling.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.sparkline">
 <code class="sig-name descname">sparkline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.sparkline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.sparkline" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Display the values of a vector as a sparkline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>values</strong> (<em>[</em><em>number</em><em>]</em>) – Array or List containing the numeric values to be used in the sparkline.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Width of the rectangle.</p></li>
+<li><p><strong>height</strong> (<em>int</em>) – Height of the rectangle.</p></li>
+<li><p><strong>color</strong> (<em>uint</em>) – Color of sparkline in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt id="pycharmers.opencv.cvui.Internal.hexToScalar">
-<code class="sig-name descname">hexToScalar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.hexToScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.hexToScalar" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pycharmers.opencv.cvui.Internal.hex2tuple">
+<code class="sig-name descname">hex2tuple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.hex2tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.hex2tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert hex ( <code class="docutils literal notranslate"><span class="pre">int</span></code> ) color to <code class="docutils literal notranslate"><span class="pre">tuple</span></code> color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color</strong> (<em>int/hex</em>) – Color.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code> formatted color.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.begin">
 <code class="sig-name descname">begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">bgColor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.begin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Begin a row or column.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.end">
 <code class="sig-name descname">end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.end" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>End a row or column.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.findMinMax">
 <code class="sig-name descname">findMinMax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.findMinMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.findMinMax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Find the min and max values of a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>list</em>) – Array shaped vectors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the min and max values of a vector</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1997,7 +2392,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Render.button">
-<code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.button" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">button</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">3289650</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.button" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2017,7 +2412,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Render.buttonLabel">
-<code class="sig-name descname">buttonLabel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">rect</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">textSize</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.buttonLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.buttonLabel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">buttonLabel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">rect</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">textSize</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">206, 206, 206</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.buttonLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.buttonLabel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

@@ -14,6 +14,8 @@ import cv2
 import numpy as np
 
 from ..utils.generic_utils import now_str, handleTypeError, NoneType
+from ..utils.color_utils import generateLightDarks, choose_text_color
+from .drawing import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE)
 from ..utils._colorings import toRED
 
 # Constants regarding component interactions
@@ -54,7 +56,7 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 	In that case, cvui will automatically call `cv2.waitKey()` within `cvui.update()`, so you don't have to worry about it. The value passed to `delayWaitKey` will be used as the delay for `cv2.waitKey()`.
 
 	Args:
-		WindowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.
+		windowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.
 		numWindows (int)          : How many window names exist in the `windowNames` array.
 		delayWaitKey (int)        : Delay value passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
 		createNamedWindows (bool) : If OpenCV windows named according to `windowNames` should be created during the initialization. Windows are created using `cv2.namedWindow()`. If this parameter is `False`, ensure you call `cv2.namedWindow(WINDOW_NAME)` for all windows *before* initializing cvui, otherwise it will not be able to track UI interactions.
@@ -199,7 +201,7 @@ def watch(windowName, createNamedWindow=True):
 	context.mouse.buttons[LEFT_BUTTON].reset()
 
 	__internal.contexts[windowName] = context
-	cv2.setMouseCallback(windowName, _handleMouse, __internal.contexts[windowName])
+	cv2.setMouseCallback(window_name=windowName, on_mouse=_handleMouse, param=__internal.contexts[windowName])
 
 def context(windowName):
 	"""
@@ -251,11 +253,57 @@ def iarea(x, y, width, height):
 		height (int) : Height of the interactive area.
 
 	Returns:
-		value (int) : An integer value representing the current state of interaction with the mouse cursor. It can be
+		int : An integer value representing the current state of interaction with the mouse cursor. It can be
 						- ``cvui.OUT`` when the cursor is not over the iarea.
 						- ``cvui.OVER`` when the cursor is over the iarea.
 						- ``cvui.DOWN`` when the cursor is pressed over the iarea, but not released yet.
 						- ``cvui.CLICK`` when the cursor clicked (pressed and released) within the iarea.
+
+	Examples:
+		>>> import cv2
+		>>> import numpy as np
+		>>> from pycharmers.opencv import cvui
+		... 
+		>>> WINDOW_NAME	= 'Interaction area'
+		>>> frame = np.zeros((300, 600, 3), np.uint8)
+		>>> cvui.init(WINDOW_NAME)
+		>>> rectangle = cvui.Rect(50, 50, 100, 100)
+		... 
+		>>> while (True):
+		... 	# Fill the frame with a nice color
+		... 	frame[:] = (49, 52, 49)
+		... 
+		... 	# Render a rectangle on the screen.
+		... 	cvui.rect(frame, rectangle.x, rectangle.y, rectangle.width, rectangle.height, 0xff0000)
+		... 
+		... 	# Check what is the current status of the mouse cursor
+		... 	# regarding the previously rendered rectangle.
+		... 	status = cvui.iarea(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		... 
+		... 	# cvui.iarea() will return the current mouse status:
+		... 	#  CLICK : mouse just clicked the interaction are
+		... 	#  DOWN  : mouse button was pressed on the interaction area, but not released yet.
+		... 	#  OVER  : mouse cursor is over the interaction area
+		... 	#  OUT   : mouse cursor is outside the interaction area
+		... 	if status == cvui.CLICK:  print('Rectangle was clicked!')
+		... 	if status == cvui.DOWN:   cvui.text(frame, 240, 70, text="Mouse is: DOWN")
+		... 	if status == cvui.OVER:   cvui.text(frame, 240, 70, text="Mouse is: OVER")
+		... 	if status == cvui.OUT:    cvui.text(frame, 240, 70, text="Mouse is: OUT")
+		... 
+		... 	# Show the coordinates of the mouse pointer on the screen
+		... 	cvui.printf(frame, 240, 50, fmt="Mouse pointer is at (%d,%d)", fmtArgs=(cvui.mouse().x, cvui.mouse().y))
+		... 
+		... 	# This function must be called *AFTER* all UI components. It does
+		... 	# all the behind the scenes magic to handle mouse clicks, etc.
+		... 	cvui.update()
+		... 
+		... 	# Show everything on the screen
+		... 	cv2.imshow(WINDOW_NAME, frame)
+		... 
+		... 	# Check if ESC key was pressed
+		... 	if cv2.waitKey(20) == cvui.ESCAPE:
+		... 		break
+		>>> cv2.destroyAllWindows()
 	"""
 	return __internal.iarea(x, y, width, height)
 
@@ -543,7 +591,6 @@ def radiobox(where=None, x=0, y=0, labels=[""], states=[], color=0xCECECE):
 
 	return __internal.radiobox(block, x, y, labels, states, color)
 
-
 def mouse(windowName=None, button=None, query=None):
 	"""Query the mouse for events in a particular button in a particular window. This function behave exactly like ``mouse(int button, int query)``, with the difference that queries are targeted at  particular mouse button in a particular window instead.
 
@@ -637,7 +684,7 @@ def mouse(windowName=None, button=None, query=None):
 		else:
 			return __internal.mouseWBQ(windowName, button, query)
 
-def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=None, down=None):
+def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=None, down=None, color=0x323232):
 	"""Display a button whose graphics are images (np.ndarray). The button accepts three images to describe its states, which are idle (no mouse interaction), over (mouse is over the button) and down (mouse clicked the button). The button size will be defined by the width and height of the images.
 
 	Args:
@@ -738,11 +785,11 @@ def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=No
 		y += block.anchor.y
 
 	if width*height>0:
-		return __internal.buttonWH(block, x, y, width, height, label, True)
+		return __internal.buttonWH(block, x, y, width, height, label, color=color, updateLayout=True)
 	if all([e is not None for e in [idle, over, down]]):
 		return __internal.buttonI(block, x, y, idle, over, down, True)
 	else:
-		return __internal.button(block, x, y, label)
+		return __internal.button(block, x, y, label, color=color)
 
 def image(where=None, x=0, y=0, image=None):
 	"""Display an image (np.ndarray).
@@ -809,6 +856,9 @@ def trackbar(where=None, x=0, y=0, width=50, value=[], min=0., max=25., segments
 		options (uint)        : Options to customize the behavior/appearance of the trackbar, expressed as a bitset. Available options are defined as ``cvui.TRACKBAR_`` constants and they can be combined using the bitwise ``|`` operand. Available options are ``cvui.TRACKBAR_HIDE_SEGMENT_LABELS`` (do not render segment labels, but do render min/max labels), ``cvui.TRACKBAR_HIDE_STEP_SCALE`` (do not render the small lines indicating values in the scale), ``cvui.TRACKBAR_DISCRETE`` (changes of the trackbar value are multiples of theDiscreteStep param), ``cvui.TRACKBAR_HIDE_MIN_MAX_LABELS`` (do not render min/max labels), ``cvui.TRACKBAR_HIDE_VALUE_LABEL`` (do not render the current value of the trackbar below the moving marker), and ``cvui.TRACKBAR_HIDE_LABELS`` (do not render labels at all).
 		discreteStep (number) : Amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option ``cvui.TRACKBAR_DISCRETE`` is ON)
 
+	Returns:
+		float : The current value.
+
 	Examples:
 		>>> import cv2
 		>>> import numpy as np
@@ -856,8 +906,8 @@ def trackbar(where=None, x=0, y=0, width=50, value=[], min=0., max=25., segments
 		... 	# You can change the behavior of any tracker by using the options parameter.
 		... 	# Options are defined as a bitfield, so you can combine them.
 		... 	# E.g.
-		... 	#	TRACKBAR_DISCRETE							# value changes are discrete
-		... 	#  TRACKBAR_DISCRETE | TRACKBAR_HIDE_LABELS	# discrete changes and no labels
+		... 	# TRACKBAR_DISCRETE							# value changes are discrete
+		... 	# TRACKBAR_DISCRETE | TRACKBAR_HIDE_LABELS	# discrete changes and no labels
 		... 	cvui.text(frame, x, 450, 'double, step 0.1, option TRACKBAR_DISCRETE')
 		... 	cvui.trackbar(frame, x, 480, width, doubleValue3, 10., 10.5, 1, '%.1Lf', cvui.TRACKBAR_DISCRETE, 0.1)
 		... 
@@ -903,7 +953,7 @@ def window(where=None, x=0, y=0, width=640, height=480, title=""):
 		y (int)            : Position Y where the component should be placed.
 		width (int)        : Width of the window.
 		height (int)       : Height of the window.
-		title (str)        : text displayed as the title of the window.
+		title (str)        : Text displayed as the title of the window.
 	
 	Examples:
 		>>> import cv2
@@ -1382,7 +1432,7 @@ class TrackbarParams:
 		labelfmt (str) : Formating string that will be used to render the labels. If you are using a trackbar with integers values, for instance, you can use ``%d`` to render labels.
 		options (uint) : Options to customize the behavior/appearance of the trackbar, expressed as a bitset. Available options are defined as ``cvui.TRACKBAR_`` constants and they can be combined using the bitwise ``|`` operand. Available options are ``cvui.TRACKBAR_HIDE_SEGMENT_LABELS`` (do not render segment labels, but do render min/max labels), ``cvui.TRACKBAR_HIDE_STEP_SCALE`` (do not render the small lines indicating values in the scale), ``cvui.TRACKBAR_DISCRETE`` (changes of the trackbar value are multiples of theDiscreteStep param), ``cvui.TRACKBAR_HIDE_MIN_MAX_LABELS`` (do not render min/max labels), ``cvui.TRACKBAR_HIDE_VALUE_LABEL`` (do not render the current value of the trackbar below the moving marker), and ``cvui.TRACKBAR_HIDE_LABELS`` (do not render labels at all).
 	"""
-	def __init__(self, min=0., max=25., step=1., segments=0, labelfmt='%.0Lf', options=0):
+	def __init__(self, min=0., max=255., step=1., segments=0, labelfmt='%.0Lf', options=0):
 		self.min = min
 		self.max = max
 		self.step = step
@@ -1419,6 +1469,7 @@ class Internal:
 		self._render._internal = self
 
 	def isMouseButton(self, button, query):
+		"""Get to know the relationship between the mouse and the ``button`` by returning the ``button`` state according to the ``query``"""
 		ret = False
 
 		if query == CLICK or query == UP:
@@ -1457,7 +1508,7 @@ class Internal:
 			>>> if (cvui.mouse(cvui.DOWN)):
 			... 	# Any mouse button just went down.
 
-		The window whose mouse will be queried depends on the context. If ``cvui.mouse(query)`` is being called after ``cvui.context()``, the window informed in the context will be queried. If no context is available, the default window (informed in `cvui::init()`) will be used.
+		The window whose mouse will be queried depends on the context. If ``cvui.mouse(query)`` is being called after ``cvui.context()``, the window informed in the context will be queried. If no context is available, the default window (informed in ``cvui.init()`` ) will be used.
 
 		Args:
 			query (int) : An integer describing the intended mouse query. Available queries are ``cvui.DOWN``, ``cvui.UP``, ``cvui.CLICK``, and ``cvui.IS_DOWN``.
@@ -1481,10 +1532,10 @@ class Internal:
 		return self.isMouseButton(button, query)
 
 	def mouseBQ(self, button, query):
-		"""Query the mouse for events in a particular button. This function behave exactly like `cvui::mouse(int query)`, with the difference that queries are targeted at a particular mouse button instead.
+		"""Query the mouse for events in a particular button. This function behave exactly like ``cvui.mouse(int query)``, with the difference that queries are targeted at a particular mouse button instead.
 
 		Args:
-			button (int) : An integer describing the mouse button to be queried. Possible values are `cvui::LEFT_BUTTON`, `cvui::MIDDLE_BUTTON` and `cvui::LEFT_BUTTON`.
+			button (int) : An integer describing the mouse button to be queried. Possible values are ``cvui.LEFT_BUTTON``, ``cvui.MIDDLE_BUTTON`` and ``cvui.LEFT_BUTTON``.
 		 	query  (int) : An integer describing the intended mouse query. Available queries are ``cvui.DOWN``, ``cvui.UP``, ``cvui.CLICK``, and ``cvui.IS_DOWN``.
 		
 		Returns:
@@ -1493,11 +1544,11 @@ class Internal:
 		return self.mouseWBQ('', button, query)
 
 	def mouseWBQ(self, windowName, button, query):
-		"""Query the mouse for events in a particular button in a particular window. This function behave exactly like `cvui::mouse(int button, int query)`, with the difference that queries are targeted at a particular mouse button in a particular window instead.
+		"""Query the mouse for events in a particular button in a particular window. This function behave exactly like ``cvui.mouse(int button, int query)``, with the difference that queries are targeted at a particular mouse button in a particular window instead.
 
 		Args:
 			windowName (str) : Name of the window that will be queried.
-			button (int)     : An integer describing the mouse button to be queried. Possible values are `cvui::LEFT_BUTTON`, `cvui::MIDDLE_BUTTON` and `cvui::LEFT_BUTTON`.
+			button (int)     : An integer describing the mouse button to be queried. Possible values are ``cvui.LEFT_BUTTON``, ``cvui.MIDDLE_BUTTON`` and ``cvui.LEFT_BUTTON``.
 			query (int)      : An integer describing the intended mouse query. Available queries are ``cvui.DOWN``, ``cvui.UP``, ``cvui.CLICK``, and ``cvui.IS_DOWN``.
 		
 		Returns:
@@ -1510,20 +1561,46 @@ class Internal:
 		return self.isMouseButton(button, query)
 
 	def init(self, windowName, delayWaitKey):
+		"""Initiallize the window.
+		
+		Args:
+			windowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.
+			delayWaitKey (int)        : Delay value passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
+		"""
 		self.defaultContext = windowName
 		self.currentContext = windowName
 		self.delayWaitKey = delayWaitKey
 		self.lastKeyPressed = -1
 
 	def bitsetHas(self, bitset, value):
+		"""Check whether ``bitset`` has the signal of ``value`` e.g. ``cvui.TRACKBAR_HIDE_VALUE_LABEL`` 
+		
+		Args:
+			bitset (int) : Binary value with various signals (= ``1`` )
+			value (int)  : Binary value with only one ``1``
+
+		Returns:
+			bool : Whether ``bitset`` has the signal of ``value`` or not.		
+		"""
 		return (bitset & value) != 0
 
 	def error(self, errorId, message):
+		"""Output the Error message.
+
+		Args:
+			errorId (int) : Error Id used in cvui.
+			message (str) : An additional message.
+		"""
 		print(toRED(f"[CVUI] Fatal error (code {errorId}) :"), message)
 		cv2.waitKey(100000)
 		sys.exit(-1)
 
 	def getContext(self, windowName=""):
+		"""Get Context.
+		
+		Args:
+			windowName (str) : Name of the window whose UI interactions will be tracked.
+		"""
 		if len(windowName) != 0:
 			# Get context in particular
 			return self.contexts[windowName]
@@ -1542,7 +1619,12 @@ class Internal:
 			self.error(5, 'Unable to read context. Did you forget to call cvui.init()?')
 
 	def updateLayoutFlow(self, block, size):
-		"""Update layot for additional Rows or Columns."""
+		"""Update layot for additional Rows or Columns.
+		
+		Args:
+			block (Block) : A block structure.
+			size (Size)   : Represent the size of something.
+		"""
 		if block.type == ROW:
 			aValue = size.width + block.padding
 
@@ -1568,50 +1650,64 @@ class Internal:
 		return len(self.stack)
 
 	def topBlock(self):
+		"""Get the top (last) ``Block`` in ``self.stack``"""
 		if self.isblockStackEmpty:
 			self.error(3, 'You are using a function that should be enclosed by begin*() and end*(), but you probably forgot to call begin*().')
 		return self.stack[-1]
 
-	def pushBlock(self):
-		block = Block()
+	def pushBlock(self, block):
+		"""Push a ``Block`` object into ``self.stack``
+		
+		Args:
+			block (Block) : A block structure.
+		"""
 		self.stack.append(block)
-		return block
 
 	def popBlock(self):
+		"""Pop a ``Block`` object from ``self.stack``"""
 		# Check if there is anything to be popped out from the stack.
 		if self.isblockStackEmpty:
 			self.error(1, 'Mismatch in the number of begin*()/end*() calls. You are calling one more than the other.')
 		return self.stack.pop()
 
 	def createLabel(self, label):
-		i = 0
-		aBefore = ''
-		aAfter = ''
+		"""Create a Label object.
 
+		Args:
+			label (str) : Label string.
+
+		Returns:
+			Label : Describe a component label, including info about a shortcut.
+		"""
 		aLabel = Label()
-		aLabel.hasShortcut = False
-		aLabel.shortcut = 0
-		aLabel.textBeforeShortcut = ''
-		aLabel.textAfterShortcut = ''
-
-		while i < len(label):
-			c = label[i]
-			if c == '&' and i < len(label) - 1:
-				aLabel.hasShortcut = True
-				aLabel.shortcut = label[i + 1]
-				i += 1
-			elif aLabel.hasShortcut == False:
-				aBefore += c
-			else:
-				aAfter += c
-			i += 1
-
-		aLabel.textBeforeShortcut = aBefore
-		aLabel.textAfterShortcut = aAfter
-
+		i = label[:-1].find("&")
+		if i == -1:
+			aLabel.hasShortcut = False
+			aLabel.shortcut = ""
+			aLabel.textBeforeShortcut = label
+			aLabel.textAfterShortcut = ""
+		else:
+			aLabel.hasShortcut = True
+			aLabel.shortcut = label[i+1]
+			aLabel.textBeforeShortcut = label[:i]
+			aLabel.textAfterShortcut = label[i+2:]
 		return aLabel
 
 	def text(self, block, x, y, text, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8, updateLayout=True):
+		"""Display a piece of text.
+
+		Args:
+			block (Block)       : A block structure.
+			x (int)             : Position X where the component should be placed.
+			y (int)             : Position Y where the component should be placed.
+			text (str)          : The text content.
+			fontFace (int)      : Font type. (default= ``cv2.FONT_HERSHEY_SIMPLEX`` )
+			fontScale (float)   : Font scale factor that is multiplied by the font-specific base size.
+			color (uint)        : Color of the text in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+			thickness (int)     : Thickness of the lines used to draw a text.
+			lineType (int)      : Line type. (default= ``cv2.LINE_8`` )
+			updateLayout (bool) : Whether updates layot or not.
+		"""
 		(text_width,text_height), _ = cv2.getTextSize(text=text, fontFace=fontFace, fontScale=fontScale, thickness=thickness)
 
 		text_size = Size(text_width, text_height)
@@ -1625,15 +1721,28 @@ class Internal:
 			self.updateLayoutFlow(block, text_size)
 
 	def counter(self, block, x, y, value, step, fmt):
+		"""Display a counter for integer values that the user can increase/descrease by clicking the up and down arrows.
+
+		Args:
+			block (Block)    : A block structure.
+			x (int)          : Position X where the component should be placed.
+			y (int)          : Position Y where the component should be placed.
+			value ([number]) : Array or List of numbers whose first position, i.e. ``value[0]``, will be used to store the current value of the counter.
+			step (number)    : Amount that should be increased/decreased when the user interacts with the counter buttons
+			fmt (str)        : How the value of the counter should be presented, as it was printed by ``stdio's printf()``. E.g. ``'%d'`` means the value will be displayed as an integer, ``'%0d'`` integer with one leading zero, etc.
+
+		Returns:
+			value (number) : Number that corresponds to the current value of the counter.
+		"""
 		aContentArea = Rect(x + 22, y, 48, 22)
 
-		if self.buttonWH(block, x, y, 22, 22, '-', False):
+		if self.buttonWH(block, x, y, 22, 22, '-', color=cv2BLUE, updateLayout=False):
 			value[0] -= step
 
 		aText = fmt % value[0]
 		self._render.counter(block, aContentArea, aText)
 
-		if self.buttonWH(block, aContentArea.x + aContentArea.width, y, 22, 22, "+", False):
+		if self.buttonWH(block, aContentArea.x + aContentArea.width, y, 22, 22, "+", color=cv2RED, updateLayout=False):
 			value[0] += step
 
 		# Update the layout flow
@@ -1717,49 +1826,144 @@ class Internal:
 
 		return states.index(True)
 
-	def clamp01(self, value):
-		return min(max(value, 0.), 1.)
+	def clip(self, value, v_min=0., v_max=1.):
+		"""Given an interval, values outside the interval are clipped to the interval edges.
+
+		Args:
+			value (number) : value.
+			v_min (number) : Minimum value.
+			v_max (number) : Maximum value.
+
+		Returns:
+			number : Clipped value.		
+		"""
+		return min(max(value, v_min), v_max)
+
+	def trackbar(self, block, x, y, width, value, params):
+		"""Display a trackbar for numeric values that the user can increase/decrease by clicking and/or dragging the marker right or left. This component can use different types of data as its value, so it is imperative provide the right label format, e.g. '%d' for ints, otherwise you might end up with weird errors.
+
+		Args:
+			block (Block)           : A block structure.
+			x (int)                 : Position X where the component should be placed.
+			y (int)                 : Position Y where the component should be placed.	
+			width (int)             : Width of the trackbar.
+			value ([number])        : Array or list of numbers whose first position, i.e. ``value[0]``, will be used to store the current value of the trackbar. It will be modified when the user interacts with the trackbar. Any numeric type can be used, e.g. int, float, long double, etc.
+			params (TrackbarParams) : Describe the inner parts of the trackbar component.
+
+		Returns:
+			float : The current value.
+		"""
+		mouse = self.getContext().mouse
+		aContentArea = Rect(x, y, width, 45)
+		mouseIsOver = aContentArea.contains(mouse.position)
+		aValue = value[0]
+
+		state = OVER if mouseIsOver else OUT, aContentArea
+		self._render.trackbar(block=block, state=state, shape=aContentArea, value=value[0], params=params)
+
+		if mouse.anyButton.pressed and mouseIsOver:
+			value[0] = self.trackbarXPixelToValue(params=params, bounding=aContentArea, pixelX=mouse.position.x)
+
+			if self.bitsetHas(params.options, TRACKBAR_DISCRETE):
+				self.trackbarForceValuesAsMultiplesOfSmallStep(params, value)
+
+		# Update the layout flow
+		# TODO: use size = aContentArea.size()?
+		self.updateLayoutFlow(block, aContentArea)
+
+		return value[0]
 
 	def trackbarForceValuesAsMultiplesOfSmallStep(self, params, value):
+		"""Correct the value when the trackbar allows only discrete changes ( ``cvui.TRACKBAR_DISCRETE`` )
+
+		Args:
+			params (TrackbarParams) : Describe the inner parts of the trackbar component.
+			value ([number])        : Array or List of numbers whose first position, i.e. ``value[0]``, will be used to store the current value of the counter.
+		"""
 		if self.bitsetHas(params.options, TRACKBAR_DISCRETE) and params.step != 0.:
 			k = float(value[0] - params.min) / params.step
 			k = round(k)
 			value[0] = params.min + params.step * k
 
 	def trackbarXPixelToValue(self, params, bounding, pixelX):
+		"""Calculate the value from the position of the trackbar.
+
+		Args:
+			params (TrackbarParams) : Describe the inner parts of the trackbar component.
+			bounding (Rect)         : The area of trackbar.
+			pixelX (int)            : The position in the trackbar.
+		
+		Returns:
+			float : The current value.
+		"""
 		aRatio = float(pixelX - (bounding.x + self.trackbarMarginX)) / (bounding.width - 2 * self.trackbarMarginX)
-		aRatio = self.clamp01(aRatio)
+		aRatio = self.clip(aRatio, v_min=0., v_max=1.)
 		aValue = params.min + aRatio * (params.max - params.min)
 		return aValue
 
 	def trackbarValueToXPixel(self, params, bounding, value):
+		"""Calculate the position in the trackbar from the current value.
+
+		Args:
+			params (TrackbarParams) : Describe the inner parts of the trackbar component.
+			bounding (Rect)         : The area of trackbar.
+			value (float)           : The current value in the trackbar.
+
+		Returns:
+			int : The position in the trackbar.
+		"""
 		aRatio = float(value - params.min) / (params.max - params.min)
-		aRatio = self.clamp01(aRatio)
+		aRatio = self.clip(aRatio, v_min=0., v_max=1.)
 		aPixelsX = bounding.x + self.trackbarMarginX + aRatio * (bounding.width - 2 * self.trackbarMarginX)
 		return int(aPixelsX)
 
 	def iarea(self, x, y, width, height):
-		mouse = self.getContext().mouse
+		"""Create an interaction area that reports activity with the mouse cursor. The tracked interactions are returned by the function and they are:
 
+		Args:
+			x (int)      : Position X where the interactive area should be placed.
+			y (int)      : Position Y where the interactive area should be placed.
+			width (int)  : Width of the interactive area.
+			height (int) : Height of the interactive area.
+
+		Returns:
+			int : An integer value representing the current state of interaction with the mouse cursor. It can be
+							- ``cvui.OUT`` when the cursor is not over the iarea.
+							- ``cvui.OVER`` when the cursor is over the iarea.
+							- ``cvui.DOWN`` when the cursor is pressed over the iarea, but not released yet.
+							- ``cvui.CLICK`` when the cursor clicked (pressed and released) within the iarea.
+		"""
+		mouse = self.getContext().mouse
 		# By default, return that the mouse is out of the interaction area.
 		ret = OUT
-
 		# Check if the mouse is over the interaction area.
 		mouseIsOver = Rect(x, y, width, height).contains(mouse.position)
-
 		if mouseIsOver:
 			if mouse.anyButton.pressed:
 				ret = DOWN
 			else:
 				ret = OVER
-
 		# Tell if the button was clicked or not
 		if mouseIsOver and mouse.anyButton.justReleased:
 			ret = CLICK
-
 		return ret
 
-	def buttonWH(self, block, x, y, width, height, label, updateLayout):
+	def buttonWH(self, block, x, y, width, height, label, color=0x323232, updateLayout=True):
+		"""Create a bottun using ``width`` and ``height`` .
+		
+		Args:
+			block (Block)       : A block structure.
+			x (int)             : Position X where the component should be placed.
+			y (int)             : Position Y where the component should be placed.
+			width (int)         : Width of the button.
+			height (int)        : Height of the button.
+			label (str)         : Text displayed inside the button.
+			color (tuple)       : Button color.
+			updateLayout (bool) : Whether updates layot or not.
+
+		Returns:
+			bool: Whether the button was clicked or not.
+		"""
 		# Calculate the space that the label will fill
 		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
 		text_size = Rect(0, 0, text_width, text_height)
@@ -1769,8 +1973,9 @@ class Internal:
 
 		# Render the button according to mouse interaction, e.g. OVER, DOWN, OUT.
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
-		self._render.button(block, aStatus, aRect, label)
-		self._render.buttonLabel(block, aStatus, aRect, label, text_size)
+		button_color = self.hex2tuple(color)
+		self._render.button(block, aStatus, aRect, label, color=button_color)
+		self._render.buttonLabel(block, aStatus, aRect, label, text_size, color=choose_text_color(color=button_color, max_val=255, is_bgr=True))
 
 		# Update the layout flow according to button size
 		# if we were told to update.
@@ -1787,18 +1992,42 @@ class Internal:
 			if aLabel.hasShortcut and aLabel.shortcut.lower() == chr(self.lastKeyPressed).lower():
 				aWasShortcutPressed = True
 
-		# Return true if the button was clicked
 		return aStatus == CLICK or aWasShortcutPressed
 
-	def button(self, block, x, y, label):
+	def button(self, block, x, y, label, color=0x323232):
+		"""Create a bottun using :meth:`buttonWH <pycharmers.opencv.cvui.buttonWH>` by calculating ``width`` and ``height`` from ``label``.
+		
+		Args:
+			block (Block)       : A block structure.
+			x (int)             : Position X where the component should be placed.
+			y (int)             : Position Y where the component should be placed.
+			label (str)         : Text displayed inside the button.
+			color (tuple)       : Button color.
+
+		Returns:
+			bool: Whether the button was clicked or not.		
+		"""
 		# Calculate the space that the label will fill
 		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
 		text_size = Rect(0, 0, text_width, text_height)
 
 		# Create a button based on the size of the text
-		return self.buttonWH(block, x, y, text_size.width + 30, text_size.height + 18, label, True)
+		return self.buttonWH(block, x, y, width=text_size.width+30, height=text_size.height+18, label=label, color=color, updateLayout=True)
 
-	def buttonI(self, block, x, y, idle, over, down, updateLayout):
+	def buttonI(self, block, x, y, idle, over, down, updateLayout=True):
+		"""Create a bottun using images.
+		
+		Args:
+			block (Block)     : A block structure.
+			x (int)           : Position X where the component should be placed.
+			y (int)           : Position Y where the component should be placed.
+			idle (np.ndarray) : An image that will be rendered when the button is not interacting with the mouse cursor.
+			over (np.ndarray) : An image that will be rendered when the mouse cursor is over the button.
+			down (np.ndarray) : An image that will be rendered when the mouse cursor clicked the button (or is clicking).
+
+		Returns:
+			bool: Whether the button was clicked or not.
+		"""
 		idle_height, idle_width = idle.shape[:2]
 		aRect = Rect(x, y, idle_width, idle_height)
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
@@ -1813,10 +2042,17 @@ class Internal:
 			size = Size(aRect.width, aRect.height)
 			self.updateLayoutFlow(block, size)
 
-		# Return true if the button was clicked
 		return aStatus == CLICK
 
 	def image(self, block, x, y, image):
+		"""Display an image (np.ndarray).
+
+		Args:
+			block (Block)      : A block structure.
+			x (int)            : Position X where the component should be placed.
+			y (int)            : Position Y where the component should be placed.
+			image (np.ndarray) : Image to be rendered in the specified destination.
+		"""
 		img_height, img_width = image.shape[:2]
 		aRect = Rect(x, y, img_width, img_height)
 
@@ -1827,27 +2063,17 @@ class Internal:
 		size = Size(img_width, img_height)
 		self.updateLayoutFlow(block, size)
 
-	def trackbar(self, block, x, y, width, value, params):
-		mouse = self.getContext().mouse
-		aContentArea = Rect(x, y, width, 45)
-		mouseIsOver = aContentArea.contains(mouse.position)
-		aValue = value[0]
-
-		self._render.trackbar(block, OVER if mouseIsOver else OUT, aContentArea, value[0], params)
-
-		if mouse.anyButton.pressed and mouseIsOver:
-			value[0] = self.trackbarXPixelToValue(params, aContentArea, mouse.position.x)
-
-			if self.bitsetHas(params.options, TRACKBAR_DISCRETE):
-				self.trackbarForceValuesAsMultiplesOfSmallStep(params, value)
-
-		# Update the layout flow
-		# TODO: use size = aContentArea.size()?
-		self.updateLayoutFlow(block, aContentArea)
-
-		return value[0]
-
 	def window(self, block, x, y, width, height, title):
+		"""Display a window (a block with a title and a body).
+
+		Args:
+			block (Block) : A block structure.
+			x (int)       : Position X where the component should be placed.
+			y (int)       : Position Y where the component should be placed.
+			width (int)   : Width of the window.
+			height (int)  : Height of the window.
+			title (str)   : Text displayed as the title of the window.
+		"""
 		aTitleBar = Rect(x, y, width, 20)
 		aContent = Rect(x, y + aTitleBar.height, width, height - aTitleBar.height)
 
@@ -1858,6 +2084,17 @@ class Internal:
 		self.updateLayoutFlow(block, size)
 
 	def rect(self, block, x, y, width, height, borderColor, fillingColor):
+		"""Display a filled rectangle.
+
+		Args:
+			block (Block)       : A block structure.
+			x (int)             : Position X where the component should be placed.
+			y (int)             : Position Y where the component should be placed.
+			width (int)         : Width of the rectangle.
+			height (int)        : Height of the rectangle.
+			borderColor (uint)  : Color of rectangle's border in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+			fillingColor (uint) : Color of rectangle's filling in the format `0xAARRGGBB`, e.g. `0x00ff0000` for red, `0xff000000` for transparent filling.
+		"""
 		aAnchor = Point(x, y);
 		aRect = Rect(x, y, width, height);
 
@@ -1873,6 +2110,17 @@ class Internal:
 		self.updateLayoutFlow(block, size)
 
 	def sparkline(self, block, x, y, values, width, height, color):
+		"""Display the values of a vector as a sparkline.
+
+		Args:
+			block (Block)      : A block structure.
+			x (int)            : Position X where the component should be placed.
+			y (int)            : Position Y where the component should be placed.
+			values ([number])  : Array or List containing the numeric values to be used in the sparkline.
+			width (int)        : Width of the rectangle.
+			height (int)       : Height of the rectangle.
+			color (uint)       : Color of sparkline in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+		"""
 		aRect = Rect(x, y, width, height)
 		aHowManyValues = len(values)
 
@@ -1886,7 +2134,15 @@ class Internal:
 		size = Size(width, height)
 		self.updateLayoutFlow(block, size)
 
-	def hexToScalar(self, color):
+	def hex2tuple(self, color):
+		"""Convert hex ( ``int`` ) color to ``tuple`` color.
+		
+		Args:
+			color (int/hex) : Color.
+
+		Returns:
+			tuple : ``tuple`` formatted color.
+		"""
 		if isinstance(color, int):
 			aAlpha = (color >> 24) & 0xff
 			aRed   = (color >> 16) & 0xff
@@ -1896,10 +2152,11 @@ class Internal:
 		return color
 
 	def begin(self, type, where, x, y, width, height, padding, bgColor=None):
+		"""Begin a row or column."""
 		if bgColor is not None: 
 			where[y:y+height, x:x+width, :] = bgColor
 
-		block = self.pushBlock()
+		block = Block()		
 		block.where = where
 
 		block.rect.x = x
@@ -1916,8 +2173,10 @@ class Internal:
 
 		block.padding = padding
 		block.type = type
+		self.pushBlock(block)
 
 	def end(self, type):
+		"""End a row or column."""
 		block = self.popBlock()
 
 		if block.type != type:
@@ -1943,8 +2202,15 @@ class Internal:
 
 			self.updateLayoutFlow(top_block, size)
 
-	# Find the min and max values of a vector
 	def findMinMax(self, values):
+		"""Find the min and max values of a vector.
+
+		Args:
+			values (list) : Array shaped vectors.
+
+		Returns:
+			tuple : the min and max values of a vector
+		"""
 		aMin = values[0]
 		aMax = values[0]
 
@@ -1969,7 +2235,7 @@ class Render:
 
 	def text(self, block, text, position, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8):
 		aPosition = (int(position.x), int(position.y))
-		cv2.putText(img=block.where, text=text, org=aPosition, fontFace=fontFace, fontScale=fontScale, color=self._internal.hexToScalar(color), thickness=thickness, lineType=lineType)
+		cv2.putText(img=block.where, text=text, org=aPosition, fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2tuple(color), thickness=thickness, lineType=lineType)
 
 	def counter(self, block, shape, value, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_AA):
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29), CVUI_FILLED) # fill
@@ -1979,25 +2245,30 @@ class Render:
 		text_size = Rect(0, 0, text_width, text_height)
 
 		aPos = Point(shape.x + shape.width / 2 - text_size.width / 2, shape.y + text_size.height / 2 + shape.height / 2)
-		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hexToScalar(color), thickness=thickness, lineType=lineType)
+		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2tuple(color), thickness=thickness, lineType=lineType)
 
-	def button(self, block, state, shape, label):
+	def button(self, block, state, shape, label, color=0x323232):
 		# Outline
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29))
 
 		# Border
 		shape.x += 1
-		shape.y +=1
+		shape.y += 1
 		shape.width -= 2
 		shape.height -= 2
 		self.rectangle(block.where, shape, (0x4A, 0x4A, 0x4A))
 
 		# Inside
 		shape.x += 1
-		shape.y +=1
+		shape.y += 1
 		shape.width -= 2
 		shape.height -= 2
-		self.rectangle(block.where, shape, (0x42, 0x42, 0x42) if state == OUT else ((0x52, 0x52, 0x52) if state == OVER else (0x32, 0x32, 0x32)), CVUI_FILLED)
+
+		colors = generateLightDarks(color=self._internal.hex2tuple(color), variation=3, diff=10)
+		if state==OUT:    inside_color = colors[1]
+		elif state==OVER: inside_color = colors[2]
+		else:             inside_color = colors[0]
+		self.rectangle(where=block.where, shape=shape, color=inside_color, Thickness=CVUI_FILLED)
 
 	def image(self, block, rect, image):
 		if image.ndim==2 and block.where.ndim==3:
@@ -2027,29 +2298,28 @@ class Render:
 
 		return text_size.width
 
-	def buttonLabel(self, block, state, rect, label, textSize):
+	def buttonLabel(self, block, state, rect, label, textSize, color=(0xCE, 0xCE, 0xCE)):
 		aPos = Point(rect.x + rect.width / 2 - textSize.width / 2, rect.y + rect.height / 2 + textSize.height / 2)
-		aColor = (0xCE, 0xCE, 0xCE)
 
 		aLabel = self._internal.createLabel(label)
 
 		if aLabel.hasShortcut == False:
-			self.putText(block, state, aColor, label, aPos);
+			self.putText(block, state, color, label, aPos);
 
 		else:
-			aWidth = self.putText(block, state, aColor, aLabel.textBeforeShortcut, aPos)
+			aWidth = self.putText(block, state, color, aLabel.textBeforeShortcut, aPos)
 			aStart = aPos.x + aWidth
 			aPos.x += aWidth
 
 			aShortcut = ''
 			aShortcut += aLabel.shortcut
 
-			aWidth = self.putText(block, state, aColor, aShortcut, aPos)
+			aWidth = self.putText(block, state, color, aShortcut, aPos)
 			aEnd = aStart + aWidth
 			aPos.x += aWidth
 
-			self.putText(block, state, aColor, aLabel.textAfterShortcut, aPos)
-			cv2.line(block.where, (int(aStart), int(aPos.y + 3)), (int(aEnd), int(aPos.y + 3)), aColor, 1, CVUI_ANTIALISED)
+			self.putText(block, state, color, aLabel.textAfterShortcut, aPos)
+			cv2.line(block.where, (int(aStart), int(aPos.y + 3)), (int(aEnd), int(aPos.y + 3)), color, 1, CVUI_ANTIALISED)
 
 	def trackbarHandle(self, block, state, shape, value, params, workingArea):
 		aBarTopLeft = Point(workingArea.x, workingArea.y + workingArea.height / 2)
@@ -2163,7 +2433,7 @@ class Render:
 
 		# Border
 		shape.x += 1
-		shape.y +=1
+		shape.y += 1
 		shape.width -= 2
 		shape.height -= 2
 		self.rectangle(block.where, shape, (0x17, 0x17, 0x17))
@@ -2223,8 +2493,8 @@ class Render:
 			self.rectangle(block.where, content, (0x31, 0x31, 0x31), CVUI_FILLED)
 
 	def rect(self, block, position, borderColor, fillingColor):
-		aBorderColor = self._internal.hexToScalar(borderColor)
-		aFillingColor = self._internal.hexToScalar(fillingColor)
+		aBorderColor = self._internal.hex2tuple(borderColor)
+		aFillingColor = self._internal.hex2tuple(fillingColor)
 
 		aHasFilling = aFillingColor[3] != 0xff
 
@@ -2250,7 +2520,7 @@ class Render:
 			y = (values[i + 1] - min) / aScale * -(rect.height - 5) + rect.y + rect.height - 5
 			aPoint2 = Point(x, y)
 
-			cv2.line(block.where, (int(aPoint1.x), int(aPoint1.y)), (int(aPoint2.x), int(aPoint2.y)), self._internal.hexToScalar(color))
+			cv2.line(block.where, (int(aPoint1.x), int(aPoint1.y)), (int(aPoint2.x), int(aPoint2.y)), self._internal.hex2tuple(color))
 			aPosX += aGap
 
 			i += 1
