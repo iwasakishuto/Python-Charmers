@@ -85,6 +85,15 @@ from ..utils.generic_utils import now_str, flatten_dual, int2ordinal, handleKeyE
 from ..utils.print_utils import pretty_3quote
 from ..utils._colorings import toRED, toBLUE, toGREEN, toACCENT
 
+def cv2key2chr(key):
+    char = chr(key) if key!=-1 else ""
+    return {
+        "\x08" : "<delete>",
+        "\r"   : "<enter>",
+        "\x1b" : "<esc>",
+    }.get(char, char)
+
+
 DEFAULT_CV_KEYS = {
     "BASE": ["To send the window the command '{name}'", {
         "info": "i",

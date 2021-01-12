@@ -59,6 +59,7 @@ from .video_image_handler import VideoCaptureCreate
 
 from .windows import (DEFAULT_CV_KEYS, DEFAULT_FRAME_KEYS, DEFAULT_REALTIME_KEYS, DEFAULT_TRACKING_KEYS)
 from .windows import cvKeys
+from .windows import cv2key2chr
 from .windows import wait_for_input
 from .windows import wait_for_choice
 from .windows import cvWindow

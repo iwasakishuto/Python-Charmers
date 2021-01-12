@@ -140,7 +140,7 @@
 <span class="n">toRGB</span>  <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgb&quot;</span><span class="p">)</span>
 <span class="n">toRGBA</span> <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgba&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pycharmers.utils.color_utils.html#pycharmers.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_bgr</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pycharmers.utils.color_utils.html#pycharmers.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">is_bgr</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Select an easy-to-read text color from the given color.</span>
 
 <span class="sd">    Args:</span>
@@ -148,7 +148,7 @@
 <span class="sd">        max_val (int)       : Maximum value.</span>
 
 <span class="sd">    References: </span>
-<span class="sd">        `WCAG &lt;https://www.w3.org/TR/WCAG20/&gt;`_</span>
+<span class="sd">        `WCAG &lt;https://www.w3.org/TR/WCAG20/#relativeluminancede&gt;`_</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import choose_text_color</span>
@@ -159,7 +159,7 @@
 <span class="sd">        ...         print(f&quot;{name.lstrip(&#39;cv2&#39;):&lt;7}: {str(color):&lt;15} -&gt; {choose_text_color(color=color, max_val=255, is_bgr=True)}&quot;)        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">color_code</span> <span class="o">=</span> <span class="n">detect_color_code_type</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-    <span class="n">rgb</span> <span class="o">=</span> <span class="n">toRGB</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">toRGB</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_bgr</span><span class="p">:</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">sRGB2RGB</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>

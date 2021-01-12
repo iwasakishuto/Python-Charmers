@@ -89,7 +89,7 @@ toHEX  = _toColorCode_create("hex")
 toRGB  = _toColorCode_create("rgb")
 toRGBA = _toColorCode_create("rgba")
 
-def choose_text_color(color, max_val=1, is_bgr=False):
+def choose_text_color(color, max_val=255, is_bgr=False):
     """Select an easy-to-read text color from the given color.
 
     Args:
@@ -97,7 +97,7 @@ def choose_text_color(color, max_val=1, is_bgr=False):
         max_val (int)       : Maximum value.
 
     References: 
-        `WCAG <https://www.w3.org/TR/WCAG20/>`_
+        `WCAG <https://www.w3.org/TR/WCAG20/#relativeluminancede>`_
 
     Examples:
         >>> from pycharmers.utils import choose_text_color
@@ -108,7 +108,7 @@ def choose_text_color(color, max_val=1, is_bgr=False):
         ...         print(f"{name.lstrip('cv2'):<7}: {str(color):<15} -> {choose_text_color(color=color, max_val=255, is_bgr=True)}")        
     """
     color_code = detect_color_code_type(color=color)
-    rgb = toRGB(color=color)
+    rgb = toRGB(color=color, max_val=max_val)
     if is_bgr: rgb = rgb[::-1]
 
     def sRGB2RGB(e):

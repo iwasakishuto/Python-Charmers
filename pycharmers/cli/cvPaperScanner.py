@@ -4,8 +4,8 @@ import sys
 import cv2
 import numpy as np
 from pycharmers.utils import cv2ArgumentParser
-from pycharmers.opencv import (cvui, cv2Project, draw_text_with_bg, 
-                               findBiggestContour, reorder_contour, draw_bboxes_xywh)
+from pycharmers.opencv import cvui, cv2Project
+from pycharmers.opencv import draw_text_with_bg, findBiggestContour, reorder_contour, draw_bboxes_xywh
 
 def cvPaperScanner(argv=sys.argv[1:]):
     """Control the OpenCV cascade Examples.
@@ -30,16 +30,16 @@ def cvPaperScanner(argv=sys.argv[1:]):
     eta_counter = [0.1]
 
     def func(frame, monitor, frame_width, frame_height, gui_x, **kwargs):
-        idx = cvui.radiobox(where=monitor, x=gui_x, y=50,  labels=labels, states=states)
-        cvui.text(where=monitor, x=frame_width+30,  y=270, text="[Canny Edge]")
-        cvui.text(where=monitor, x=gui_x,           y=290, text="Low threshold")
-        cvui.text(where=monitor, x=gui_x,           y=360, text="High threshold")
-        cvui.text(where=monitor, x=frame_width+30,  y=450, text="[Biggest Counter]")
-        cvui.text(where=monitor, x=gui_x,           y=470, text="eta")
-        th1 = cvui.trackbar(where=monitor, x=gui_x, y=310, width=150, value=threshold1, min=0., max=255.)
-        th2 = cvui.trackbar(where=monitor, x=gui_x, y=380, width=150, value=threshold2, min=0., max=255.)
-        eta = cvui.counter(where=monitor,  x=gui_x, y=500, value=eta_counter, step=0.01, fmt="%.2f")
-
+        cvui.text(where=monitor, x=gui_x+20,           y=30,  text="[Document Scanner]")
+        idx = cvui.radiobox(where=monitor, x=gui_x,    y=60,  labels=labels, states=states)
+        cvui.text(where=monitor, x=gui_x+20,           y=245, text="[Canny Edge]")
+        cvui.text(where=monitor, x=gui_x,              y=270, text="* Low threshold")
+        cvui.text(where=monitor, x=gui_x,              y=345, text="* High threshold")
+        cvui.text(where=monitor, x=gui_x+20,           y=450, text="[Biggest Counter]")
+        cvui.text(where=monitor, x=gui_x,              y=475, text="* eta")
+        th1 = cvui.trackbar(where=monitor, x=gui_x,    y=290, width=150, value=threshold1, min=0., max=255.)
+        th2 = cvui.trackbar(where=monitor, x=gui_x,    y=380, width=150, value=threshold2, min=0., max=255.)
+        eta = cvui.counter(where=monitor,  x=gui_x+30, y=500, value=eta_counter, step=0.01, fmt="%.2f")
         img_bgr = frame.copy()
         # Gray
         if idx>=1:

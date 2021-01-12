@@ -684,7 +684,7 @@ def mouse(windowName=None, button=None, query=None):
 		else:
 			return __internal.mouseWBQ(windowName, button, query)
 
-def button(where=None, x=0, y=0, label="", width=0, height=0, idle=None, over=None, down=None, color=0x323232):
+def button(where=None, x=0, y=0, label="", width=0, height=30, idle=None, over=None, down=None, color=(50, 50, 50)):
 	"""Display a button whose graphics are images (np.ndarray). The button accepts three images to describe its states, which are idle (no mouse interaction), over (mouse is over the button) and down (mouse clicked the button). The button size will be defined by the width and height of the images.
 
 	Args:
@@ -1736,13 +1736,13 @@ class Internal:
 		"""
 		aContentArea = Rect(x + 22, y, 48, 22)
 
-		if self.buttonWH(block, x, y, 22, 22, '-', color=cv2BLUE, updateLayout=False):
+		if self.buttonWH(block, x, y, 22, 22, '-', color=0x8ac6d1, updateLayout=False):
 			value[0] -= step
 
 		aText = fmt % value[0]
 		self._render.counter(block, aContentArea, aText)
 
-		if self.buttonWH(block, aContentArea.x + aContentArea.width, y, 22, 22, "+", color=cv2RED, updateLayout=False):
+		if self.buttonWH(block, aContentArea.x + aContentArea.width, y, 22, 22, "+", color=0xffb6b9, updateLayout=False):
 			value[0] += step
 
 		# Update the layout flow
@@ -1779,7 +1779,6 @@ class Internal:
 		return state[0]
 
 	def radiobox(self, block, x, y, labels, states, color):
-
 		if len(labels) != len(states):
 			self.error(6, f"`states` and `labels` should have the same length, but got ({len(labels)}!={len(states)})")
 		if states.count(True) != 1:
@@ -1790,11 +1789,10 @@ class Internal:
 		crt_state = -1
 		width = 0
 		for i,label in enumerate(labels):        
-			
 			aRect = Rect(x, y+i*20, 15, 15)
 			(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
 			text_size = Rect(0, 0, text_width, text_height)
-			aHitArea = Rect(x, y+i*20, aRect.width + text_size.width + 6, aRect.height)
+			aHitArea = Rect(x, y+i*20, aRect.width+text_size.width+6, aRect.height)
 			mouseIsOver = aHitArea.contains(mouse.position)
 
 			if mouseIsOver:
@@ -1948,7 +1946,7 @@ class Internal:
 			ret = CLICK
 		return ret
 
-	def buttonWH(self, block, x, y, width, height, label, color=0x323232, updateLayout=True):
+	def buttonWH(self, block, x, y, width, height, label, color=(50, 50, 50), updateLayout=True):
 		"""Create a bottun using ``width`` and ``height`` .
 		
 		Args:
@@ -1973,7 +1971,7 @@ class Internal:
 
 		# Render the button according to mouse interaction, e.g. OVER, DOWN, OUT.
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
-		button_color = self.hex2tuple(color)
+		button_color = self.hex2bgr(color)
 		self._render.button(block, aStatus, aRect, label, color=button_color)
 		self._render.buttonLabel(block, aStatus, aRect, label, text_size, color=choose_text_color(color=button_color, max_val=255, is_bgr=True))
 
@@ -1994,7 +1992,7 @@ class Internal:
 
 		return aStatus == CLICK or aWasShortcutPressed
 
-	def button(self, block, x, y, label, color=0x323232):
+	def button(self, block, x, y, label, color=(50, 50, 50)):
 		"""Create a bottun using :meth:`buttonWH <pycharmers.opencv.cvui.buttonWH>` by calculating ``width`` and ``height`` from ``label``.
 		
 		Args:
@@ -2134,7 +2132,7 @@ class Internal:
 		size = Size(width, height)
 		self.updateLayoutFlow(block, size)
 
-	def hex2tuple(self, color):
+	def hex2bgr(self, color):
 		"""Convert hex ( ``int`` ) color to ``tuple`` color.
 		
 		Args:
@@ -2235,7 +2233,7 @@ class Render:
 
 	def text(self, block, text, position, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8):
 		aPosition = (int(position.x), int(position.y))
-		cv2.putText(img=block.where, text=text, org=aPosition, fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2tuple(color), thickness=thickness, lineType=lineType)
+		cv2.putText(img=block.where, text=text, org=aPosition, fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2bgr(color), thickness=thickness, lineType=lineType)
 
 	def counter(self, block, shape, value, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_AA):
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29), CVUI_FILLED) # fill
@@ -2245,9 +2243,9 @@ class Render:
 		text_size = Rect(0, 0, text_width, text_height)
 
 		aPos = Point(shape.x + shape.width / 2 - text_size.width / 2, shape.y + text_size.height / 2 + shape.height / 2)
-		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2tuple(color), thickness=thickness, lineType=lineType)
+		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2bgr(color), thickness=thickness, lineType=lineType)
 
-	def button(self, block, state, shape, label, color=0x323232):
+	def button(self, block, state, shape, label, color=(50, 50, 50)):
 		# Outline
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29))
 
@@ -2264,7 +2262,7 @@ class Render:
 		shape.width -= 2
 		shape.height -= 2
 
-		colors = generateLightDarks(color=self._internal.hex2tuple(color), variation=3, diff=10)
+		colors = generateLightDarks(color=self._internal.hex2bgr(color), variation=3, diff=10)
 		if state==OUT:    inside_color = colors[1]
 		elif state==OVER: inside_color = colors[2]
 		else:             inside_color = colors[0]
@@ -2493,8 +2491,8 @@ class Render:
 			self.rectangle(block.where, content, (0x31, 0x31, 0x31), CVUI_FILLED)
 
 	def rect(self, block, position, borderColor, fillingColor):
-		aBorderColor = self._internal.hex2tuple(borderColor)
-		aFillingColor = self._internal.hex2tuple(fillingColor)
+		aBorderColor = self._internal.hex2bgr(borderColor)
+		aFillingColor = self._internal.hex2bgr(fillingColor)
 
 		aHasFilling = aFillingColor[3] != 0xff
 
@@ -2520,7 +2518,7 @@ class Render:
 			y = (values[i + 1] - min) / aScale * -(rect.height - 5) + rect.y + rect.height - 5
 			aPoint2 = Point(x, y)
 
-			cv2.line(block.where, (int(aPoint1.x), int(aPoint1.y)), (int(aPoint2.x), int(aPoint2.y)), self._internal.hex2tuple(color))
+			cv2.line(block.where, (int(aPoint1.x), int(aPoint1.y)), (int(aPoint2.x), int(aPoint2.y)), self._internal.hex2bgr(color))
 			aPosX += aGap
 
 			i += 1

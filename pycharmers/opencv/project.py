@@ -6,8 +6,8 @@ import numpy as np
 from . import cvui
 from ._path import PYCHARMERS_OPENCV_VIDEO_DIR
 from .editing import resize_aspect
-from .drawing import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE)
 from .video_image_handler import VideoCaptureCreate
+from .windows import cv2key2chr
 from ..utils.generic_utils import now_str
 from ..utils.subprocess_utils import get_monitor_size
 from ..utils._colorings import toBLUE
@@ -94,21 +94,31 @@ class cv2Project():
             func (function) : A function that receives and returns ``frame``.
         """
         params = self.__dict__
+        char = ""
         while (True):
             self.monitor[:] = (49, 52, 49)
             ret, frame = self.cap.read()
             if not ret: break
+            # Wrap the function.
             frame = func(frame=frame, **params)
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-155, label="&Stop" if self.capture else "&Capture", color=cv2RED if self.capture else cv2BLUE): 
-                self.capture = not self.capture
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-120, label="&Quit", color=cv2RED): 
-                break
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-85, label="&Save", color=cv2BLUE): 
+            # Recieve the key.
+            key = cv2.waitKey(1)
+            if key != -1:
+                char = cv2key2chr(key)
+            # y = self.frame_height-120
+            cvui.text(where=self.monitor, x=self.gui_x, y=self.frame_height-120, text=f" Your input: {char}")     
+            # y = self.frame_height-95
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-95, width=70, height=30, label="&Save", color=(137, 225, 241)): 
                 filename = now_str() + self.ext
                 cv2.imwrite(filename=filename, img=frame)
                 cv2.imshow(winname=filename, mat=resize_aspect(cv2.imread(filename), dsize=self.frame_halfsize))
                 print(f"Saved {toBLUE(filename)}")
-            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-50, label="&FullScreen", color=cv2GREEN):
+            if cvui.button(where=self.monitor, x=self.gui_x+80, y=self.frame_height-95, width=80, height=30, label="&Stop" if self.capture else "&Capture", color=(110, 93, 211) if self.capture else (177, 163, 121)): 
+                self.capture = not self.capture
+            # y = self.frame_height-60
+            if key == cvui.ESCAPE or cvui.button(where=self.monitor, x=self.gui_x+105, y=self.frame_height-60, width=55, height=30, label="&Quit", color=(128, 95, 159)): 
+                break
+            if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-60, width=95, height=30, label="&FullScreen", color=(116, 206, 173)):
                 cv2.setWindowProperty(
                     winname=self.winname,
                     prop_id=cv2.WND_PROP_FULLSCREEN,
@@ -117,6 +127,7 @@ class cv2Project():
                         prop_id=cv2.WND_PROP_FULLSCREEN,
                     )
                 )
+            # y = self.frame_height-20
             cvui.text(where=self.monitor, x=self.gui_x, y=self.frame_height-20, text=__project_name__)
 
             cvui.beginRow(where=self.monitor, x=0, y=0)
@@ -127,8 +138,6 @@ class cv2Project():
             cv2.imshow(self.winname, self.monitor)
             if self.capture:
                 self.video.write(self.monitor)
-            if cv2.waitKey(1) == cvui.ESCAPE:
-                break
         self.release()
 
     def release(self):
