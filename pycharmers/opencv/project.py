@@ -17,7 +17,7 @@ class cv2Project():
     """OpenCV project wrapper with useful GUI tools.
 
     Args:
-        args (Namespace) : Simple object for storing attributes. ()
+        args (Namespace) : Simple object for storing attributes.
 
     Notes:
         * Image object ( ``np.ndarray`` ) has the shape ( ``height`` , ``width`` , ``channel`` )
@@ -81,7 +81,7 @@ class cv2Project():
         video_path = now_str()+".mp4"
         video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc('m','p','4','v'), fps, (monitor_width, monitor_height))
         print(f"Created {toBLUE(video_path)}")
-        cvui.init(self.winname)
+        cvui.init(windowNames=self.winname, numWindows=1, delayWaitKey=1, createNamedWindows=True)
         cv2.moveWindow(winname=self.winname, x=0, y=0)
 
         defined_args = locals(); defined_args.pop("self")
@@ -102,7 +102,7 @@ class cv2Project():
             # Wrap the function.
             frame = func(frame=frame, **params)
             # Recieve the key.
-            key = cv2.waitKey(1)
+            key = cvui.lastKeyPressed()
             if key != -1:
                 char = cv2key2chr(key)
             # y = self.frame_height-120

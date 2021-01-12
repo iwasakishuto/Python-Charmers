@@ -17,9 +17,9 @@ def cvPaperScanner(argv=sys.argv[1:]):
 
         $ cv-paper-scanner --cam 0 --radio-width 200
 
-    .. image:: _images/prml.jpg
+    .. image:: _images/cli-demo.cvPaperScanner.gif
     """
-    parser = cv2ArgumentParser(prog="cv-PaperScan", description="Paper Scanner", add_help=True)
+    parser = cv2ArgumentParser(prog="cv-paper-scan", description="Paper Scanner", add_help=True)
     args = parser.parse_args(argv)
     project = cv2Project(args=args)
 
@@ -85,4 +85,5 @@ def cvPaperScanner(argv=sys.argv[1:]):
             frame = cv2.bitwise_not(src=frame)
             frame = cv2.medianBlur(src=frame, ksize=3)
         return frame
+        
     project.wrap(func=func)

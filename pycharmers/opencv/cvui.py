@@ -163,15 +163,12 @@ def _handleMouse(event, x, y, flags, context):
 	EventsDown = [cv2.EVENT_LBUTTONDOWN, cv2.EVENT_MBUTTONDOWN, cv2.EVENT_RBUTTONDOWN]
 	EventsUp   = [cv2.EVENT_LBUTTONUP,   cv2.EVENT_MBUTTONUP,   cv2.EVENT_RBUTTONUP  ]
 
-	for i in range(LEFT_BUTTON, RIGHT_BUTTON+1):
-		btn = Buttons[i]
-
+	for i,btn in enumerate(Buttons):
 		if event == EventsDown[i]:
 			context.mouse.anyButton.justPressed     = True
 			context.mouse.anyButton.pressed         = True
 			context.mouse.buttons[btn].justPressed  = True
 			context.mouse.buttons[btn].pressed      = True
-
 		elif event == EventsUp[i]:
 			context.mouse.anyButton.justReleased    = True
 			context.mouse.anyButton.pressed         = False
@@ -201,7 +198,7 @@ def watch(windowName, createNamedWindow=True):
 	context.mouse.buttons[LEFT_BUTTON].reset()
 
 	__internal.contexts[windowName] = context
-	cv2.setMouseCallback(window_name=windowName, on_mouse=_handleMouse, param=__internal.contexts[windowName])
+	cv2.setMouseCallback(window_name=windowName, on_mouse=_handleMouse, param=context)
 
 def context(windowName):
 	"""
@@ -565,7 +562,7 @@ def radiobox(where=None, x=0, y=0, labels=[""], states=[], color=0xCECECE):
 		>>> radio_states = [True, False, False]
 		>>> bg_colors    = [cv2RED, cv2BLUE, cv2GREEN]
 		>>> idx = 0
-
+		... 
 		>>> while (True):
 		... 	frame[:] = (49, 52, 49)
 		... 	
@@ -588,7 +585,6 @@ def radiobox(where=None, x=0, y=0, labels=[""], states=[], color=0xCECECE):
 		block = __internal.topBlock()
 		x += block.anchor.x
 		y += block.anchor.y
-
 	return __internal.radiobox(block, x, y, labels, states, color)
 
 def mouse(windowName=None, button=None, query=None):
@@ -684,7 +680,7 @@ def mouse(windowName=None, button=None, query=None):
 		else:
 			return __internal.mouseWBQ(windowName, button, query)
 
-def button(where=None, x=0, y=0, label="", width=0, height=30, idle=None, over=None, down=None, color=(50, 50, 50)):
+def button(where=None, x=0, y=0, label="", width=0, height=30, idle=None, over=None, down=None, color=(50,50,50)):
 	"""Display a button whose graphics are images (np.ndarray). The button accepts three images to describe its states, which are idle (no mouse interaction), over (mouse is over the button) and down (mouse clicked the button). The button size will be defined by the width and height of the images.
 
 	Args:
@@ -1432,7 +1428,7 @@ class TrackbarParams:
 		labelfmt (str) : Formating string that will be used to render the labels. If you are using a trackbar with integers values, for instance, you can use ``%d`` to render labels.
 		options (uint) : Options to customize the behavior/appearance of the trackbar, expressed as a bitset. Available options are defined as ``cvui.TRACKBAR_`` constants and they can be combined using the bitwise ``|`` operand. Available options are ``cvui.TRACKBAR_HIDE_SEGMENT_LABELS`` (do not render segment labels, but do render min/max labels), ``cvui.TRACKBAR_HIDE_STEP_SCALE`` (do not render the small lines indicating values in the scale), ``cvui.TRACKBAR_DISCRETE`` (changes of the trackbar value are multiples of theDiscreteStep param), ``cvui.TRACKBAR_HIDE_MIN_MAX_LABELS`` (do not render min/max labels), ``cvui.TRACKBAR_HIDE_VALUE_LABEL`` (do not render the current value of the trackbar below the moving marker), and ``cvui.TRACKBAR_HIDE_LABELS`` (do not render labels at all).
 	"""
-	def __init__(self, min=0., max=255., step=1., segments=0, labelfmt='%.0Lf', options=0):
+	def __init__(self, min=0., max=255., step=1., segments=0, labelfmt="%.0Lf", options=0):
 		self.min = min
 		self.max = max
 		self.step = step
@@ -1734,15 +1730,15 @@ class Internal:
 		Returns:
 			value (number) : Number that corresponds to the current value of the counter.
 		"""
-		aContentArea = Rect(x + 22, y, 48, 22)
+		aContentArea = Rect(x+22, y, 48, 22)
 
-		if self.buttonWH(block, x, y, 22, 22, '-', color=0x8ac6d1, updateLayout=False):
+		if self.buttonWH(block=block, x=x, y=y, width=22, height=22, label="-", color=(209, 198, 138), updateLayout=False):
 			value[0] -= step
 
 		aText = fmt % value[0]
 		self._render.counter(block, aContentArea, aText)
 
-		if self.buttonWH(block, aContentArea.x + aContentArea.width, y, 22, 22, "+", color=0xffb6b9, updateLayout=False):
+		if self.buttonWH(block=block, x=aContentArea.x+aContentArea.width, y=y, width=22, height=22, label="+", color=(185,182,255), updateLayout=False):
 			value[0] += step
 
 		# Update the layout flow
@@ -1756,21 +1752,20 @@ class Internal:
 		aRect = Rect(x, y, 15, 15)
 		(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
 		text_size = Rect(0, 0, text_width, text_height)
-		aHitArea = Rect(x, y, aRect.width + text_size.width + 6, aRect.height)
+		aHitArea = Rect(x, y, aRect.width+text_size.width+6, aRect.height)
 		mouseIsOver = aHitArea.contains(mouse.position)
 
 		if mouseIsOver:
-			self._render.checkbox(block, OVER, aRect)
-
+			self._render.checkbox(block=block, state=OVER, shape=aRect)
 			if mouse.anyButton.justReleased:
 				state[0] = not state[0]
 		else:
-			self._render.checkbox(block, OUT, aRect)
+			self._render.checkbox(block=block, state=OUT, shape=aRect)
 
 		self._render.checkboxLabel(block, aRect, label, text_size, color)
 
 		if state[0]:
-			self._render.checkboxCheck(block, aRect)
+			self._render.checkboxCheck(block=block, shape=aRect)
 
 		# Update the layout flow
 		size = Size(aHitArea.width, aHitArea.height)
@@ -1794,11 +1789,10 @@ class Internal:
 			text_size = Rect(0, 0, text_width, text_height)
 			aHitArea = Rect(x, y+i*20, aRect.width+text_size.width+6, aRect.height)
 			mouseIsOver = aHitArea.contains(mouse.position)
-
 			if mouseIsOver:
 				self._render.checkbox(block, OVER, aRect)
-
-				if mouse.anyButton.justReleased:
+				# if mouse.anyButton.justReleased:
+				if mouse.anyButton.pressed:
 					crt_state = i
 					states[crt_state] = True
 			else:
@@ -1942,11 +1936,12 @@ class Internal:
 			else:
 				ret = OVER
 		# Tell if the button was clicked or not
-		if mouseIsOver and mouse.anyButton.justReleased:
+		# if mouseIsOver and mouse.anyButton.justReleased:
+		if mouseIsOver and mouse.anyButton.pressed:
 			ret = CLICK
 		return ret
 
-	def buttonWH(self, block, x, y, width, height, label, color=(50, 50, 50), updateLayout=True):
+	def buttonWH(self, block, x, y, width, height, label, color=(50,50,50), updateLayout=True):
 		"""Create a bottun using ``width`` and ``height`` .
 		
 		Args:
@@ -1971,9 +1966,9 @@ class Internal:
 
 		# Render the button according to mouse interaction, e.g. OVER, DOWN, OUT.
 		aStatus = self.iarea(x, y, aRect.width, aRect.height)
-		button_color = self.hex2bgr(color)
-		self._render.button(block, aStatus, aRect, label, color=button_color)
-		self._render.buttonLabel(block, aStatus, aRect, label, text_size, color=choose_text_color(color=button_color, max_val=255, is_bgr=True))
+		button_bgr = self.hex2bgr(color)
+		self._render.button(block, aStatus, aRect, label, color=button_bgr)
+		self._render.buttonLabel(block, aStatus, aRect, label, text_size, color=choose_text_color(color=button_bgr, max_val=255, is_bgr=True))
 
 		# Update the layout flow according to button size
 		# if we were told to update.
@@ -1981,18 +1976,15 @@ class Internal:
 			size = Size(width, height)
 			self.updateLayoutFlow(block, size)
 
-		aWasShortcutPressed = False
-
 		# Handle keyboard shortcuts
+		aWasShortcutPressed = False
 		if self.lastKeyPressed != -1:
 			aLabel = self.createLabel(label)
-
 			if aLabel.hasShortcut and aLabel.shortcut.lower() == chr(self.lastKeyPressed).lower():
 				aWasShortcutPressed = True
-
 		return aStatus == CLICK or aWasShortcutPressed
 
-	def button(self, block, x, y, label, color=(50, 50, 50)):
+	def button(self, block, x, y, label, color=(50,50,50)):
 		"""Create a bottun using :meth:`buttonWH <pycharmers.opencv.cvui.buttonWH>` by calculating ``width`` and ``height`` from ``label``.
 		
 		Args:
@@ -2245,7 +2237,7 @@ class Render:
 		aPos = Point(shape.x + shape.width / 2 - text_size.width / 2, shape.y + text_size.height / 2 + shape.height / 2)
 		cv2.putText(block.where, value, (int(aPos.x), int(aPos.y)), fontFace=fontFace, fontScale=fontScale, color=self._internal.hex2bgr(color), thickness=thickness, lineType=lineType)
 
-	def button(self, block, state, shape, label, color=(50, 50, 50)):
+	def button(self, block, state, shape, label, color=(50,50,50)):
 		# Outline
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29))
 
