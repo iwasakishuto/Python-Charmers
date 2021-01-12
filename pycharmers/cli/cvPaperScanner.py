@@ -1,63 +1,42 @@
 #coding: utf-8
 import re
 import sys
-import argparse
 import cv2
 import numpy as np
-from pycharmers.__meta__ import __version__
-from pycharmers.opencv import cvui, draw_bboxes_xywh, findBiggestContour, draw_text_with_bg, VideoCaptureCreate, reorder_contour
+from pycharmers.utils import cv2ArgumentParser
+from pycharmers.opencv import (cvui, cv2Project, draw_text_with_bg, 
+                               findBiggestContour, reorder_contour, draw_bboxes_xywh)
 
 def cvPaperScanner(argv=sys.argv[1:]):
     """Control the OpenCV cascade Examples.
 
-    Args:
-        --winname (str)     : Window name.
-        --path (str)        : Path to video or image.
-        --cam (int)         : The ID of the web camera.
-        --radio-width (int) : The width of the radio boxes.
+    Please see :meth:`cv2ArgumentParser <pycharmers.utils.argparse_utils.cv2ArgumentParser>` for arguments.
 
     Note:
         When you run from the command line, execute as follows::
 
         $ cv-paper-scanner --cam 0 --radio-width 200
     """
-    parser = argparse.ArgumentParser(prog="cv-PaperScan", description="Paper Scanner", add_help=True)
-    parser.add_argument("--winname",     type=str, default=f"Paper Scanner (Pycharmers {__version__})", help="Window name.")
-    parser.add_argument("--path",        type=str, help="Path to video or image.")
-    parser.add_argument("--cam",         type=int, default=0,   help="Define the id of the web camera. `cv2.VideoCapture( [ID] )`")
-    parser.add_argument("--radio-width", type=int, default=200, help="The width of the radio boxes.")
+    parser = cv2ArgumentParser(prog="cv-PaperScan", description="Paper Scanner", add_help=True)
     args = parser.parse_args(argv)
+    project = cv2Project(args=args)
 
-    winname = args.winname
-    radio_width = args.radio_width
-    cap = VideoCaptureCreate(path=args.path, cam=args.cam)
-    # cap.set(cv2.CAP_PROP_BRIGHTNESS, 160)
-    width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    bg_frame = np.zeros(shape=(height, width+radio_width, 3), dtype=np.uint8)
-
-    labels = ["Original", "Gray", "Canny Edge", "Contours", "Biggest Contour", "Warp Prespective", "Warp Gray", "Adaptive Threshold"]
-    states = [True if i==0 else False for i in range(len(labels))]
-    threshold1 = [100]
-    threshold2 = [200]
+    labels      = ["Original", "Gray", "Canny Edge", "Contours", "Biggest Contour", "Warp Prespective", "Warp Gray", "Adaptive Threshold"]
+    states      = [i==0 for i in range(len(labels))]
+    threshold1  = [100]
+    threshold2  = [200]
     eta_counter = [0.1]
 
-    cvui.init(winname)
-    cv2.moveWindow(winname=winname, x=0, y=0)
-    while (True):
-        bg_frame[:] = (49, 52, 49)
-        ret, frame = cap.read()
-
-        if (not ret) or cvui.button(where=bg_frame, x=width+10, y=10, label="&Quit"): 
-            break
-        idx = cvui.radiobox(where=bg_frame, x=width+10, y=50,  labels=labels, states=states)
-        cvui.text(where=bg_frame, x=width+30, y=270, text="[Canny Edge]")
-        cvui.text(where=bg_frame, x=width+10, y=290, text="Low threshold")
-        cvui.text(where=bg_frame, x=width+10, y=360, text="High threshold")
-        cvui.text(where=bg_frame, x=width+30, y=450, text="[Biggest Counter]")
-        cvui.text(where=bg_frame, x=width+10, y=470, text="eta")
-        th1 = cvui.trackbar(where=bg_frame, x=width+10, y=310, width=150, value=threshold1, min=0., max=255.)
-        th2 = cvui.trackbar(where=bg_frame, x=width+10, y=380, width=150, value=threshold2, min=0., max=255.)
-        eta = cvui.counter(where=bg_frame, x=width+10, y=500, value=eta_counter, step=0.01, fmt="%.2f")
+    def func(frame, monitor, frame_width, frame_height, gui_x, **kwargs):
+        idx = cvui.radiobox(where=monitor, x=gui_x, y=50,  labels=labels, states=states)
+        cvui.text(where=monitor, x=frame_width+30,  y=270, text="[Canny Edge]")
+        cvui.text(where=monitor, x=gui_x,           y=290, text="Low threshold")
+        cvui.text(where=monitor, x=gui_x,           y=360, text="High threshold")
+        cvui.text(where=monitor, x=frame_width+30,  y=450, text="[Biggest Counter]")
+        cvui.text(where=monitor, x=gui_x,           y=470, text="eta")
+        th1 = cvui.trackbar(where=monitor, x=gui_x, y=310, width=150, value=threshold1, min=0., max=255.)
+        th2 = cvui.trackbar(where=monitor, x=gui_x, y=380, width=150, value=threshold2, min=0., max=255.)
+        eta = cvui.counter(where=monitor,  x=gui_x, y=500, value=eta_counter, step=0.01, fmt="%.2f")
 
         img_bgr = frame.copy()
         # Gray
@@ -93,8 +72,8 @@ def cvPaperScanner(argv=sys.argv[1:]):
                 frame = cv2.drawContours(image=frame, contours=biggest_contour, contourIdx=-1, color=(0, 255, 0), thickness=20)
         # Warp Prespective
         if idx>=5:
-            matrix = cv2.getPerspectiveTransform(src=np.float32(biggest_contour), dst=np.float32([[0, 0],[width, 0], [0, height],[width, height]]))
-            frame = cv2.warpPerspective(src=img_bgr, M=matrix, dsize=(width, height))
+            matrix = cv2.getPerspectiveTransform(src=np.float32(biggest_contour), dst=np.float32([[0, 0],[frame_width, 0], [0, frame_height],[frame_width, frame_height]]))
+            frame = cv2.warpPerspective(src=img_bgr, M=matrix, dsize=(frame_width, frame_height))
         # Warp Gray
         if idx>=6:
             frame = cv2.cvtColor(src=frame, code=cv2.COLOR_BGR2GRAY)
@@ -103,14 +82,5 @@ def cvPaperScanner(argv=sys.argv[1:]):
             frame = cv2.adaptiveThreshold(src=frame, maxValue=255, adaptiveMethod=1, thresholdType=1, blockSize=7, C=2)
             frame = cv2.bitwise_not(src=frame)
             frame = cv2.medianBlur(src=frame, ksize=3)
-
-        # draw_text_with_bg(img=frame, text=f"Method: {labels[idx]}", org=(height-50,50))
-        cvui.beginRow(where=bg_frame, x=0, y=0)
-        cvui.image(image=frame)
-        cvui.endRow()
-        cvui.update()
-        cv2.imshow(winname, bg_frame)
-        if cv2.waitKey(1) == cvui.ESCAPE:
-            break
-    cv2.destroyAllWindows()
-    cap.release()
+        return frame
+    project.wrap(func=func)

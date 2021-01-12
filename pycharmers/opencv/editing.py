@@ -76,3 +76,33 @@ def hconcat_resize_min(*images, interpolation=cv2.INTER_CUBIC):
                    interpolation=interpolation
         ) for img in images
     ])
+
+def resize_aspect(src, dsize, interpolation=cv2.INTER_AREA):
+    """Resize the image while keeping the aspect ratio.
+    
+    Args:
+        src (np.ndarray)    : Input image.
+        dsize (tuple)       : Output image size ( ``width`` , ``height``)
+        interpolation (int) : Interpolation method (default= ``cv2.INTER_AREA`` )
+        
+    Returns:
+        resized (np.ndarray) : Resized image.
+        
+    Examples:
+        >>> import numpy as np
+        >>> from pycharmers.opencv import resize_aspect
+        >>> img = np.random.randint(low=0, high=255, size=(1080, 720, 3), dtype=np.uint8)
+        >>> resized = resize_aspect(src=img, dsize=(300, 300))
+        >>> resized.shape
+        (300, 200, 3)
+    """
+    sh, sw = src.shape[:2]
+    dw, dh = dsize
+    
+    if sh/sw > dh/dw:
+        ratio = dh/sh
+    else:
+        ratio = dw/sw
+    dsize = (int(ratio*sw), int(ratio*sh))
+    resized = cv2.resize(src=src, dsize=dsize, interpolation=interpolation)
+    return resized

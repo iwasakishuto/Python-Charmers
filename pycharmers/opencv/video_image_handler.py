@@ -171,19 +171,22 @@ def create_VideoWriter(in_path, out_path=None, fps=30):
     """
     if out_path is None:
         out_path = save_dir_create(dirname=None, video=True)[0]
-
     if os.path.isfile(in_path):
-        video = cv2.VideoCapture(in_path)
-        W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-        H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = video.get(cv2.CAP_PROP_FPS)
+        if re.search(pattern=IMAGE_FILE_PATTERN, string=in_path, flags=re.IGNORECASE):
+            img = cv2.imread(in_path)
+            H,W = img.shape[:2]
+        else:
+            video = cv2.VideoCapture(in_path)
+            W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+            H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = video.get(cv2.CAP_PROP_FPS)
     else:
         for fn in os.listdir(in_path):
             img_path = os.path.join(in_path, fn)
             img = cv2.imread(img_path)
             if img is not None:
                 break
-        H,W,_ = img.shape
+        H,W = img.shape[:2]
     out_video = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc('m','p','4','v'), int(fps), (W, H))
     return out_video
 
@@ -216,6 +219,7 @@ def VideoCaptureCreate(path=None, cam=0):
                 self.info = {
                     cv2.CAP_PROP_FRAME_WIDTH  : frame.shape[1],
                     cv2.CAP_PROP_FRAME_HEIGHT : frame.shape[0],
+                    cv2.CAP_PROP_FPS          : 30.0,
                 }
             def read(self):
                 return True, self.frame

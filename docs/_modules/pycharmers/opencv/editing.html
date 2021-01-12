@@ -127,6 +127,36 @@
                    <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span>
         <span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span>
     <span class="p">])</span></div>
+
+<div class="viewcode-block" id="resize_aspect"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.resize_aspect">[docs]</a><span class="k">def</span> <span class="nf">resize_aspect</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dsize</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resize the image while keeping the aspect ratio.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        src (np.ndarray)    : Input image.</span>
+<span class="sd">        dsize (tuple)       : Output image size ( ``width`` , ``height``)</span>
+<span class="sd">        interpolation (int) : Interpolation method (default= ``cv2.INTER_AREA`` )</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        resized (np.ndarray) : Resized image.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import resize_aspect</span>
+<span class="sd">        &gt;&gt;&gt; img = np.random.randint(low=0, high=255, size=(1080, 720, 3), dtype=np.uint8)</span>
+<span class="sd">        &gt;&gt;&gt; resized = resize_aspect(src=img, dsize=(300, 300))</span>
+<span class="sd">        &gt;&gt;&gt; resized.shape</span>
+<span class="sd">        (300, 200, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sh</span><span class="p">,</span> <span class="n">sw</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span> <span class="o">=</span> <span class="n">dsize</span>
+    
+    <span class="k">if</span> <span class="n">sh</span><span class="o">/</span><span class="n">sw</span> <span class="o">&gt;</span> <span class="n">dh</span><span class="o">/</span><span class="n">dw</span><span class="p">:</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">dh</span><span class="o">/</span><span class="n">sh</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">dw</span><span class="o">/</span><span class="n">sw</span>
+    <span class="n">dsize</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="o">*</span><span class="n">sw</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="o">*</span><span class="n">sh</span><span class="p">))</span>
+    <span class="n">resized</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="n">dsize</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resized</span></div>
 </pre></div>
 
             <div class="clearer"></div>

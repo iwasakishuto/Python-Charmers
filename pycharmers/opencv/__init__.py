@@ -13,6 +13,7 @@ from . import cascade
 from . import drawing
 from . import editing
 from . import morphology
+from . import project
 from . import tracking
 from . import video_image_handler
 from . import windows
@@ -38,9 +39,12 @@ from .drawing import plot_cv2fontFaces
 from .editing import cv2paste
 from .editing import vconcat_resize_min
 from .editing import hconcat_resize_min
+from .editing import resize_aspect
 
 from .morphology import morph_kernel_creator
 from .morphology import morph_transformer_creator
+
+from .project import cv2Project
 
 from .tracking import tracker_create
 from .tracking import BBoxLogger

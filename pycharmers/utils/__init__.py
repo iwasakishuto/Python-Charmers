@@ -14,6 +14,7 @@ from . import pandas_utils
 from . import pil_utils
 from . import print_utils
 from . import soup_utils
+from . import subprocess_utils
 from . import templates
 
 
@@ -22,9 +23,10 @@ from ._exceptions import *
 from ._path import *
 from ._warnings import *
 
-from .argparse_utils import ListParamProcessor
+from .argparse_utils import ListParamProcessorCreate
 from .argparse_utils import DictParamProcessor
 from .argparse_utils import KwargsParamProcessor
+from .argparse_utils import cv2ArgumentParser
 
 from .color_utils import detect_color_code_type
 from .color_utils import toHEX
@@ -108,6 +110,9 @@ from .soup_utils import find_target_text
 from .soup_utils import find_all_target_text
 from .soup_utils import find_target_id
 from .soup_utils import get_soup
+
+from .subprocess_utils import run_and_capture
+from .subprocess_utils import get_monitor_size
 
 from .templates import render_template
 from .templates import defFunction

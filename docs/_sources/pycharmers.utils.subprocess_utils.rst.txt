@@ -1,0 +1,7 @@
+pycharmers.utils.subprocess\_utils module
+=========================================
+
+.. automodule:: pycharmers.utils.subprocess_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

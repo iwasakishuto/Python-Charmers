@@ -19,6 +19,7 @@ Submodules
    pycharmers.utils.pil_utils
    pycharmers.utils.print_utils
    pycharmers.utils.soup_utils
+   pycharmers.utils.subprocess_utils
    pycharmers.utils.templates
 
 Module contents

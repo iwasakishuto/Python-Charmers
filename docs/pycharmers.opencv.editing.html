@@ -143,6 +143,36 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.opencv.editing.resize_aspect">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">resize_aspect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">src</span></em>, <em class="sig-param"><span class="n">dsize</span></em>, <em class="sig-param"><span class="n">interpolation</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#resize_aspect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.resize_aspect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the image while keeping the aspect ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<em>np.ndarray</em>) – Input image.</p></li>
+<li><p><strong>dsize</strong> (<em>tuple</em>) – Output image size ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code>)</p></li>
+<li><p><strong>interpolation</strong> (<em>int</em>) – Interpolation method (default= <code class="docutils literal notranslate"><span class="pre">cv2.INTER_AREA</span></code> )</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resized image.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>resized (np.ndarray)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">resize_aspect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1080</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resized</span> <span class="o">=</span> <span class="n">resize_aspect</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resized</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(300, 200, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -196,6 +226,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>

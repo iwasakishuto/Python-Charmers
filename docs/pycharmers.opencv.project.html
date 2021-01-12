@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.opencv.project module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.project.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.opencv.project module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.opencv.tracking module" href="pycharmers.opencv.tracking.html" />
+    <link rel="prev" title="pycharmers.opencv.morphology module" href="pycharmers.opencv.morphology.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.tracking.html" title="pycharmers.opencv.tracking module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.morphology.html" title="pycharmers.opencv.morphology module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" accesskey="U">pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.project module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.opencv.project">
+<span id="pycharmers-opencv-project-module"></span><h1>pycharmers.opencv.project module<a class="headerlink" href="#module-pycharmers.opencv.project" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.opencv.project.cv2Project">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.project.</code><code class="sig-name descname">cv2Project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>OpenCV project wrapper with useful GUI tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>Namespace</em>) – Simple object for storing attributes. ()</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Image object ( <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> ) has the shape ( <code class="docutils literal notranslate"><span class="pre">height</span></code> , <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">channel</span></code> )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XXX_size</span></code> attributes are formatted as ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+</ul>
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.cap">
+<code class="sig-name descname">cap</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.cap" title="Permalink to this definition">¶</a></dt>
+<dd><p>VideoCapture (mimic) object. See <a class="reference internal" href="pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="pycharmers.opencv.video_image_handler.VideoCaptureCreate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">VideoCaptureCreate</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>VideoCapture</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor">
+<code class="sig-name descname">monitor</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Background image. shape= ( <code class="docutils literal notranslate"><span class="pre">monitor_height</span></code> , <code class="docutils literal notranslate"><span class="pre">monitor_width</span></code>, 3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor_height">
+<code class="sig-name descname">monitor_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of monitor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor_width">
+<code class="sig-name descname">monitor_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of monitor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.original_height">
+<code class="sig-name descname">original_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.original_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of original frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.original_width">
+<code class="sig-name descname">original_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.original_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of original frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_height">
+<code class="sig-name descname">frame_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of resized frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_width">
+<code class="sig-name descname">frame_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of resized frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_dsize">
+<code class="sig-name descname">frame_dsize</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_dsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>( <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_halfsize">
+<code class="sig-name descname">frame_halfsize</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_halfsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>( <code class="docutils literal notranslate"><span class="pre">frame_width//2</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height//2</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.gui_x">
+<code class="sig-name descname">gui_x</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.gui_x" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">frame_width</span></code> + <code class="docutils literal notranslate"><span class="pre">gui_margin</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.fps">
+<code class="sig-name descname">fps</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.fps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame per seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.video">
+<code class="sig-name descname">video</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video Writer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>cv2.VideoWriter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.video_fn">
+<code class="sig-name descname">video_fn</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.video_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The file name of video.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="simple">
+<dt>OtherAttributes:</dt><dd><p>See <a class="reference internal" href="pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.cv2ArgumentParser" title="pycharmers.utils.argparse_utils.cv2ArgumentParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">cv2ArgumentParser</span></code></a> .</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize VideoCapture (mimic) object and GUI tools.</p>
+<p>Notes: To run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> must be has these attributes.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>winname (str)                     : Window name.</p></li>
+<li><p>path (str)                        : Path to video or image.</p></li>
+<li><p>cam (int)                         : The ID of the web camera.</p></li>
+<li><p>ext (str)                         : The extension for saved image.</p></li>
+<li><p>gui_width (int)                   : The width of the GUI tools.</p></li>
+<li><p>gui_margin (int)                  : The margin of GUI control tools.</p></li>
+<li><p>monitor_size (ListParamProcessor) : Monitor size. ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+<li><p>autofit (bool)                    : Whether to fit display size to window size.</p></li>
+<li><p>twitter (bool)                    : Whether you want to run for tweet. ( <code class="docutils literal notranslate"><span class="pre">display_size</span></code> will be () )</p></li>
+<li><p>capture (bool)                    : Whether you want to save as video.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.wrap">
+<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – A function that receives and returns <code class="docutils literal notranslate"><span class="pre">frame</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.release">
+<code class="sig-name descname">release</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.release" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the necessary processing at the end</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.project module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.morphology.html"
+                        title="previous chapter">pycharmers.opencv.morphology module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.tracking.html"
+                        title="next chapter">pycharmers.opencv.tracking module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.opencv.project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.tracking.html" title="pycharmers.opencv.tracking module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.morphology.html" title="pycharmers.opencv.morphology module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" >pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.project module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Shuto.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>
