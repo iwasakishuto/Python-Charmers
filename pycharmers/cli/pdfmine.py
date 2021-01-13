@@ -17,7 +17,7 @@ def pdfmine(argv=sys.argv[1:]):
     """Analyze PDF and extract various elements.
 
     Args:
-        -I/--input-path (str)  : Path/to/input PDF file.
+        path (str)             : Path/to/input PDF file.
         -O/--output-path (str) : Path/to/output directory.
         -T/--target (str)      : Target to extract.
         --quiet (bool)         : Whether to make the output quiet.

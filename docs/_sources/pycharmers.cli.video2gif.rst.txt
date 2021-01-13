@@ -1,0 +1,7 @@
+pycharmers.cli.video2gif module
+===============================
+
+.. automodule:: pycharmers.cli.video2gif
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -76,7 +76,7 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-14&#64;05.18.33'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-14&#64;07.14.17'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code> , so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
@@ -974,62 +974,62 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Complex layout&#39;</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">group_title</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">padding</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="gp">... </span>    <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
 <span class="gp">... </span>    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">15</span> <span class="o">-</span> <span class="n">padding</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 <span class="gp">... </span>    <span class="n">pos</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">padding</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;Group title&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">group_title</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="mi">15</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="s1">&#39;Something&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="s2">&quot;Something&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">h</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;Some&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;65&#39;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;Some&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;65&quot;</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;30&#39;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;Info&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;Here&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;70&#39;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;Here&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">25</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;70&quot;</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">3</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;And&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;And&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;Here&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;Here&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span>
 <span class="gp">...</span>
-<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s1">&#39;More info&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&quot;More info&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">padding</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="mh">0xff0000</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">w</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">height</span> <span class="o">=</span> <span class="mi">220</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1300</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">height</span> <span class="o">=</span> <span class="mi">220</span>
+<span class="gp">... </span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">... </span><span class="n">num_groups</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">... </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">height</span><span class="o">*</span><span class="n">num_groups</span><span class="p">,</span> <span class="mi">1300</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Init cvui and tell it to create a OpenCV window, i.e. cv2.namedWindow(WINDOW_NAME).</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s2">&quot;Complex layout&quot;</span>
+<span class="gp">... </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="c1"># Fill the frame with a nice color</span>
 <span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># Render three groups of components.</span>
-<span class="gp">... </span>    <span class="n">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">spacing</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">spacing</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="n">spacing</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_groups</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="n">group</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">height</span><span class="o">-</span><span class="n">spacing</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Group</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;02</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="n">y</span> <span class="o">+=</span> <span class="n">height</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># This function must be called *AFTER* all UI components. It does</span>
 <span class="gp">... </span>    <span class="c1"># all the behind the scenes magic to handle mouse clicks, etc.</span>
@@ -1040,9 +1040,24 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">break</span>
+<span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/opencv.cvui.rect.jpg" src="_images/opencv.cvui.rect.jpg" />
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py function">
@@ -1094,6 +1109,20 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/opencv.cvui.sparkline.gif" src="_images/opencv.cvui.sparkline.gif" />
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py function">
@@ -1142,6 +1171,20 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/opencv.cvui.colorpalette.gif" src="_images/opencv.cvui.colorpalette.gif" />
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py function">
@@ -1205,8 +1248,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"></th>
-<th class="head"></th>
+<tr class="row-odd"><th class="head" colspan="2"><p>Example</p></th>
 </tr>
 </thead>
 <tbody>

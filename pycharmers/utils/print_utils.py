@@ -346,10 +346,10 @@ def pretty_3quote(*value, indent=0):
     Examples:
         >>> from pycharmers.utils import pretty_3quote
         >>> print(*pretty_3quote(\"\"\"
-            When I was 17, I read a quote that went something like: 
-            “If you live each day as if it was your last, someday you’ll most certainly be right.”
-            It made an impression on me, and since then, for the past 33 years, 
-        \"\"\"))
+        ...     When I was 17, I read a quote that went something like: 
+        ...     “If you live each day as if it was your last, someday you’ll most certainly be right.”
+        ...     It made an impression on me, and since then, for the past 33 years, 
+        >>> \"\"\"))
         When I was 17, I read a quote that went something like: 
         “If you live each day as if it was your last, someday you’ll most certainly be right.”
         It made an impression on me, and since then, for the past 33 years, 
@@ -401,3 +401,36 @@ def visible_width(s):
         return wcwidth.wcswidth(strip_invisible(s))
     else:
         return wcwidth.wcswidth(str(s))
+
+def str2pyexample(string):
+    """Create a python example code.
+    
+    Args:
+        string (str) : A string of Python Example Code.
+        
+    Examples:
+        >>> from pycharmers.utils import str2pyexample
+        >>> str2pyexample(\"\"\"
+        ... import cv2
+        ... import numpy as np
+        ... frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)
+        ... while (True):
+        ...     cv2.imshow(WINDOW_NAME, frame)
+        ...     if cv2.waitKey(0) == 27: break
+        ... cv2.destroyAllWindows()
+        ... \"\"\")
+        >>> import cv2
+        >>> import numpy as np
+        >>> frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)
+        >>> while (True):
+        ...     cv2.imshow(WINDOW_NAME, frame)
+        ...     if cv2.waitKey(0) == 27: break
+        >>> cv2.destroyAllWindows()
+    
+    """
+    for s in string.strip().split("\n"):
+        if len(s)==0 or s[0] == " ":
+            prefix = "..."
+        else:
+            prefix = ">>>"
+        print(f"{prefix} {s}")

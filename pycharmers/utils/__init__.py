@@ -75,6 +75,7 @@ from .generic_utils import list2name
 from .generic_utils import infer_types
 from .generic_utils import html2reStructuredText
 from .generic_utils import int2ordinal
+from .generic_utils import filenaming
 
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json
@@ -102,6 +103,7 @@ from .print_utils import print_dict_tree
 from .print_utils import pretty_3quote
 from .print_utils import visible_width
 from .print_utils import strip_invisible
+from .print_utils import str2pyexample
 
 from .soup_utils import str2soup
 from .soup_utils import split_section

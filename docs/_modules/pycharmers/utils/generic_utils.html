@@ -686,6 +686,45 @@
     <span class="c1"># if num == XXX1X, use &quot;th&quot;</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;th&quot;</span> <span class="k">if</span> <span class="n">q</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span><span class="s2">&quot;th&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="filenaming"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.filenaming">[docs]</a><span class="k">def</span> <span class="nf">filenaming</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Avoid having the same name as an existing file.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        name (str) : File name you want to name</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str : File name that is not the same name as an existing file.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import filenaming</span>
+<span class="sd">        &gt;&gt;&gt; print(os.listdir())</span>
+<span class="sd">        [&#39;Untitled.ipynb&#39;, &#39;Untitled(1).ipynb&#39;, &#39;Untitled(3).ipynb&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; filenaming(&quot;Untitled.ipynb&quot;)</span>
+<span class="sd">        &#39;./Untitled(2).ipynb&#39;</span>
+<span class="sd">        &gt;&gt;&gt; filenaming(&quot;Untitled.py&quot;)</span>
+<span class="sd">        &#39;Untitled.py&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Untitled&quot;</span>
+    <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">dirname</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+    <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">basename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>        
+        <span class="n">number</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">no</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">fr</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">\((\d+)\)</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="n">number</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">no</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">number</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">no</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

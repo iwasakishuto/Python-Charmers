@@ -1002,74 +1002,81 @@ def rect(where=None, x=0, y=0, width=160, height=120, borderColor=0xff0000, fill
 		>>> import cv2
 		>>> import numpy as np
 		>>> from pycharmers.opencv import cvui
-		... 
-		>>> WINDOW_NAME	= 'Complex layout'
-		... 
-		>>> def group(frame, x, y, width, height):
+		...  
+		>>> def group(frame, x, y, width, height, group_title):
 		... 	padding = 5
 		... 	w = (width - padding) / 4
 		... 	h = (height - 15 - padding) / 2
 		... 	pos = cvui.Point(x + padding, y + 5)
 		... 
-		... 	cvui.text(frame, pos.x, pos.y, 'Group title')
+		... 	cvui.text(frame, pos.x, pos.y, text=group_title)
 		... 	pos.y += 15
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, width - padding * 2, h - padding, 'Something')
+		... 	cvui.window(frame, pos.x, pos.y, width - padding * 2, h - padding, "Something")
 		... 	cvui.rect(frame, pos.x + 2, pos.y + 20, width - padding * 2 - 5, h - padding - 20, 0xff0000)
 		... 	pos.y += h
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, 'Some')
-		... 	cvui.text(frame, pos.x + 25, pos.y + 60, '65', 1.1)
+		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, "Some")
+		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text="65", fontScale=1.1)
 		... 	pos.x += w / 3
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, 'Info')
-		... 	cvui.text(frame, pos.x + 25, pos.y + 60, '30', 1.1)
+		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, "Info")
+		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text="30", fontScale=1.1)
 		... 	pos.x += w / 3
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, 'Here')
-		... 	cvui.text(frame, pos.x + 25, pos.y + 60, '70', 1.1)
+		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, "Here")
+		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text="70", fontScale=1.1)
 		... 	pos.x += w / 3
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, 'And')
+		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, "And")
 		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)
 		... 	pos.x += w
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, 'Here')
+		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, "Here")
 		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)
 		... 	pos.x += w
 		... 
-		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, 'More info')
+		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, "More info")
 		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)
 		... 	pos.x += w
 		... 
-		>>> height = 220
-		>>> spacing = 10
-		>>> frame = np.zeros((height * 3, 1300, 3), np.uint8)
+		... height = 220
+		... spacing = 10
+		... num_groups = 3
+		... frame = np.zeros((height*num_groups, 1300, 3), np.uint8)
 		... 
-		>>> # Init cvui and tell it to create a OpenCV window, i.e. cv2.namedWindow(WINDOW_NAME).
-		>>> cvui.init(WINDOW_NAME)
+		... WINDOW_NAME = "Complex layout"
+		... cvui.init(WINDOW_NAME)
 		... 
-		>>> while (True):
-		...     # Fill the frame with a nice color
-		...     frame[:] = (49, 52, 49)
+		... while (True):
+		... 	# Fill the frame with a nice color
+		... 	frame[:] = (49, 52, 49)
 		... 
-		...     rows, cols, channels = frame.shape
+		... 	rows, cols, channels = frame.shape
 		... 
-		...     # Render three groups of components.
-		...     group(frame, 0, 0, cols, height - spacing)
-		...     group(frame, 0, height, cols, height - spacing)
-		...     group(frame, 0, height * 2, cols, height - spacing)
+		... 	# Render three groups of components.
+		... 	y = 0
+		... 	for i in range(num_groups):
+		... 		group(frame, 0, y, cols, height-spacing, f"Group{i+1:>02}")
+		... 		y += height
 		... 
-		...     # This function must be called *AFTER* all UI components. It does
-		...     # all the behind the scenes magic to handle mouse clicks, etc.
-		...     cvui.update()
+		... 	# This function must be called *AFTER* all UI components. It does
+		... 	# all the behind the scenes magic to handle mouse clicks, etc.
+		... 	cvui.update()
 		... 
-		...     # Show everything on the screen
-		...     cv2.imshow(WINDOW_NAME, frame)
+		... 	# Show everything on the screen
+		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 
-		...     # Check if ESC key was pressed
-		...     if cv2.waitKey(20) == 27:
-		...         break
+		... 	# Check if ESC key was pressed
+		... 	if cv2.waitKey(20) == 27:
+		... 		break
+		>>> cv2.destroyAllWindows()
+
+	+-----------------------------------------+
+	|               Output                    |
+	+=========================================+
+	| .. image:: _images/opencv.cvui.rect.jpg |
+	+-----------------------------------------+
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -1124,6 +1131,12 @@ def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
 		>>> cv2.destroyAllWindows()
+
+	+----------------------------------------------+
+	|               Output                         |
+	+==============================================+
+	| .. image:: _images/opencv.cvui.sparkline.gif |
+	+----------------------------------------------+
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -1172,6 +1185,12 @@ def colorpalette(where=None, x=0, y=0, bgr=[], width=300, height=50):
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
 		>>> cv2.destroyAllWindows()
+
+	+-------------------------------------------------+
+	|               Output                            |
+	+=================================================+
+	| .. image:: _images/opencv.cvui.colorpalette.gif |
+	+-------------------------------------------------+
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -1233,7 +1252,7 @@ def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x
 
 	    
 	+--------------------------------------------------------+-------------------------------------------------------+
-	|                                                        |                                                       |
+	|                                                     Example                                                    |
 	+========================================================+=======================================================+
 	| .. image:: _images/opencv.cvui.drawingpad-konotaro.gif | .. image:: _images/opencv.cvui.drawingpad-tanziro.gif |
 	+--------------------------------------------------------+-------------------------------------------------------+	

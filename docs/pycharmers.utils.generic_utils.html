@@ -639,6 +639,34 @@ b'ÿØÿàJFIFIIÿþ...
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.filenaming">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">filenaming</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#filenaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.filenaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Avoid having the same name as an existing file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – File name you want to name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>File name that is not the same name as an existing file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">filenaming</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">())</span>
+<span class="go">[&#39;Untitled.ipynb&#39;, &#39;Untitled(1).ipynb&#39;, &#39;Untitled(3).ipynb&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filenaming</span><span class="p">(</span><span class="s2">&quot;Untitled.ipynb&quot;</span><span class="p">)</span>
+<span class="go">&#39;./Untitled(2).ipynb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filenaming</span><span class="p">(</span><span class="s2">&quot;Untitled.py&quot;</span><span class="p">)</span>
+<span class="go">&#39;Untitled.py&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

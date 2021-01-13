@@ -397,10 +397,10 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pretty_3quote</span>
 <span class="sd">        &gt;&gt;&gt; print(*pretty_3quote(\&quot;\&quot;\&quot;</span>
-<span class="sd">            When I was 17, I read a quote that went something like: </span>
-<span class="sd">            “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
-<span class="sd">            It made an impression on me, and since then, for the past 33 years, </span>
-<span class="sd">        \&quot;\&quot;\&quot;))</span>
+<span class="sd">        ...     When I was 17, I read a quote that went something like: </span>
+<span class="sd">        ...     “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">        ...     It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">        &gt;&gt;&gt; \&quot;\&quot;\&quot;))</span>
 <span class="sd">        When I was 17, I read a quote that went something like: </span>
 <span class="sd">        “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
 <span class="sd">        It made an impression on me, and since then, for the past 33 years, </span>
@@ -452,6 +452,39 @@
         <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="n">strip_invisible</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="str2pyexample"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.str2pyexample">[docs]</a><span class="k">def</span> <span class="nf">str2pyexample</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a python example code.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        string (str) : A string of Python Example Code.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import str2pyexample</span>
+<span class="sd">        &gt;&gt;&gt; str2pyexample(\&quot;\&quot;\&quot;</span>
+<span class="sd">        ... import cv2</span>
+<span class="sd">        ... import numpy as np</span>
+<span class="sd">        ... frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)</span>
+<span class="sd">        ... while (True):</span>
+<span class="sd">        ...     cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">        ...     if cv2.waitKey(0) == 27: break</span>
+<span class="sd">        ... cv2.destroyAllWindows()</span>
+<span class="sd">        ... \&quot;\&quot;\&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)</span>
+<span class="sd">        &gt;&gt;&gt; while (True):</span>
+<span class="sd">        ...     cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">        ...     if cv2.waitKey(0) == 27: break</span>
+<span class="sd">        &gt;&gt;&gt; cv2.destroyAllWindows()</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&gt;&gt;&gt;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

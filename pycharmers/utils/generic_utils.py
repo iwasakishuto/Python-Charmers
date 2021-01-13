@@ -635,3 +635,42 @@ def int2ordinal(num):
     # if num == XXX1X, use "th"
     suffix = "th" if q % 10 == 1 else {1: "st", 2: "nd", 3: "rd"}.get(mod,"th")
     return f"{num}{suffix}"
+
+def filenaming(name=None):
+    """Avoid having the same name as an existing file.
+    
+    Args:
+        name (str) : File name you want to name
+        
+    Returns:
+        str : File name that is not the same name as an existing file.
+        
+    Examples:
+        >>> import os
+        >>> from pycharmers.utils import filenaming
+        >>> print(os.listdir())
+        ['Untitled.ipynb', 'Untitled(1).ipynb', 'Untitled(3).ipynb']
+        >>> filenaming("Untitled.ipynb")
+        './Untitled(2).ipynb'
+        >>> filenaming("Untitled.py")
+        'Untitled.py'
+    """
+    if name is None:
+        name = "Untitled"
+    dirname, basename = os.path.split(name)
+    if len(dirname)==0: dirname = "."
+    root, ext = os.path.splitext(basename)
+    filenames = os.listdir(dirname)
+    if basename in filenames:        
+        number = []
+        no = 1
+        for fn in os.listdir(dirname):
+            m = re.match(pattern=fr"{root}\((\d+)\){ext}", string=fn)
+            if m:
+                number.append(int(m.group(1)))
+        while True:
+            if no not in number:
+                break
+            no += 1
+        basename = f"{root}({no}){ext}"
+    return os.path.join(dirname, basename)

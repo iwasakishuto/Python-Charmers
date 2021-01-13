@@ -1053,74 +1053,81 @@
 <span class="sd">		&gt;&gt;&gt; import cv2</span>
 <span class="sd">		&gt;&gt;&gt; import numpy as np</span>
 <span class="sd">		&gt;&gt;&gt; from pycharmers.opencv import cvui</span>
-<span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; WINDOW_NAME	= &#39;Complex layout&#39;</span>
-<span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; def group(frame, x, y, width, height):</span>
+<span class="sd">		...  </span>
+<span class="sd">		&gt;&gt;&gt; def group(frame, x, y, width, height, group_title):</span>
 <span class="sd">		... 	padding = 5</span>
 <span class="sd">		... 	w = (width - padding) / 4</span>
 <span class="sd">		... 	h = (height - 15 - padding) / 2</span>
 <span class="sd">		... 	pos = cvui.Point(x + padding, y + 5)</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.text(frame, pos.x, pos.y, &#39;Group title&#39;)</span>
+<span class="sd">		... 	cvui.text(frame, pos.x, pos.y, text=group_title)</span>
 <span class="sd">		... 	pos.y += 15</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, width - padding * 2, h - padding, &#39;Something&#39;)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, width - padding * 2, h - padding, &quot;Something&quot;)</span>
 <span class="sd">		... 	cvui.rect(frame, pos.x + 2, pos.y + 20, width - padding * 2 - 5, h - padding - 20, 0xff0000)</span>
 <span class="sd">		... 	pos.y += h</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &#39;Some&#39;)</span>
-<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, &#39;65&#39;, 1.1)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &quot;Some&quot;)</span>
+<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text=&quot;65&quot;, fontScale=1.1)</span>
 <span class="sd">		... 	pos.x += w / 3</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &#39;Info&#39;)</span>
-<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, &#39;30&#39;, 1.1)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &quot;Info&quot;)</span>
+<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text=&quot;30&quot;, fontScale=1.1)</span>
 <span class="sd">		... 	pos.x += w / 3</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &#39;Here&#39;)</span>
-<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, &#39;70&#39;, 1.1)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w / 3 - padding, h, &quot;Here&quot;)</span>
+<span class="sd">		... 	cvui.text(frame, pos.x + 25, pos.y + 60, text=&quot;70&quot;, fontScale=1.1)</span>
 <span class="sd">		... 	pos.x += w / 3</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &#39;And&#39;)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &quot;And&quot;)</span>
 <span class="sd">		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)</span>
 <span class="sd">		... 	pos.x += w</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &#39;Here&#39;)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &quot;Here&quot;)</span>
 <span class="sd">		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)</span>
 <span class="sd">		... 	pos.x += w</span>
 <span class="sd">		... </span>
-<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &#39;More info&#39;)</span>
+<span class="sd">		... 	cvui.window(frame, pos.x, pos.y, w - padding, h, &quot;More info&quot;)</span>
 <span class="sd">		... 	cvui.rect(frame, pos.x + 2, pos.y + 22, w - padding - 5, h - padding - 20, 0xff0000)</span>
 <span class="sd">		... 	pos.x += w</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; height = 220</span>
-<span class="sd">		&gt;&gt;&gt; spacing = 10</span>
-<span class="sd">		&gt;&gt;&gt; frame = np.zeros((height * 3, 1300, 3), np.uint8)</span>
+<span class="sd">		... height = 220</span>
+<span class="sd">		... spacing = 10</span>
+<span class="sd">		... num_groups = 3</span>
+<span class="sd">		... frame = np.zeros((height*num_groups, 1300, 3), np.uint8)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; # Init cvui and tell it to create a OpenCV window, i.e. cv2.namedWindow(WINDOW_NAME).</span>
-<span class="sd">		&gt;&gt;&gt; cvui.init(WINDOW_NAME)</span>
+<span class="sd">		... WINDOW_NAME = &quot;Complex layout&quot;</span>
+<span class="sd">		... cvui.init(WINDOW_NAME)</span>
 <span class="sd">		... </span>
-<span class="sd">		&gt;&gt;&gt; while (True):</span>
-<span class="sd">		...     # Fill the frame with a nice color</span>
-<span class="sd">		...     frame[:] = (49, 52, 49)</span>
+<span class="sd">		... while (True):</span>
+<span class="sd">		... 	# Fill the frame with a nice color</span>
+<span class="sd">		... 	frame[:] = (49, 52, 49)</span>
 <span class="sd">		... </span>
-<span class="sd">		...     rows, cols, channels = frame.shape</span>
+<span class="sd">		... 	rows, cols, channels = frame.shape</span>
 <span class="sd">		... </span>
-<span class="sd">		...     # Render three groups of components.</span>
-<span class="sd">		...     group(frame, 0, 0, cols, height - spacing)</span>
-<span class="sd">		...     group(frame, 0, height, cols, height - spacing)</span>
-<span class="sd">		...     group(frame, 0, height * 2, cols, height - spacing)</span>
+<span class="sd">		... 	# Render three groups of components.</span>
+<span class="sd">		... 	y = 0</span>
+<span class="sd">		... 	for i in range(num_groups):</span>
+<span class="sd">		... 		group(frame, 0, y, cols, height-spacing, f&quot;Group{i+1:&gt;02}&quot;)</span>
+<span class="sd">		... 		y += height</span>
 <span class="sd">		... </span>
-<span class="sd">		...     # This function must be called *AFTER* all UI components. It does</span>
-<span class="sd">		...     # all the behind the scenes magic to handle mouse clicks, etc.</span>
-<span class="sd">		...     cvui.update()</span>
+<span class="sd">		... 	# This function must be called *AFTER* all UI components. It does</span>
+<span class="sd">		... 	# all the behind the scenes magic to handle mouse clicks, etc.</span>
+<span class="sd">		... 	cvui.update()</span>
 <span class="sd">		... </span>
-<span class="sd">		...     # Show everything on the screen</span>
-<span class="sd">		...     cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">		... 	# Show everything on the screen</span>
+<span class="sd">		... 	cv2.imshow(WINDOW_NAME, frame)</span>
 <span class="sd">		... </span>
-<span class="sd">		...     # Check if ESC key was pressed</span>
-<span class="sd">		...     if cv2.waitKey(20) == 27:</span>
-<span class="sd">		...         break</span>
+<span class="sd">		... 	# Check if ESC key was pressed</span>
+<span class="sd">		... 	if cv2.waitKey(20) == 27:</span>
+<span class="sd">		... 		break</span>
+<span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
+
+<span class="sd">	+-----------------------------------------+</span>
+<span class="sd">	|               Output                    |</span>
+<span class="sd">	+=========================================+</span>
+<span class="sd">	| .. image:: _images/opencv.cvui.rect.jpg |</span>
+<span class="sd">	+-----------------------------------------+</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -1175,6 +1182,12 @@
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
 <span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
+
+<span class="sd">	+----------------------------------------------+</span>
+<span class="sd">	|               Output                         |</span>
+<span class="sd">	+==============================================+</span>
+<span class="sd">	| .. image:: _images/opencv.cvui.sparkline.gif |</span>
+<span class="sd">	+----------------------------------------------+</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -1223,6 +1236,12 @@
 <span class="sd">		... 	if cv2.waitKey(20) == cvui.ESCAPE:</span>
 <span class="sd">		... 		break</span>
 <span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
+
+<span class="sd">	+-------------------------------------------------+</span>
+<span class="sd">	|               Output                            |</span>
+<span class="sd">	+=================================================+</span>
+<span class="sd">	| .. image:: _images/opencv.cvui.colorpalette.gif |</span>
+<span class="sd">	+-------------------------------------------------+</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">where</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -1284,7 +1303,7 @@
 
 <span class="sd">	    </span>
 <span class="sd">	+--------------------------------------------------------+-------------------------------------------------------+</span>
-<span class="sd">	|                                                        |                                                       |</span>
+<span class="sd">	|                                                     Example                                                    |</span>
 <span class="sd">	+========================================================+=======================================================+</span>
 <span class="sd">	| .. image:: _images/opencv.cvui.drawingpad-konotaro.gif | .. image:: _images/opencv.cvui.drawingpad-tanziro.gif |</span>
 <span class="sd">	+--------------------------------------------------------+-------------------------------------------------------+	</span>

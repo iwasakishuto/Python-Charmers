@@ -15,6 +15,7 @@ Submodules
    pycharmers.cli.regexp_replacement
    pycharmers.cli.render_template
    pycharmers.cli.show
+   pycharmers.cli.video2gif
 
 Module contents
 ---------------
