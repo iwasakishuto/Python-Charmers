@@ -1082,7 +1082,7 @@ def rect(where=None, x=0, y=0, width=160, height=120, borderColor=0xff0000, fill
 
 	__internal.rect(block, x, y, width, height, borderColor, fillingColor)
 
-def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00FF00):
+def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00ff00):
 	"""Display the values of a vector as a sparkline.
 
 	Args:
@@ -1157,7 +1157,7 @@ def colorpalette(where=None, x=0, y=0, bgr=[], width=300, height=50):
 		... 
 		>>> WINDOW_NAME = 'Color Palette'
 		>>> frame = np.zeros((250, 350, 3), np.uint8)
-		>>> bgr = [50, 50, 50]
+		>>> bgr = [128, 128, 128]
 		>>> cvui.init(WINDOW_NAME)
 		... 
 		>>> while (True):
@@ -1184,6 +1184,70 @@ def colorpalette(where=None, x=0, y=0, bgr=[], width=300, height=50):
 
 	params = TrackbarParams(min=0, max=255, step=1, segments=3, labelfmt="%.0Lf", options=TRACKBAR_DISCRETE | TRACKBAR_HIDE_SEGMENT_LABELS)
 	return __internal.colorpalette(block, x, y, list(bgr), width, height, params)
+
+def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x000000, thickness=3):
+	"""Create a drawing pad.
+
+	Args:
+		where (np.ndarray)  : image/frame where the component should be rendered.
+		x (int)             : Position X where the component should be placed.
+		y (int)             : Position Y where the component should be placed.
+		image (np.ndarray)  : Image to be rendered in the specified destination.
+		color (uint)        : Color of the line in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+		fillingColor (uint) : Color of filling in the format `0xAARRGGBB`, e.g. `0x00ff0000` for red, `0xff000000` for transparent filling.
+		thickness (int)     : Thickness of the lines used to draw a line.
+	
+	Returns:
+		np.ndarray : The current ``image`` .
+
+	Examples:
+		>>> import cv2
+		>>> import numpy as np
+		>>> from pycharmers.opencv import cvui
+		... 
+		>>> WINDOW_NAME = 'Drawing Pad'
+		>>> frame = np.zeros(shape=(400, 650, 3), dtype=np.uint8)
+		>>> image = np.full(shape=(250,250,3), fill_value=255, dtype=np.uint8)
+		>>> bgr = [128, 128, 128]
+		>>> fillingColors = ["White", "Black"]
+		>>> fillingStates = [True, False]
+		>>> thickness = [3]
+		>>> cvui.init(WINDOW_NAME)
+		... 
+		>>> while (True):
+		... 	# Fill the frame with a nice color
+		... 	frame[:] = (49, 52, 49)
+		... 	cvui.text(where=frame, x=320, y=10,  text="Thickness")
+		... 	cvui.text(where=frame, x=320, y=100, text="Filling Color")
+		... 	thick = cvui.trackbar(where=frame,   x=320, y=30, width=300, value=thickness, min=1, max=10, options=cvui.TRACKBAR_DISCRETE, discreteStep=1)
+		... 	idx = cvui.radiobox(where=frame,     x=350, y=120, labels=fillingColors, states=fillingStates)
+		... 	bgr = cvui.colorpalette(where=frame, x=320, y=180, bgr=bgr, width=300, height=50)
+		... 	image = cvui.drawingpad(where=frame, x=30,  y=50, image=image, color=bgr, fillingColor=[0xffffff, 0x000000][idx], thickness=thick)
+		... 	cvui.update()
+		... 	# Show everything on the screen
+		... 	cv2.imshow(WINDOW_NAME, frame)
+		... 	# Check if ESC key was pressed
+		... 	if cv2.waitKey(20) == cvui.ESCAPE:
+		... 			break
+		>>> cv2.destroyAllWindows()
+
+	    
+	+--------------------------------------------------------+-------------------------------------------------------+
+	|                                                        |                                                       |
+	+========================================================+=======================================================+
+	| .. image:: _images/opencv.cvui.drawingpad-konotaro.gif | .. image:: _images/opencv.cvui.drawingpad-tanziro.gif |
+	+--------------------------------------------------------+-------------------------------------------------------+	
+	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
+	if isinstance(where, np.ndarray):
+		__internal.screen.where = where
+		block = __internal.screen
+	else:
+		block = __internal.topBlock()
+		x += block.anchor.x
+		y += block.anchor.y
+
+	return __internal.drawingpad(block, x, y, image, color, fillingColor, thickness)
 
 def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=None):
 	"""Start a new row.
@@ -1352,7 +1416,7 @@ class Rect:
 		self.height = height
 
 	def contains(self, thePoint):
-		return thePoint.x >= self.x and thePoint.x <= (self.x + self.width) and thePoint.y >= self.y and thePoint.y <= (self.y + self.height)
+		return (self.x <= thePoint.x <= (self.x+self.width)) and (self.y <= thePoint.y <= (self.y + self.height))
 
 	def area(self):
 		return self.width * self.height
@@ -1489,15 +1553,16 @@ class Internal:
 	"""This class contains all stuff that cvui uses internally to render and control interaction with components.
 	
 	Attributes:
-		defaultContext (str)  : Default window name.
-		currentContext (str)  : Current (active) window name.
-		contexts (dict)       : Indexed by the window name.
-		lastKeyPressed (int)  : Last key that was pressed. TODO: collect it per window
-		delayWaitKey (int)    : Delay value (milliseconds) passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
-		screen (Block)        : Block structure.
-		stack (list)          : Block stack.
-		trackbarMarginX (int) : X-axis Margin of trackbar.
-		_render (Render)      : contains all rendering methods. ( ``_render._internal = self`` )
+		defaultContext (str)      : Default window name.
+		currentContext (str)      : Current (active) window name.
+		contexts (dict)           : Indexed by the window name.
+		lastKeyPressed (int)      : Last key that was pressed. TODO: collect it per window
+		lastMousePosition (Point) : Last mouse position when that was pressed. TODO: collect it per window
+		delayWaitKey (int)        : Delay value (milliseconds) passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
+		screen (Block)            : Block structure.
+		stack (list)              : Block stack.
+		trackbarMarginX (int)     : X-axis Margin of trackbar.
+		_render (Render)          : contains all rendering methods. ( ``_render._internal = self`` )
 	"""
 	def __init__(self):
 		self.defaultContext = ''
@@ -1505,6 +1570,7 @@ class Internal:
 		self.contexts = {}
 		# self.buffer = []
 		self.lastKeyPressed = -1
+		self.lastMousePosition = Point(-1,-1)
 		self.delayWaitKey = -1
 		self.screen = Block()
 		self.stack = []
@@ -2173,6 +2239,39 @@ class Internal:
 		size = Size(aRect.width, aRect.height)
 		self.updateLayoutFlow(block, size)
 
+	def drawingpad(self, block, x, y, image, color=0xffffff, fillingColor=0x000000, thickness=3):
+		"""Create a drawing pad.
+
+		Args:
+			block (Block)       : A block structure.
+			x (int)             : Position X where the component should be placed.
+			y (int)             : Position Y where the component should be placed.
+			image (np.ndarray)  : Image to be rendered in the specified destination.
+			color (uint)        : Color of the line in the format ``0xRRGGBB``, e.g. ``0xff0000`` for red.
+			thickness (int)     : Thickness of the lines used to draw a line.
+			fillingColor (uint) : Color of filling in the format `0xAARRGGBB`, e.g. `0x00ff0000` for red, `0xff000000` for transparent filling.
+		
+		Returns:
+			np.ndarray : The current ``image`` .
+		"""
+		mouse = self.getContext().mouse
+		img_height, img_width = image.shape[:2]
+		aHitArea = Rect(x, y, img_width, img_height)
+		if aHitArea.contains(mouse.position) and mouse.anyButton.pressed:
+			lx,ly = self.lastMousePosition.x, self.lastMousePosition.y
+			if lx!=-1:
+				cv2.line(image, pt1=(lx-x,ly-y), pt2=(mouse.position.x-x,mouse.position.y-y), color=self.hex2bgr(color), thickness=thickness)
+			self.lastMousePosition.x, self.lastMousePosition.y = mouse.position.x, mouse.position.y
+		else:
+			self.lastMousePosition = Point(-1,-1)
+
+		fillingColor = self.hex2bgr(fillingColor)[:3]
+		if self.buttonWH(block=block, x=x+img_width//2-50, y=y+img_height+10, width=100, height=22, label="Fill", color=fillingColor, updateLayout=False):
+			image[:] = fillingColor
+		
+		self.image(block=block, x=x, y=y, image=image)
+		return image
+
 	def sparkline(self, block, x, y, values, width, height, color):
 		"""Display the values of a vector as a sparkline.
 
@@ -2291,11 +2390,11 @@ class Render:
 	"""Class that contains all rendering methods."""
 	_internal = None
 
-	def rectangle(self, where, shape, color, Thickness=1, LineType=CVUI_ANTIALISED):
+	def rectangle(self, where, shape, color, thickness=1, LineType=CVUI_ANTIALISED):
 		aStartPoint = (int(shape.x), int(shape.y))
 		aEndPoint = (int(shape.x + shape.width), int(shape.y + shape.height))
 
-		cv2.rectangle(where, aStartPoint, aEndPoint, color, Thickness, LineType)
+		cv2.rectangle(where, aStartPoint, aEndPoint, color, thickness, LineType)
 
 	def text(self, block, text, position, fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.4, color=0xCECECE, thickness=1, lineType=cv2.LINE_8):
 		aPosition = (int(position.x), int(position.y))
@@ -2332,7 +2431,7 @@ class Render:
 		if state==OUT:    inside_color = colors[1]
 		elif state==OVER: inside_color = colors[2]
 		else:             inside_color = colors[0]
-		self.rectangle(where=block.where, shape=shape, color=inside_color, Thickness=CVUI_FILLED)
+		self.rectangle(where=block.where, shape=shape, color=inside_color, thickness=CVUI_FILLED)
 
 	def image(self, block, rect, image):
 		if image.ndim==2 and block.where.ndim==3:

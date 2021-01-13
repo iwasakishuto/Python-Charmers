@@ -17,7 +17,7 @@ def cvPaperScanner(argv=sys.argv[1:]):
 
         $ cv-paper-scanner --cam 0 --radio-width 200
 
-    .. image:: _images/cli-demo.cvPaperScanner.gif
+    .. image:: _images/cli.cvPaperScanner.gif
     """
     parser = cv2ArgumentParser(prog="cv-paper-scan", description="Paper Scanner", add_help=True)
     args = parser.parse_args(argv)

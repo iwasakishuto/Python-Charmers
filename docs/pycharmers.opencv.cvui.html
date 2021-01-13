@@ -76,7 +76,7 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-13&#64;22.15.35'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-14&#64;05.18.33'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code> , so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
@@ -1125,7 +1125,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Color Palette&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">250</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bgr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bgr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
@@ -1142,6 +1142,81 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.cvui.drawingpad">
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">drawingpad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">16777215</span></em>, <em class="sig-param"><span class="n">fillingColor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#drawingpad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.drawingpad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a drawing pad.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>where</strong> (<em>np.ndarray</em>) – image/frame where the component should be rendered.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>image</strong> (<em>np.ndarray</em>) – Image to be rendered in the specified destination.</p></li>
+<li><p><strong>color</strong> (<em>uint</em>) – Color of the line in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+<li><p><strong>fillingColor</strong> (<em>uint</em>) – Color of filling in the format <cite>0xAARRGGBB</cite>, e.g. <cite>0x00ff0000</cite> for red, <cite>0xff000000</cite> for transparent filling.</p></li>
+<li><p><strong>thickness</strong> (<em>int</em>) – Thickness of the lines used to draw a line.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current <code class="docutils literal notranslate"><span class="pre">image</span></code> .</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cvui</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s1">&#39;Drawing Pad&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bgr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fillingColors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;White&quot;</span><span class="p">,</span> <span class="s2">&quot;Black&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fillingStates</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thickness</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Fill the frame with a nice color</span>
+<span class="gp">... </span>    <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Thickness&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Filling Color&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">thick</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">trackbar</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>   <span class="n">x</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">cvui</span><span class="o">.</span><span class="n">TRACKBAR_DISCRETE</span><span class="p">,</span> <span class="n">discreteStep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">idx</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">radiobox</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>     <span class="n">x</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">fillingColors</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">fillingStates</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">bgr</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">colorpalette</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">bgr</span><span class="o">=</span><span class="n">bgr</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">drawingpad</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>  <span class="n">y</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bgr</span><span class="p">,</span> <span class="n">fillingColor</span><span class="o">=</span><span class="p">[</span><span class="mh">0xffffff</span><span class="p">,</span> <span class="mh">0x000000</span><span class="p">][</span><span class="n">idx</span><span class="p">],</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thick</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="c1"># Show everything on the screen</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
+<span class="gp">... </span>                    <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/opencv.cvui.drawingpad-konotaro.gif" src="_images/opencv.cvui.drawingpad-konotaro.gif" />
+</td>
+<td><img alt="_images/opencv.cvui.drawingpad-tanziro.gif" src="_images/opencv.cvui.drawingpad-tanziro.gif" />
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py function">
@@ -1739,6 +1814,17 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.cvui.Internal.lastMousePosition">
+<code class="sig-name descname">lastMousePosition</code><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.lastMousePosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last mouse position when that was pressed. TODO: collect it per window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pycharmers.opencv.cvui.Point" title="pycharmers.opencv.cvui.Point">Point</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2376,6 +2462,31 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 </dd></dl>
 
 <dl class="py method">
+<dt id="pycharmers.opencv.cvui.Internal.drawingpad">
+<code class="sig-name descname">drawingpad</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">16777215</span></em>, <em class="sig-param"><span class="n">fillingColor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.drawingpad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.drawingpad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a drawing pad.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<a class="reference internal" href="#pycharmers.opencv.cvui.Block" title="pycharmers.opencv.cvui.Block"><em>Block</em></a>) – A block structure.</p></li>
+<li><p><strong>x</strong> (<em>int</em>) – Position X where the component should be placed.</p></li>
+<li><p><strong>y</strong> (<em>int</em>) – Position Y where the component should be placed.</p></li>
+<li><p><strong>image</strong> (<em>np.ndarray</em>) – Image to be rendered in the specified destination.</p></li>
+<li><p><strong>color</strong> (<em>uint</em>) – Color of the line in the format <code class="docutils literal notranslate"><span class="pre">0xRRGGBB</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">0xff0000</span></code> for red.</p></li>
+<li><p><strong>thickness</strong> (<em>int</em>) – Thickness of the lines used to draw a line.</p></li>
+<li><p><strong>fillingColor</strong> (<em>uint</em>) – Color of filling in the format <cite>0xAARRGGBB</cite>, e.g. <cite>0x00ff0000</cite> for red, <cite>0xff000000</cite> for transparent filling.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current <code class="docutils literal notranslate"><span class="pre">image</span></code> .</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pycharmers.opencv.cvui.Internal.sparkline">
 <code class="sig-name descname">sparkline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">color</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Internal.sparkline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Internal.sparkline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the values of a vector as a sparkline.</p>
@@ -2449,7 +2560,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <p>Class that contains all rendering methods.</p>
 <dl class="py method">
 <dt id="pycharmers.opencv.cvui.Render.rectangle">
-<code class="sig-name descname">rectangle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">Thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">LineType</span><span class="o">=</span><span class="default_value">16</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.rectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.rectangle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rectangle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">where</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">thickness</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">LineType</span><span class="o">=</span><span class="default_value">16</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#Render.rectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.Render.rectangle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
