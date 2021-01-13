@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from pycharmers.utils import cv2ArgumentParser
 from pycharmers.opencv import cvui, cv2Project
-from pycharmers.opencv import cascade_creator, draw_bboxes_xywh
+from pycharmers.opencv import cascade_creator, draw_bboxes_xywh, cv2GREEN
 from pycharmers.opencv.cascade import OPENCV_CASCADES
 
 def cvCascades(argv=sys.argv[1:]):
@@ -43,7 +43,7 @@ def cvCascades(argv=sys.argv[1:]):
         name = cascade_names[idx]
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         for bbox in cascade.detectMultiScale(gray):
-            draw_bboxes_xywh(frame=frame, bboxes=bbox, infos=[{"color":(56, 47, 114), "text": name}])
+            draw_bboxes_xywh(frame=frame, bboxes=bbox, infos=[{"color":cv2GREEN, "text": name}])
         return frame
         
     project.wrap(func=func)

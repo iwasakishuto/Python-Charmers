@@ -96,7 +96,7 @@ class cv2Project():
         params = self.__dict__
         char = ""
         while (True):
-            self.monitor[:] = (49, 52, 49)
+            self.monitor[:] = self.gui_color
             ret, frame = self.cap.read()
             if not ret: break
             # Wrap the function.

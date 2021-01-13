@@ -110,16 +110,17 @@ def cv2ArgumentParser(parser=None, prog="", description=None, add_help=True, **k
     """``ArgumentParser`` for OpenCV project.
     
     Args:
-        --winname (str)                     : Window name.
-        --path (str)                        : Path to video or image.
-        --cam (int)                         : The ID of the web camera.
-        --ext (str)                         : The extension for saved image.
-        --gui-width (int)                   : The width of the GUI tools.
-        --gui-margin (int)                  : The margin of GUI control tools.
-        --monitor-size (ListParamProcessor) : Monitor size. ( ``width`` , ``height`` )
-        --autofit (bool)                    : Whether to fit display size to window size.
-        --twitter (bool)                    : Whether you want to run for tweet. ( ``display_size`` will be () )
-        --capture (bool)                    : Whether you want to save as video.
+        --winname (str)       : Window name.
+        --path (str)          : Path to video or image.
+        --cam (int)           : The ID of the web camera.
+        --ext (str)           : The extension for saved image.
+        --gui-width (int)     : The width of the GUI tools.
+        --gui-margin (int)    : The margin of GUI control tools.
+        --gui-color (list)    : The background color of GUI tool.
+        --monitor-size (list) : Monitor size. ( ``width`` , ``height`` )
+        --autofit (bool)      : Whether to fit display size to window size.
+        --twitter (bool)      : Whether you want to run for tweet. ( ``display_size`` will be () )
+        --capture (bool)      : Whether you want to save as video.
     """
     if parser is None:
         parser = argparse.ArgumentParser(prog=prog, description=description, add_help=add_help, **kwargs)
@@ -128,6 +129,7 @@ def cv2ArgumentParser(parser=None, prog="", description=None, add_help=True, **k
     parser.add_argument("--cam",          type=int, default=0,   help="Define the id of the web camera. `cv2.VideoCapture( [ID] )`")
     parser.add_argument("--gui-width",    type=int, default=200, help="The width of the GUI tools.")
     parser.add_argument("--gui-margin",   type=int, default=10,  help="The margin of GUI control tools.")
+    parser.add_argument("--gui-color",    action=ListParamProcessorCreate(type=int), default=(49, 52, 49), help="The background color of GUI tool.")
     parser.add_argument("--ext",          type=str, default=".jpg", help="The extension for saved image.")
     parser.add_argument("--monitor-size", action=ListParamProcessorCreate(type=int), default=(1440, 960), help="Monitor size. (width, height)")
     parser.add_argument("--autofit",      action="store_true", help="Whether to fit display size to window size.")

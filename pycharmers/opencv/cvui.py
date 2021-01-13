@@ -53,13 +53,13 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 	
 	It is also possible to tell cvui to handle OpenCV's event queue automatically (by informing a value greater than zero in the `delayWaitKey` parameter of the function).
 	
-	In that case, cvui will automatically call `cv2.waitKey()` within `cvui.update()`, so you don't have to worry about it. The value passed to `delayWaitKey` will be used as the delay for `cv2.waitKey()`.
+	In that case, cvui will automatically call ``cv2.waitKey()`` within ``cvui.update()`` , so you don't have to worry about it. The value passed to `delayWaitKey` will be used as the delay for `cv2.waitKey()`.
 
 	Args:
-		windowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if `createNamedWindows` is `True`.
-		numWindows (int)          : How many window names exist in the `windowNames` array.
+		windowNames (str,list)    : Array containing the name of the windows where components will be added. Those windows will be automatically if ``createNamedWindows`` is ``True`` .
+		numWindows (int)          : How many window names exist in the ``windowNames`` array.
 		delayWaitKey (int)        : Delay value passed to ``cv2.waitKey()``. If a negative value is informed (default is ``-1``), cvui will not automatically call ``cv2.waitKey()`` within ``cvui.update()``, which will disable keyboard shortcuts for all components. If you want to enable keyboard shortcut for components (e.g. using & in a button label), you must specify a positive value for this param.
-		createNamedWindows (bool) : If OpenCV windows named according to `windowNames` should be created during the initialization. Windows are created using `cv2.namedWindow()`. If this parameter is `False`, ensure you call `cv2.namedWindow(WINDOW_NAME)` for all windows *before* initializing cvui, otherwise it will not be able to track UI interactions.
+		createNamedWindows (bool) : If OpenCV windows named according to `windowNames` should be created during the initialization. Windows are created using ``cv2.namedWindow()`` . If this parameter is ``False`` , ensure you call ``cv2.namedWindow(WINDOW_NAME)`` for all windows *before* initializing cvui, otherwise it will not be able to track UI interactions.
 	
 	Examples:
 		>>> import cv2
@@ -179,7 +179,7 @@ def _handleMouse(event, x, y, flags, context):
 	context.mouse.position.y = y
 
 def watch(windowName, createNamedWindow=True):
-	"""Track UI interactions of a particular window. This function must be invoked for any window that will receive cvui components. cvui automatically calls `cvui.watch()` for any window informed in `cvui.init()`, so generally you don't have to watch them yourself. If you initialized cvui and told it *not* to create windows automatically, you need to call `cvui.watch()` on those windows yourself. `cvui.watch()` can automatically create a window before watching it, if it does not exist.
+	"""Track UI interactions of a particular window. This function must be invoked for any window that will receive cvui components. cvui automatically calls ``cvui.watch()`` for any window informed in `cvui.init()`, so generally you don't have to watch them yourself. If you initialized cvui and told it *not* to create windows automatically, you need to call ``cvui.watch()`` on those windows yourself. ``cvui.watch()`` can automatically create a window before watching it, if it does not exist.
 
 	Args:
 		windowName (str)         : Name of the window whose UI interactions will be tracked.
@@ -1136,6 +1136,55 @@ def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00
 
 	__internal.sparkline(block, x, y, values, width, height, color)
 
+def colorpalette(where=None, x=0, y=0, bgr=[], width=300, height=50):
+	"""Display a color palette using :meth:`trackbar <pycharmers.opencv.cvui.Internal.trackbar>` .
+
+	Args:
+		where (np.ndarray) : image/frame where the component should be rendered.
+		x (int)            : Position X where the component should be placed.
+		y (int)            : Position Y where the component should be placed.	
+		bgr (list)         : Array or list of BGR color.
+		width (int)        : Width of the each trackbar and the example image.
+		height (int)       : Height of the example image.
+
+	Returns:
+		tuple : The current BGR value.
+
+	Examples:
+		>>> import cv2
+		>>> import numpy as np
+		>>> from pycharmers.opencv import cvui
+		... 
+		>>> WINDOW_NAME = 'Color Palette'
+		>>> frame = np.zeros((250, 350, 3), np.uint8)
+		>>> bgr = [50, 50, 50]
+		>>> cvui.init(WINDOW_NAME)
+		... 
+		>>> while (True):
+		... 	# Fill the frame with a nice color
+		... 	frame[:] = (49, 52, 49)
+		... 	# More customizations using options.
+		... 	bgr = cvui.colorpalette(where=frame, x=10, y=10, bgr=bgr, width=300, height=50)
+		... 	cvui.update()
+		... 	# Show everything on the screen
+		... 	cv2.imshow(WINDOW_NAME, frame)
+		... 	# Check if ESC key was pressed
+		... 	if cv2.waitKey(20) == cvui.ESCAPE:
+		... 		break
+		>>> cv2.destroyAllWindows()
+	"""
+	handleTypeError(types=[np.ndarray, NoneType], where=where)
+	if isinstance(where, np.ndarray):
+		__internal.screen.where = where
+		block = __internal.screen
+	else:
+		block = __internal.topBlock()
+		x += block.anchor.x
+		y += block.anchor.y
+
+	params = TrackbarParams(min=0, max=255, step=1, segments=3, labelfmt="%.0Lf", options=TRACKBAR_DISCRETE | TRACKBAR_HIDE_SEGMENT_LABELS)
+	return __internal.colorpalette(block, x, y, list(bgr), width, height, params)
+
 def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=None):
 	"""Start a new row.
 
@@ -1788,11 +1837,10 @@ class Internal:
 			(text_width,text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
 			text_size = Rect(0, 0, text_width, text_height)
 			aHitArea = Rect(x, y+i*20, aRect.width+text_size.width+6, aRect.height)
-			mouseIsOver = aHitArea.contains(mouse.position)
-			if mouseIsOver:
+			if crt_state==-1 and aHitArea.contains(mouse.position):
 				self._render.checkbox(block, OVER, aRect)
-				# if mouse.anyButton.justReleased:
-				if mouse.anyButton.pressed:
+				if mouse.anyButton.justReleased:
+				# if mouse.anyButton.pressed:
 					crt_state = i
 					states[crt_state] = True
 			else:
@@ -1909,6 +1957,32 @@ class Internal:
 		aPixelsX = bounding.x + self.trackbarMarginX + aRatio * (bounding.width - 2 * self.trackbarMarginX)
 		return int(aPixelsX)
 
+	def colorpalette(self, block, x, y, bgr, width, height, params):
+		"""Display a color palette using :meth:`trackbar <pycharmers.opencv.cvui.Internal.trackbar>` .
+
+		Args:
+			block (Block)  : A block structure.
+			x (int)        : Position X where the component should be placed.
+			y (int)        : Position Y where the component should be placed.	
+			bgr (list)     : Array or list of BGR color.
+			width (int)    : Width of the each trackbar and the example image.
+			height (int)   : Height of the example image.
+			params (TrackbarParams) : Describe the inner parts of the trackbar component.
+
+		Returns:
+			tuple : The current BGR value.
+		"""
+		for i,(val,label) in enumerate(zip(bgr, "BGR")):
+			color = [0,0,0]
+			color[i] = val
+			self.rect(block=block, x=x, y=y+10, width=20, height=20, borderColor=0xcccccc, fillingColor=0xffffff)
+			self.text(block=block, x=x+5, y=y+15, text=label, color=color, fontScale=1, fontFace=cv2.FONT_HERSHEY_PLAIN)
+			bgr[i] = self.trackbar(block=block, x=x+15, y=y, width=width, value=[val], params=params)
+			y+=50
+		self.image(block=block, x=x+15, y=y+10, image=np.full(shape=(height,width,3), fill_value=bgr, dtype=np.uint8))
+		self.text(block=block, x=x+20, y=y+15, text="Sample", color=choose_text_color(color=color, max_val=255, is_bgr=True))	
+		return bgr
+
 	def iarea(self, x, y, width, height):
 		"""Create an interaction area that reports activity with the mouse cursor. The tracked interactions are returned by the function and they are:
 
@@ -1936,8 +2010,8 @@ class Internal:
 			else:
 				ret = OVER
 		# Tell if the button was clicked or not
-		# if mouseIsOver and mouse.anyButton.justReleased:
-		if mouseIsOver and mouse.anyButton.pressed:
+		if mouseIsOver and mouse.anyButton.justReleased:
+		# if mouseIsOver and mouse.anyButton.pressed:
 			ret = CLICK
 		return ret
 
@@ -2254,7 +2328,7 @@ class Render:
 		shape.width -= 2
 		shape.height -= 2
 
-		colors = generateLightDarks(color=self._internal.hex2bgr(color), variation=3, diff=10)
+		colors = generateLightDarks(color=self._internal.hex2bgr(color), variation=3, diff=35)
 		if state==OUT:    inside_color = colors[1]
 		elif state==OVER: inside_color = colors[2]
 		else:             inside_color = colors[0]
@@ -2265,18 +2339,14 @@ class Render:
 			image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 		block.where[rect.y : rect.y+rect.height, rect.x : rect.x+rect.width] = image
 
-	def putText(self, block, state, color, text, position):
-		afontScale = 0.39 if state == DOWN else 0.4
-		text_size = Rect()
-
+	def putText(self, block, state, color, text, position):	
+		text_width = 0
 		if text != '':
+			afontScale = 0.39 if state == DOWN else 0.4
 			aPosition = (int(position.x), int(position.y))
 			cv2.putText(block.where, text, aPosition, cv2.FONT_HERSHEY_SIMPLEX, afontScale, color, 1, CVUI_ANTIALISED)
-
-			(text_width,text_height), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
-			text_size = Rect(0, 0, text_width, text_height)
-
-		return text_size.width
+			(text_width, _), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, afontScale, 1)
+		return text_width
 
 	def putTextCentered(self, block, position, text):
 		afontScale = 0.3
@@ -2418,32 +2488,25 @@ class Render:
 		self.trackbarHandle(block, state, shape, value, params, aWorkingArea)
 
 	def checkbox(self, block, state, shape):
-		# Outline
-		self.rectangle(block.where, shape, (0x63, 0x63, 0x63) if state == OUT else (0x80, 0x80, 0x80))
+		colors = [(0x64,0x64,0x64), (0x17,0x17,0x17)] if state==OUT else [(0xc8,0xc8,0xc8), (0xFF,0xFF,0x00)]
 
+		# Outline
+		self.rectangle(block.where, shape, colors[0])
 		# Border
-		shape.x += 1
-		shape.y += 1
-		shape.width -= 2
-		shape.height -= 2
-		self.rectangle(block.where, shape, (0x17, 0x17, 0x17))
+		shape.x+=1; shape.y+=1; shape.width-=2; shape.height-=2
+		self.rectangle(block.where, shape, colors[1])
 
 		# Inside
-		shape.x += 1
-		shape.y += 1
-		shape.width -= 2
-		shape.height -= 2
+		shape.x+=1; shape.y+=1; shape.width-=2; shape.height-=2
 		self.rectangle(block.where, shape, (0x29, 0x29, 0x29), CVUI_FILLED)
+
 
 	def checkboxLabel(self, block, rect, label, textSize, color):
 		aPos = Point(rect.x + rect.width + 6, rect.y + textSize.height + rect.height / 2 - textSize.height / 2 - 1)
 		self.text(block, label, aPos, fontScale=0.4, color=color)
 
 	def checkboxCheck(self, block, shape):
-		shape.x += 1
-		shape.y += 1
-		shape.width -= 2
-		shape.height -= 2
+		shape.x+=1; shape.y+=1; shape.width-=2; shape.height-=2
 		self.rectangle(block.where, shape, (0xFF, 0xBF, 0x75), CVUI_FILLED)
 
 	def window(self, block, titleBar, content, title):
@@ -2455,10 +2518,7 @@ class Render:
 		self.rectangle(block.where, titleBar, (0x4A, 0x4A, 0x4A));
 
 		# Render the inside of the title bar
-		titleBar.x += 1
-		titleBar.y += 1
-		titleBar.width -= 2
-		titleBar.height -= 2
+		titleBar.x += 1; titleBar.y += 1; titleBar.width -= 2; titleBar.height -= 2
 		self.rectangle(block.where, titleBar, (0x21, 0x21, 0x21), CVUI_FILLED);
 
 		# Render title text.
