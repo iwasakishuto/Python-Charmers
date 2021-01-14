@@ -1283,6 +1283,7 @@
 <span class="sd">		&gt;&gt;&gt; fillingStates = [True, False]</span>
 <span class="sd">		&gt;&gt;&gt; thickness = [3]</span>
 <span class="sd">		&gt;&gt;&gt; cvui.init(WINDOW_NAME)</span>
+<span class="sd">		&gt;&gt;&gt; cv2.moveWindow(winname=WINDOW_NAME, x=0, y=0)</span>
 <span class="sd">		... </span>
 <span class="sd">		&gt;&gt;&gt; while (True):</span>
 <span class="sd">		... 	# Fill the frame with a nice color</span>
@@ -1301,7 +1302,46 @@
 <span class="sd">		... 			break</span>
 <span class="sd">		&gt;&gt;&gt; cv2.destroyAllWindows()</span>
 
-<span class="sd">	    </span>
+<span class="sd">		&gt;&gt;&gt; # You can draw a picture as follows by executing the following program while running the above program.</span>
+<span class="sd">		&gt;&gt;&gt; def drawing(path, dsize=(250,250), thresh=None, sleep=3, drawing_val=0, offset=(30,125)):</span>
+<span class="sd">		...     \&quot;\&quot;\&quot;</span>
+<span class="sd">		...     Args:</span>
+<span class="sd">		...         path (str)        : Path to binary image.</span>
+<span class="sd">		...         dsize (tuple)     : The size of drawing pad. ( ``width`` , ``height`` )</span>
+<span class="sd">		...         thresh (int)      : If you prepare the binary (bgr) image, you can use ``cv2.threshold`` to convert it to binary image. (See :meth:`cvPencilSketch &lt;pycharmers.cli.cvPencilSketch.cvPencilSketch&gt;` for more details.)</span>
+<span class="sd">		...         sleep (int)       : Delay execution for a given number of seconds. (You have to click the OpenCV window before before entering the for-loop.)</span>
+<span class="sd">		...         drawing_val (int) : At what value to draw.</span>
+<span class="sd">		...         offset (tuple)    : Offset from top left ( ``cv2.moveWindow(winname=WINDOW_NAME, x=0, y=0)`` ) to drawing pad.</span>
+<span class="sd">		...     \&quot;\&quot;\&quot;</span>
+<span class="sd">		...     import cv2</span>
+<span class="sd">		...     import time    </span>
+<span class="sd">		...     import pyautogui as pgui # Use for controling the mouse. (https://pyautogui.readthedocs.io/en/latest/mouse.html)</span>
+<span class="sd">		...     </span>
+<span class="sd">		...     img = cv2.resize(src=cv2.imread(path, 0), dsize=dsize)</span>
+<span class="sd">		...     if thresh is not None:</span>
+<span class="sd">		...         img = cv2.threshold(src=img, thresh=thresh, maxval=255, type=cv2.THRESH_BINARY)[1]</span>
+<span class="sd">		...     width,height = dsize</span>
+<span class="sd">		...     x_offset, y_offset = offset</span>
+<span class="sd">		...     time.sleep(sleep)</span>
+<span class="sd">		...     for i in range(height):</span>
+<span class="sd">		...         pgui.moveTo(x_offset, y_offset+i)</span>
+<span class="sd">		...         prev_val, prev_pos = (0, 0)</span>
+<span class="sd">		...         for j in range(width+1):</span>
+<span class="sd">		...             if j&lt;width:</span>
+<span class="sd">		...                 val = img_thresh[i,j]</span>
+<span class="sd">		...             else:</span>
+<span class="sd">		...                 val = -1 # Must be different from ``prev_val``</span>
+<span class="sd">		...             if prev_val != val:</span>
+<span class="sd">		...                 # Drawing.</span>
+<span class="sd">		...                 if prev_val == drawing_val:</span>
+<span class="sd">		...                     pgui.mouseDown()</span>
+<span class="sd">		...                     pgui.dragRel(xOffset=j-prev_pos, yOffset=0, button=&quot;left&quot;, duration=0.0, mouseDownUp=True)</span>
+<span class="sd">		...                     pgui.mouseUp()</span>
+<span class="sd">		...                 else:</span>
+<span class="sd">		...                     pgui.moveRel(xOffset=j-prev_pos, yOffset=0, duration=0.0)</span>
+<span class="sd">		...                 prev_pos = j</span>
+<span class="sd">		...                 prev_val = val</span>
+
 <span class="sd">	+--------------------------------------------------------+-------------------------------------------------------+</span>
 <span class="sd">	|                                                     Example                                                    |</span>
 <span class="sd">	+========================================================+=======================================================+</span>

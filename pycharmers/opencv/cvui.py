@@ -1232,6 +1232,7 @@ def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x
 		>>> fillingStates = [True, False]
 		>>> thickness = [3]
 		>>> cvui.init(WINDOW_NAME)
+		>>> cv2.moveWindow(winname=WINDOW_NAME, x=0, y=0)
 		... 
 		>>> while (True):
 		... 	# Fill the frame with a nice color
@@ -1250,7 +1251,46 @@ def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x
 		... 			break
 		>>> cv2.destroyAllWindows()
 
-	    
+		>>> # You can draw a picture as follows by executing the following program while running the above program.
+		>>> def drawing(path, dsize=(250,250), thresh=None, sleep=3, drawing_val=0, offset=(30,125)):
+		...     \"\"\"
+		...     Args:
+		...         path (str)        : Path to binary image.
+		...         dsize (tuple)     : The size of drawing pad. ( ``width`` , ``height`` )
+		...         thresh (int)      : If you prepare the binary (bgr) image, you can use ``cv2.threshold`` to convert it to binary image. (See :meth:`cvPencilSketch <pycharmers.cli.cvPencilSketch.cvPencilSketch>` for more details.)
+		...         sleep (int)       : Delay execution for a given number of seconds. (You have to click the OpenCV window before before entering the for-loop.)
+		...         drawing_val (int) : At what value to draw.
+		...         offset (tuple)    : Offset from top left ( ``cv2.moveWindow(winname=WINDOW_NAME, x=0, y=0)`` ) to drawing pad.
+		...     \"\"\"
+		...     import cv2
+		...     import time    
+		...     import pyautogui as pgui # Use for controling the mouse. (https://pyautogui.readthedocs.io/en/latest/mouse.html)
+		...     
+		...     img = cv2.resize(src=cv2.imread(path, 0), dsize=dsize)
+		...     if thresh is not None:
+		...         img = cv2.threshold(src=img, thresh=thresh, maxval=255, type=cv2.THRESH_BINARY)[1]
+		...     width,height = dsize
+		...     x_offset, y_offset = offset
+		...     time.sleep(sleep)
+		...     for i in range(height):
+		...         pgui.moveTo(x_offset, y_offset+i)
+		...         prev_val, prev_pos = (0, 0)
+		...         for j in range(width+1):
+		...             if j<width:
+		...                 val = img_thresh[i,j]
+		...             else:
+		...                 val = -1 # Must be different from ``prev_val``
+		...             if prev_val != val:
+		...                 # Drawing.
+		...                 if prev_val == drawing_val:
+		...                     pgui.mouseDown()
+		...                     pgui.dragRel(xOffset=j-prev_pos, yOffset=0, button="left", duration=0.0, mouseDownUp=True)
+		...                     pgui.mouseUp()
+		...                 else:
+		...                     pgui.moveRel(xOffset=j-prev_pos, yOffset=0, duration=0.0)
+		...                 prev_pos = j
+		...                 prev_val = val
+
 	+--------------------------------------------------------+-------------------------------------------------------+
 	|                                                     Example                                                    |
 	+========================================================+=======================================================+
