@@ -3,10 +3,10 @@ import re
 import sys
 import cv2
 import numpy as np
-from pycharmers.utils import cv2ArgumentParser
-from pycharmers.opencv import cvui, cv2Project
-from pycharmers.opencv import cascade_creator, draw_bboxes_xywh, cv2GREEN
-from pycharmers.opencv.cascade import OPENCV_CASCADES
+from ..utils import cv2ArgumentParser
+from ..opencv import cvui, cv2Project
+from ..opencv import cascade_creator, draw_bboxes_xywh, cv2GREEN
+from ..opencv.cascade import OPENCV_CASCADES
 
 def cvCascades(argv=sys.argv[1:]):
     """Control the OpenCV cascade Examples.

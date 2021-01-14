@@ -33,7 +33,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.cli.video2gif module" href="pycharmers.cli.video2gif.html" />
+    <link rel="next" title="pycharmers.cli.tweetile module" href="pycharmers.cli.tweetile.html" />
     <link rel="prev" title="pycharmers.cli.render_template module" href="pycharmers.cli.render_template.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -46,7 +46,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.video2gif.html" title="pycharmers.cli.video2gif module"
+          <a href="pycharmers.cli.tweetile.html" title="pycharmers.cli.tweetile module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"
@@ -90,21 +90,29 @@
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; $ pycharmers-show
-    +---------------------+-------------------------------------------------------+
-    |       command       |                         path                          |
-    +=====================+=======================================================+
-    |    pycharmers-show  |        pycharmers.cli.show:show_command_line_programs |
-    +---------------------+-------------------------------------------------------+
-    | regexp-replacement  |  pycharmers.cli.regexp_replacement:regexp_replacement |
-    +---------------------+-------------------------------------------------------+
-    |    render-template  |        pycharmers.cli.render_template:render_template |
-    +---------------------+-------------------------------------------------------+
-    |          cv-window  |                      pycharmers.cli.cvWindow:cvWindow |
-    +---------------------+-------------------------------------------------------+
-    |           cv-canny  |                        pycharmers.cli.cvCanny:cvCanny |
-    +---------------------+-------------------------------------------------------+
-    |            pdfmine  |                        pycharmers.cli.pdfmine:pdfmine |
-    +---------------------+-------------------------------------------------------+
+    +--------------------+------------------------------------------------------+
+    |      command       |                         path                         |
+    +====================+======================================================+
+    |        cv-cascades |                 pycharmers.cli.cvCascades:cvCascades |
+    +--------------------+------------------------------------------------------+
+    |   cv-paper-scanner |         pycharmers.cli.cvPaperScanner:cvPaperScanner |
+    +--------------------+------------------------------------------------------+
+    |   cv-pencil-sketch |         pycharmers.cli.cvPencilSketch:cvPencilSketch |
+    +--------------------+------------------------------------------------------+
+    |          cv-window |                     pycharmers.cli.cvWindow:cvWindow |
+    +--------------------+------------------------------------------------------+
+    |            pdfmine |                       pycharmers.cli.pdfmine:pdfmine |
+    +--------------------+------------------------------------------------------+
+    | regexp-replacement | pycharmers.cli.regexp_replacement:regexp_replacement |
+    +--------------------+------------------------------------------------------+
+    |    render-template |       pycharmers.cli.render_template:render_template |
+    +--------------------+------------------------------------------------------+
+    |    pycharmers-show |       pycharmers.cli.show:show_command_line_programs |
+    +--------------------+------------------------------------------------------+
+    |           tweetile |                     pycharmers.cli.tweetile:tweetile |
+    +--------------------+------------------------------------------------------+
+    |          video2gif |                   pycharmers.cli.video2gif:video2gif |
+    +--------------------+------------------------------------------------------+
 </pre></div>
 </div>
 </dd></dl>
@@ -153,14 +161,15 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCanny.html">pycharmers.cli.cvCanny module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvWindow.html">pycharmers.cli.cvWindow module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.pdfmine.html">pycharmers.cli.pdfmine module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.show module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
 </ul>
 </li>
@@ -181,8 +190,8 @@
   <p class="topless"><a href="pycharmers.cli.render_template.html"
                         title="previous chapter">pycharmers.cli.render_template module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.cli.video2gif.html"
-                        title="next chapter">pycharmers.cli.video2gif module</a></p>
+  <p class="topless"><a href="pycharmers.cli.tweetile.html"
+                        title="next chapter">pycharmers.cli.tweetile module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -214,7 +223,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.video2gif.html" title="pycharmers.cli.video2gif module"
+          <a href="pycharmers.cli.tweetile.html" title="pycharmers.cli.tweetile module"
              >next</a> |</li>
         <li class="right" >
           <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"

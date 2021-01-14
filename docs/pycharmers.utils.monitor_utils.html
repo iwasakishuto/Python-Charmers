@@ -108,6 +108,38 @@
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="pycharmers.utils.monitor_utils.ProgressMonitor.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/monitor_utils.html#ProgressMonitor.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.monitor_utils.ProgressMonitor.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use ASCI to output progress beautifully.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">\033[0J</span></code> : Delete all strings after the cursor (including the following lines).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">\033[nF</span></code> : Moves the cursor up <code class="docutils literal notranslate"><span class="pre">n</span></code> lines and then moves to the beginning of that line.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> – String to output.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.monitor_utils.ProgressMonitor.progress">
+<code class="sig-name descname">progress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">it</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/monitor_utils.html#ProgressMonitor.progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.monitor_utils.ProgressMonitor.progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a progress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>it</strong> (<em>int</em>) – Thr current iteration number.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thr current progress.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pycharmers.utils.monitor_utils.ProgressMonitor.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/monitor_utils.html#ProgressMonitor.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.monitor_utils.ProgressMonitor.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do the necessary processing at the end.</p>

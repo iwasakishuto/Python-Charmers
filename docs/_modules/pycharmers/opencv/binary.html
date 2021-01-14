@@ -52,6 +52,45 @@
 <span></span><span class="c1">#coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
+
+<span class="n">OPENCV_BINARYZATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fixed&quot;</span>    <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;mean&quot;</span>     <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">ADAPTIVE_THRESH_GAUSSIAN_C</span><span class="p">,</span>
+    <span class="s2">&quot;gaussian&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">ADAPTIVE_THRESH_MEAN_C</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="binarizer_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.binary.html#pycharmers.opencv.binary.binarizer_creator">[docs]</a><span class="k">def</span> <span class="nf">binarizer_creator</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mi">127</span><span class="p">,</span> <span class="n">thresholdType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">,</span> <span class="n">blockSize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a function which performs advanced morphological transformations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        method (str/int)    : The identifier of binarization.</span>
+<span class="sd">        thresh (int)        : Threshold value used in ``&quot;fixed&quot;`` binarizer.</span>
+<span class="sd">        maxval (int)        : The maximum value.</span>
+<span class="sd">        thresholdType (int) : Thresholding type.</span>
+<span class="sd">        blockSize (odd)     : Size of a pixel neighborhood that is used to calculate a threshold value for the pixel: ``3`` , ``5`` , ``7`` , and so on.</span>
+<span class="sd">        const (int)         : Constant subtracted from the mean or weighted mean (see the details below). Normally, it is positive but may be zero or negative as well.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        function : Binarizer.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import binarizer_creator, SAMPLE_LENA_IMG, vconcat_resize_min, cv2plot</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv.binary import OPENCV_BINARYZATIONS</span>
+<span class="sd">        &gt;&gt;&gt; gray = cv2.imread(SAMPLE_LENA_IMG, 0)</span>
+<span class="sd">        &gt;&gt;&gt; images = [gray]</span>
+<span class="sd">        &gt;&gt;&gt; images.extend([binarizer_creator(key)(gray) for key in OPENCV_BINARYZATIONS.keys()])</span>
+<span class="sd">        &gt;&gt;&gt; ax = cv2plot(vconcat_resize_min(*images), cmap=&quot;binary&quot;, figkeywargs={&quot;figsize&quot;: (10,10)})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handleTypeError</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">OPENCV_BINARYZATIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fixed&quot;</span><span class="p">:</span>
+        <span class="n">binarizer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">src</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">thresholdType</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">adaptiveMethod</span> <span class="o">=</span> <span class="n">OPENCV_BINARYZATIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+        <span class="n">binarizer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">src</span><span class="p">,</span> <span class="n">blockSize</span><span class="o">=</span><span class="n">blockSize</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">const</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">adaptiveThreshold</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">maxValue</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">adaptiveMethod</span><span class="o">=</span><span class="n">adaptiveMethod</span><span class="p">,</span> <span class="n">thresholdType</span><span class="o">=</span><span class="n">thresholdType</span><span class="p">,</span> <span class="n">blockSize</span><span class="o">=</span><span class="n">blockSize</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">binarizer</span></div>
 
 <div class="viewcode-block" id="findBiggestContour"><a class="viewcode-back" href="../../../pycharmers.opencv.binary.html#pycharmers.opencv.binary.findBiggestContour">[docs]</a><span class="k">def</span> <span class="nf">findBiggestContour</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

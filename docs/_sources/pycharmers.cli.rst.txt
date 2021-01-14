@@ -7,14 +7,15 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   pycharmers.cli.cvCanny
    pycharmers.cli.cvCascades
    pycharmers.cli.cvPaperScanner
+   pycharmers.cli.cvPencilSketch
    pycharmers.cli.cvWindow
    pycharmers.cli.pdfmine
    pycharmers.cli.regexp_replacement
    pycharmers.cli.render_template
    pycharmers.cli.show
+   pycharmers.cli.tweetile
    pycharmers.cli.video2gif
 
 Module contents

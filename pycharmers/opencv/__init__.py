@@ -20,6 +20,7 @@ from . import windows
 
 from .backsub import background_subtractor_create
 
+from .binary import binarizer_creator
 from .binary import findBiggestContour
 from .binary import reorder_contour
 

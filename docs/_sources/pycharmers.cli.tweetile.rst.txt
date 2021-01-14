@@ -1,0 +1,7 @@
+pycharmers.cli.tweetile module
+==============================
+
+.. automodule:: pycharmers.cli.tweetile
+   :members:
+   :undoc-members:
+   :show-inheritance:

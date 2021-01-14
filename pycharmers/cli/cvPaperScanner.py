@@ -1,11 +1,10 @@
 #coding: utf-8
-import re
 import sys
 import cv2
 import numpy as np
-from pycharmers.utils import cv2ArgumentParser
-from pycharmers.opencv import cvui, cv2Project
-from pycharmers.opencv import draw_text_with_bg, findBiggestContour, reorder_contour, draw_bboxes_xywh
+from ..utils import cv2ArgumentParser
+from ..opencv import cvui, cv2Project
+from ..opencv import draw_text_with_bg, findBiggestContour, reorder_contour, draw_bboxes_xywh
 
 def cvPaperScanner(argv=sys.argv[1:]):
     """Control the OpenCV cascade Examples.
@@ -17,7 +16,11 @@ def cvPaperScanner(argv=sys.argv[1:]):
 
         $ cv-paper-scanner --cam 0 --radio-width 200
 
-    .. image:: _images/cli.cvPaperScanner.gif
+    +--------------------------------------------+
+    |                Sample                      |
+    +============================================+
+    | .. image:: _images/cli.cvPaperScanner.gif  |
+    +--------------------------------------------+
     """
     parser = cv2ArgumentParser(prog="cv-paper-scan", description="Paper Scanner", add_help=True)
     args = parser.parse_args(argv)

@@ -14,7 +14,7 @@ OPENCV_CASCADES = {
 def cascade_creator(cascade):
     """Create a ``cv2.CascadeClassifier`` instance.
     Args:
-        cascade (str, cv2.CascadeClassifier) : 
+        cascade (str, cv2.CascadeClassifier) : The identifier of Cascades.
 
     Returns:
         ``cv2.CascadeClassifier``

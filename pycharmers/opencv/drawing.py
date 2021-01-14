@@ -107,6 +107,7 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
         x (str/np.ndarray)  : path to an image, or image. (BGR)
         ax (Axes)           : The ``Axes`` instance.
         clear_pos (list)    : Positions to clean a grid
+        cmap (str)          : 
         is_cv2 (bool)       : Whether ``x`` is BGR (OpenCV format) or not.
         figkeywargs (dict)  : Keyword arguments for :meth:`FigAxes_create <pycharmers.matplotlib.layout.FigAxes_create>`
         plotkeywargs (dict) : Keyword arguments for ``ax.imshow`` .
@@ -115,12 +116,13 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
         >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
         >>> ax = cv2plot(x=SAMPLE_LENA_IMG)
     """
+    cmap = cmap or plotkeywargs.pop("cmap", None)
     fig, ax = FigAxes_create(ax=ax, **figkeywargs)
     if isinstance(x, str):
         x = cv2read_mpl(x)
     elif is_cv2:
         x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB) 
-    ax.imshow(X=x, **plotkeywargs)
+    ax.imshow(X=x, cmap=cmap, **plotkeywargs)
     ax = clear_grid(ax, pos=clear_pos)
     return ax
 
