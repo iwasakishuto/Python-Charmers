@@ -56,6 +56,9 @@
 <span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
 
+<span class="kn">from</span> <span class="nn">.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
+<span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
+
 <div class="viewcode-block" id="pilread"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.pilread">[docs]</a><span class="k">def</span> <span class="nf">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Opens and identifies the given image file.</span>
 <span class="sd">    </span>
@@ -103,15 +106,15 @@
     <span class="n">img_size_small</span>  <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">/</span><span class="n">rrate</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">img_size_origin</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">img_size_small</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">img_size_origin</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="draw_text"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text">[docs]</a><span class="k">def</span> <span class="nf">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttfontname</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;/System/Library/Fonts&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-              <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">text_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-              <span class="n">bgRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">textRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="draw_text_in_pil"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text_in_pil">[docs]</a><span class="k">def</span> <span class="nf">draw_text_in_pil</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttfontname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">text_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                     <span class="n">bgRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">textRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw text in ``PIL.Image`` object.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        text (str)       : Text to be drawn to ``img``.</span>
 <span class="sd">        img (PIL.Image)  : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.</span>
-<span class="sd">        ttfontname (str) : A filename or file-like object containing a TrueType font. (default = ``os.listdir(&quot;/System/Library/Fonts&quot;)[0]``)</span>
+<span class="sd">        ttfontname (str) : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.</span>
 <span class="sd">        img_size (tuple) : The image size.</span>
 <span class="sd">        text_width (int) : The length of characters in one line.</span>
 <span class="sd">        fontsize (int)   : The requested size, in points.</span>
@@ -123,12 +126,18 @@
 <span class="sd">        tuple (PIL.Image, int): img, Length from top to bottom text line.</span>
 <span class="sd">    </span>
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import draw_text</span>
-<span class="sd">        &gt;&gt;&gt; img, y = draw_text(&quot;Hello World!!&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import draw_text_in_pil</span>
+<span class="sd">        &gt;&gt;&gt; img, y = draw_text_in_pil(&quot;Hello World!!&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; img.save(&quot;sample.png&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">img_size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bgRGB</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ttfontname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            Please define the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;ttfontname&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">. If you dont&#39;t know where the font file is, check the </span>
+<span class="s2">            * </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s1">&#39;fonts/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> directory on Windows</span>
+<span class="s2">            * </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s1">&#39;/Library/Fonts/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s1">&#39;/System/Library/Fonts/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">, or </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s1">&#39;~/Library/Fonts/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> on macOS</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
     <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
     
     <span class="n">iw</span><span class="p">,</span><span class="n">ih</span> <span class="o">=</span> <span class="n">img_size</span>

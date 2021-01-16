@@ -1,0 +1,7 @@
+pycharmers.utils.inspect\_utils module
+======================================
+
+.. automodule:: pycharmers.utils.inspect_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

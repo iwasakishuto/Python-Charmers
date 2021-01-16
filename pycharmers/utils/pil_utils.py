@@ -5,6 +5,9 @@ import string
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
+from .print_utils import pretty_3quote
+from ._colorings import toBLUE, toGREEN
+
 def pilread(img=None, path=None):
     """Opens and identifies the given image file.
     
@@ -52,15 +55,15 @@ def roughen_img(img=None, path=None, rrate=5):
     img_size_small  = [int(s/rrate) for s in img_size_origin]
     return img.resize(size=img_size_small).resize(size=img_size_origin)
 
-def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
-              img_size=(250, 250), text_width=None, fontsize=16, margin=10,
-              bgRGB=(255,255,255), textRGB=(0,0,0), **kwargs):
+def draw_text_in_pil(text, img=None, ttfontname=None,
+                     img_size=(250, 250), text_width=None, fontsize=16, margin=10,
+                     bgRGB=(255,255,255), textRGB=(0,0,0), **kwargs):
     """Draw text in ``PIL.Image`` object.
 
     Args:
         text (str)       : Text to be drawn to ``img``.
         img (PIL.Image)  : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
-        ttfontname (str) : A filename or file-like object containing a TrueType font. (default = ``os.listdir("/System/Library/Fonts")[0]``)
+        ttfontname (str) : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.
         img_size (tuple) : The image size.
         text_width (int) : The length of characters in one line.
         fontsize (int)   : The requested size, in points.
@@ -72,12 +75,18 @@ def draw_text(text, img=None, ttfontname=os.listdir("/System/Library/Fonts")[0],
         tuple (PIL.Image, int): img, Length from top to bottom text line.
     
     Example:
-        >>> from pycharmers.utils import draw_text
-        >>> img, y = draw_text("Hello World!!")
+        >>> from pycharmers.utils import draw_text_in_pil
+        >>> img, y = draw_text_in_pil("Hello World!!")
         >>> img.save("sample.png")
     """
     if img is None:
         img = Image.new(mode="RGB", size=img_size, color=bgRGB)
+    if ttfontname is None:
+        raise TypeError(*pretty_3quote(f"""
+            Please define the {toGREEN('ttfontname')}. If you dont't know where the font file is, check the 
+            * {toBLUE('fonts/')} directory on Windows
+            * {toBLUE('/Library/Fonts/')}, {toBLUE('/System/Library/Fonts/')}, or {toBLUE('~/Library/Fonts/')} on macOS
+            """))
     draw = ImageDraw.Draw(im=img, mode="RGB")
     
     iw,ih = img_size

@@ -19,7 +19,7 @@ class cv2Project():
     Args:
         args (Namespace) : Simple object for storing attributes.
 
-    Notes:
+    Note:
         * Image object ( ``np.ndarray`` ) has the shape ( ``height`` , ``width`` , ``channel`` )
         * ``XXX_size`` attributes are formatted as ( ``width`` , ``height`` )
 
@@ -50,18 +50,34 @@ class cv2Project():
     def init(self):
         """Initialize VideoCapture (mimic) object and GUI tools.
 
-        Notes: To run this method, ``self`` must be has these attributes.
-
-            * winname (str)                     : Window name.
-            * path (str)                        : Path to video or image.
-            * cam (int)                         : The ID of the web camera.
-            * ext (str)                         : The extension for saved image.
-            * gui_width (int)                   : The width of the GUI tools.
-            * gui_margin (int)                  : The margin of GUI control tools.
-            * monitor_size (ListParamProcessor) : Monitor size. ( ``width`` , ``height`` )
-            * autofit (bool)                    : Whether to fit display size to window size.
-            * twitter (bool)                    : Whether you want to run for tweet. ( ``display_size`` will be () )
-            * capture (bool)                    : Whether you want to save as video.
+        Note: 
+            * To run this method, ``self`` must have these attributes.
+                * winname (str)                     : Window name.
+                * path (str)                        : Path to video or image.
+                * cam (int)                         : The ID of the web camera.
+                * ext (str)                         : The extension for saved image.
+                * gui_width (int)                   : The width of the GUI tools.
+                * gui_margin (int)                  : The margin of GUI control tools.
+                * monitor_size (ListParamProcessor) : Monitor size. ( ``width`` , ``height`` )
+                * autofit (bool)                    : Whether to fit display size to window size.
+                * twitter (bool)                    : Whether you want to run for tweet. ( ``display_size`` will be () )
+                * capture (bool)                    : Whether you want to save as video.
+            * After run this method, ``self`` will have these attributes.
+                * cap (VideoCapture)      : VideoCapture (mimic) object. See :meth:`VideoCaptureCreate <pycharmers.opencv.video_image_handler.VideoCaptureCreate>`
+                * monitor (np.ndarray)    : Background image. shape= ( ``monitor_height`` , ``monitor_width``, 3)
+                * monitor_height          : The height of monitor.
+                * monitor_width           : The width of monitor.
+                * original_height (int)   : The height of original frame.
+                * original_width (int)    : The width of original frame.
+                * frame_height (int)      : The height of resized frame.
+                * frame_width (int)       : The width of resized frame.
+                * frame_dsize (tuple)     : ( ``frame_width`` , ``frame_height`` )
+                * frame_halfsize (tuple)  : ( ``frame_width//2`` , ``frame_height//2`` )
+                * gui_x (int)             : ``frame_width`` + ``gui_margin``
+                * fps (int)               : Frame per seconds.
+                * video (cv2.VideoWriter) : Video Writer.
+                * video_fn (str)          : The file name of video.
+                * fn_prefix (str)         : The prefix of filename ( ``"" if self.path is None else self.path+"."`` )
         """
         cap = VideoCaptureCreate(path=self.path, cam=self.cam)
         if self.autofit:
@@ -70,6 +86,7 @@ class cv2Project():
             monitor_width, monitor_height = (1300, 733)
         else:
             monitor_width, monitor_height = self.monitor_size
+        fn_prefix = "" if self.path is None else self.path+"."
         monitor = np.zeros(shape=(monitor_height, monitor_width, 3), dtype=np.uint8)
         original_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         original_width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -78,13 +95,14 @@ class cv2Project():
         frame_halfsize = (frame_width//2, frame_height//2)
         gui_x = frame_width + self.gui_margin
         fps = cap.get(cv2.CAP_PROP_FPS)
-        video_path = now_str()+".mp4"
+        video_path = f'{fn_prefix}.{now_str()}.mp4'
         video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc('m','p','4','v'), fps, (monitor_width, monitor_height))
         print(f"Created {toBLUE(video_path)}")
         cvui.init(windowNames=self.winname, numWindows=1, delayWaitKey=1, createNamedWindows=True)
         cv2.moveWindow(winname=self.winname, x=0, y=0)
-
-        defined_args = locals(); defined_args.pop("self")
+        # NOTE: Register the variables defined here as attributes.
+        defined_args = locals()
+        defined_args.pop("self")
         self.__dict__.update(defined_args)
 
     def wrap(self, func):
@@ -109,7 +127,7 @@ class cv2Project():
             cvui.text(where=self.monitor, x=self.gui_x, y=self.frame_height-120, text=f" Your input: {char}")     
             # y = self.frame_height-95
             if cvui.button(where=self.monitor, x=self.gui_x, y=self.frame_height-95, width=70, height=30, label="&Save", color=(137, 225, 241)): 
-                filename = now_str() + self.ext
+                filename = f'{self.fn_prefix}.{now_str()}{self.ext}'
                 cv2.imwrite(filename=filename, img=frame)
                 cv2.imshow(winname=filename, mat=resize_aspect(cv2.imread(filename), dsize=self.frame_halfsize))
                 print(f"Saved {toBLUE(filename)}")

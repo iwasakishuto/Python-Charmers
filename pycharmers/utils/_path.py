@@ -5,7 +5,7 @@ from pathlib import Path
 from ._colorings import toBLUE
 from .download_utils import download_file
 
-def _makedirs(name, mode=511, msg=""):
+def _makedirs(name, mode=511, msg="", verbose=True):
     """Create a directory if it does not exist.
 
     Args:
@@ -20,7 +20,7 @@ def _makedirs(name, mode=511, msg=""):
     """
     if not os.path.exists(name):
         os.makedirs(name=name, mode=mode)
-        print(f"{toBLUE(name)} is created. {msg}")
+        if verbose: print(f"{toBLUE(name)} is created. {msg}")
   
 def _download_sample_data(url, path, msg=""):
     """Download sample data.

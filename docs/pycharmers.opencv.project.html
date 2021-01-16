@@ -78,11 +78,13 @@
 <dd class="field-odd"><p><strong>args</strong> (<em>Namespace</em>) – Simple object for storing attributes.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>Image object ( <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> ) has the shape ( <code class="docutils literal notranslate"><span class="pre">height</span></code> , <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">channel</span></code> )</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">XXX_size</span></code> attributes are formatted as ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
 </ul>
+</div>
 <dl class="py attribute">
 <dt id="pycharmers.opencv.project.cv2Project.cap">
 <code class="sig-name descname">cap</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.cap" title="Permalink to this definition">¶</a></dt>
@@ -235,9 +237,11 @@
 <dt id="pycharmers.opencv.project.cv2Project.init">
 <code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize VideoCapture (mimic) object and GUI tools.</p>
-<p>Notes: To run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> must be has these attributes.</p>
-<blockquote>
-<div><ul class="simple">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>To run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> must have these attributes.</dt><dd><ul>
 <li><p>winname (str)                     : Window name.</p></li>
 <li><p>path (str)                        : Path to video or image.</p></li>
 <li><p>cam (int)                         : The ID of the web camera.</p></li>
@@ -249,7 +253,32 @@
 <li><p>twitter (bool)                    : Whether you want to run for tweet. ( <code class="docutils literal notranslate"><span class="pre">display_size</span></code> will be () )</p></li>
 <li><p>capture (bool)                    : Whether you want to save as video.</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>After run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> will have these attributes.</dt><dd><ul>
+<li><p>cap (VideoCapture)      : VideoCapture (mimic) object. See <a class="reference internal" href="pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="pycharmers.opencv.video_image_handler.VideoCaptureCreate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">VideoCaptureCreate</span></code></a></p></li>
+<li><p>monitor (np.ndarray)    : Background image. shape= ( <code class="docutils literal notranslate"><span class="pre">monitor_height</span></code> , <code class="docutils literal notranslate"><span class="pre">monitor_width</span></code>, 3)</p></li>
+<li><p>monitor_height          : The height of monitor.</p></li>
+<li><p>monitor_width           : The width of monitor.</p></li>
+<li><p>original_height (int)   : The height of original frame.</p></li>
+<li><p>original_width (int)    : The width of original frame.</p></li>
+<li><p>frame_height (int)      : The height of resized frame.</p></li>
+<li><p>frame_width (int)       : The width of resized frame.</p></li>
+<li><p>frame_dsize (tuple)     : ( <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height</span></code> )</p></li>
+<li><p>frame_halfsize (tuple)  : ( <code class="docutils literal notranslate"><span class="pre">frame_width//2</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height//2</span></code> )</p></li>
+<li><p>gui_x (int)             : <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> + <code class="docutils literal notranslate"><span class="pre">gui_margin</span></code></p></li>
+<li><p>fps (int)               : Frame per seconds.</p></li>
+<li><p>video (cv2.VideoWriter) : Video Writer.</p></li>
+<li><p>video_fn (str)          : The file name of video.</p></li>
+<li><p>fn_prefix (str)         : The prefix of filename ( <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span> <span class="pre">if</span> <span class="pre">self.path</span> <span class="pre">is</span> <span class="pre">None</span> <span class="pre">else</span> <span class="pre">self.path+&quot;.&quot;</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="py method">

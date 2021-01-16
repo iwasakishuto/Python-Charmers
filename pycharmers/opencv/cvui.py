@@ -146,7 +146,7 @@ def init(windowNames=now_str(), numWindows=1, delayWaitKey=-1, createNamedWindow
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	if isinstance(windowNames, str):
 		windowNames = [windowNames]
@@ -300,7 +300,7 @@ def iarea(x, y, width, height):
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	return __internal.iarea(x, y, width, height)
 
@@ -376,7 +376,7 @@ def text(where=None, x=0, y=0, text="", fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontS
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -471,7 +471,7 @@ def counter(where=None, x=0, y=0, value=[], step=1, fmt=""):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -520,7 +520,7 @@ def checkbox(where=None, x=0, y=0, label="", state=[], color=0xCECECE):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
@@ -570,12 +570,12 @@ def radiobox(where=None, x=0, y=0, labels=[""], states=[], color=0xCECECE):
 		... 	idx = cvui.radiobox(x=10, y=10, labels=radio_labels, states=radio_states)
 		... 	cvui.printf(where=frame, x=10, y=100, fontScale=0.4, color=0xCECECE, fmt="Current bgColor: %s", fmtArgs=(radio_labels[idx]))
 		... 	cvui.endRow()
-
+		... 
 		... 	cvui.update()
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		... cv2.destroyAllWindows()
+		>>> >>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -665,7 +665,7 @@ def mouse(windowName=None, button=None, query=None):
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	if query is None:
 		return __internal.mouseW(windowName or "")
@@ -729,7 +729,7 @@ def button(where=None, x=0, y=0, label="", width=0, height=30, idle=None, over=N
 		... 	# will do it automatically.
 		... 	cvui.update()
 		... 	cv2.imshow(WINDOW_NAME, frame)
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 		...
 		>>> #=== If you use "idle", "over", "down" ===
 		>>> import cv2
@@ -769,7 +769,7 @@ def button(where=None, x=0, y=0, label="", width=0, height=30, idle=None, over=N
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -823,7 +823,7 @@ def image(where=None, x=0, y=0, image=None):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -926,7 +926,7 @@ def trackbar(where=None, x=0, y=0, width=50, value=[], min=0., max=25., segments
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -973,7 +973,7 @@ def window(where=None, x=0, y=0, width=640, height=480, title=""):
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -1070,7 +1070,7 @@ def rect(where=None, x=0, y=0, width=160, height=120, borderColor=0xff0000, fill
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == 27:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 
 	+-----------------------------------------+
 	|               Output                    |
@@ -1130,7 +1130,7 @@ def sparkline(where=None, x=0, y=0, values=[], width=160, height=120, color=0x00
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 
 	+----------------------------------------------+
 	|               Output                         |
@@ -1184,7 +1184,7 @@ def colorpalette(where=None, x=0, y=0, bgr=[], width=300, height=50):
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 
 	+-------------------------------------------------+
 	|               Output                            |
@@ -1249,10 +1249,10 @@ def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x
 		... 	# Check if ESC key was pressed
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 			break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 
 		>>> # You can draw a picture as follows by executing the following program while running the above program.
-		>>> def drawing(path, dsize=(250,250), thresh=None, sleep=3, drawing_val=0, offset=(30,125)):
+		>>> def drawing(path, dsize=(250,250), thresh=127, sleep=3, drawing_val=0, offset=(30,125)):
 		...     \"\"\"
 		...     Args:
 		...         path (str)        : Path to binary image.
@@ -1262,34 +1262,38 @@ def drawingpad(where=None, x=0, y=0, image=None, color=0xffffff, fillingColor=0x
 		...         drawing_val (int) : At what value to draw.
 		...         offset (tuple)    : Offset from top left ( ``cv2.moveWindow(winname=WINDOW_NAME, x=0, y=0)`` ) to drawing pad.
 		...     \"\"\"
-		...     import cv2
-		...     import time    
-		...     import pyautogui as pgui # Use for controling the mouse. (https://pyautogui.readthedocs.io/en/latest/mouse.html)
-		...     
-		...     img = cv2.resize(src=cv2.imread(path, 0), dsize=dsize)
-		...     if thresh is not None:
-		...         img = cv2.threshold(src=img, thresh=thresh, maxval=255, type=cv2.THRESH_BINARY)[1]
-		...     width,height = dsize
-		...     x_offset, y_offset = offset
-		...     time.sleep(sleep)
-		...     for i in range(height):
-		...         pgui.moveTo(x_offset, y_offset+i)
-		...         prev_val, prev_pos = (0, 0)
-		...         for j in range(width+1):
-		...             if j<width:
-		...                 val = img_thresh[i,j]
-		...             else:
-		...                 val = -1 # Must be different from ``prev_val``
-		...             if prev_val != val:
-		...                 # Drawing.
-		...                 if prev_val == drawing_val:
-		...                     pgui.mouseDown()
-		...                     pgui.dragRel(xOffset=j-prev_pos, yOffset=0, button="left", duration=0.0, mouseDownUp=True)
-		...                     pgui.mouseUp()
-		...                 else:
-		...                     pgui.moveRel(xOffset=j-prev_pos, yOffset=0, duration=0.0)
-		...                 prev_pos = j
-		...                 prev_val = val
+		... 	import cv2
+		... 	import time
+		... 	import pyautogui as pgui # Use for controling the mouse. (https://pyautogui.readthedocs.io/en/latest/mouse.html)
+		... 	img = cv2.resize(src=cv2.imread(path, 0), dsize=dsize)
+		... 	img = cv2.threshold(src=img, thresh=thresh, maxval=255, type=cv2.THRESH_BINARY)[1]
+		...     WINDOW_NAME = "Apotheosis" 
+		... 	cv2.imshow(winname=v, mat=img)
+		... 	width,height = dsize
+		... 	x_offset, y_offset = offset
+		... 	time.sleep(sleep)
+		... 	for i in range(height):
+		... 		pgui.moveTo(x_offset, y_offset+i)
+		... 		prev_val, prev_pos = (0, 0)
+		... 		for j in range(width+1):
+		... 			if j<width:
+		... 				val = img[i,j]
+		... 			else:
+		... 				val = -1 # Must be different from ``prev_val``
+		... 			if prev_val != val:
+		... 				# Drawing.
+		... 				if prev_val == drawing_val:
+		... 					pgui.mouseDown()
+		... 					pgui.dragRel(xOffset=j-prev_pos, yOffset=0, button="left", duration=0.0, mouseDownUp=True)
+		... 					pgui.mouseUp()
+		... 				else:
+		... 					pgui.moveRel(xOffset=j-prev_pos, yOffset=0, duration=0.0)
+		... 				prev_pos = j
+		... 				prev_val = val
+		... 			key = cv2.waitKey(1)
+		... 			if key == 27: break
+		... 		if key == 27: break
+		...     cv2.destroyWindow(WINDOW_NAME)
 
 	+--------------------------------------------------------+-------------------------------------------------------+
 	|                                                     Example                                                    |
@@ -1358,7 +1362,7 @@ def beginRow(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=None)
 		... 	cv2.imshow(WINDOW_NAME, frame)
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):
@@ -1428,7 +1432,7 @@ def beginColumn(where=None, x=0, y=0, width=-1, height=-1, padding=0, bgColor=No
 		... 
 		... 	if cv2.waitKey(20) == cvui.ESCAPE:
 		... 		break
-		>>> cv2.destroyAllWindows()
+		>>> cv2.destroyWindow(WINDOW_NAME)
 	"""
 	handleTypeError(types=[np.ndarray, NoneType], where=where)
 	if isinstance(where, np.ndarray):

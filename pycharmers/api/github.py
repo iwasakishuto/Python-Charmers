@@ -45,7 +45,7 @@ def wgit(base_url="", base_dir=".", depth=0):
         base_dir (str) : The directory where downloaded data will be saved.
         depth (int)    : Depth of the directory tree.
 
-    Examples
+    Examples:
         >>> from pycharmers.api import wgit
         >>> from pycharmers.opencv import PYCHARMERS_OPENCV_DIR
         >>> wgit(base_url="https://github.com/opencv/opencv/tree/master/data", base_dir=PYCHARMERS_OPENCV_DIR)

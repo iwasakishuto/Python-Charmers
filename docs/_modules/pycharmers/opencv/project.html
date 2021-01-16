@@ -70,7 +70,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        args (Namespace) : Simple object for storing attributes.</span>
 
-<span class="sd">    Notes:</span>
+<span class="sd">    Note:</span>
 <span class="sd">        * Image object ( ``np.ndarray`` ) has the shape ( ``height`` , ``width`` , ``channel`` )</span>
 <span class="sd">        * ``XXX_size`` attributes are formatted as ( ``width`` , ``height`` )</span>
 
@@ -101,18 +101,34 @@
 <div class="viewcode-block" id="cv2Project.init"><a class="viewcode-back" href="../../../pycharmers.opencv.project.html#pycharmers.opencv.project.cv2Project.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize VideoCapture (mimic) object and GUI tools.</span>
 
-<span class="sd">        Notes: To run this method, ``self`` must be has these attributes.</span>
-
-<span class="sd">            * winname (str)                     : Window name.</span>
-<span class="sd">            * path (str)                        : Path to video or image.</span>
-<span class="sd">            * cam (int)                         : The ID of the web camera.</span>
-<span class="sd">            * ext (str)                         : The extension for saved image.</span>
-<span class="sd">            * gui_width (int)                   : The width of the GUI tools.</span>
-<span class="sd">            * gui_margin (int)                  : The margin of GUI control tools.</span>
-<span class="sd">            * monitor_size (ListParamProcessor) : Monitor size. ( ``width`` , ``height`` )</span>
-<span class="sd">            * autofit (bool)                    : Whether to fit display size to window size.</span>
-<span class="sd">            * twitter (bool)                    : Whether you want to run for tweet. ( ``display_size`` will be () )</span>
-<span class="sd">            * capture (bool)                    : Whether you want to save as video.</span>
+<span class="sd">        Note: </span>
+<span class="sd">            * To run this method, ``self`` must have these attributes.</span>
+<span class="sd">                * winname (str)                     : Window name.</span>
+<span class="sd">                * path (str)                        : Path to video or image.</span>
+<span class="sd">                * cam (int)                         : The ID of the web camera.</span>
+<span class="sd">                * ext (str)                         : The extension for saved image.</span>
+<span class="sd">                * gui_width (int)                   : The width of the GUI tools.</span>
+<span class="sd">                * gui_margin (int)                  : The margin of GUI control tools.</span>
+<span class="sd">                * monitor_size (ListParamProcessor) : Monitor size. ( ``width`` , ``height`` )</span>
+<span class="sd">                * autofit (bool)                    : Whether to fit display size to window size.</span>
+<span class="sd">                * twitter (bool)                    : Whether you want to run for tweet. ( ``display_size`` will be () )</span>
+<span class="sd">                * capture (bool)                    : Whether you want to save as video.</span>
+<span class="sd">            * After run this method, ``self`` will have these attributes.</span>
+<span class="sd">                * cap (VideoCapture)      : VideoCapture (mimic) object. See :meth:`VideoCaptureCreate &lt;pycharmers.opencv.video_image_handler.VideoCaptureCreate&gt;`</span>
+<span class="sd">                * monitor (np.ndarray)    : Background image. shape= ( ``monitor_height`` , ``monitor_width``, 3)</span>
+<span class="sd">                * monitor_height          : The height of monitor.</span>
+<span class="sd">                * monitor_width           : The width of monitor.</span>
+<span class="sd">                * original_height (int)   : The height of original frame.</span>
+<span class="sd">                * original_width (int)    : The width of original frame.</span>
+<span class="sd">                * frame_height (int)      : The height of resized frame.</span>
+<span class="sd">                * frame_width (int)       : The width of resized frame.</span>
+<span class="sd">                * frame_dsize (tuple)     : ( ``frame_width`` , ``frame_height`` )</span>
+<span class="sd">                * frame_halfsize (tuple)  : ( ``frame_width//2`` , ``frame_height//2`` )</span>
+<span class="sd">                * gui_x (int)             : ``frame_width`` + ``gui_margin``</span>
+<span class="sd">                * fps (int)               : Frame per seconds.</span>
+<span class="sd">                * video (cv2.VideoWriter) : Video Writer.</span>
+<span class="sd">                * video_fn (str)          : The file name of video.</span>
+<span class="sd">                * fn_prefix (str)         : The prefix of filename ( ``&quot;&quot; if self.path is None else self.path+&quot;.&quot;`` )</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cam</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autofit</span><span class="p">:</span>
@@ -121,6 +137,7 @@
             <span class="n">monitor_width</span><span class="p">,</span> <span class="n">monitor_height</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1300</span><span class="p">,</span> <span class="mi">733</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">monitor_width</span><span class="p">,</span> <span class="n">monitor_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor_size</span>
+        <span class="n">fn_prefix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">+</span><span class="s2">&quot;.&quot;</span>
         <span class="n">monitor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">monitor_height</span><span class="p">,</span> <span class="n">monitor_width</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
         <span class="n">original_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
         <span class="n">original_width</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>
@@ -129,13 +146,14 @@
         <span class="n">frame_halfsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">frame_width</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">frame_height</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">gui_x</span> <span class="o">=</span> <span class="n">frame_width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui_margin</span>
         <span class="n">fps</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>
-        <span class="n">video_path</span> <span class="o">=</span> <span class="n">now_str</span><span class="p">()</span><span class="o">+</span><span class="s2">&quot;.mp4&quot;</span>
+        <span class="n">video_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fn_prefix</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">now_str</span><span class="p">()</span><span class="si">}</span><span class="s1">.mp4&#39;</span>
         <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">video_path</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="n">fps</span><span class="p">,</span> <span class="p">(</span><span class="n">monitor_width</span><span class="p">,</span> <span class="n">monitor_height</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">cvui</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">windowNames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">winname</span><span class="p">,</span> <span class="n">numWindows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delayWaitKey</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">createNamedWindows</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">cv2</span><span class="o">.</span><span class="n">moveWindow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">winname</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="n">defined_args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">();</span> <span class="n">defined_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">)</span>
+        <span class="c1"># NOTE: Register the variables defined here as attributes.</span>
+        <span class="n">defined_args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">defined_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">defined_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="cv2Project.wrap"><a class="viewcode-back" href="../../../pycharmers.opencv.project.html#pycharmers.opencv.project.cv2Project.wrap">[docs]</a>    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
@@ -160,7 +178,7 @@
             <span class="n">cvui</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gui_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_height</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot; Your input: </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>     
             <span class="c1"># y = self.frame_height-95</span>
             <span class="k">if</span> <span class="n">cvui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gui_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_height</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&amp;Save&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="mi">225</span><span class="p">,</span> <span class="mi">241</span><span class="p">)):</span> 
-                <span class="n">filename</span> <span class="o">=</span> <span class="n">now_str</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fn_prefix</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">now_str</span><span class="p">()</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">ext</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
                 <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="n">resize_aspect</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">dsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_halfsize</span><span class="p">))</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

@@ -76,7 +76,7 @@ Version: 2.7</p>
 Licensed under the <a class="reference external" href="https://github.com/Dovyski/cvui/blob/master/LICENSE.md">MIT license</a>.</p>
 <dl class="py function">
 <dt id="pycharmers.opencv.cvui.init">
-<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-14&#64;10.44.27'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycharmers.opencv.cvui.</code><code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">windowNames</span><span class="o">=</span><span class="default_value">'2021-01-16&#64;17.05.41'</span></em>, <em class="sig-param"><span class="n">numWindows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">delayWaitKey</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">createNamedWindows</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/cvui.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.cvui.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize cvui using a list of names of windows where components will be added.</p>
 <p>It is also possible to tell cvui to handle OpenCV’s event queue automatically (by informing a value greater than zero in the <cite>delayWaitKey</cite> parameter of the function).</p>
 <p>In that case, cvui will automatically call <code class="docutils literal notranslate"><span class="pre">cv2.waitKey()</span></code> within <code class="docutils literal notranslate"><span class="pre">cvui.update()</span></code> , so you don’t have to worry about it. The value passed to <cite>delayWaitKey</cite> will be used as the delay for <cite>cv2.waitKey()</cite>.</p>
@@ -175,7 +175,7 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -309,7 +309,7 @@ Licensed under the <a class="reference external" href="https://github.com/Dovysk
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -375,7 +375,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -465,7 +465,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -511,7 +511,7 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -560,13 +560,14 @@ and <cite>endRow()</cite> block, space will be horizontal.</p>
 <span class="gp">... </span>    <span class="n">idx</span> <span class="o">=</span> <span class="n">cvui</span><span class="o">.</span><span class="n">radiobox</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">radio_labels</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">radio_states</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mh">0xCECECE</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;Current bgColor: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fmtArgs</span><span class="o">=</span><span class="p">(</span><span class="n">radio_labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">endRow</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&gt;&gt;&gt;</span> <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>…     cvui.update()
-…     cv2.imshow(WINDOW_NAME, frame)
-…     if cv2.waitKey(20) == cvui.ESCAPE:
-…             break
-… cv2.destroyAllWindows()</p>
 </dd></dl>
 
 <dl class="py function">
@@ -655,7 +656,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -715,7 +716,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># will do it automatically.</span>
 <span class="gp">... </span>    <span class="n">cvui</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">#=== If you use &quot;idle&quot;, &quot;over&quot;, &quot;down&quot; ===</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
@@ -755,7 +756,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -801,7 +802,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -904,7 +905,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -947,7 +948,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1041,7 +1042,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1106,7 +1107,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1168,7 +1169,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1240,11 +1241,11 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="c1"># Check if ESC key was pressed</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>                    <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># You can draw a picture as follows by executing the following program while running the above program.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">drawing</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="mi">250</span><span class="p">),</span> <span class="n">thresh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">drawing_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">125</span><span class="p">)):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">drawing</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="mi">250</span><span class="p">),</span> <span class="n">thresh</span><span class="o">=</span><span class="mi">127</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">drawing_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">125</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="sd">    Args:</span>
 <span class="gp">... </span><span class="sd">        path (str)        : Path to binary image.</span>
@@ -1257,31 +1258,35 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="gp">... </span>    <span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">... </span>    <span class="kn">import</span> <span class="nn">pyautogui</span> <span class="k">as</span> <span class="nn">pgui</span> <span class="c1"># Use for controling the mouse. (https://pyautogui.readthedocs.io/en/latest/mouse.html)</span>
-<span class="gp">...</span>
 <span class="gp">... </span>    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dsize</span><span class="o">=</span><span class="n">dsize</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">thresh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">WINDOW_NAME</span> <span class="o">=</span> <span class="s2">&quot;Apotheosis&quot;</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">width</span><span class="p">,</span><span class="n">height</span> <span class="o">=</span> <span class="n">dsize</span>
 <span class="gp">... </span>    <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span> <span class="o">=</span> <span class="n">offset</span>
 <span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="n">pgui</span><span class="o">.</span><span class="n">moveTo</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">prev_val</span><span class="p">,</span> <span class="n">prev_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-<span class="gp">... </span>            <span class="k">if</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">width</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">val</span> <span class="o">=</span> <span class="n">img_thresh</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
-<span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="n">val</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># Must be different from ``prev_val``</span>
-<span class="gp">... </span>            <span class="k">if</span> <span class="n">prev_val</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="c1"># Drawing.</span>
-<span class="gp">... </span>                <span class="k">if</span> <span class="n">prev_val</span> <span class="o">==</span> <span class="n">drawing_val</span><span class="p">:</span>
-<span class="gp">... </span>                    <span class="n">pgui</span><span class="o">.</span><span class="n">mouseDown</span><span class="p">()</span>
-<span class="gp">... </span>                    <span class="n">pgui</span><span class="o">.</span><span class="n">dragRel</span><span class="p">(</span><span class="n">xOffset</span><span class="o">=</span><span class="n">j</span><span class="o">-</span><span class="n">prev_pos</span><span class="p">,</span> <span class="n">yOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">button</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mouseDownUp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">... </span>                    <span class="n">pgui</span><span class="o">.</span><span class="n">mouseUp</span><span class="p">()</span>
-<span class="gp">... </span>                <span class="k">else</span><span class="p">:</span>
-<span class="gp">... </span>                    <span class="n">pgui</span><span class="o">.</span><span class="n">moveRel</span><span class="p">(</span><span class="n">xOffset</span><span class="o">=</span><span class="n">j</span><span class="o">-</span><span class="n">prev_pos</span><span class="p">,</span> <span class="n">yOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="gp">... </span>                <span class="n">prev_pos</span> <span class="o">=</span> <span class="n">j</span>
-<span class="gp">... </span>                <span class="n">prev_val</span> <span class="o">=</span> <span class="n">val</span>
+<span class="gp">... </span>            <span class="n">pgui</span><span class="o">.</span><span class="n">moveTo</span><span class="p">(</span><span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="n">prev_val</span><span class="p">,</span> <span class="n">prev_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>                    <span class="k">if</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">width</span><span class="p">:</span>
+<span class="gp">... </span>                            <span class="n">val</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+<span class="gp">... </span>                    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>                            <span class="n">val</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># Must be different from ``prev_val``</span>
+<span class="gp">... </span>                    <span class="k">if</span> <span class="n">prev_val</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
+<span class="gp">... </span>                            <span class="c1"># Drawing.</span>
+<span class="gp">... </span>                            <span class="k">if</span> <span class="n">prev_val</span> <span class="o">==</span> <span class="n">drawing_val</span><span class="p">:</span>
+<span class="gp">... </span>                                    <span class="n">pgui</span><span class="o">.</span><span class="n">mouseDown</span><span class="p">()</span>
+<span class="gp">... </span>                                    <span class="n">pgui</span><span class="o">.</span><span class="n">dragRel</span><span class="p">(</span><span class="n">xOffset</span><span class="o">=</span><span class="n">j</span><span class="o">-</span><span class="n">prev_pos</span><span class="p">,</span> <span class="n">yOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">button</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mouseDownUp</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span>                                    <span class="n">pgui</span><span class="o">.</span><span class="n">mouseUp</span><span class="p">()</span>
+<span class="gp">... </span>                            <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>                                    <span class="n">pgui</span><span class="o">.</span><span class="n">moveRel</span><span class="p">(</span><span class="n">xOffset</span><span class="o">=</span><span class="n">j</span><span class="o">-</span><span class="n">prev_pos</span><span class="p">,</span> <span class="n">yOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">... </span>                            <span class="n">prev_pos</span> <span class="o">=</span> <span class="n">j</span>
+<span class="gp">... </span>                            <span class="n">prev_val</span> <span class="o">=</span> <span class="n">val</span>
+<span class="gp">... </span>                    <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span> <span class="k">break</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span> <span class="k">break</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1355,7 +1360,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1422,7 +1427,7 @@ isMouseButton (bool) : (otherwise) Whether the <code class="docutils literal not
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="n">cvui</span><span class="o">.</span><span class="n">ESCAPE</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">break</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">WINDOW_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

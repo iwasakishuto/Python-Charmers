@@ -7,6 +7,7 @@ from . import argparse_utils
 from . import color_utils
 from . import download_utils
 from . import generic_utils
+from . import inspect_utils
 from . import json_utils
 from . import monitor_utils
 from . import numpy_utils
@@ -77,6 +78,9 @@ from .generic_utils import html2reStructuredText
 from .generic_utils import int2ordinal
 from .generic_utils import filenaming
 
+from .inspect_utils import get_import_members
+from .inspect_utils import get_defined_members
+
 from .json_utils import PythonCharmersJSONEncoder
 from .json_utils import dumps_json
 from .json_utils import save_json
@@ -92,7 +96,7 @@ from .pandas_utils import flatten_multi_columns
 
 from .pil_utils import pilread
 from .pil_utils import roughen_img
-from .pil_utils import draw_text
+from .pil_utils import draw_text_in_pil
 
 from .print_utils import tabulate
 from .print_utils import Table
