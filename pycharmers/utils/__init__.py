@@ -78,7 +78,7 @@ from .generic_utils import html2reStructuredText
 from .generic_utils import int2ordinal
 from .generic_utils import filenaming
 
-from .inspect_utils import get_import_members
+from .inspect_utils import get_imported_members
 from .inspect_utils import get_defined_members
 
 from .json_utils import PythonCharmersJSONEncoder

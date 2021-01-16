@@ -4,7 +4,7 @@ import os
 import re
 from pathlib import Path
 from pycharmers.utils._path import MODULE_DIR, _makedirs
-from pycharmers.utils.inspect_utils import get_defined_members, get_import_members
+from pycharmers.utils.inspect_utils import get_defined_members, get_imported_members
 from pycharmers.utils._colorings import toGREEN, toBLUE
 
 tab = " "*4
@@ -21,7 +21,7 @@ for init in p.glob("**/__init__.py"):
     _makedirs(name=test_subpackage_dir, verbose=False)
     print(f"* {toGREEN(subpackage_name)}")
     exec(f"from pycharmers.{subpackage_name} import *")
-    for submodule_name in get_import_members(init).keys():
+    for submodule_name in get_imported_members(init).keys():
         submodule_match = re.match(pattern=r"\.((?!_).+)", string=submodule_name)
         if submodule_match is None: 
             continue
