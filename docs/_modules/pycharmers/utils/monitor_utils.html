@@ -98,6 +98,29 @@
 <div class="viewcode-block" id="ProgressMonitor"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor">[docs]</a><span class="k">class</span> <span class="nc">ProgressMonitor</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Monitor the loop progress.</span>
 
+<span class="sd">    Attributes:</span>
+<span class="sd">        max_iter (int)    : Maximum number of iterations.</span>
+<span class="sd">        digit (int)       : The number of digit of ``max_iter`` (= ``len(str(max_iter))`` )</span>
+<span class="sd">        verbose (int)     : Determine the output method. ``0`` is silent, ``1`` is progress bar and metrics, and ``2`` is only progress bar.</span>
+<span class="sd">        barname (str)     : Barname.</span>
+<span class="sd">        histories (dict)  : The histories.</span>
+<span class="sd">        iter (int)        : The current number of iterations.</span>
+<span class="sd">        prev_length (int) : The number of characters in the previous output.</span>
+<span class="sd">        prev_nrows (int)  : The number of rows in the previous output.</span>
+<span class="sd">        start_time (int)  : current time in seconds since the Epoch. ( ``time.time()`` )</span>
+
+<span class="sd">    +---------------+------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |  ``verbose``  |                                           ``report``                                                       |</span>
+<span class="sd">    +===============+============================================================================================================+</span>
+<span class="sd">    |             0 |                    :meth:`silent &lt;pycharmers.utils.monitor_utils.ProgressMonitor.report_silent&gt;`           |</span>
+<span class="sd">    +---------------+------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |             1 |  :meth:`bar and metrics &lt;pycharmers.utils.monitor_utils.ProgressMonitor.report_progress_bar_and_metrics&gt;`  |</span>
+<span class="sd">    +---------------+------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |             2 |         :meth:`only bar &lt;pycharmers.utils.monitor_utils.ProgressMonitor.report_only_prograss_bar&gt;`         |</span>
+<span class="sd">    +---------------+------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">    |          else |  :meth:`bar and metrics &lt;pycharmers.utils.monitor_utils.ProgressMonitor.report_progress_bar_and_metrics&gt;`  |</span>
+<span class="sd">    +---------------+------------------------------------------------------------------------------------------------------------+</span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import ProgressMonitor</span>
 <span class="sd">        &gt;&gt;&gt; max_iter = 100</span>
@@ -111,11 +134,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            max_iter (int) : Maximum number of iterations.</span>
-<span class="sd">            verbose (int)  : 0, 1, 2</span>
-<span class="sd">                                * 0 : silent</span>
-<span class="sd">                                * 1 : progress bar and metrics</span>
-<span class="sd">                                * 2 : only progress bar</span>
-<span class="sd">            barname (str)  : barname</span>
+<span class="sd">            verbose (int)  : ``0`` is silent, ``1`` is progress bar and metrics, and ``2`` is only progress bar.</span>
+<span class="sd">            barname (str)  : Barname.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
@@ -123,17 +143,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">barname</span> <span class="o">=</span> <span class="n">barname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">barname</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">0</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_silent</span><span class="p">,</span>
-            <span class="mi">1</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_progress_bar_and_metrics</span><span class="p">,</span>
-            <span class="mi">2</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_only_prograss_bar</span> 
-        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_progress_bar_and_metrics</span><span class="p">)</span>
+            <span class="mi">0</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_silent</span><span class="p">,</span>
+            <span class="mi">1</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_progress_bar_and_metrics</span><span class="p">,</span>
+            <span class="mi">2</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_only_prograss_bar</span> 
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_progress_bar_and_metrics</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">it</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the monitor.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">histories</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prev_nrows</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_length</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ProgressMonitor.write"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
@@ -148,14 +168,17 @@
 <span class="sd">        TODO:</span>
 <span class="sd">            Determine ``nrows`` according to the previous output result.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_nrows</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_length</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_nrows</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># elif self.prev_nrows==0:</span>
+        <span class="c1">#     sys.stdout.write(f&quot;\r{string}&quot;)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     sys.stdout.write(f&quot;\033[{self.prev_nrows}F\033[0J{string}&quot;)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prev_nrows</span><span class="si">}</span><span class="s2">F</span><span class="se">\033</span><span class="s2">[0J</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prev_length</span><span class="si">}</span><span class="s2">D</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prev_nrows</span> <span class="o">=</span> <span class="p">(</span><span class="n">visible_width</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="n">os</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_length</span> <span class="o">=</span> <span class="n">visible_width</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+        <span class="c1"># self.prev_nrows = (visible_width(string)-1)//os.get_terminal_size().columns</span>
 
 <div class="viewcode-block" id="ProgressMonitor.progress"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.progress">[docs]</a>    <span class="k">def</span> <span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a progress.</span>
@@ -169,14 +192,17 @@
         <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">barname</span><span class="si">}{</span><span class="n">it</span><span class="si">:</span><span class="s2">&gt;0</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">digit</span><span class="si">}}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">((</span><span class="n">it</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="p">)</span><span class="o">/</span><span class="mf">0.05</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">]</span><span class="si">{</span><span class="n">it</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="si">:</span><span class="s2">&gt;7.2%</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">[s]&quot;</span></div>
 
-    <span class="k">def</span> <span class="nf">_report_silent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="ProgressMonitor.report_silent"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.report_silent">[docs]</a>    <span class="k">def</span> <span class="nf">report_silent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; ``report`` method when ``verbose == 0`` &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">_report_only_prograss_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="n">it</span><span class="p">))</span>
+<div class="viewcode-block" id="ProgressMonitor.report_only_prograss_bar"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.report_only_prograss_bar">[docs]</a>    <span class="k">def</span> <span class="nf">report_only_prograss_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; ``report`` method when ``verbose == 2`` &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="n">it</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">_report_progress_bar_and_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span>  <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="ProgressMonitor.report_progress_bar_and_metrics"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.report_progress_bar_and_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">report_progress_bar_and_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="o">**</span><span class="n">metrics</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; ``report`` method when ``verbose == 1`` &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span>  <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ProgressMonitor.remove"><a class="viewcode-back" href="../../../pycharmers.utils.monitor_utils.html#pycharmers.utils.monitor_utils.ProgressMonitor.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Do the necessary processing at the end.&quot;&quot;&quot;</span>

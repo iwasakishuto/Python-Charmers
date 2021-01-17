@@ -47,6 +47,29 @@ def progress_reporthook_create(filename="", bar_width=20, verbose=True):
 class ProgressMonitor():
     """Monitor the loop progress.
 
+    Attributes:
+        max_iter (int)    : Maximum number of iterations.
+        digit (int)       : The number of digit of ``max_iter`` (= ``len(str(max_iter))`` )
+        verbose (int)     : Determine the output method. ``0`` is silent, ``1`` is progress bar and metrics, and ``2`` is only progress bar.
+        barname (str)     : Barname.
+        histories (dict)  : The histories.
+        iter (int)        : The current number of iterations.
+        prev_length (int) : The number of characters in the previous output.
+        prev_nrows (int)  : The number of rows in the previous output.
+        start_time (int)  : current time in seconds since the Epoch. ( ``time.time()`` )
+
+    +---------------+------------------------------------------------------------------------------------------------------------+
+    |  ``verbose``  |                                           ``report``                                                       |
+    +===============+============================================================================================================+
+    |             0 |                    :meth:`silent <pycharmers.utils.monitor_utils.ProgressMonitor.report_silent>`           |
+    +---------------+------------------------------------------------------------------------------------------------------------+
+    |             1 |  :meth:`bar and metrics <pycharmers.utils.monitor_utils.ProgressMonitor.report_progress_bar_and_metrics>`  |
+    +---------------+------------------------------------------------------------------------------------------------------------+
+    |             2 |         :meth:`only bar <pycharmers.utils.monitor_utils.ProgressMonitor.report_only_prograss_bar>`         |
+    +---------------+------------------------------------------------------------------------------------------------------------+
+    |          else |  :meth:`bar and metrics <pycharmers.utils.monitor_utils.ProgressMonitor.report_progress_bar_and_metrics>`  |
+    +---------------+------------------------------------------------------------------------------------------------------------+
+
     Examples:
         >>> from pycharmers.utils import ProgressMonitor
         >>> max_iter = 100
@@ -60,11 +83,8 @@ class ProgressMonitor():
         """
         Args:
             max_iter (int) : Maximum number of iterations.
-            verbose (int)  : 0, 1, 2
-                                * 0 : silent
-                                * 1 : progress bar and metrics
-                                * 2 : only progress bar
-            barname (str)  : barname
+            verbose (int)  : ``0`` is silent, ``1`` is progress bar and metrics, and ``2`` is only progress bar.
+            barname (str)  : Barname.
         """
         self._init()
         self.max_iter = max_iter
@@ -72,17 +92,17 @@ class ProgressMonitor():
         self.verbose = verbose
         self.barname = barname + " " if len(barname)>0 else ""
         self.report = {
-            0 : self._report_silent,
-            1 : self._report_progress_bar_and_metrics,
-            2 : self._report_only_prograss_bar 
-        }.get(verbose, self._report_progress_bar_and_metrics)
+            0 : self.report_silent,
+            1 : self.report_progress_bar_and_metrics,
+            2 : self.report_only_prograss_bar 
+        }.get(verbose, self.report_progress_bar_and_metrics)
         self.report(it=-1)
 
     def _init(self):
         """Initialize the monitor."""
         self.histories = {}
         self.iter = 0
-        self.prev_nrows = -1
+        self.prev_length = -1
         self.start_time = time.time()
 
     def write(self, string):
@@ -97,14 +117,17 @@ class ProgressMonitor():
         TODO:
             Determine ``nrows`` according to the previous output result.
         """
-        if self.prev_nrows==-1:
+        if self.prev_length==-1:
             sys.stdout.write(string)
-        elif self.prev_nrows==0:
-            sys.stdout.write(f"\r{string}")
+        # elif self.prev_nrows==0:
+        #     sys.stdout.write(f"\r{string}")
+        # else:
+        #     sys.stdout.write(f"\033[{self.prev_nrows}F\033[0J{string}")
         else:
-            sys.stdout.write(f"\033[{self.prev_nrows}F\033[0J{string}")
+            sys.stdout.write(f"\033[{self.prev_length}D{string}")
         sys.stdout.flush()
-        self.prev_nrows = (visible_width(string)-1)//os.get_terminal_size().columns
+        self.prev_length = visible_width(string)
+        # self.prev_nrows = (visible_width(string)-1)//os.get_terminal_size().columns
 
     def progress(self, it):
         """Create a progress.
@@ -118,13 +141,16 @@ class ProgressMonitor():
         it += 1
         return f"{self.barname}{it:>0{self.digit}}/{self.max_iter} [{('#' * int((it/self.max_iter)/0.05)).ljust(20, '-')}]{it/self.max_iter:>7.2%} - {time.time()-self.start_time:.3f}[s]"
 
-    def _report_silent(self, it, **metrics):
+    def report_silent(self, it, **metrics):
+        """ ``report`` method when ``verbose == 0`` """
         pass
 
-    def _report_only_prograss_bar(self, it, **metrics):
+    def report_only_prograss_bar(self, it, **metrics):
+        """ ``report`` method when ``verbose == 2`` """
         self.write(self.progress(it))
 
-    def _report_progress_bar_and_metrics(self, it, **metrics):
+    def report_progress_bar_and_metrics(self, it, **metrics):
+        """ ``report`` method when ``verbose == 1`` """
         self.write(self.progress(it) + f"  {', '.join([f'{toACCENT(k)}: {toBLUE(v)}' for  k,v in metrics.items()])}")
 
     def remove(self):
