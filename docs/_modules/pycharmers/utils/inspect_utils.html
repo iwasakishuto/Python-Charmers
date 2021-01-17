@@ -50,9 +50,15 @@
             
   <h1>Source code for pycharmers.utils.inspect_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">TODO:</span>
+<span class="sd">    Translate from &quot;module name&quot; to &quot;package name&quot;. </span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span><span class="p">,</span> <span class="n">flatten_dual</span>
@@ -72,13 +78,13 @@
 <span class="sd">        &gt;&gt;&gt; get_defined_members(inspect_utils)</span>
 <span class="sd">        {</span>
 <span class="sd">            &#39;get_defined_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_defined_members(obj, predicate=&lt;function &lt;lambda&gt; at 0x14227fca0&gt;)&gt;,</span>
-<span class="sd">            &#39;get_import_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_import_members(obj)&gt;</span>
+<span class="sd">            &#39;get_imported_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_imported_members(obj)&gt;</span>
 <span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">import_members</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">(</span><span class="n">get_import_members</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="n">member</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">predicate</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">import_members</span><span class="p">}</span></div>
+    <span class="n">imported_members</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">(</span><span class="n">get_imported_members</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="n">member</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">predicate</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">imported_members</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="get_import_members"><a class="viewcode-back" href="../../../pycharmers.utils.inspect_utils.html#pycharmers.utils.inspect_utils.get_import_members">[docs]</a><span class="k">def</span> <span class="nf">get_import_members</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="get_imported_members"><a class="viewcode-back" href="../../../pycharmers.utils.inspect_utils.html#pycharmers.utils.inspect_utils.get_imported_members">[docs]</a><span class="k">def</span> <span class="nf">get_imported_members</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get import members.</span>
 
 <span class="sd">    Args:</span>
@@ -88,8 +94,8 @@
 <span class="sd">        dict : ``{ &quot;module&quot; : [&quot;import members&quot;]}``</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import inspect_utils, get_import_members, dumps_json</span>
-<span class="sd">        &gt;&gt;&gt; print(dumps_json(obj=get_import_members(inspect_utils)))</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import inspect_utils, get_imported_members, dumps_json</span>
+<span class="sd">        &gt;&gt;&gt; print(dumps_json(obj=get_imported_members(inspect_utils)))</span>
 <span class="sd">        {</span>
 <span class="sd">            &quot;&quot;: [</span>
 <span class="sd">                &quot;re&quot;,</span>
@@ -104,14 +110,18 @@
 <span class="sd">            ]</span>
 <span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">PosixPath</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">file_contents</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
-    <span class="n">import_members</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">v_wb</span><span class="p">,</span><span class="n">v_nb</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?:^|(?&lt;=\n))(?:from\s+(.+)\s+)?import\s+(?:\(((?:.|\s)*?)\)|((?:(?&lt;!\()(?:.|\s))*?))\n&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">file_contents</span><span class="p">):</span>
-        <span class="n">import_members</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">str_strip</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">v_wb</span> <span class="o">+</span> <span class="n">v_nb</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="n">import_members</span></div>
+    <span class="n">imported_members</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">v_wb</span><span class="p">,</span><span class="n">v_nb</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?:^|(?&lt;=\n))(?:from\s+(.+?)\s+)?import\s+(?:\(((?:.|\s)*?)\)|((?:(?&lt;!\()(?:.|\s))*?))\n&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">file_contents</span><span class="p">):</span>
+        <span class="n">imported_members</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">str_strip</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">v_wb</span> <span class="o">+</span> <span class="n">v_nb</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; as &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">imported_members</span></div>
+
+    
 </pre></div>
 
             <div class="clearer"></div>

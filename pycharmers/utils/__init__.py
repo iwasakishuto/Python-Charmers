@@ -77,6 +77,7 @@ from .generic_utils import infer_types
 from .generic_utils import html2reStructuredText
 from .generic_utils import int2ordinal
 from .generic_utils import filenaming
+from .generic_utils import get_pyenv
 
 from .inspect_utils import get_imported_members
 from .inspect_utils import get_defined_members

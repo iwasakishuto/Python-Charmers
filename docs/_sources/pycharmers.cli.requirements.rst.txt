@@ -1,0 +1,7 @@
+pycharmers.cli.requirements module
+==================================
+
+.. automodule:: pycharmers.cli.requirements
+   :members:
+   :undoc-members:
+   :show-inheritance:

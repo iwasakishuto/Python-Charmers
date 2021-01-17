@@ -79,9 +79,11 @@ class ProgressMonitor():
         self.report(it=-1)
 
     def _init(self):
+        """Initialize the monitor."""
         self.histories = {}
         self.iter = 0
-        self.initial_seconds_since_epoch = time.time()
+        self.prev_nrows = -1
+        self.start_time = time.time()
 
     def write(self, string):
         """Use ASCI to output progress beautifully.
@@ -91,10 +93,18 @@ class ProgressMonitor():
 
         Args:
             string : String to output.
+        
+        TODO:
+            Determine ``nrows`` according to the previous output result.
         """
-        nrows = visible_width(string)//os.get_terminal_size().columns
-        sys.stdout.write(f"\033[{nrows}F\033[0J{string}")
+        if self.prev_nrows==-1:
+            sys.stdout.write(string)
+        elif self.prev_nrows==0:
+            sys.stdout.write(f"\r{string}")
+        else:
+            sys.stdout.write(f"\033[{self.prev_nrows}F\033[0J{string}")
         sys.stdout.flush()
+        self.prev_nrows = (visible_width(string)-1)//os.get_terminal_size().columns
 
     def progress(self, it):
         """Create a progress.
@@ -106,7 +116,7 @@ class ProgressMonitor():
             str : Thr current progress.        
         """
         it += 1
-        return f"{self.barname}{it:>0{self.digit}}/{self.max_iter} [{('#' * int((it/self.max_iter)/0.05)).ljust(20, '-')}]{it/self.max_iter:>7.2%} - {time.time()-self.initial_seconds_since_epoch:.3f}[s]"
+        return f"{self.barname}{it:>0{self.digit}}/{self.max_iter} [{('#' * int((it/self.max_iter)/0.05)).ljust(20, '-')}]{it/self.max_iter:>7.2%} - {time.time()-self.start_time:.3f}[s]"
 
     def _report_silent(self, it, **metrics):
         pass

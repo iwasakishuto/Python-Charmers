@@ -5,16 +5,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta property="og:title" content="pycharmers.cli.cvCascades module" />
+  <meta property="og:title" content="pycharmers.cli.requirements module" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.cvCascades.html" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.requirements.html" />
   <meta property="og:description" content="" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <title>pycharmers.cli.cvCascades module &#8212; Python-Charmers  documentation</title>
+    <title>pycharmers.cli.requirements module &#8212; Python-Charmers  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.cli.cvPaperScanner module" href="pycharmers.cli.cvPaperScanner.html" />
-    <link rel="prev" title="pycharmers.cli package" href="pycharmers.cli.html" /> 
+    <link rel="next" title="pycharmers.cli.show module" href="pycharmers.cli.show.html" />
+    <link rel="prev" title="pycharmers.cli.render_template module" href="pycharmers.cli.render_template.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvPaperScanner.html" title="pycharmers.cli.cvPaperScanner module"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+          <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -57,7 +57,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" accesskey="U">pycharmers.cli package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.cvCascades module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.requirements module</a></li> 
       </ul>
     </div>  
 
@@ -66,17 +66,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.cli.cvCascades">
-<span id="pycharmers-cli-cvcascades-module"></span><h1>pycharmers.cli.cvCascades module<a class="headerlink" href="#module-pycharmers.cli.cvCascades" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.requirements">
+<span id="pycharmers-cli-requirements-module"></span><h1>pycharmers.cli.requirements module<a class="headerlink" href="#module-pycharmers.cli.requirements" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="pycharmers.cli.cvCascades.cvCascades">
-<code class="sig-prename descclassname">pycharmers.cli.cvCascades.</code><code class="sig-name descname">cvCascades</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/cvCascades.html#cvCascades"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.cvCascades.cvCascades" title="Permalink to this definition">¶</a></dt>
-<dd><p>Control the OpenCV cascade Examples.</p>
-<p>Please see <a class="reference internal" href="pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.cv2ArgumentParser" title="pycharmers.utils.argparse_utils.cv2ArgumentParser"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cv2ArgumentParser</span></code></a> for arguments.</p>
+<dt id="pycharmers.cli.requirements.requirements_create">
+<code class="sig-prename descclassname">pycharmers.cli.requirements.</code><code class="sig-name descname">requirements_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/requirements.html#requirements_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.requirements.requirements_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">requirements.text</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to a package (module).</p>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When you run from the command line, execute as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cv-cascades --cam 0 --radio-width 200
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ requirements-create ~/path/to/pycharmers
 </pre></div>
 </div>
 </div>
@@ -126,14 +130,14 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.cvCascades module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvWindow.html">pycharmers.cli.cvWindow module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.pdfmine.html">pycharmers.cli.pdfmine module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
-<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.requirements.html">pycharmers.cli.requirements module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.requirements module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
@@ -153,15 +157,15 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.cli.html"
-                        title="previous chapter">pycharmers.cli package</a></p>
+  <p class="topless"><a href="pycharmers.cli.render_template.html"
+                        title="previous chapter">pycharmers.cli.render_template module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.cli.cvPaperScanner.html"
-                        title="next chapter">pycharmers.cli.cvPaperScanner module</a></p>
+  <p class="topless"><a href="pycharmers.cli.show.html"
+                        title="next chapter">pycharmers.cli.show module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/pycharmers.cli.cvCascades.rst.txt"
+      <li><a href="_sources/pycharmers.cli.requirements.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -189,10 +193,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvPaperScanner.html" title="pycharmers.cli.cvPaperScanner module"
+          <a href="pycharmers.cli.show.html" title="pycharmers.cli.show module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+          <a href="pycharmers.cli.render_template.html" title="pycharmers.cli.render_template module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -200,7 +204,7 @@
 
           <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" >pycharmers.cli package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.cvCascades module</a></li> 
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.requirements module</a></li> 
       </ul>
     </div>
 

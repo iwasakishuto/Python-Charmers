@@ -68,6 +68,10 @@
             
   <div class="section" id="module-pycharmers.utils.inspect_utils">
 <span id="pycharmers-utils-inspect-utils-module"></span><h1>pycharmers.utils.inspect_utils module<a class="headerlink" href="#module-pycharmers.utils.inspect_utils" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Translate from “module name” to “package name”.</p>
+</div>
 <dl class="py function">
 <dt id="pycharmers.utils.inspect_utils.get_defined_members">
 <code class="sig-prename descclassname">pycharmers.utils.inspect_utils.</code><code class="sig-name descname">get_defined_members</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">predicate=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/inspect_utils.html#get_defined_members"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.inspect_utils.get_defined_members" title="Permalink to this definition">¶</a></dt>
@@ -91,15 +95,15 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_defined_members</span><span class="p">(</span><span class="n">inspect_utils</span><span class="p">)</span>
 <span class="go">{</span>
 <span class="go">    &#39;get_defined_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_defined_members(obj, predicate=&lt;function &lt;lambda&gt; at 0x14227fca0&gt;)&gt;,</span>
-<span class="go">    &#39;get_import_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_import_members(obj)&gt;</span>
+<span class="go">    &#39;get_imported_members&#39;: &lt;function pycharmers.utils.inspect_utils.get_imported_members(obj)&gt;</span>
 <span class="go">}</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.utils.inspect_utils.get_import_members">
-<code class="sig-prename descclassname">pycharmers.utils.inspect_utils.</code><code class="sig-name descname">get_import_members</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/inspect_utils.html#get_import_members"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.inspect_utils.get_import_members" title="Permalink to this definition">¶</a></dt>
+<dt id="pycharmers.utils.inspect_utils.get_imported_members">
+<code class="sig-prename descclassname">pycharmers.utils.inspect_utils.</code><code class="sig-name descname">get_imported_members</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/inspect_utils.html#get_imported_members"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.inspect_utils.get_imported_members" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get import members.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -111,8 +115,8 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">inspect_utils</span><span class="p">,</span> <span class="n">get_import_members</span><span class="p">,</span> <span class="n">dumps_json</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dumps_json</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">get_import_members</span><span class="p">(</span><span class="n">inspect_utils</span><span class="p">)))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">inspect_utils</span><span class="p">,</span> <span class="n">get_imported_members</span><span class="p">,</span> <span class="n">dumps_json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dumps_json</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">get_imported_members</span><span class="p">(</span><span class="n">inspect_utils</span><span class="p">)))</span>
 <span class="go">{</span>
 <span class="go">    &quot;&quot;: [</span>
 <span class="go">        &quot;re&quot;,</span>

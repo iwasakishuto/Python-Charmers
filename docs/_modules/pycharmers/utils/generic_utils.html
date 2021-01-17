@@ -725,6 +725,32 @@
             <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">no</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_pyenv"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.get_pyenv">[docs]</a><span class="k">def</span> <span class="nf">get_pyenv</span><span class="p">(</span><span class="n">scope_variables</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;In what environment python is running.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        scope_variables (dict) : the dictionary containing the current scope&#39;s global (local) variables. ( ``globals()`` or ``locals()`` )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str : wheather the environment is Jupyter Notebook or not.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import is_env_notebook</span>
+<span class="sd">        &gt;&gt;&gt; is_env_notebook(globals())</span>
+<span class="sd">        &#39;Jupyter Notebook&#39;    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># global locals</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Python shell&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;get_ipython&quot;</span> <span class="ow">in</span> <span class="n">scope_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">ipython_class_name</span> <span class="o">=</span> <span class="n">scope_variables</span><span class="p">[</span><span class="s2">&quot;get_ipython&quot;</span><span class="p">]()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">ipython_class_name</span> <span class="o">==</span> <span class="s2">&quot;ZMQInteractiveShell&quot;</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Jupyter Notebook&quot;</span>
+        <span class="k">elif</span> <span class="n">ipython_class_name</span> <span class="o">==</span> <span class="s2">&quot;TerminalInteractiveShell&quot;</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Ipython&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;OtherShell&quot;</span>
+    <span class="k">return</span> <span class="n">env</span></div>
 </pre></div>
 
             <div class="clearer"></div>

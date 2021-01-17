@@ -667,6 +667,29 @@ b'ÿØÿàJFIFIIÿþ...
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.get_pyenv">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_pyenv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scope_variables</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_pyenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_pyenv" title="Permalink to this definition">¶</a></dt>
+<dd><p>In what environment python is running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scope_variables</strong> (<em>dict</em>) – the dictionary containing the current scope’s global (local) variables. ( <code class="docutils literal notranslate"><span class="pre">globals()</span></code> or <code class="docutils literal notranslate"><span class="pre">locals()</span></code> )</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>wheather the environment is Jupyter Notebook or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">is_env_notebook</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_env_notebook</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+<span class="go">&#39;Jupyter Notebook&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

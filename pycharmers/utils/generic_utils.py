@@ -674,3 +674,29 @@ def filenaming(name=None):
             no += 1
         basename = f"{root}({no}){ext}"
     return os.path.join(dirname, basename)
+
+def get_pyenv(scope_variables):
+    """In what environment python is running.
+    
+    Args:
+        scope_variables (dict) : the dictionary containing the current scope's global (local) variables. ( ``globals()`` or ``locals()`` )
+
+    Returns:
+        str : wheather the environment is Jupyter Notebook or not.
+
+    Examples:
+        >>> from pycharmers.utils import is_env_notebook
+        >>> is_env_notebook(globals())
+        'Jupyter Notebook'    
+    """
+    # global locals
+    env = "Python shell"
+    if "get_ipython" in scope_variables.keys():
+        ipython_class_name = scope_variables["get_ipython"]().__class__.__name__
+        if ipython_class_name == "ZMQInteractiveShell":
+            env = "Jupyter Notebook"
+        elif ipython_class_name == "TerminalInteractiveShell":
+            env = "Ipython"
+        else:
+            env = "OtherShell"
+    return env
