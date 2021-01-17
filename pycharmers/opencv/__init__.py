@@ -41,6 +41,7 @@ from .editing import cv2paste
 from .editing import vconcat_resize_min
 from .editing import hconcat_resize_min
 from .editing import resize_aspect
+from .editing import transparency
 
 from .morphology import morph_kernel_creator
 from .morphology import morph_transformer_creator

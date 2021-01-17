@@ -660,16 +660,17 @@ def filenaming(name=None):
     dirname, basename = os.path.split(name)
     if len(dirname)==0: dirname = "."
     root, ext = os.path.splitext(basename)
-    filenames = os.listdir(dirname)
-    if basename in filenames:        
-        number = []
+    filenames_in_samedir = os.listdir(dirname)
+    if basename in filenames_in_samedir:        
+        existing_numbers = []
+        pattern = fr"{root}\((\d+)\){ext}"
+        for fn in filenames_in_samedir:
+            m = re.match(pattern=pattern, string=fn)
+            if m is not None:
+                existing_numbers.append(int(m.group(1)))
         no = 1
-        for fn in os.listdir(dirname):
-            m = re.match(pattern=fr"{root}\((\d+)\){ext}", string=fn)
-            if m:
-                number.append(int(m.group(1)))
         while True:
-            if no not in number:
+            if no not in existing_numbers:
                 break
             no += 1
         basename = f"{root}({no}){ext}"

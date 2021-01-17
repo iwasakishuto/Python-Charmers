@@ -173,6 +173,28 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.opencv.editing.transparency">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">transparency</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lower_bgr</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">upper_bgr</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#transparency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.transparency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transparency processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_path</strong> (<em>str</em>) – Path to input image.</p></li>
+<li><p><strong>out_path</strong> (<em>str</em>) – Path to output image.</p></li>
+<li><p><strong>lower_bgr</strong> (<em>tuple/int</em>) – Lower bound of image value to be transparent.</p></li>
+<li><p><strong>upper_bgr</strong> (<em>tuple/int</em>) – Upper bound of image value to be transparent.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">transparency</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transparency</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
+<span class="go">Saved at /Users/iwasakishuto/.pycharmers/opencv/image/lena_transparency.png</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
