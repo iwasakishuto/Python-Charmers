@@ -35,7 +35,7 @@ def binarizer_creator(method, maxval=255, thresh=127, thresholdType=cv2.THRESH_B
     handleTypeError(types=[str, int], method=method)
     handleKeyError(lst=list(OPENCV_BINARYZATIONS.keys()), method=method)
     if method == "fixed":
-        binarizer = lambda src, thresh=thresh: cv2.threshold(src=src, thresh=thresh, maxval=maxval, type=thresholdType)[1]
+        binarizer = lambda src, thresh=thresh, type=thresholdType : cv2.threshold(src=src, thresh=thresh, maxval=maxval, type=type)[1]
     else:
         adaptiveMethod = OPENCV_BINARYZATIONS.get(method, method)
         binarizer = lambda src, blockSize=blockSize, C=const : cv2.adaptiveThreshold(src=src, maxValue=maxval, adaptiveMethod=adaptiveMethod, thresholdType=thresholdType, blockSize=blockSize, C=C)
