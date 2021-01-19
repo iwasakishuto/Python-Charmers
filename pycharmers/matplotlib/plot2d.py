@@ -220,7 +220,7 @@ def plot_lines(data, ax=None, transpose=False, margin=0.5, label=None, linewidth
     ax = newline(x=i, y=e, ax=ax, label=label)
     return ax
 
-def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[], frame="Circle", radii=[0.2,0.4,0.6,0.8], title="", cmap="jet", ncols=1, fig=None, ax=None, figsize=(4,4)):
+def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[], frame="Circle", radii=[0.0,0.2,0.4,0.6,0.8,1.0], title="", cmap="jet", ncols=1, fig=None, ax=None, figsize=(4,4)):
     """Plot radar charts.
 
     Args:
@@ -250,14 +250,17 @@ def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[
         >>> fig.text(x=0.5, y=0.965, s="Stats", horizontalalignment="center", color="black", weight="bold", size="large")
         >>> axes = plot_radar_charts(data=data, varlabels=varlabels, datalabels=datalabels, plottitles=plottitles, cmap="jet", fig=fig, ncols=2)
         >>> fig.tight_layout()
-        >>> fig.savefig("matplotlib.plot2d.plot_radar_charts.jpg")
-        
+        >>> fig.savefig("matplotlib.plot2d.plot_radar_charts.jpg")        
 
-    +------------------------------------------------------------+
-    |                           Results                          |
-    +============================================================+
-    | .. image:: _images/matplotlib.plot2d.plot_radar_charts.jpg |
-    +------------------------------------------------------------+
+    +-----------+--------------------------------------------------------------------+
+    |                                 Results                                        |
+    +===========+====================================================================+
+    | ``frame`` |                                                             figure |
+    +-----------+--------------------------------------------------------------------+
+    |    Circle |  .. image:: _images/matplotlib.plot2d.plot_radar_charts-Circle.jpg |
+    +-----------+--------------------------------------------------------------------+
+    |   polygon | .. image:: _images/matplotlib.plot2d.plot_radar_charts-polygon.jpg |
+    +-----------+--------------------------------------------------------------------+
 
     """
     if data.ndim==2:
@@ -314,11 +317,11 @@ def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[
             if frame == 'Circle':
                 return super()._gen_axes_spines()
             elif frame == 'polygon':
-                # spine_type must be 'left'/'right'/'top'/'bottom'/'Circle'.
+                # spine_type must be 'left'/'right'/'top'/'bottom'/'circle'.
                 from matplotlib.path import Path
                 from matplotlib.spines import Spine
                 from matplotlib.transforms import Affine2D
-                spine = Spine(axes=self, spine_type='Circle', path=Path.unit_regular_polygon(nvars))
+                spine = Spine(axes=self, spine_type='circle', path=Path.unit_regular_polygon(nvars))
                 # unit_regular_polygon gives a polygon of radius 1 centered at (0, 0) but we want a polygon of radius 0.5 centered at (0.5, 0.5) in axes coordinates.
                 spine.set_transform(Affine2D().scale(.5).translate(.5, .5) + self.transAxes)
                 return {'polar': spine}
@@ -329,6 +332,7 @@ def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[
     fig, axes = FigAxes_create(fig=fig, ax=ax, figsize=figsize, projection="radar", nplots=nplots, ncols=ncols)
     for ith_ax,ith_data,ith_title in zip(axes, data, plottitles):
         set_ax_info(ith_ax, **{
+            "rlim" : dict(bottom=min(radii), top=max(radii)),
             "rgrids" : dict(radii=radii),
             "title" : dict(label=ith_title, weight="bold", size="medium", position=(0.5, 1.1), horizontalalignment="center", verticalalignment="center"),
             "varlabels" : dict(labels=varlabels),
