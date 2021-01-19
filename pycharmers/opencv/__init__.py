@@ -1,6 +1,20 @@
 """Utility programs for `OpenCV <https://opencv.org/>`_
 
 OpenCV (Open Source Computer Vision Library) is a library of programming functions mainly aimed at real-time computer vision. Originally developed by Intel, it was later supported by Willow Garage then Itseez (which was later acquired by Intel). The library is cross-platform and free for use under the open-source BSD license.
+
+.. code-block:: python
+
+    >>> from pycharmers.opencv import SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO
+
++--------------------------+--------------------------------------------------+
+|    variable names        |                                                  |
++==========================+==================================================+
+| ``SAMPLE_LENA_IMG``      | .. image:: _images/opencv.SAMPLE_LENA_IMG.jpg    |
++--------------------------+--------------------------------------------------+
+| ``SAMPLE_VTEST_VIDEO``   | .. video:: _images/opencv.SAMPLE_VTEST_VIDEO.mp4 |
+|                          |    :width: 100%                                  |
+|                          |    :autoplay:                                    |
++--------------------------+--------------------------------------------------+
 """
 
 # coding: utf-8
