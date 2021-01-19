@@ -61,6 +61,7 @@
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
 <span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">_makedirs</span>
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">formatted_enumerator</span>
+<span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
 
 <span class="n">SUPPORTED_TARGETS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">]</span>
 
@@ -91,10 +92,13 @@
     <span class="n">target</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">target</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span>
 
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;[pdfmine]</span>
-<span class="s2">    * Input PDF file is at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">    * Extracted data will be saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">    * Extraction target is </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        [pdfmine]</span>
+<span class="s2">        * Input PDF file is at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Extracted data will be saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Extraction target is </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">]:</span>
         <span class="n">pdf_file</span> <span class="o">=</span> <span class="n">fitz</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>

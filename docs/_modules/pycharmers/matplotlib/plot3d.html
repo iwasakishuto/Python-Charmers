@@ -109,13 +109,19 @@
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import plot_stl_file, FigAxes_create, set_ax_info</span>
-<span class="sd">        &gt;&gt;&gt; fig, ax = FigAxes_create(figsize=(8,8), projection=&quot;3d&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = FigAxes_create(figsize=(8,8), projection=&quot;3d&quot;, nplots=1)[0]</span>
 <span class="sd">        &gt;&gt;&gt; plot_stl_file(&quot;Scorpion.stl&quot;, ax=ax, ratio=.5, alpha=0.01, color=&quot;red&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; set_ax_info(ax, title=&quot;Scorpion&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; fig.savefig(&quot;Scorpion.png&quot;)</span>
 
 <span class="sd">    References:        </span>
 <span class="sd">        If you want to see the result of the ``Examples``, see `my tweet &lt;https://twitter.com/cabernet_rock/status/1304751796233986048&gt;`_</span>
+
+<span class="sd">    +-----------------------------------------------------------+</span>
+<span class="sd">    |                         Results                           |</span>
+<span class="sd">    +===========================================================+</span>
+<span class="sd">    | .. image:: _images/matplotlib.plot3d.plot_stl_file.jpg    |</span>
+<span class="sd">    +-----------------------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">poly_3D_collection</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">stl2mpl_data</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="n">ratio</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">poly_3D_collection</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>

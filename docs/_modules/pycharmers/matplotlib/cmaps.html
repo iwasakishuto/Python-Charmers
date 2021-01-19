@@ -197,17 +197,23 @@
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import color_dict_create</span>
 <span class="sd">        &gt;&gt;&gt; color_dict_create(keys=[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], cmap=&quot;jet&quot;)</span>
-<span class="sd">        {&#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
-<span class="sd">        &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
-<span class="sd">        &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">            &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">            &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)</span>
+<span class="sd">        }</span>
 <span class="sd">        &gt;&gt;&gt; color_dict_create(keys=3, cmap=&quot;jet&quot;)</span>
-<span class="sd">        {0: (0.0, 0.0, 0.5, 1.0),</span>
-<span class="sd">        1: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
-<span class="sd">        2: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">        {</span>
+<span class="sd">            0: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">            1: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">            2: (0.5, 0.0, 0.0, 1.0)</span>
+<span class="sd">        }</span>
 <span class="sd">        &gt;&gt;&gt; color_dict_create(keys=[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], cmap=plt.get_cmap(&quot;jet&quot;))</span>
-<span class="sd">        {&#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
-<span class="sd">        &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
-<span class="sd">        &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)}</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;b&#39;: (0.0, 0.0, 0.5, 1.0),</span>
+<span class="sd">            &#39;c&#39;: (0.4901960784313725, 1.0, 0.4775458570524984, 1.0),</span>
+<span class="sd">            &#39;a&#39;: (0.5, 0.0, 0.0, 1.0)</span>
+<span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">Colormap</span><span class="p">):</span>
         <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">Supported_Cmaps</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>

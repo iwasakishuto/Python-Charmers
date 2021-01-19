@@ -58,13 +58,19 @@ def plot_stl_file(filename, ax=None, ratio=1., seed=None, alpha=1, color=None):
 
     Examples:
         >>> from pycharmers.matplotlib import plot_stl_file, FigAxes_create, set_ax_info
-        >>> fig, ax = FigAxes_create(figsize=(8,8), projection="3d")
+        >>> fig, ax = FigAxes_create(figsize=(8,8), projection="3d", nplots=1)[0]
         >>> plot_stl_file("Scorpion.stl", ax=ax, ratio=.5, alpha=0.01, color="red")
         >>> set_ax_info(ax, title="Scorpion")
         >>> fig.savefig("Scorpion.png")
 
     References:        
         If you want to see the result of the ``Examples``, see `my tweet <https://twitter.com/cabernet_rock/status/1304751796233986048>`_
+
+    +-----------------------------------------------------------+
+    |                         Results                           |
+    +===========================================================+
+    | .. image:: _images/matplotlib.plot3d.plot_stl_file.jpg    |
+    +-----------------------------------------------------------+
     """
     poly_3D_collection, scale = stl2mpl_data(filename=filename, ratio=ratio, seed=seed)
     poly_3D_collection.set_alpha(alpha)

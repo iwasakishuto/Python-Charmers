@@ -10,6 +10,7 @@ from PIL import Image
 from ..utils._colorings import toBLUE, toGREEN
 from ..utils._path import _makedirs
 from ..utils.generic_utils import formatted_enumerator
+from ..utils.print_utils import pretty_3quote
 
 SUPPORTED_TARGETS = ["img", "image", "table"]
 
@@ -40,10 +41,13 @@ def pdfmine(argv=sys.argv[1:]):
     target = args.target
     verbose = not args.quiet
 
-    if verbose: print(f"""[pdfmine]
-    * Input PDF file is at {toBLUE(input_path)}
-    * Extracted data will be saved at {toBLUE(output_dir)}
-    * Extraction target is {toGREEN(target)}""")
+    if verbose: 
+        print(*pretty_3quote(f"""
+        [pdfmine]
+        * Input PDF file is at {toBLUE(input_path)}
+        * Extracted data will be saved at {toBLUE(output_dir)}
+        * Extraction target is {toGREEN(target)}
+        """))
 
     if target in ["img", "image"]:
         pdf_file = fitz.open(input_path)

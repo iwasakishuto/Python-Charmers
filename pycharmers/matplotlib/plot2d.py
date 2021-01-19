@@ -1,13 +1,17 @@
 # coding: utf-8
+import numbers
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
-import numbers
+from matplotlib.projections.polar import PolarAxes
+from matplotlib.projections import register_projection
 
-from .layout import FigAxes_create, set_ax_info
+from .layout import FigAxes_create, set_ax_info, measure_canvas
+from .cmaps import color_dict_create
 from ..utils.numpy_utils import confusion_matrix, take_centers
+from ..utils.generic_utils import handleKeyError
 
-def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", anno_color="green"):
+def plot_hist(data, bins=None, ax=None, roffset=0.01, rwidth=0.95, hist_color=None, anno_color="green"):
     """Plot Histogram
 
     Args:
@@ -15,6 +19,7 @@ def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", anno_co
         bins (int)       : Defines the number of equal-width bins in the range.
         ax (AxesSubplot) : The ``Axes`` instance.
         roffset (float)  : Offset from histogram to annotation text.
+        rwidth (float)   : The relative width of the bars as a fraction of the bin width.  If ``None``, automatically compute the width.
         hist_color (str) : The histogram color.
         anno_color (str) : The annotation text color.
 
@@ -22,12 +27,19 @@ def plot_hist(data, bins=None, ax=None, roffset=0.01, hist_color="blue", anno_co
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.matplotlib import plot_hist
-        >>> data = np.random.normal(size=1000)
-        >>> ax = plot_hist(data)
-        >>> plt.show()
+        >>> fig, ax = plt.subplots()
+        >>> data = np.random.RandomState(123).normal(size=1000)
+        >>> ax = plot_hist(data, ax=ax, rwidth=0.95)
+        >>> fig.savefig("matplotlib.plot2d.plot_hist.jpg")
+
+    +-----------------------------------------------------------+
+    |                         Results                           |
+    +===========================================================+
+    | .. image:: _images/matplotlib.plot2d.plot_hist.jpg        |
+    +-----------------------------------------------------------+
     """
-    fig, ax = FigAxes_create(ax=ax)
-    Y, bins, _ = ax.hist(data, bins=bins, color=hist_color)
+    ax = FigAxes_create(ax=ax)[1][0]
+    Y, bins, _ = ax.hist(data, bins=bins, color=hist_color, rwidth=rwidth)
     X = take_centers(bins)
     offset_real = np.max(Y) * roffset
     for x, y in zip(X, Y):
@@ -50,20 +62,28 @@ def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, 
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.matplotlib import plot_cumulative_ratio
-        >>> num_data = 1000
+        >>> ndata = 1000
         >>> rnd = np.random.RandomState(123)
-        >>> labels = rnd.randint(low=0, high=4, size=num_data)
-        >>> data   = rnd.normal(size=num_data) + labels*0.25
-        >>> ax = plot_cumulative_ratio(data, labels=labels, bar=True)
+        >>> labels = rnd.randint(low=0, high=4, size=ndata)
+        >>> data   = rnd.normal(size=ndata) + labels*0.25
+        >>> fig, ax = plt.subplots()
+        >>> plot_cumulative_ratio(data, ax=ax, labels=labels, bar=True)
         >>> ax.legend()
-        >>> plt.show()
+        >>> fig.savefig("matplotlib.plot2d.plot_cumulative_ratio.jpg")
+
+    +-----------------------------------------------------------------------+
+    |                                     Results                           |
+    +=======================================================================+
+    | .. image:: _images/matplotlib.plot2d.plot_cumulative_ratio.jpg        |
+    +-----------------------------------------------------------------------+
+
     """
-    num_data = len(data)
+    ndata = len(data)
     _, bin_edges = np.histogram(a=data, bins=bins)
     X = take_centers(bin_edges)
     if reverse: X = X[::-1]
 
-    #=== Calcurate each group's plot information. ===
+    #=== Calcurate each group"s plot information. ===
     if labels is None: labels = np.zeros_like(data)
     hists = np.zeros(shape=(1,bins))
     groups = np.unique(labels)
@@ -74,8 +94,8 @@ def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, 
         hists = np.r_[hists, np.cumsum(hist).reshape(1,-1)]
 
     # Plot
-    fig, ax = FigAxes_create(ax=ax)
-    hists /= num_data
+    ax = FigAxes_create(ax=ax)[1][0]
+    hists /= ndata
     bottoms = np.cumsum(hists, axis=0)
     color_arr = plt.get_cmap(name=cmap, lut=len(groups)).colors
     width = (X[1] - X[0])*width
@@ -90,30 +110,41 @@ def plot_cumulative_ratio(data, labels=None, bins=10, width=0.8, reverse=False, 
             Y_past = Y_curt
     return ax
 
-def plot_classification_performance(cm=None, y_true=None, y_pred=None, cmap="RdBu", answer_label="answer", predict_label="predict"):
-    """Plot model's classification performance.
+def plot_classification_performance(cm=None, y_true=None, y_pred=None, cmap="RdBu", answer_label="answer", predict_label="predict", ax=None):
+    """Plot model"s classification performance.
 
     Args:
         cm (array)          : Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and prediced label being j-th class.
         y_true (array)      : Ground truth (correct) target values.
         y_pred (array)      : Estimated targets as returned by a classifier.
         cmap (str)          : The name of a color map known to ``matplotlib``
+        ax (AxesSubplot)    : The ``Axes`` instance.
         answer_label (str)  : The label name on the correct answer side.
         predict_label (str) : The label name on the prediction side.
+
+    Returns:
+        axes (Axes) : An array of ``Axes`` objects if more than one subplot was created.
 
     Examples:
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.matplotlib import plot_classification_performance
+        >>> fig, ax = plt.subplots(figsize=(5,5))
         >>> rnd = np.random.RandomState(123)
         >>> y_true = rnd.randint(low=0, high=4, size=100)
         >>> y_pred = rnd.randint(low=0, high=4, size=100)
-        >>> plot_classification_performance(y_true=y_true, y_pred=y_pred)
-        >>> plt.show()
+        >>> plot_classification_performance(y_true=y_true, y_pred=y_pred, ax=ax)
+        >>> fig.savefig("matplotlib.plot2d.plot_classification_performance.jpg")
+
+    +---------------------------------------------------------------------------------+
+    |                                     Results                                     |
+    +=================================================================================+
+    | .. image:: _images/matplotlib.plot2d.plot_classification_performance.jpg        |
+    +---------------------------------------------------------------------------------+
     """
     if cm is None:
         cm = confusion_matrix(y_true=y_true, y_pred=y_pred)
-    fig, ax = plt.subplots(figsize=(5, 5))
+    ax = FigAxes_create(ax=ax, figsize=(5,5))[1][0]
     ax.matshow(cm, cmap=cmap, alpha=0.3)
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
@@ -159,7 +190,14 @@ def plot_lines(data, ax=None, transpose=False, margin=0.5, label=None, linewidth
         >>> })
         >>> ax.legend()
         >>> plt.tight_layout()
-        >>> plt.show()
+        >>> fig.savefig("matplotlib.plot2d.plot_lines.jpg")
+
+    +------------------------------------------------------------+
+    |                           Results                          |
+    +============================================================+
+    | .. image:: _images/matplotlib.plot2d.plot_lines.jpg        |
+    +------------------------------------------------------------+
+   
     """
     def newline(x,y,ax,label=None):
         xdata = [x,x]; ydata = [y,y]
@@ -170,8 +208,10 @@ def plot_lines(data, ax=None, transpose=False, margin=0.5, label=None, linewidth
         ax.add_line(mlines.Line2D(xdata=xdata, ydata=ydata, linewidth=linewidth, linestyle=linestyle, color=color, marker=marker, label=label, **kwargs))
         return ax
     
+    ax = FigAxes_create(ax=ax)[1][0]
     for i,ith_data in enumerate(data):
-        if isinstance(ith_data, numbers.Number): ith_data = [ith_data]
+        if isinstance(ith_data, numbers.Number): 
+            ith_data = [ith_data]
         i_=i
         for e in ith_data:
             if transpose:
@@ -179,3 +219,122 @@ def plot_lines(data, ax=None, transpose=False, margin=0.5, label=None, linewidth
             ax = newline(x=i, y=e, ax=ax, label=None)
     ax = newline(x=i, y=e, ax=ax, label=label)
     return ax
+
+def plot_radar_charts(data, varlabels=[], colors=[], datalabels=[], plottitles=[], frame="Circle", radii=[0.2,0.4,0.6,0.8], title="", cmap="jet", ncols=1, fig=None, ax=None, figsize=(4,4)):
+    """Plot radar charts.
+
+    Args:
+        data (np.ndarray)              : Array-like sample data. shape=( ``nplots``, ``ndata``, ``nvars`` ) 
+        varlabels (list)               : Array-like labels of varnames. ( ``len(varlabels)==nvars`` )
+        colors (list)                  : Colors for each variables. ``len(colors)==ndata``
+        datalabels (list)              : Array-like labels of data. ( ``len(datalabels)==ndata`` )
+        plottitles (list)              : Array-like labels of plot titles. ( ``len(plottitles)==nplots`` )
+        frame (str)                    : Shape of frame surrounding axes. ( ``"Circle"``, or ``"polygon"`` )
+        radii (list)                   : The radii for the radial gridlines. (default= ``[0.2,0.4,0.6,0.8]`` )
+        title (str)                    : Figure title.
+        cmap (str / matplotlib.colors) : Color map. 
+        ncols (int)                    : The number of columns.
+        fig (Figure)                   : The ``Figure`` instance.
+        ax (Axes)                      : The ``Axes`` instance.
+        figsize (tuple)                : The figure size for ``1`` plot.
+
+    Examples:
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from pycharmers.matplotlib import plot_radar_charts, mpljapanize
+        >>> data = np.random.RandomState(123).uniform(low=0.3, high=1.0, size=(2,3,6))
+        >>> varlabels  = ["Hit Points", "Attack", "Defense", "Special Attack", "Special Defense", "Speed"] 
+        >>> datalabels = ["Evo.1", "Evo.2", "Evo.3"]
+        >>> plottitles = ["Ruby", "Sapphire"]
+        >>> fig = plt.figure(figsize=(12,6))
+        >>> fig.text(x=0.5, y=0.965, s="Stats", horizontalalignment="center", color="black", weight="bold", size="large")
+        >>> axes = plot_radar_charts(data=data, varlabels=varlabels, datalabels=datalabels, plottitles=plottitles, cmap="jet", fig=fig, ncols=2)
+        >>> fig.tight_layout()
+        >>> fig.savefig("matplotlib.plot2d.plot_radar_charts.jpg")
+        
+
+    +------------------------------------------------------------+
+    |                           Results                          |
+    +============================================================+
+    | .. image:: _images/matplotlib.plot2d.plot_radar_charts.jpg |
+    +------------------------------------------------------------+
+
+    """
+    if data.ndim==2:
+        data = np.expand_dims(data, axis=0)
+    nplots, ndata, nvars = data.shape
+    if len(varlabels)!=nvars:
+        varlabels = [f"var.{i+1:>0{len(str(nvars))}}" for i in range(nvars)]
+    if len(colors)!=ndata:
+        colors = color_dict_create(keys=ndata, cmap=cmap).values()
+    if len(datalabels)!=ndata:
+        datalabels = [f"Factor.{i+1:>0{len(str(ndata))}}" for i in range(ndata)]
+    if len(plottitles)!=nplots:
+        plottitles = [""]*nplots
+    theta = np.linspace(start=0, stop=2*np.pi, num=nvars, endpoint=False)
+
+    class RadarAxes(PolarAxes):
+        name = "radar"
+        RESOLUTION = 1 # use 1 line segment to connect specified points
+        SUPPORTED_FRAMES = ["Circle", "polygon"]
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # rotate plot such that the first axis is at the top
+            self.set_theta_zero_location('N')
+
+        def fill(self, *args, closed=True, **kwargs):
+            """Override fill so that line is closed by default"""
+            return super().fill(closed=closed, *args, **kwargs)
+
+        def plot(self, *args, **kwargs):
+            """Override plot so that line is closed by default"""
+            lines = super().plot(*args, **kwargs)
+            for line in lines:
+                self._close_line(line)
+
+        def _close_line(self, line):
+            x, y = line.get_data()
+            line.set_data(np.append(x, x[0]), np.append(y, y[0]))
+
+        def set_varlabels(self, labels):
+            self.set_thetagrids(np.degrees(theta), labels)
+
+        def _gen_axes_patch(self):
+            # The Axes patch must be centered at (0.5, 0.5) and of radius 0.5
+            # in axes coordinates.
+            if frame == 'Circle':
+                from matplotlib.patches import Circle
+                return Circle((0.5, 0.5), 0.5)
+            elif frame == 'polygon':
+                from matplotlib.patches import RegularPolygon
+                return RegularPolygon((0.5, 0.5), nvars, radius=.5, edgecolor="k")
+
+        def _gen_axes_spines(self):
+            if frame == 'Circle':
+                return super()._gen_axes_spines()
+            elif frame == 'polygon':
+                # spine_type must be 'left'/'right'/'top'/'bottom'/'Circle'.
+                from matplotlib.path import Path
+                from matplotlib.spines import Spine
+                from matplotlib.transforms import Affine2D
+                spine = Spine(axes=self, spine_type='Circle', path=Path.unit_regular_polygon(nvars))
+                # unit_regular_polygon gives a polygon of radius 1 centered at (0, 0) but we want a polygon of radius 0.5 centered at (0.5, 0.5) in axes coordinates.
+                spine.set_transform(Affine2D().scale(.5).translate(.5, .5) + self.transAxes)
+                return {'polar': spine}
+
+    handleKeyError(lst=RadarAxes.SUPPORTED_FRAMES, frame=frame)
+    register_projection(RadarAxes)
+
+    fig, axes = FigAxes_create(fig=fig, ax=ax, figsize=figsize, projection="radar", nplots=nplots, ncols=ncols)
+    for ith_ax,ith_data,ith_title in zip(axes, data, plottitles):
+        set_ax_info(ith_ax, **{
+            "rgrids" : dict(radii=radii),
+            "title" : dict(label=ith_title, weight="bold", size="medium", position=(0.5, 1.1), horizontalalignment="center", verticalalignment="center"),
+            "varlabels" : dict(labels=varlabels),
+        })
+        for d, color in zip(ith_data, colors):
+            ith_ax.plot(theta, d, color=color)
+            ith_ax.fill(theta, d, facecolor=color, alpha=0.25)
+    axes[0].legend(datalabels, loc=(0.9, .95), labelspacing=0.1, fontsize='small')
+    return axes
