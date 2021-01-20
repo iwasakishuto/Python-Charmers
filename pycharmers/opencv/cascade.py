@@ -4,7 +4,7 @@ import cv2
 import glob
 
 from ..utils.generic_utils import handleKeyError, handleTypeError
-from ._path import PYCHARMERS_OPENCV_DATA_DIR
+from ._cvpath import PYCHARMERS_OPENCV_DATA_DIR
 
 OPENCV_CASCADES = {
     os.path.splitext(":".join(path.split("/")[-2:]))[0] : path

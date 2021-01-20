@@ -2,7 +2,7 @@
 import os
 import cv2
 
-from ._path import save_dir_create
+from ._cvpath import save_dir_create
 from .video_image_handler import basenaming
 from .drawing import SUPPORTED_COORD_TYPES, draw_bboxes_create, draw_text_with_bg
 from ..utils.generic_utils import get_create, handleKeyError

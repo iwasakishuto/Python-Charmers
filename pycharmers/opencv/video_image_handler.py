@@ -6,7 +6,7 @@ import numpy as np
 
 from .editing import vconcat_resize_min, hconcat_resize_min
 from ..utils.generic_utils import calc_rectangle_size, now_str
-from ._path import save_dir_create
+from ._cvpath import save_dir_create
 
 IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
 

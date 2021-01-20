@@ -25,29 +25,33 @@ def show_command_line_programs(argv=sys.argv[1:]):
 
     Examples:
         >>> $ pycharmers-show
-            +--------------------+------------------------------------------------------+
-            |      command       |                         path                         |
-            +====================+======================================================+
-            |        cv-cascades |                 pycharmers.cli.cvCascades:cvCascades |
-            +--------------------+------------------------------------------------------+
-            |   cv-paper-scanner |         pycharmers.cli.cvPaperScanner:cvPaperScanner |
-            +--------------------+------------------------------------------------------+
-            |   cv-pencil-sketch |         pycharmers.cli.cvPencilSketch:cvPencilSketch |
-            +--------------------+------------------------------------------------------+
-            |          cv-window |                     pycharmers.cli.cvWindow:cvWindow |
-            +--------------------+------------------------------------------------------+
-            |            pdfmine |                       pycharmers.cli.pdfmine:pdfmine |
-            +--------------------+------------------------------------------------------+
-            | regexp-replacement | pycharmers.cli.regexp_replacement:regexp_replacement |
-            +--------------------+------------------------------------------------------+
-            |    render-template |       pycharmers.cli.render_template:render_template |
-            +--------------------+------------------------------------------------------+
-            |    pycharmers-show |       pycharmers.cli.show:show_command_line_programs |
-            +--------------------+------------------------------------------------------+
-            |           tweetile |                     pycharmers.cli.tweetile:tweetile |
-            +--------------------+------------------------------------------------------+
-            |          video2gif |                   pycharmers.cli.video2gif:video2gif |
-            +--------------------+------------------------------------------------------+    
+        +---------------------+------------------------------------------------------+
+        |       command       |                         path                         |
+        +=====================+======================================================+
+        |         cv-cascades |                 pycharmers.cli.cvCascades:cvCascades |
+        +---------------------+------------------------------------------------------+
+        |    cv-paper-scanner |         pycharmers.cli.cvPaperScanner:cvPaperScanner |
+        +---------------------+------------------------------------------------------+
+        |    cv-pencil-sketch |         pycharmers.cli.cvPencilSketch:cvPencilSketch |
+        +---------------------+------------------------------------------------------+
+        |           cv-window |                     pycharmers.cli.cvWindow:cvWindow |
+        +---------------------+------------------------------------------------------+
+        |   form-auto-fill-in |   pycharmers.cli.form_auto_fill_in:form_auto_fill_in |
+        +---------------------+------------------------------------------------------+
+        |             pdfmine |                       pycharmers.cli.pdfmine:pdfmine |
+        +---------------------+------------------------------------------------------+
+        |  regexp-replacement | pycharmers.cli.regexp_replacement:regexp_replacement |
+        +---------------------+------------------------------------------------------+
+        |     render-template |       pycharmers.cli.render_template:render_template |
+        +---------------------+------------------------------------------------------+
+        | requirements-create |      pycharmers.cli.requirements:requirements_create |
+        +---------------------+------------------------------------------------------+
+        |     pycharmers-show |       pycharmers.cli.show:show_command_line_programs |
+        +---------------------+------------------------------------------------------+
+        |            tweetile |                     pycharmers.cli.tweetile:tweetile |
+        +---------------------+------------------------------------------------------+
+        |           video2gif |                   pycharmers.cli.video2gif:video2gif |
+        +---------------------+------------------------------------------------------+
     """
     parser = argparse.ArgumentParser(prog="pycharmers-show", add_help=True)
     parser.add_argument("-H", "--head",  type=int, help="Show the first ``head`` rows for the table.")

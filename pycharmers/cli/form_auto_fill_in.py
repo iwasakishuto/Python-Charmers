@@ -36,6 +36,7 @@ def form_auto_fill_in(argv=sys.argv[1:]):
             $ form-auto-fill-in
 
     Examples:
+        >>> # Run in terminal
         >>> form-auto-fill-in UHMRF --show-data
         {
             "name": "UTokyo Health Management Report Form",

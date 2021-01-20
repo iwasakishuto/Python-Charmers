@@ -18,8 +18,8 @@ OpenCV (Open Source Computer Vision Library) is a library of programming functio
 """
 
 # coding: utf-8
-from ._path import *
-from ._path import save_dir_create
+from ._cvpath import *
+from ._cvpath import save_dir_create
 from . import backsub
 from . import binary
 from . import cvui

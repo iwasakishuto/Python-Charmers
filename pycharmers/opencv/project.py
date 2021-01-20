@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from . import cvui
-from ._path import PYCHARMERS_OPENCV_VIDEO_DIR
+from ._cvpath import PYCHARMERS_OPENCV_VIDEO_DIR
 from .editing import resize_aspect
 from .video_image_handler import VideoCaptureCreate
 from .windows import cv2key2chr

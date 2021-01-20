@@ -74,24 +74,49 @@ import os
 import re
 import sys
 import cv2
-from tabulate import tabulate
 
-from ._path import save_dir_create
-from .video_image_handler import (basenaming, mono_frame_generator, multi_frame_generator_concat,
-                                  count_frame_num, create_VideoWriter)
+from ._cvpath import save_dir_create
+from .video_image_handler import basenaming, mono_frame_generator, multi_frame_generator_concat, count_frame_num, create_VideoWriter
 from .drawing import draw_text_with_bg, draw_bboxes_create
 from .tracking import tracker_create, BBoxLogger
 from ..utils.generic_utils import now_str, flatten_dual, int2ordinal, handleKeyError
-from ..utils.print_utils import pretty_3quote
+from ..utils.print_utils import pretty_3quote, tabulate
 from ..utils._colorings import toRED, toBLUE, toGREEN, toACCENT
 
 def cv2key2chr(key):
-    char = chr(key) if key!=-1 else ""
-    return {
+    """Convert a key event into a Unicode string or an easy-to-understand string.
+
+    Args:
+        key (int) : The key event. (return of ``cv2.waitKey`` )
+
+    Returns:
+        (str) : a Unicode string of one character or an easy-to-understand string.
+
+    Examples:
+        >>> from pycharmers.opencv import cv2key2chr
+        >>> import cv2
+        >>> import numpy as np
+        >>> from pycharmers.opencv import cv2key2chr
+        ...  
+        >>> winname = "cv2key2chr"
+        >>> image = np.random.randint(low=0, high=255, size=(200,200,3), dtype=np.uint8)
+        >>> while True:
+        ...     key = cv2.waitKey(1)
+        ...     cv2.imshow(winname=winname, mat=image)
+        ...     if key!=-1: print(key, cv2key2chr(key))
+        ...     if key==27: break
+        >>> cv2.destroyWindow(winname=winname)
+    """
+    char = chr(key) if 0<=key<=0x10ffff else ""
+    char2mean = {
         "\x08" : "<delete>",
         "\r"   : "<enter>",
         "\x1b" : "<esc>",
-    }.get(char, char)
+        " "    : "<space>",
+        "\t"   : "<tab>",
+        "\x00" : "<modifier>",
+    }
+    return char2mean.get(char, char)
 
 
 DEFAULT_CV_KEYS = {
@@ -222,19 +247,14 @@ class cvKeys():
         """
         group = group.upper()
         self.groups.append(group)
-        self.info_table.append([toRED(group), "", ""])
-        for name, key in keys.items():
-            self.info_table.append(["", fmt.format(name=toGREEN(name)), f"press {toBLUE(key)}"])
+        for i, (name,key) in enumerate(keys.items()):
+            self.info_table.append([toRED(group) if i==0 else "", fmt.format(name=toGREEN(name)), f"press {toBLUE(key)}"])
             setattr(self, f"{group}_{name.upper()}_KEY", key)
         setattr(self.__class__, f"{group}_KEYS", property(fget=lambda self: self._get_group_keys(group=group)))
 
-    @property
-    def info(self):
-        return tabulate(self.info_table, headers=["group", f"description ('{toGREEN('name')}')", "key"], tablefmt="grid")
-
     def describe(self):
         """Describe Key information."""
-        print(self.info)
+        tabulate(self.info_table, headers=["group", f"description ('{toGREEN('name')}')", "key"], tablefmt="grid")
 
     def _get_group_keys(self, group=""):
         return [key for name,key in self.__dict__.items() if re.match(pattern=fr"^{group.upper()}.+$", string=name)]
@@ -321,7 +341,7 @@ def wait_for_choice(*choices):
         >>> cv2.destroyAllWindows()
     """
     max_val = len(choices)-1
-    print(tabulate([[i,c] for i,c in enumerate(choices)], headers=["Input", "Choice"], tablefmt="pretty"))
+    tabulate([[i,c] for i,c in enumerate(choices)], headers=["Input", "Choice"], tablefmt="pretty")
     while True:
         i = int(wait_for_input())
         if 0 <= i <= max_val:
@@ -386,7 +406,6 @@ class cvWindow():
         self.move_distance = move_distance
         self.expansion_rate = expansion_rate
         self.cvKey = cvKey
-        self.describe()
 
     @property
     def reduction_rate(self):
@@ -485,13 +504,17 @@ class cvWindow():
             self.resizeWindow(height=self.Ih, width=self.Iw)
         cv2.imshow(winname=self.winname, mat=mat)
 
-    def _ret_info(self):
-        """ Return Key Information. """
-        return self.cvKey.info
-
     def describe(self):
         """Describe Key info."""
-        print(self._ret_info())
+        self.cvKey.describe()
+
+    def destroy(self):
+        """Do the necessary processing at the end."""
+        for dirname in [self.img_save_dir, self.video_save_dir]:
+            if sum(os.path.getsize(f) for f in os.listdir(dirname) if os.path.isfile(f))==0:
+                os.removedirs(dirname)
+                print(f"{toBLUE(dirname)} is deleted. (because it is empty)")
+        cv2.destroyWindow(self.winname)
 
     def recieveKey(self, key):
         """Response according to Recieved key.
@@ -507,10 +530,10 @@ class cvWindow():
         winname = self.winname
 
         # Quit.
-        if key == cvKey.BASE_KEYS_ORD:
+        if key in cvKey.BASE_KEYS_ORD:
             if key == cvKey.BASE_QUIT_KEY_ORD:
-                cv2.destroyWindow(winname)
                 is_break = True
+                self.destroy()
             elif key == cvKey.BASE_INFO_KEY_ORD:
                 self.describe()
 
@@ -612,11 +635,15 @@ class RealTimeWindow(cvWindow):
         if mat is None: mat = self.crt_frame
         draw_text_with_bg(
             img=mat, text=self.crt_fname,
-            org=(50, 50), fontFace=3,
+            org=(50, 50), fontFace=1,
             fontScale=3, color=(0,0,0), bgcolor=(255,255,255),
             color_type="css4", thickness=1,
         )
         super().show(mat)
+
+    def destroy(self):
+        self.gen.release()
+        super().destroy()
 
     def recieveKey(self, key):
         """Response according to Recieved key.
@@ -669,7 +696,7 @@ class FrameWindow(cvWindow):
         gen (gen)                  : Generator created by ``frame_generator``
         total_num (int)            : The total number of frames.
         crt_frame_no (int)         : The current number of frames. (1-based index.)
-        crt_frame (ndarray)        : The current image.  
+        crt_frame (ndarray)        : The current image.
         range_start (int)          : Start number in the selected range.
         range_end (int)            : End number in the selected range.
 
@@ -732,7 +759,7 @@ class FrameWindow(cvWindow):
         draw_text_with_bg(
             img=mat, text=f"{self.crt_frame_no}/{self.total_num}",
             org=(50, 50), fontFace=cv2.FONT_HERSHEY_COMPLEX,
-            fontScale=3, color=(0,0,0), bgcolor=(255,255,255),
+            fontScale=1, color=(0,0,0), bgcolor=(255,255,255),
             color_type="css4", thickness=1,
         )
         super().show(mat)
@@ -897,7 +924,7 @@ class TrackingWindow(FrameWindow, RealTimeWindow):
                     else:
                         draw_text_with_bg(
                             img=frame, text="failure", org=(50,50),
-                            fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=3,
+                            fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale=1,
                             color="red", bgcolor="white", color_type="css4",
                             thickness=1,
                         )
