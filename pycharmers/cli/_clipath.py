@@ -13,3 +13,6 @@ _makedirs(name=PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR)
 # Directory for 'render_templates.py'
 PYCHARMERS_CLI_RENDER_TEMPLATES_DIR = os.path.join(PYCHARMERS_CLI_DIR, "render_templates") # /Users/<username>/.pycharmers/cli/render_templates
 _makedirs(name=PYCHARMERS_CLI_RENDER_TEMPLATES_DIR)
+# Directory for 'form_auto_fill_in.py'
+PYCHARMERS_CLI_FORM_AUTO_FILL_IN_DIR = os.path.join(PYCHARMERS_CLI_DIR, "form_auto_fill_in") # /Users/<username>/.pycharmers/cli/form_auto_fill_in
+_makedirs(name=PYCHARMERS_CLI_FORM_AUTO_FILL_IN_DIR)

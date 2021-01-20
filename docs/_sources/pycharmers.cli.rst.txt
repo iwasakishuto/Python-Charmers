@@ -11,6 +11,7 @@ Submodules
    pycharmers.cli.cvPaperScanner
    pycharmers.cli.cvPencilSketch
    pycharmers.cli.cvWindow
+   pycharmers.cli.form_auto_fill_in
    pycharmers.cli.pdfmine
    pycharmers.cli.regexp_replacement
    pycharmers.cli.render_template

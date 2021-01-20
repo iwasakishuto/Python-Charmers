@@ -6,7 +6,7 @@ import json
 import argparse
 from pathlib import Path
 
-from ._path import PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR
+from ._clipath import PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR
 from ..utils._colorings import toBLUE, toGREEN
 from ..utils.generic_utils import pycat
 

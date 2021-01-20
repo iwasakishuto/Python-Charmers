@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.cli.form_auto_fill_in module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.form_auto_fill_in.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.cli.form_auto_fill_in module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.cli.pdfmine module" href="pycharmers.cli.pdfmine.html" />
+    <link rel="prev" title="pycharmers.cli.cvWindow module" href="pycharmers.cli.cvWindow.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.pdfmine.html" title="pycharmers.cli.pdfmine module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.cvWindow.html" title="pycharmers.cli.cvWindow module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" accesskey="U">pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.form_auto_fill_in module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.cli.form_auto_fill_in">
+<span id="pycharmers-cli-form-auto-fill-in-module"></span><h1>pycharmers.cli.form_auto_fill_in module<a class="headerlink" href="#module-pycharmers.cli.form_auto_fill_in" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.form_auto_fill_in.form_auto_fill_in">
+<code class="sig-prename descclassname">pycharmers.cli.form_auto_fill_in.</code><code class="sig-name descname">form_auto_fill_in</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#form_auto_fill_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.form_auto_fill_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auto fill in your form using your saved information (or answer on the spot).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to environment file.</p></li>
+<li><p><strong>-remain-unchanged</strong> (<em>bool</em>) – Whether you want to update and memorize your answer. (default= <code class="docutils literal notranslate"><span class="pre">True</span></code> )</p></li>
+<li><p><strong>-Y/--yes</strong> (<em>bool</em>) – Automatic yes to prompts.</p></li>
+<li><p><strong>--quiet</strong> (<em>bool</em>) – Whether you want to be quiet or not. (default= <code class="docutils literal notranslate"><span class="pre">False</span></code> )</p></li>
+<li><p><strong>--browser</strong> (<em>bool</em>) – Whether you want to run Chrome with GUI browser. (default= <code class="docutils literal notranslate"><span class="pre">True</span></code> )</p></li>
+<li><p><strong>-P/--params</strong> (<a class="reference internal" href="pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.KwargsParamProcessor" title="pycharmers.utils.argparse_utils.KwargsParamProcessor"><em>KwargsParamProcessor</em></a>) – Specify the kwargs. You can specify by <code class="docutils literal notranslate"><span class="pre">-P</span> <span class="pre">username=USERNAME</span></code> <code class="docutils literal notranslate"><span class="pre">-P</span> <span class="pre">password=PASSWORD</span></code></p></li>
+<li><p><strong>--show-data</strong> (<em>bool</em>) – Print the data in path.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ form-auto-fill-in UHMRF --yes -P &quot;username=USERNAME&quot; -P &quot;password=PASSWORD&quot;
+$ form-auto-fill-in UHMRF --show-data
+$ form-auto-fill-in
+</pre></div>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">-</span><span class="n">auto</span><span class="o">-</span><span class="n">fill</span><span class="o">-</span><span class="ow">in</span> <span class="n">UHMRF</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">data</span>
+<span class="go">{</span>
+<span class="go">    &quot;name&quot;: &quot;UTokyo Health Management Report Form&quot;,</span>
+<span class="go">    &quot;URL&quot;: &quot;https://forms.office.com/Pages/ResponsePage.aspx?id=XXXXX&quot;,</span>
+<span class="go">    &quot;login&quot;: {</span>
+<span class="go">        &quot;0&quot;: {</span>
+<span class="go">        &quot;func&quot;: &quot;send_keys&quot;,</span>
+<span class="go">        &quot;by&quot;: &quot;xpath&quot;,</span>
+<span class="go">        :</span>
+<span class="go">    }</span>
+<span class="go">    :</span>
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">form</span><span class="o">-</span><span class="n">auto</span><span class="o">-</span><span class="n">fill</span><span class="o">-</span><span class="ow">in</span>
+<span class="go">+--------------+--------------------------------------+</span>
+<span class="go">| Abbreviation |                 Name                 |</span>
+<span class="go">+==============+======================================+</span>
+<span class="go">|        UHMRF | UTokyo Health Management Report Form |</span>
+<span class="go">+--------------+--------------------------------------+</span>
+<span class="go">|      _sample |                         SAMPLE FORMS |</span>
+<span class="go">+--------------+--------------------------------------+</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.cli.form_auto_fill_in.</code><code class="sig-name descname">AutoFillInForms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>If you want to create your own gateway class, please inherit this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to json data that describes the procedure of form.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print message or not. (default= <code class="docutils literal notranslate"><span class="pre">True</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.print">
+<code class="sig-name descname">print</code><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print function according to <code class="docutils literal notranslate"><span class="pre">verbose</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.data">
+<code class="sig-name descname">data</code><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data that describes the procedure of form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.path">
+<code class="sig-name descname">path</code><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to json data that describes the procedure of form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.SUPPORTED_FORM_TYPES">
+<code class="sig-name descname">SUPPORTED_FORM_TYPES</code><em class="property"> = ['radio', 'checkbox', 'text']</em><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.SUPPORTED_FORM_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.DOMAIN2FORM">
+<code class="sig-name descname">DOMAIN2FORM</code><em class="property"> = {'forms.office.com': 'office'}</em><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.DOMAIN2FORM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.load_data">
+<em class="property">static </em><code class="sig-name descname">load_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load data from json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to json file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.save_data">
+<em class="property">static </em><code class="sig-name descname">save_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">indent</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">update</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.save_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.save_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save data at <code class="docutils literal notranslate"><span class="pre">self.path</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to json file.</p></li>
+<li><p><strong>indent</strong> (<em>int</em>) – If <code class="docutils literal notranslate"><span class="pre">indent</span></code> is a non-negative integer, then JSON array elements and object members will be pretty-printed with that indent level. An indent level of 0 will only insert newlines. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the most compact representation.</p></li>
+<li><p><strong>update</strong> (<em>bool</em>) – Whether to update <code class="docutils literal notranslate"><span class="pre">&quot;last_date&quot;</span></code> variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.whichForms">
+<em class="property">static </em><code class="sig-name descname">whichForms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.whichForms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.whichForms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decide which Forms from the domain of the <code class="docutils literal notranslate"><span class="pre">url</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – URL of the forms.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Identifier of the forms.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.show_curt_browser">
+<em class="property">static </em><code class="sig-name descname">show_curt_browser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.show_curt_browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.show_curt_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize the current browser by taking screenshots</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>driver</strong> (<em>WebDriver</em>) – Selenium WebDriver.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_question">
+<em class="property">static </em><code class="sig-name descname">answer_question</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qno</span></em>, <em class="sig-param"><span class="n">ans_data</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">inputElements</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">need_check</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.answer_question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_question" title="Permalink to this definition">¶</a></dt>
+<dd><p>Answer each question.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qno</strong> (<em>int</em>) – Question number in the form.</p></li>
+<li><p><strong>inputElements</strong> (<em>list</em>) – List of input elements in the form.</p></li>
+<li><p><strong>need_check</strong> (<em>bool</em>) – Whether you need to check the value when using the value in environment file. (default= <code class="docutils literal notranslate"><span class="pre">False</span></code> )</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{&quot;no&quot;:</span> <span class="pre">no,</span> <span class="pre">&quot;val&quot;:</span> <span class="pre">val}</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.show_data">
+<code class="sig-name descname">show_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.show_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.show_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.login">
+<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em>, <em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">login_data</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the login procedure required to answer the form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<em>WebDriver</em>) – Selenium WebDriver.</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – URL of the form.</p></li>
+<li><p><strong>login_data</strong> (<em>dict</em>) – Data required for login.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">browser</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.run" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>browser</strong> (<em>bool</em>) – Whether you want to run Chrome with GUI browser. (default= <code class="docutils literal notranslate"><span class="pre">False</span></code> )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.dev_run">
+<code class="sig-name descname">dev_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">browser</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.dev_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.dev_run" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>browser</strong> (<em>bool</em>) – Whether you want to run Chrome with GUI browser. (default= <code class="docutils literal notranslate"><span class="pre">True</span></code> )</p></li>
+<li><p><strong>WebDriver</strong> – Selenium WebDriver.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_form">
+<code class="sig-name descname">answer_form</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.answer_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Answer the forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>driver</strong> (<em>WebDriver</em>) – Selenium WebDriver.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_form_office">
+<code class="sig-name descname">answer_form_office</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em>, <em class="sig-param"><span class="n">need_check</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">update</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">show_result</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/form_auto_fill_in.html#AutoFillInForms.answer_form_office"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.form_auto_fill_in.AutoFillInForms.answer_form_office" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvWindow.html">pycharmers.cli.cvWindow module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.form_auto_fill_in module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.pdfmine.html">pycharmers.cli.pdfmine module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.requirements.html">pycharmers.cli.requirements module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.cli.html#module-pycharmers.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.cli.cvWindow.html"
+                        title="previous chapter">pycharmers.cli.cvWindow module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.cli.pdfmine.html"
+                        title="next chapter">pycharmers.cli.pdfmine module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.cli.form_auto_fill_in.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.pdfmine.html" title="pycharmers.cli.pdfmine module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.cvWindow.html" title="pycharmers.cli.cvWindow module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" >pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.form_auto_fill_in module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>
