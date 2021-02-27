@@ -7,6 +7,11 @@ from .monitor_utils import progress_reporthook_create
 from .print_utils import pretty_3quote
 from ._colorings import toBLUE, toRED, toGREEN
 
+# Use Specific Opener
+opener = urllib.request.build_opener()
+opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+urllib.request.install_opener(opener)
+
 CONTENT_ENCODING2EXT = {
     "x-gzip"                    : ".gz",
     "image/jpeg"                : ".jpg",

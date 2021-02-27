@@ -117,7 +117,7 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
         >>> ax = cv2plot(x=SAMPLE_LENA_IMG)
     """
     cmap = cmap or plotkeywargs.pop("cmap", None)
-    fig, ax = FigAxes_create(ax=ax, **figkeywargs)
+    ax = FigAxes_create(ax=ax, **figkeywargs)[1][0]
     if isinstance(x, str):
         x = cv2read_mpl(x)
     elif is_cv2:

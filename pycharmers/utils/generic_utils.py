@@ -701,3 +701,48 @@ def get_pyenv(scope_variables):
         else:
             env = "OtherShell"
     return env
+
+def assign_trbl(data, name, default=None):
+    """Return the ``name`` 's values of [``Top``, ``Right``, ``Bottom``, ``Left``] from ``data``
+    
+    Args:
+        data (dict) : Data Dictionary.
+        name (str)  : The name of the value you want to assign.
+        default     : Default Value.
+        
+    Returns:
+        tuple: Values of ``Top``, ``Right``, ``Bottom``, ``Left`` 
+        
+    Examples:
+        >>> from pycharmers.utils import assign_trbl
+        >>> assign_trbl(data={"margin": [1,2,3,4]}, name="margin")
+        (1, 2, 3, 4)
+        >>> assign_trbl(data={"margin": [1,2,3]}, name="margin")
+        (1, 2, 3, 2)
+        >>> assign_trbl(data={"margin": [1,2]}, name="margin")
+        (1, 2, 1, 2)
+        >>> assign_trbl(data={"margin": 1}, name="margin")
+        (1, 1, 1, 1)
+        >>> assign_trbl(data={"margin": 1}, name="padding", default=5)
+        (5, 5, 5, 5)
+    """
+    vals = data.get(name, default)
+    if not isinstance(vals, list):
+        vals = [vals]
+        
+    if  len(vals)==1:
+        t = r = b = l = vals[0]
+    elif len(vals)==2:
+        t = b = vals[0]
+        l = r = vals[1]
+    elif len(vals)==3:
+        t, r, b = vals
+        l = r
+    elif len(vals)>=4:
+        t,r,b,l = vals[:4]
+        
+    t = data.get(f"{name}-top",    data.get(f"{name}_top",    t))
+    r = data.get(f"{name}-right",  data.get(f"{name}_right",  r))
+    b = data.get(f"{name}-bottom", data.get(f"{name}_bottom", b))
+    l = data.get(f"{name}-left",   data.get(f"{name}_left",   l))
+    return (t,r,b,l)

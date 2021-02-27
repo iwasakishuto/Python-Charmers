@@ -690,6 +690,41 @@ b'ÿØÿàJFIFIIÿþ...
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.assign_trbl">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">assign_trbl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#assign_trbl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.assign_trbl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">name</span></code> ‘s values of [<code class="docutils literal notranslate"><span class="pre">Top</span></code>, <code class="docutils literal notranslate"><span class="pre">Right</span></code>, <code class="docutils literal notranslate"><span class="pre">Bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">Left</span></code>] from <code class="docutils literal notranslate"><span class="pre">data</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – Data Dictionary.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the value you want to assign.</p></li>
+<li><p><strong>default</strong> – Default Value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Values of <code class="docutils literal notranslate"><span class="pre">Top</span></code>, <code class="docutils literal notranslate"><span class="pre">Right</span></code>, <code class="docutils literal notranslate"><span class="pre">Bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">Left</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">assign_trbl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 3, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 3, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 1, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 1, 1, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;padding&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(5, 5, 5, 5)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

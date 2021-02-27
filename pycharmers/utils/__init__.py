@@ -78,6 +78,7 @@ from .generic_utils import html2reStructuredText
 from .generic_utils import int2ordinal
 from .generic_utils import filenaming
 from .generic_utils import get_pyenv
+from .generic_utils import assign_trbl
 
 from .inspect_utils import get_imported_members
 from .inspect_utils import get_defined_members
@@ -98,6 +99,7 @@ from .pandas_utils import flatten_multi_columns
 from .pil_utils import pilread
 from .pil_utils import roughen_img
 from .pil_utils import draw_text_in_pil
+from .pil_utils import draw_cross
 
 from .print_utils import tabulate
 from .print_utils import Table

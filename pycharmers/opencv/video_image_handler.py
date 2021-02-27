@@ -155,7 +155,7 @@ def basenaming(path):
     return name
 
 def create_VideoWriter(in_path, out_path=None, fps=30):
-    """Create a ``cv2.VideoWriter``
+    """Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.
 
     Args:
         in_path (str)  : Input path. (fn: video / directory: images)
@@ -187,7 +187,8 @@ def create_VideoWriter(in_path, out_path=None, fps=30):
             if img is not None:
                 break
         H,W = img.shape[:2]
-    out_video = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc('m','p','4','v'), int(fps), (W, H))
+    fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+    out_video = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
     return out_video
 
 def VideoCaptureCreate(path=None, cam=0):

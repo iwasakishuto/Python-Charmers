@@ -161,3 +161,7 @@ def transparency(in_path, out_path=None, lower_bgr=cv2WHITE, upper_bgr=cv2WHITE,
     src[:,:,3] = cv2.fillPoly(img=mask, pts=contours, color=255)
     if cv2.imwrite(filename=out_path, img=src):
         print(f"Saved at {toBLUE(out_path)}")
+
+def pil2cv(img):
+    """Convert ``PIL.Image`` object into ``numpy`` array. (BGR)"""
+    return cv2.cvtColor(np.asarray(img, dtype=np.uint8), cv2.COLOR_RGBA2BGR)

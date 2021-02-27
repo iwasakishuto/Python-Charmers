@@ -206,7 +206,7 @@
     <span class="k">return</span> <span class="n">name</span></div>
 
 <div class="viewcode-block" id="create_VideoWriter"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.create_VideoWriter">[docs]</a><span class="k">def</span> <span class="nf">create_VideoWriter</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a ``cv2.VideoWriter``</span>
+    <span class="sd">&quot;&quot;&quot;Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        in_path (str)  : Input path. (fn: video / directory: images)</span>
@@ -238,7 +238,8 @@
             <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">break</span>
         <span class="n">H</span><span class="p">,</span><span class="n">W</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">))</span>
+    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">H</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">out_video</span></div>
 
 <div class="viewcode-block" id="VideoCaptureCreate"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate">[docs]</a><span class="k">def</span> <span class="nf">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>

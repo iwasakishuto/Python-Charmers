@@ -1,11 +1,13 @@
 # coding: utf-8
 import os
+import math
 import urllib
 import string
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 from .print_utils import pretty_3quote
+from .generic_utils import assign_trbl, handleKeyError, flatten_dual
 from ._colorings import toBLUE, toGREEN
 
 def pilread(img=None, path=None):
@@ -56,23 +58,28 @@ def roughen_img(img=None, path=None, rrate=5):
     return img.resize(size=img_size_small).resize(size=img_size_origin)
 
 def draw_text_in_pil(text, img=None, ttfontname=None,
-                     img_size=(250, 250), text_width=None, fontsize=16, margin=10,
-                     bgRGB=(255,255,255), textRGB=(0,0,0), **kwargs):
+                     img_size=(250, 250), text_width=None, fontsize=16, 
+                     margin=10, line_height=None, 
+                     bgRGB=(255,255,255), textRGB=(0,0,0), 
+                     ret_position="line",
+                     **kwargs):
     """Draw text in ``PIL.Image`` object.
 
     Args:
-        text (str)       : Text to be drawn to ``img``.
-        img (PIL.Image)  : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
-        ttfontname (str) : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.
-        img_size (tuple) : The image size.
-        text_width (int) : The length of characters in one line.
-        fontsize (int)   : The requested size, in points.
-        margin (int)     : The margin size.
-        bgRGB (tuple)    : The color of background image. (RGB)
-        textRGB (tuple)  : The color of text. (RGB)
+        text (str)        : Text to be drawn to ``img``.
+        img (PIL.Image)   : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
+        ttfontname (str)  : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.
+        img_size (tuple)  : The image size.
+        text_width (int)  : The length of characters in one line.
+        fontsize (int)    : The requested size, in points.
+        margin (int)      : The margin size.
+        line_height (int) : The line height. If not specify, use ``font.getsize(string.ascii_letters)``
+        bgRGB (tuple)     : The color of background image. (RGB)
+        textRGB (tuple)   : The color of text. (RGB)
+        \*\*kwargs (dict) : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .
 
     Returns:
-        tuple (PIL.Image, int): img, Length from top to bottom text line.
+        tuple (PIL.Image, pos): img, Position of next text ( ``x`` , ``y`` ).
     
     Example:
         >>> from pycharmers.utils import draw_text_in_pil
@@ -81,30 +88,87 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     """
     if img is None:
         img = Image.new(mode="RGB", size=img_size, color=bgRGB)
+    else:
+        img_size = img.size
     if ttfontname is None:
         raise TypeError(*pretty_3quote(f"""
             Please define the {toGREEN('ttfontname')}. If you dont't know where the font file is, check the 
             * {toBLUE('fonts/')} directory on Windows
             * {toBLUE('/Library/Fonts/')}, {toBLUE('/System/Library/Fonts/')}, or {toBLUE('~/Library/Fonts/')} on macOS
             """))
+    handleKeyError(lst=["line", "word"], ret_position=ret_position)
     draw = ImageDraw.Draw(im=img, mode="RGB")
     
     iw,ih = img_size
-    mt = kwargs.pop("margin_top",    margin)
-    mr = kwargs.pop("margin_right",  margin)
-    mb = kwargs.pop("margin_bottom", margin)
-    ml = kwargs.pop("margin_left",   margin)
+    kwargs["margin"] = margin
+    mt,mr,mb,ml = assign_trbl(data=kwargs, name="margin")
+    ml = kwargs.get("x", ml); mt = kwargs.get("y", mt)
     
     font = ImageFont.truetype(font=ttfontname, size=fontsize)
     fw,fh = font.getsize(string.ascii_letters)
     fw = fw//len(string.ascii_letters)
+    fh = line_height or fh
     
     max_text_width = (iw-(mr+ml))//fw
     text_width = text_width or max_text_width
-    wrapped_lines = textwrap.wrap(text=text, width=text_width)    
+    wrapped_lines = flatten_dual([textwrap.wrap(text=t, width=text_width) for t in text.split("\n")])
     max_text_height = (ih-(mt+mb))//fh
                 
     for i,line in enumerate(wrapped_lines):
         y = i*fh+mt
         draw.multiline_text((ml, y), line, fill=textRGB, font=font)
-    return img, (y+fh)
+    if ret_position == "line":
+        pos = (ml,y+fh)
+    elif ret_position == "word":
+        pos = (fw*len(line)+ml,y)
+    return img, pos
+
+def draw_cross(img, size, width=5, fill_color=(255,0,0,255), outline=None, color_mode="RGBA", margin=0, **kwargs):
+    """Draw Cross Mark.
+    
+    Args:
+        img (PIL.Image)    : Pillow Image.
+        size (int/tuple)   : Cross mark size. (width,Height)
+        width (int)        : The width of the cross mark.
+        fill_color (tuple) : The color in the line.
+        outline (tuple)    : The color of the edge of the line.
+        color_mode (str)   : Color Mode (ex. ``"RGBA"`` , ``"P"`` )
+        margin (int/list)  : Specify the position. 
+        \*\*kwargs (dict)  : Specify the individual margin ( ``margin_top`` , ``margin_right`` )
+        
+    Examples:
+        >>> from PIL import Image
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG
+        >>> from pycharmers.utils import draw_cross
+        >>> img = Image.open(SAMPLE_LENA_IMG)
+        >>> draw_cross(img=img, size=200, width=10)
+        >>> draw_cross(img=img, size=(100,200), width=10, outline=(0,255,0))
+    """
+    ori_mode = img.mode
+    img = img.convert(color_mode)
+    draw = ImageDraw.Draw(img)
+    W,H = img.size
+    
+    kwargs["margin"] = margin
+    mt,mr,mb,ml = assign_trbl(data=kwargs, name="margin")
+    if hasattr(size, "__len__"):
+        sx,sy = size[:2]
+    else:
+        sx = sy = size
+    sx /= 2; sy /= 2
+    angle = math.atan(sy/sx)
+    cx = (W-ml-mr)//2+ml
+    cy = (H-mt-mb)//2+mt
+    dx = (width/2) * math.sin(angle)
+    dy = (width/2) * math.cos(angle)
+    
+    for xy in [
+        ((cx-sx-dx,cy-sy+dy),(cx+sx-dx,cy+sy+dy),(cx+sx+dx,cy+sy-dy),(cx-sx+dx,cy-sy-dy)),
+        ((cx+sx-dx,cy-sy-dy),(cx+sx+dx,cy-sy+dy),(cx-sx+dx,cy+sy+dy),(cx-sx-dx,cy+sy-dy))
+    ]:
+        draw.polygon(
+            xy=xy,
+            fill=fill_color,
+            outline=outline,
+        )
+    return img.convert(ori_mode)
