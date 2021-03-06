@@ -729,8 +729,10 @@ def assign_trbl(data, name, default=None):
     vals = data.get(name, default)
     if not isinstance(vals, list):
         vals = [vals]
-        
-    if  len(vals)==1:
+
+    if len(vals)==0:
+        t = r = b = l = None
+    elif  len(vals)==1:
         t = r = b = l = vals[0]
     elif len(vals)==2:
         t = b = vals[0]

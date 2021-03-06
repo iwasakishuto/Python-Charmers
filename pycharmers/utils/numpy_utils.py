@@ -86,3 +86,27 @@ def rotate2d(a, theta):
     c, s = np.cos(theta), np.sin(theta)
     R = np.array([[c, -s],[s, c]])
     return (R @ a.reshape(2,1)).squeeze()
+
+def replaceArray(a, old=(255,255,255), new=(0,0,0)):
+    """Replace an Array from ``old`` to ``new``
+
+    Args:
+        old (tuple) : Old value.
+        new (tuple) : New value.
+
+    Returns:
+        np.ndarray: New Array
+
+    Examples:
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG, cv2plot
+        >>> from pycharmers.utils import replaceArray
+        >>> img = cv2.imread(SAMPLE_LENA_IMG)
+        >>> img = replaceArray(img, old=[77, 66, 176], new=[0,0,0]).astype(np.uint8)
+        >>> cv2plot(img, is_cv2=True)
+    """
+    ch = a.shape[2]
+    if not hasattr(old, "__len__"):
+        old = [old]*ch
+    if not hasattr(new, "__len__"):
+        new = [new]*ch
+    return np.where(np.expand_dims(np.all(a==old, axis=-1), axis=-1), new, a)
