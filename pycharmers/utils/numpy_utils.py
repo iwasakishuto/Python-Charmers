@@ -110,3 +110,42 @@ def replaceArray(a, old=(255,255,255), new=(0,0,0)):
     if not hasattr(new, "__len__"):
         new = [new]*ch
     return np.where(np.expand_dims(np.all(a==old, axis=-1), axis=-1), new, a)
+
+def fill_between_angle(arr, s, e, center=None, is_radian=True):
+    """Fill Between ``s`` and ``e``.
+
+    Args:
+        arr (np.ndarray)          : Input array.
+        s (Number)                : Start angle of fill.
+        e (Number)                : End angle of fill.
+        center (tuple)            : Center coordinates.
+        is_radian (bool, optional): whether ``s`` and ``e`` are defined in radians.
+
+    Returns:
+        np.ndarray: Whether it is a place to be filled.
+
+    Examples:
+        >>> import numpy as np
+        >>> from PIL import Image
+        >>> from pycharmers.utils import fill_between_angle
+        >>> arr = np.zeros(shape=(100,100,3)).astype(np.uint8)
+        >>> flag = fill_between_angle(arr, s=30, e=120, is_radian=False)
+        >>> Image.fromarray(np.where(flag, arr, 255)) 
+    """
+    H,W = arr.shape[:2]
+    flag = np.zeros_like(arr, dtype=np.bool)
+    if not is_radian:
+        s = np.pi*(s/180)
+        e = np.pi*(e/180)
+    if center is None:
+        center = (H//2,W//2)
+    cx,cy = center    
+    for i in range(H):
+        ry = H-i-cy
+        for j in range(W):
+            rx = j-cx
+            radi = np.arctan2(ry, rx)
+            if ry<0: 
+                radi+=2*np.pi
+            flag[i,j] = s<=radi<=e
+    return flag

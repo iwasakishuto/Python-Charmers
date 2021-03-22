@@ -161,6 +161,45 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
         <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="n">new</span><span class="p">]</span><span class="o">*</span><span class="n">ch</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">a</span><span class="o">==</span><span class="n">old</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">new</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fill_between_angle"><a class="viewcode-back" href="../../../pycharmers.utils.numpy_utils.html#pycharmers.utils.numpy_utils.fill_between_angle">[docs]</a><span class="k">def</span> <span class="nf">fill_between_angle</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_radian</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fill Between ``s`` and ``e``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        arr (np.ndarray)          : Input array.</span>
+<span class="sd">        s (Number)                : Start angle of fill.</span>
+<span class="sd">        e (Number)                : End angle of fill.</span>
+<span class="sd">        center (tuple)            : Center coordinates.</span>
+<span class="sd">        is_radian (bool, optional): whether ``s`` and ``e`` are defined in radians.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: Whether it is a place to be filled.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import fill_between_angle</span>
+<span class="sd">        &gt;&gt;&gt; arr = np.zeros(shape=(100,100,3)).astype(np.uint8)</span>
+<span class="sd">        &gt;&gt;&gt; flag = fill_between_angle(arr, s=30, e=120, is_radian=False)</span>
+<span class="sd">        &gt;&gt;&gt; Image.fromarray(np.where(flag, arr, 255)) </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">H</span><span class="p">,</span><span class="n">W</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_radian</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">e</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="n">W</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">cx</span><span class="p">,</span><span class="n">cy</span> <span class="o">=</span> <span class="n">center</span>    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">H</span><span class="p">):</span>
+        <span class="n">ry</span> <span class="o">=</span> <span class="n">H</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="n">cy</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">j</span><span class="o">-</span><span class="n">cx</span>
+            <span class="n">radi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ry</span><span class="p">,</span> <span class="n">rx</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ry</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> 
+                <span class="n">radi</span><span class="o">+=</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="n">flag</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">&lt;=</span><span class="n">radi</span><span class="o">&lt;=</span><span class="n">e</span>
+    <span class="k">return</span> <span class="n">flag</span></div>
 </pre></div>
 
             <div class="clearer"></div>

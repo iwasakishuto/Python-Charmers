@@ -181,6 +181,38 @@ to be in group <span class="math notranslate nohighlight">\(j\)</span>.</p>
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.numpy_utils.fill_between_angle">
+<code class="sig-prename descclassname">pycharmers.utils.numpy_utils.</code><code class="sig-name descname">fill_between_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">arr</span></em>, <em class="sig-param"><span class="n">s</span></em>, <em class="sig-param"><span class="n">e</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">is_radian</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/numpy_utils.html#fill_between_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.numpy_utils.fill_between_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill Between <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">e</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>np.ndarray</em>) – Input array.</p></li>
+<li><p><strong>s</strong> (<em>Number</em>) – Start angle of fill.</p></li>
+<li><p><strong>e</strong> (<em>Number</em>) – End angle of fill.</p></li>
+<li><p><strong>center</strong> (<em>tuple</em>) – Center coordinates.</p></li>
+<li><p><strong>is_radian</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">e</span></code> are defined in radians.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether it is a place to be filled.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">fill_between_angle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span> <span class="o">=</span> <span class="n">fill_between_angle</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">is_radian</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

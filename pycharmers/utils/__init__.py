@@ -94,6 +94,7 @@ from .numpy_utils import take_centers
 from .numpy_utils import confusion_matrix
 from .numpy_utils import rotate2d
 from .numpy_utils import replaceArray
+from .numpy_utils import fill_between_angle
 
 from .pandas_utils import flatten_multi_columns
 
