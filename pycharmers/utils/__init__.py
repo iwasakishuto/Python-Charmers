@@ -102,6 +102,7 @@ from .pil_utils import pilread
 from .pil_utils import roughen_img
 from .pil_utils import draw_text_in_pil
 from .pil_utils import draw_cross
+from .pil_utils import draw_frame
 
 from .print_utils import tabulate
 from .print_utils import Table

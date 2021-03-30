@@ -60,7 +60,7 @@ def roughen_img(img=None, path=None, rrate=5):
 def draw_text_in_pil(text, img=None, ttfontname=None,
                      img_size=(250, 250), text_width=None, fontsize=16, 
                      margin=10, line_height=None, 
-                     bgRGB=(255,255,255), textRGB=(0,0,0), 
+                     bgRGB=(255,255,255), textRGB=(0,0,0), mode="RGB",
                      ret_position="line",
                      **kwargs):
     """Draw text in ``PIL.Image`` object.
@@ -76,6 +76,7 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
         line_height (int) : The line height. If not specify, use ``font.getsize(string.ascii_letters)``
         bgRGB (tuple)     : The color of background image. (RGB)
         textRGB (tuple)   : The color of text. (RGB)
+        mode (str)        : Optional mode to use for color values.
         \*\*kwargs (dict) : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .
 
     Returns:
@@ -97,7 +98,7 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
             * {toBLUE('/Library/Fonts/')}, {toBLUE('/System/Library/Fonts/')}, or {toBLUE('~/Library/Fonts/')} on macOS
             """))
     handleKeyError(lst=["line", "word"], ret_position=ret_position)
-    draw = ImageDraw.Draw(im=img, mode="RGB")
+    draw = ImageDraw.Draw(im=img, mode=mode)
     
     iw,ih = img_size
     kwargs["margin"] = margin
@@ -172,3 +173,40 @@ def draw_cross(img, size, width=5, fill_color=(255,0,0,255), outline=None, color
             outline=outline,
         )
     return img.convert(ori_mode)
+
+def draw_frame(img, width=10, border_color=(255,255,255), is_radius=True):
+    """Draw Frame with Image.
+    
+    Args:
+        img (PIL.Image)      : Pillow Image.
+        width (int)          : The width of the border.
+        border_color (tuple) : The color in the border.
+        is_radius (bool)     : Whether to round the corners.
+        
+    Examples:
+        >>> from PIL import Image
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG
+        >>> from pycharmers.utils import draw_frame
+        >>> img = Image.open(SAMPLE_LENA_IMG)
+        >>> draw_frame(img=img, width=10)
+    """
+    w,h = img.size
+    hw = width//2
+    
+    kwargs = {"fill": border_color, "width": width}
+    if is_radius:
+        l,r,t,b = (width, w-width, width, h-width)
+    else:
+        l,r,t,b = (0,w,0,h)
+    
+    draw = ImageDraw.Draw(img)
+    for xy in [(l,hw-1,r,hw-1),(w-hw,t,w-hw,b),(r,h-hw,l,h-hw),(hw,b,hw,t)]:
+        draw.line(xy=xy, **kwargs)
+        
+    if is_radius:
+        draw.arc((0, 0, width*2, width*2), start=180, end=270,   **kwargs)
+        draw.arc((w-width*2, 0, w, width*2), start=270, end=360, **kwargs)
+        draw.arc((w-width*2, h-width*2, w, h), start=0, end=90,  **kwargs)
+        draw.arc((0, h-width*2, width*2, h), start=90, end=180,  **kwargs)    
+    
+    return img
