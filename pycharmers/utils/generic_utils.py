@@ -762,6 +762,9 @@ def relative_import(f, i, absfile, name):
         absfile (str) : ``os.path.abspath(__file__)``
         name (str)    : ``__name__``
 
+    Returns:
+        Object : ``exec(i)``
+
     Examples:
         >>> import os
         >>> from pycharmers.utils import relative_import
@@ -782,3 +785,4 @@ def relative_import(f, i, absfile, name):
         else:
             f = ".".join(name.split(".")[:-num_start_period]) + "." + m.group(2)
     exec(f"from {f} import {i}")
+    return eval(i)
