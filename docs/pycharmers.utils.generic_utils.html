@@ -729,6 +729,28 @@ b'ÿØÿàJFIFIIÿþ...
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.relative_import">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">relative_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">absfile</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#relative_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.relative_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative import that can be used with script files such as those executed by python commands</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;XXX&quot;</span></code> of <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">XXX</span></code></p></li>
+<li><p><strong>i</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;YYY&quot;</span></code> of <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">YYY</span></code></p></li>
+<li><p><strong>absfile</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">os.path.abspath(__file__)</span></code></p></li>
+<li><p><strong>name</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">__name__</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">relative_import</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relative_import</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s2">&quot;..utils&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="s2">&quot;LeNet&quot;</span><span class="p">,</span> <span class="n">absfile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

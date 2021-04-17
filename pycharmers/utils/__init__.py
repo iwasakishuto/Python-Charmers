@@ -79,6 +79,7 @@ from .generic_utils import int2ordinal
 from .generic_utils import filenaming
 from .generic_utils import get_pyenv
 from .generic_utils import assign_trbl
+from .generic_utils import relative_import
 
 from .inspect_utils import get_imported_members
 from .inspect_utils import get_defined_members

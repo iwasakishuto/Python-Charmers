@@ -1,6 +1,7 @@
 # coding: utf-8
 import os
 import re
+import sys
 import json
 import math
 import urllib
@@ -751,3 +752,33 @@ def assign_trbl(data, name, default=None):
     b = data.get(f"{name}-bottom", data.get(f"{name}_bottom", b))
     l = data.get(f"{name}-left",   data.get(f"{name}_left",   l))
     return (t,r,b,l)
+
+def relative_import(f, i, absfile, name):
+    """Relative import that can be used with script files such as those executed by python commands
+
+    Args:
+        f (str)       : ``"XXX"`` of ``from XXX``
+        i (str)       : ``"YYY"`` of ``import YYY``
+        absfile (str) : ``os.path.abspath(__file__)``
+        name (str)    : ``__name__``
+
+    Examples:
+        >>> import os
+        >>> from pycharmers.utils import relative_import
+        >>> relative_import(f="..utils", i="LeNet", absfile=os.path.abspath(__file__), name=__name__)
+    """
+    m = re.match(pattern=r"^(\.+)(.*)", string=f)
+    if m is not None:
+        num_start_period = len(m.group(1))
+        if name == "__main__":
+            for _ in range(num_start_period):
+                absfile = os.path.dirname(absfile)
+            g = m.group(2).split(".")
+            for p in g[1:-1]:
+                absfile = os.path.join(absfile, p)
+            f = g[-1]
+            print(absfile)
+            sys.path.append(absfile)
+        else:
+            f = ".".join(name.split(".")[:-num_start_period]) + "." + m.group(2)
+    exec(f"from {f} import {i}")
