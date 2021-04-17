@@ -66,8 +66,188 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-opencv-video-image-handler-module">
-<h1>pycharmers.opencv.video_image_handler module<a class="headerlink" href="#pycharmers-opencv-video-image-handler-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.opencv.video_image_handler">
+<span id="pycharmers-opencv-video-image-handler-module"></span><h1>pycharmers.opencv.video_image_handler module<a class="headerlink" href="#module-pycharmers.opencv.video_image_handler" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.mono_frame_generator">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">mono_frame_generator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">frame_no</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#mono_frame_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.mono_frame_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mono frame Generator which displays a single frame in a video or single image in a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">path/to/images/directory</span></code> or <code class="docutils literal notranslate"><span class="pre">path/to/video.mp4</span></code></p></li>
+<li><p><strong>frame_no</strong> (<em>int</em>) – If specified (<code class="docutils literal notranslate"><span class="pre">&gt;0</span></code>), the image can be displayed from a specific positions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">mono_frame_generator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">mono_frame_generator</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(512, 512, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">multi_frame_generator_sepa</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">path</span></em>, <em class="sig-param"><span class="n">frame_no</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#multi_frame_generator_sepa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple frame generator. (separatory)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">path/to/images/directory</span></code> or <code class="docutils literal notranslate"><span class="pre">path/to/video.mp4</span></code></p></li>
+<li><p><strong>frame_no</strong> (<em>int</em>) – If specified (<code class="docutils literal notranslate"><span class="pre">&gt;0</span></code>), the image can be displayed from a specific positions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">multi_frame_generator_sepa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen</span> <span class="o">=</span> <span class="n">multi_frame_generator_sepa</span><span class="p">(</span><span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">,</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">2 (512, 512, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.multi_frame_generator_concat">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">multi_frame_generator_concat</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">paths</span></em>, <em class="sig-param"><span class="n">frame_no</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#multi_frame_generator_concat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.multi_frame_generator_concat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple frame generator. (In a connected state)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">path/to/images/directory</span></code> or <code class="docutils literal notranslate"><span class="pre">path/to/video.mp4</span></code></p></li>
+<li><p><strong>frame_no</strong> (<em>int</em>) – If specified (<code class="docutils literal notranslate"><span class="pre">&gt;0</span></code>), the image can be displayed from a specific positions.</p></li>
+<li><p><strong>grid</strong> (<em>tuple</em>) – How to concatenate the multiple frames. (ncols, nrows)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">multi_frame_generator_concat</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen</span> <span class="o">=</span> <span class="n">multi_frame_generator_concat</span><span class="p">(</span><span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">,</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(512, 1024, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.count_frame_num">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">count_frame_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#count_frame_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.count_frame_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the number of frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to video file, or directory which stores sequential images.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">count_frame_num</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">,</span> <span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_frame_num</span><span class="p">(</span><span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">)</span>
+<span class="go">795</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count_frame_num</span><span class="p">(</span><span class="n">PYCHARMERS_OPENCV_IMAGE_DIR</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.basenaming">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">basenaming</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#basenaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.basenaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the final component of a pathname.</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">path</span></code> indicates video file (<code class="docutils literal notranslate"><span class="pre">path/to/sample.mp4</span></code>) -&gt; <code class="docutils literal notranslate"><span class="pre">sample</span></code></p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">path</span></code> indicates directory (<code class="docutils literal notranslate"><span class="pre">path/to/sample</span></code>) -&gt; <code class="docutils literal notranslate"><span class="pre">sample</span></code></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to video file, or directory which stores sequential images.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">basenaming</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;path/to/sample.mp4&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basenaming</span><span class="p">(</span><span class="s2">&quot;path/to/sample.mp4&quot;</span><span class="p">)</span>
+<span class="go">&#39;sample&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basenaming</span><span class="p">(</span><span class="s2">&quot;path/to/sample&quot;</span><span class="p">)</span>
+<span class="go">&#39;sample&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;path/to/sample2.mp4&quot;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basenaming</span><span class="p">(</span><span class="s2">&quot;path/to/sample_.mp4&quot;</span><span class="p">)</span>
+<span class="go">&#39;sample_.mp4&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.create_VideoWriter">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">create_VideoWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fps</span><span class="o">=</span><span class="default_value">30</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#create_VideoWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.create_VideoWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code> which creates a video whose option is same as that of input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_path</strong> (<em>str</em>) – Input path. (fn: video / directory: images)</p></li>
+<li><p><strong>out_path</strong> (<em>str</em>) – Output path.</p></li>
+<li><p><strong>fps</strong> (<em>int</em>) – Frames Per Second.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">create_VideoWriter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span><span class="s2">&quot;./data/images&quot;</span><span class="p">)</span>
+<span class="go">cv2.VideoWriter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span><span class="s2">&quot;./data/video/sample.mp4&quot;</span><span class="p">)</span>
+<span class="go">cv2.VideoWriter</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.VideoCaptureCreate">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">VideoCaptureCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cam</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#VideoCaptureCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a VideoCapture (mimic) object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to video or image.</p></li>
+<li><p><strong>cam</strong> (<em>int</em>) – The ID of the web camera</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>VideoCapture (mimic) object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>cap (cv2.VideoCapture)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">VideoCaptureCreate</span><span class="p">,</span> <span class="n">cv2plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">[</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">ret</span><span class="p">,</span><span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">cv2plot</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -127,7 +307,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

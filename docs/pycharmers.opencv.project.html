@@ -66,8 +66,240 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-opencv-project-module">
-<h1>pycharmers.opencv.project module<a class="headerlink" href="#pycharmers-opencv-project-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.opencv.project">
+<span id="pycharmers-opencv-project-module"></span><h1>pycharmers.opencv.project module<a class="headerlink" href="#module-pycharmers.opencv.project" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.opencv.project.cv2Project">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.project.</code><code class="sig-name descname">cv2Project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>OpenCV project wrapper with useful GUI tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>Namespace</em>) – Simple object for storing attributes.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Image object ( <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> ) has the shape ( <code class="docutils literal notranslate"><span class="pre">height</span></code> , <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">channel</span></code> )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XXX_size</span></code> attributes are formatted as ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+</ul>
+</div>
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.cap">
+<code class="sig-name descname">cap</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.cap" title="Permalink to this definition">¶</a></dt>
+<dd><p>VideoCapture (mimic) object. See <a class="reference internal" href="pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="pycharmers.opencv.video_image_handler.VideoCaptureCreate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">VideoCaptureCreate</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>VideoCapture</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor">
+<code class="sig-name descname">monitor</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Background image. shape= ( <code class="docutils literal notranslate"><span class="pre">monitor_height</span></code> , <code class="docutils literal notranslate"><span class="pre">monitor_width</span></code>, 3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor_height">
+<code class="sig-name descname">monitor_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of monitor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.monitor_width">
+<code class="sig-name descname">monitor_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.monitor_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of monitor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.original_height">
+<code class="sig-name descname">original_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.original_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of original frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.original_width">
+<code class="sig-name descname">original_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.original_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of original frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_height">
+<code class="sig-name descname">frame_height</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>The height of resized frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_width">
+<code class="sig-name descname">frame_width</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of resized frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_dsize">
+<code class="sig-name descname">frame_dsize</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_dsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>( <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.frame_halfsize">
+<code class="sig-name descname">frame_halfsize</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.frame_halfsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>( <code class="docutils literal notranslate"><span class="pre">frame_width//2</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height//2</span></code> )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.gui_x">
+<code class="sig-name descname">gui_x</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.gui_x" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">frame_width</span></code> + <code class="docutils literal notranslate"><span class="pre">gui_margin</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.fps">
+<code class="sig-name descname">fps</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.fps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame per seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.video">
+<code class="sig-name descname">video</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video Writer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>cv2.VideoWriter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.opencv.project.cv2Project.video_fn">
+<code class="sig-name descname">video_fn</code><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.video_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The file name of video.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="simple">
+<dt>OtherAttributes:</dt><dd><p>See <a class="reference internal" href="pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.cv2ArgumentParser" title="pycharmers.utils.argparse_utils.cv2ArgumentParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">cv2ArgumentParser</span></code></a> .</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize VideoCapture (mimic) object and GUI tools.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>To run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> must have these attributes.</dt><dd><ul>
+<li><p>winname (str)                     : Window name.</p></li>
+<li><p>path (str)                        : Path to video or image.</p></li>
+<li><p>cam (int)                         : The ID of the web camera.</p></li>
+<li><p>ext (str)                         : The extension for saved image.</p></li>
+<li><p>gui_width (int)                   : The width of the GUI tools.</p></li>
+<li><p>gui_margin (int)                  : The margin of GUI control tools.</p></li>
+<li><p>monitor_size (ListParamProcessor) : Monitor size. ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+<li><p>autofit (bool)                    : Whether to fit display size to window size.</p></li>
+<li><p>twitter (bool)                    : Whether you want to run for tweet. ( <code class="docutils literal notranslate"><span class="pre">display_size</span></code> will be () )</p></li>
+<li><p>capture (bool)                    : Whether you want to save as video.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>After run this method, <code class="docutils literal notranslate"><span class="pre">self</span></code> will have these attributes.</dt><dd><ul>
+<li><p>cap (VideoCapture)      : VideoCapture (mimic) object. See <a class="reference internal" href="pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="pycharmers.opencv.video_image_handler.VideoCaptureCreate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">VideoCaptureCreate</span></code></a></p></li>
+<li><p>monitor (np.ndarray)    : Background image. shape= ( <code class="docutils literal notranslate"><span class="pre">monitor_height</span></code> , <code class="docutils literal notranslate"><span class="pre">monitor_width</span></code>, 3)</p></li>
+<li><p>monitor_height          : The height of monitor.</p></li>
+<li><p>monitor_width           : The width of monitor.</p></li>
+<li><p>original_height (int)   : The height of original frame.</p></li>
+<li><p>original_width (int)    : The width of original frame.</p></li>
+<li><p>frame_height (int)      : The height of resized frame.</p></li>
+<li><p>frame_width (int)       : The width of resized frame.</p></li>
+<li><p>frame_dsize (tuple)     : ( <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height</span></code> )</p></li>
+<li><p>frame_halfsize (tuple)  : ( <code class="docutils literal notranslate"><span class="pre">frame_width//2</span></code> , <code class="docutils literal notranslate"><span class="pre">frame_height//2</span></code> )</p></li>
+<li><p>gui_x (int)             : <code class="docutils literal notranslate"><span class="pre">frame_width</span></code> + <code class="docutils literal notranslate"><span class="pre">gui_margin</span></code></p></li>
+<li><p>fps (int)               : Frame per seconds.</p></li>
+<li><p>video (cv2.VideoWriter) : Video Writer.</p></li>
+<li><p>video_fn (str)          : The file name of video.</p></li>
+<li><p>fn_prefix (str)         : The prefix of filename ( <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span> <span class="pre">if</span> <span class="pre">self.path</span> <span class="pre">is</span> <span class="pre">None</span> <span class="pre">else</span> <span class="pre">self.path+&quot;.&quot;</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.wrap">
+<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>function</em>) – A function that receives and returns <code class="docutils literal notranslate"><span class="pre">frame</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.project.cv2Project.release">
+<code class="sig-name descname">release</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/project.html#cv2Project.release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.project.cv2Project.release" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the necessary processing at the end</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -127,7 +359,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

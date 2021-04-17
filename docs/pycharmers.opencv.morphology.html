@@ -66,8 +66,58 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-opencv-morphology-module">
-<h1>pycharmers.opencv.morphology module<a class="headerlink" href="#pycharmers-opencv-morphology-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.opencv.morphology">
+<span id="pycharmers-opencv-morphology-module"></span><h1>pycharmers.opencv.morphology module<a class="headerlink" href="#module-pycharmers.opencv.morphology" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.morphology.morph_kernel_creator">
+<code class="sig-prename descclassname">pycharmers.opencv.morphology.</code><code class="sig-name descname">morph_kernel_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span><span class="o">=</span><span class="default_value">'erode'</span></em>, <em class="sig-param"><span class="n">ksize</span><span class="o">=</span><span class="default_value">5, 5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/morphology.html#morph_kernel_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.morphology.morph_kernel_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a structuring element of the specified size and shape for morphological operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<em>str</em><em>, </em><em>int</em>) – Element shape.</p></li>
+<li><p><strong>ksize</strong> (<em>tuple</em>) – Size of the structuring element.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">morph_kernel_creator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kernel</span> <span class="o">=</span> <span class="n">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kernel</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(5, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kernel</span> <span class="o">=</span> <span class="n">morph_kernel_creator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="s2">&quot;erode&quot;</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kernel</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.morphology.morph_transformer_creator">
+<code class="sig-prename descclassname">pycharmers.opencv.morphology.</code><code class="sig-name descname">morph_transformer_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">op</span></em>, <em class="sig-param"><span class="n">kernel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">shape</span><span class="o">=</span><span class="default_value">'erode'</span></em>, <em class="sig-param"><span class="n">ksize</span><span class="o">=</span><span class="default_value">5, 5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/morphology.html#morph_transformer_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.morphology.morph_transformer_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function which performs advanced morphological transformations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>op</strong> (<em>str</em><em>, </em><em>int</em>) – Type of a morphological operation</p></li>
+<li><p><strong>kernel</strong> (<em>array</em>) – Structuring element. It can be created using <code class="docutils literal notranslate"><span class="pre">morph_kernel_creator</span></code>
+The same can be achieved by giving values in the parameters (<code class="docutils literal notranslate"><span class="pre">shape</span></code>, <code class="docutils literal notranslate"><span class="pre">ksize</span></code>).</p></li>
+<li><p><strong>shape</strong> (<em>str</em><em>, </em><em>int</em>) – Element shape.</p></li>
+<li><p><strong>ksize</strong> (<em>tuple</em>) – Size of the structuring element.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">morph_transformer_creator</span><span class="p">,</span>
+<span class="go">                                hconcat_resize_min, cv2plot, cv2read_mpl)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">morph_transformer_creator</span><span class="p">(</span><span class="n">op</span><span class="o">=</span><span class="s2">&quot;opening&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_opening</span> <span class="o">=</span> <span class="n">transformer</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">hconcat_resize_min</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">img_opening</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -127,7 +177,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
