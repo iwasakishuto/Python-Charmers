@@ -1,0 +1,7 @@
+pycharmers.cli.openBrowser module
+=================================
+
+.. automodule:: pycharmers.cli.openBrowser
+   :members:
+   :undoc-members:
+   :show-inheritance:

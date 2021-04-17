@@ -66,72 +66,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.opencv.tracking">
-<span id="pycharmers-opencv-tracking-module"></span><h1>pycharmers.opencv.tracking module<a class="headerlink" href="#module-pycharmers.opencv.tracking" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="pycharmers.opencv.tracking.BBoxLogger">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.tracking.</code><code class="sig-name descname">BBoxLogger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em>, <em class="sig-param"><span class="n">input_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Store Bounding Boxes logs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_path</strong> (<em>str</em>) – Path to input image directory or video.</p></li>
-<li><p><strong>coord_type</strong> (<em>str</em>) – Coordinate types.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">pycat</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">BBoxLogger</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bbox_logger</span> <span class="o">=</span> <span class="n">BBoxLogger</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bbox_logger</span><span class="o">.</span><span class="n">add_bboxes</span><span class="p">(</span><span class="n">no</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bboxes</span><span class="o">=</span><span class="p">[(</span><span class="mi">120</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">out_path</span> <span class="o">=</span> <span class="n">bbox_logger</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="go">tracking info was saved at /Users/iwasakishuto/.pycharmers/opencv/json/2020-09-25@01.05.18.json</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pycat</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
-<span class="go">{</span>
-<span class="go">&quot;coord_type&quot;: &quot;xywh&quot;,</span>
-<span class="go">&quot;BBoxes&quot;: {</span>
-<span class="go">    &quot;1&quot;: [</span>
-<span class="go">    [</span>
-<span class="go">        120,</span>
-<span class="go">        120,</span>
-<span class="go">        40,</span>
-<span class="go">        40</span>
-<span class="go">    ]</span>
-<span class="go">    ]</span>
-<span class="go">}</span>
-<span class="go">}</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.init">
-<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coord_type</span><span class="o">=</span><span class="default_value">'xywh'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">metadata</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.init" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialization of the logs.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.add_bboxes">
-<code class="sig-name descname">add_bboxes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">no</span></em>, <em class="sig-param"><span class="n">bboxes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.add_bboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.add_bboxes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add Bounding Boxes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>no</strong> (<em>int</em>) – Frame number.</p></li>
-<li><p><strong>bboxes</strong> (<em>list</em>) – List of bounding boxes.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.tracking.BBoxLogger.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/tracking.html#BBoxLogger.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.tracking.BBoxLogger.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the results</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="pycharmers-opencv-tracking-module">
+<h1>pycharmers.opencv.tracking module<a class="headerlink" href="#pycharmers-opencv-tracking-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -191,7 +127,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

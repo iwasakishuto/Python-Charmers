@@ -3,6 +3,7 @@ cv-paper-scanner    = pycharmers.cli.cvPaperScanner:cvPaperScanner
 cv-pencil-sketch    = pycharmers.cli.cvPencilSketch:cvPencilSketch
 cv-window           = pycharmers.cli.cvWindow:cvWindow
 form-auto-fill-in   = pycharmers.cli.form_auto_fill_in:form_auto_fill_in
+openBrowser         = pycharmers.cli.openBrowser:openBrowser
 pdfmine             = pycharmers.cli.pdfmine:pdfmine
 regexp-replacement  = pycharmers.cli.regexp_replacement:regexp_replacement
 render-template     = pycharmers.cli.render_template:render_template

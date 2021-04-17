@@ -686,9 +686,12 @@ def get_pyenv(scope_variables):
         str : wheather the environment is Jupyter Notebook or not.
 
     Examples:
-        >>> from pycharmers.utils import is_env_notebook
-        >>> is_env_notebook(globals())
-        'Jupyter Notebook'    
+        >>> from pycharmers.utils import get_pyenv
+        >>> get_pyenv(globals())
+        'Jupyter Notebook'
+
+    TODO:
+        Execute this function without arguments.
     """
     # global locals
     env = "Python shell"

@@ -737,9 +737,12 @@
 <span class="sd">        str : wheather the environment is Jupyter Notebook or not.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import is_env_notebook</span>
-<span class="sd">        &gt;&gt;&gt; is_env_notebook(globals())</span>
-<span class="sd">        &#39;Jupyter Notebook&#39;    </span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import get_pyenv</span>
+<span class="sd">        &gt;&gt;&gt; get_pyenv(globals())</span>
+<span class="sd">        &#39;Jupyter Notebook&#39;</span>
+
+<span class="sd">    TODO:</span>
+<span class="sd">        Execute this function without arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># global locals</span>
     <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Python shell&quot;</span>
