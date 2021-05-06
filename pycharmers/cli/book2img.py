@@ -58,6 +58,7 @@ def book2img(argv=sys.argv[1:]):
         $ book2img -N 10 -I 1 -OP KindleApp
 
     .. code-block:: sh
+    
         $ cat ~/.pycharmers/cli/book2img/kindleApp.json
         {
           "description": "Operations for KindleApp (Examples)",
