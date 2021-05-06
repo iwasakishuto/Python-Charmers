@@ -770,17 +770,21 @@ def relative_import(f, i, absfile, name):
         >>> from pycharmers.utils import relative_import
         >>> relative_import(f="..utils", i="LeNet", absfile=os.path.abspath(__file__), name=__name__)
     """
+    global is_main_
+    try:
+        is_main_
+    except NameError:
+        is_main_ = name == "__main__"
     m = re.match(pattern=r"^(\.+)(.*)", string=f)
     if m is not None:
         num_start_period = len(m.group(1))
-        if name == "__main__":
+        if is_main_:
             for _ in range(num_start_period):
                 absfile = os.path.dirname(absfile)
             g = m.group(2).split(".")
             for p in g[1:-1]:
                 absfile = os.path.join(absfile, p)
             f = g[-1]
-            print(absfile)
             sys.path.append(absfile)
         else:
             f = ".".join(name.split(".")[:-num_start_period]) + "." + m.group(2)

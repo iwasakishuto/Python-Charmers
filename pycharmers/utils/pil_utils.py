@@ -88,7 +88,7 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
         >>> img.save("sample.png")
     """
     if img is None:
-        img = Image.new(mode="RGB", size=img_size, color=bgRGB)
+        img = Image.new(mode=mode, size=img_size, color=bgRGB)
     else:
         img_size = img.size
     if ttfontname is None:
@@ -114,7 +114,8 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     text_width = text_width or max_text_width
     wrapped_lines = flatten_dual([textwrap.wrap(text=t, width=text_width) for t in text.split("\n")])
     max_text_height = (ih-(mt+mb))//fh
-                
+    
+    y = mt-fh; line=[]
     for i,line in enumerate(wrapped_lines):
         y = i*fh+mt
         draw.multiline_text((ml, y), line, fill=textRGB, font=font)

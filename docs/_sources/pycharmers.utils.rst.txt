@@ -22,6 +22,7 @@ Submodules
    pycharmers.utils.soup_utils
    pycharmers.utils.subprocess_utils
    pycharmers.utils.templates
+   pycharmers.utils.tkinter_utils
 
 Module contents
 ---------------

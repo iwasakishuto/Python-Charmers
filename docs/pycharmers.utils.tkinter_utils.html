@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.utils.tkinter_utils module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.utils.tkinter_utils.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.utils.tkinter_utils module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pycharmers.utils.templates module" href="pycharmers.utils.templates.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.templates.html" title="pycharmers.utils.templates module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" accesskey="U">pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.tkinter_utils module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.utils.tkinter_utils">
+<span id="pycharmers-utils-tkinter-utils-module"></span><h1>pycharmers.utils.tkinter_utils module<a class="headerlink" href="#module-pycharmers.utils.tkinter_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.tkinter_utils.</code><code class="sig-name descname">PortionSelector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resize_ratio</span><span class="o">=</span><span class="default_value">2.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<blockquote>
+<div><dl class="simple">
+<dt>Args:</dt><dd><p>resize_ratio (float) : How much to resize the screenshot. (∵ The default screenshot is too big)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.root">
+<code class="sig-name descname">root</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toplevel widget of Tk which represents mostly the main window of an application. It has an associated Tcl interpreter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Tk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.canvas">
+<code class="sig-name descname">canvas</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Canvas widget to display graphical elements like lines or text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Canvas</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.ss">
+<code class="sig-name descname">ss</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>A ScreenShot. You can retake using <code class="xref py py-meth docutils literal notranslate"><span class="pre">retake_screenshot</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.sstk">
+<code class="sig-name descname">sstk</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.sstk" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Screenshot converted for display on <code class="docutils literal notranslate"><span class="pre">tkinter</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>PhotoImage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.portion">
+<code class="sig-name descname">portion</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.portion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selected Portion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">PortionSelector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">PortionSelector</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">portion</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">portion</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resize_ratio</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the main loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.retake_screenshot">
+<code class="sig-name descname">retake_screenshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sec</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.retake_screenshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.retake_screenshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retake the screenshot after <code class="docutils literal notranslate"><span class="pre">sec</span></code> seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sec</strong> (<em>int</em>) – Retake a screenshot in <code class="docutils literal notranslate"><span class="pre">sec</span></code> seconds.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Taken screenshot.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.ssSize">
+<em class="property">property </em><code class="sig-name descname">ssSize</code><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.ssSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size of ScreenShot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.get_xywh">
+<code class="sig-name descname">get_xywh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.get_xywh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.get_xywh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get portion of the original magnification.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.ssResize">
+<code class="sig-name descname">ssResize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsize</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.ssResize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.ssResize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize both screenshots ( <code class="docutils literal notranslate"><span class="pre">self.ss</span></code>, <code class="docutils literal notranslate"><span class="pre">self.sstk</span></code> ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dsize</strong> (<em>tuple</em>) – Resized screenshot size.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.get_start_point">
+<code class="sig-name descname">get_start_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">evt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.get_start_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.get_start_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the start point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evt</strong> (<em>Event</em>) – Container for the properties of an event.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">PortionSelector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">PortionSelector</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonPress-1&gt;&quot;</span><span class="p">,</span>   <span class="n">ps</span><span class="o">.</span><span class="n">get_start_point</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button1-Motion&gt;&quot;</span><span class="p">,</span>  <span class="s2">&quot;Action executed when Mouse is moving&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;Action executed when Button released&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.draw_curt_rect">
+<code class="sig-name descname">draw_curt_rect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">evt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.draw_curt_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.draw_curt_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drawing the current Rectangle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evt</strong> (<em>Event</em>) – Container for the properties of an event.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">PortionSelector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">PortionSelector</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonPress-1&gt;&quot;</span><span class="p">,</span>   <span class="s2">&quot;Action executed when Button Pressed&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button1-Motion&gt;&quot;</span><span class="p">,</span>  <span class="n">ps</span><span class="o">.</span><span class="n">draw_curt_rect</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;Action executed when Button released&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.release_action">
+<code class="sig-name descname">release_action</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">evt</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.release_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.release_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drawing the current Rectangle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>evt</strong> (<em>Event</em>) – Container for the properties of an event.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">PortionSelector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span> <span class="o">=</span> <span class="n">PortionSelector</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonPress-1&gt;&quot;</span><span class="p">,</span>   <span class="s2">&quot;Action executed when Button Pressed&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button1-Motion&gt;&quot;</span><span class="p">,</span>  <span class="s2">&quot;Action executed when Mouse is moving&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;ButtonRelease-1&gt;&quot;</span><span class="p">,</span> <span class="n">ps</span><span class="o">.</span><span class="n">release_action</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ps</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.tkinter_utils.PortionSelector.quit">
+<code class="sig-name descname">quit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/tkinter_utils.html#PortionSelector.quit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.tkinter_utils.PortionSelector.quit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.utils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.argparse_utils.html">pycharmers.utils.argparse_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.color_utils.html">pycharmers.utils.color_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.inspect_utils.html">pycharmers.utils.inspect_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pandas_utils.html">pycharmers.utils.pandas_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.subprocess_utils.html">pycharmers.utils.subprocess_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.tkinter_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.utils.templates.html"
+                        title="previous chapter">pycharmers.utils.templates module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.utils.tkinter_utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.utils.templates.html" title="pycharmers.utils.templates module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.utils.html" >pycharmers.utils package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.utils.tkinter_utils module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

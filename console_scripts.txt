@@ -1,3 +1,4 @@
+book2img            = pycharmers.cli.book2img:book2img
 cv-cascades         = pycharmers.cli.cvCascades:cvCascades
 cv-paper-scanner    = pycharmers.cli.cvPaperScanner:cvPaperScanner
 cv-pencil-sketch    = pycharmers.cli.cvPencilSketch:cvPencilSketch

@@ -1,7 +1,7 @@
 #coding: utf-8
 import os
 
-from ..utils._path import _makedirs, _download_sample_data, PYCHARMERS_DIR
+from ..utils._path import _makedirs, _download_sample_data, PYCHARMERS_DIR, PYCHARMERS_ICON
 from ..utils._colorings import toBLUE
 from ..utils.generic_utils import now_str
 from ..api.github import wgit

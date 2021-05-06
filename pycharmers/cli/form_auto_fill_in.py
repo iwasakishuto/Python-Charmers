@@ -60,24 +60,24 @@ def form_auto_fill_in(argv=sys.argv[1:]):
     """
     if len(argv)==0:
         tabulate([[os.path.splitext(fn.name)[0], json.load(fn.open()).get("name", "")] for fn in Path(PYCHARMERS_CLI_FORM_AUTO_FILL_IN_DIR).glob("*.json")], headers=["Abbreviation", "Name"])
+        sys.exit(-1)
+    parser = argparse.ArgumentParser(prog="form-auto-fill-in", description="Auto fill in your form using your saved information (or answer on the spot).", add_help=True)
+    parser.add_argument("path", type=str, help="Path to environment file.")
+    parser.add_argument("--remain-unchanged", action="store_true", help="Whether you want to update and memorize your answer. (default=True)")
+    parser.add_argument("-Y", "--yes",        action="store_true", help="Automatic yes to prompts.")
+    parser.add_argument("--quiet",            action="store_true", help="Whether you want to be quiet or not. (default=False)")
+    parser.add_argument("--browser",          action="store_true", help="Whether you want to run Chrome with GUI browser. (default=True)")
+    parser.add_argument("-P", "--params", default={}, action=KwargsParamProcessor, help="Specify the kwargs. You can specify by -P username=USERNAME -P password=PASSWORD")
+    parser.add_argument("--show-data",  action="store_true", help="Print the data in path.")
+    args = parser.parse_args(argv)
+    path = args.path
+    if not path.endswith(".json"):
+        path = os.path.join(PYCHARMERS_CLI_FORM_AUTO_FILL_IN_DIR, path+".json")
+    model = AutoFillInForms(path=path)
+    if args.show_data:
+        model.show_data()
     else:
-        parser = argparse.ArgumentParser(prog="form-auto-fill-in", description="Auto fill in your form using your saved information (or answer on the spot).", add_help=True)
-        parser.add_argument("path", type=str, help="Path to environment file.")
-        parser.add_argument("--remain-unchanged", action="store_true", help="Whether you want to update and memorize your answer. (default=True)")
-        parser.add_argument("-Y", "--yes",        action="store_true", help="Automatic yes to prompts.")
-        parser.add_argument("--quiet",            action="store_true", help="Whether you want to be quiet or not. (default=False)")
-        parser.add_argument("--browser",          action="store_true", help="Whether you want to run Chrome with GUI browser. (default=True)")
-        parser.add_argument("-P", "--params", default={}, action=KwargsParamProcessor, help="Specify the kwargs. You can specify by -P username=USERNAME -P password=PASSWORD")
-        parser.add_argument("--show-data",  action="store_true", help="Print the data in path.")
-        args = parser.parse_args(argv)
-        path = args.path
-        if not path.endswith(".json"):
-            path = os.path.join(PYCHARMERS_CLI_FORM_AUTO_FILL_IN_DIR, path+".json")
-        model = AutoFillInForms(path=path)
-        if args.show_data:
-            model.show_data()
-        else:
-            model.run(browser=args.browser, update=not args.remain_unchanged, need_check=not args.yes, **args.params)
+        model.run(browser=args.browser, update=not args.remain_unchanged, need_check=not args.yes, **args.params)
 
 class AutoFillInForms():
     """If you want to create your own gateway class, please inherit this class.

@@ -48,7 +48,7 @@ def video2gif(argv=sys.argv[1:]):
     height  = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     fps     = video.get(cv2.CAP_PROP_FPS)
     count   = video.get(cv2.CAP_PROP_FRAME_COUNT)
-    num_gif = 1+(count-1)//speed
+    num_gif = int(1+(count-1)//speed)
 
     if gif_path is None:
         root, ext = os.path.splitext(video_path)
@@ -62,13 +62,13 @@ def video2gif(argv=sys.argv[1:]):
     print(*pretty_3quote(f"""
     * Video Path   : {toBLUE(video_path)}
     * Gif   Path   : {toBLUE(gif_path)}
-    * Video Length : {toGREEN(f"{count/fps:.2f}")} [s]
     * Frame Width  : {toGREEN(width )} -> {toBLUE(resize[0])} [px]
     * Frame Height : {toGREEN(height)} -> {toBLUE(resize[1])} [px]
-    * Frame Count  : {toGREEN(count )} [n]
+    * Video Length : {toGREEN(f"{count/fps:.2f}")} [s]
     * FPS          : {toGREEN(f"{fps:.2f}")} [n/s]
-    * Speed        : {toGREEN(speed)}
-    * Number of frames included in gif : {toGREEN(num_gif)}
+    * Frame Count  : {toGREEN(count )} [n]
+    * Speed        : {toGREEN(speed)} [n/include]
+    → {toGREEN(num_gif)} frames will be included in GIF.
     """))
 
     i = 0
