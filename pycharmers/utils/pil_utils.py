@@ -98,7 +98,6 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
             * {toBLUE('/Library/Fonts/')}, {toBLUE('/System/Library/Fonts/')}, or {toBLUE('~/Library/Fonts/')} on macOS
             """))
     handleKeyError(lst=["line", "word"], ret_position=ret_position)
-    draw = ImageDraw.Draw(im=img, mode=mode)
     
     iw,ih = img_size
     kwargs["margin"] = margin
@@ -115,6 +114,12 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     wrapped_lines = flatten_dual([textwrap.wrap(text=t, width=text_width) for t in text.split("\n")])
     max_text_height = (ih-(mt+mb))//fh
     
+    if len(textRGB)>3 and mode=="RGBA":
+        text_canvas = Image.new(mode=mode, size=img.size, color=(255,255,255,0))
+        draw = ImageDraw.Draw(im=text_canvas, mode=mode)
+    else:
+        draw = ImageDraw.Draw(im=img, mode=mode)
+
     y = mt-fh; line=[]
     for i,line in enumerate(wrapped_lines):
         y = i*fh+mt
@@ -123,6 +128,9 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
         pos = (ml,y+fh)
     elif ret_position == "word":
         pos = (fw*len(line)+ml,y)
+
+    if len(textRGB)>3 and mode=="RGBA":
+        img = Image.alpha_composite(im1=img, im2=text_canvas).convert(mode)
     return img, pos
 
 def draw_cross(img, size, width=5, fill_color=(255,0,0,255), outline=None, color_mode="RGBA", margin=0, **kwargs):
