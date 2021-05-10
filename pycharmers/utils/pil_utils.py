@@ -58,7 +58,8 @@ def roughen_img(img=None, path=None, rrate=5):
     return img.resize(size=img_size_small).resize(size=img_size_origin)
 
 def draw_text_in_pil(text, img=None, ttfontname=None,
-                     img_size=(250, 250), text_width=None, fontsize=16, 
+                     img_size=(250, 250), text_width=None, 
+                     fontsize=16, fontwidth=None, fontheight=None,
                      margin=10, line_height=None, 
                      bgRGB=(255,255,255), textRGB=(0,0,0), mode="RGB",
                      ret_position="line",
@@ -72,6 +73,8 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
         img_size (tuple)  : The image size.
         text_width (int)  : The length of characters in one line.
         fontsize (int)    : The requested size, in points.
+        fontwidth (int)   : The font width. (If not given, automatically calculated.)
+        fontheight (int)  : The font height. (If not given, automatically calculated.)
         margin (int)      : The margin size.
         line_height (int) : The line height. If not specify, use ``font.getsize(string.ascii_letters)``
         bgRGB (tuple)     : The color of background image. (RGB)
@@ -106,8 +109,8 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     
     font = ImageFont.truetype(font=ttfontname, size=fontsize)
     fw,fh = font.getsize(string.ascii_letters)
-    fw = fw//len(string.ascii_letters)
-    fh = line_height or fh
+    fw = fontwidth or fw//len(string.ascii_letters)
+    fh = fontheight or line_height or fh
     
     max_text_width = (iw-(mr+ml))//fw
     text_width = text_width or max_text_width
