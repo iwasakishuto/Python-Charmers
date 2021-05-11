@@ -22,6 +22,7 @@ jobs:
     - name: Setup Device Information.
       run: |
         echo "export DISPLAY=\$(cat /etc/resolv.conf | grep nameserver | awk '{print \$2}'):0.0" >> ~/.profile
+        source ~/.profile
         pip install xkeysnail
         xhost +SI:localuser:root
         xkeysnail config.py
