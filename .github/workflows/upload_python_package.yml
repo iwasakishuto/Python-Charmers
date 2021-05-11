@@ -10,6 +10,7 @@ jobs:
 
     env:
       DISPLAY: :0
+      XAUTHORITY: /home/alex/.Xauthority
 
     steps:
     - uses: actions/checkout@v2

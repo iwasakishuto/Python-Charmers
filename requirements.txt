@@ -12,4 +12,5 @@ moviepy
 PyMuPDF
 wcwidth
 camelot-py
+python-xlib
 PyAutoGUI
