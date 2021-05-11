@@ -17,8 +17,8 @@ jobs:
         os: [ubuntu-latest, ubuntu-16.04, macos-latest]
 
     env:
-      DISPLAY: 0
-      XAUTHORITY: '/run/user/1000/gdm/Xauthority'
+      DISPLAY: :0
+      XAUTHORITY: /run/user/1000/gdm/Xauthority
 
     steps:
     - uses: actions/checkout@v2
