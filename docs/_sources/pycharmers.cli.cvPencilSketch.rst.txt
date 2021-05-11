@@ -1,0 +1,7 @@
+pycharmers.cli.cvPencilSketch module
+====================================
+
+.. automodule:: pycharmers.cli.cvPencilSketch
+   :members:
+   :undoc-members:
+   :show-inheritance:

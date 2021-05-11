@@ -185,6 +185,7 @@
 <li><p><strong>x</strong> (<em>str/np.ndarray</em>) – path to an image, or image. (BGR)</p></li>
 <li><p><strong>ax</strong> (<em>Axes</em>) – The <code class="docutils literal notranslate"><span class="pre">Axes</span></code> instance.</p></li>
 <li><p><strong>clear_pos</strong> (<em>list</em>) – Positions to clean a grid</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – </p></li>
 <li><p><strong>is_cv2</strong> (<em>bool</em>) – Whether <code class="docutils literal notranslate"><span class="pre">x</span></code> is BGR (OpenCV format) or not.</p></li>
 <li><p><strong>figkeywargs</strong> (<em>dict</em>) – Keyword arguments for <a class="reference internal" href="pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.FigAxes_create" title="pycharmers.matplotlib.layout.FigAxes_create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FigAxes_create</span></code></a></p></li>
 <li><p><strong>plotkeywargs</strong> (<em>dict</em>) – Keyword arguments for <code class="docutils literal notranslate"><span class="pre">ax.imshow</span></code> .</p></li>
@@ -294,11 +295,13 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
@@ -368,8 +371,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

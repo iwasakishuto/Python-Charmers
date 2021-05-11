@@ -59,9 +59,11 @@ def draw_bboxes_create(coord_type="xywh"):
         for bbox,info in zip(bboxes, infos):
             color = info.pop("color", (0,255,0))
             text  = info.pop("text", "")
+            rectangle_thickness = info.pop("rectangle_thickness", 3)
             l,t,r,b = convert_coords(bbox, to_type="ltrb", from_type=coord_type)
-            cv2.rectangle(img=frame, pt1=(l, t), pt2=(r, b), color=color, thickness=1)
-            cv2.putText(frame, text, (l,t), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), thickness=1)
+            cv2.rectangle(img=frame, pt1=(l, t), pt2=(r, b), color=color, thickness=rectangle_thickness)
+            if len(text)>0:
+                draw_text_with_bg(img=frame, text=text, org=(l,t-10), offset=(10, 10), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, thickness=2)
         return frame
     dict_infos = '{"color":(255,0,0),"text": "person1"},{"color":(0,255,0),"text": "person2"}'
     draw_bboxes.__doc__ = f"""Drawing Inference results on frame.
@@ -105,6 +107,7 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
         x (str/np.ndarray)  : path to an image, or image. (BGR)
         ax (Axes)           : The ``Axes`` instance.
         clear_pos (list)    : Positions to clean a grid
+        cmap (str)          : 
         is_cv2 (bool)       : Whether ``x`` is BGR (OpenCV format) or not.
         figkeywargs (dict)  : Keyword arguments for :meth:`FigAxes_create <pycharmers.matplotlib.layout.FigAxes_create>`
         plotkeywargs (dict) : Keyword arguments for ``ax.imshow`` .
@@ -113,12 +116,13 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
         >>> from pycharmers.opencv import cv2plot, SAMPLE_LENA_IMG
         >>> ax = cv2plot(x=SAMPLE_LENA_IMG)
     """
-    fig, ax = FigAxes_create(ax=ax, **figkeywargs)
+    cmap = cmap or plotkeywargs.pop("cmap", None)
+    ax = FigAxes_create(ax=ax, **figkeywargs)[1][0]
     if isinstance(x, str):
         x = cv2read_mpl(x)
     elif is_cv2:
         x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB) 
-    ax.imshow(X=x, **plotkeywargs)
+    ax.imshow(X=x, cmap=cmap, **plotkeywargs)
     ax = clear_grid(ax, pos=clear_pos)
     return ax
 

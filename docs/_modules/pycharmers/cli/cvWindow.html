@@ -52,169 +52,37 @@
 <span></span><span class="c1">#coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">TrackingWindow</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">FrameWindow</span><span class="p">,</span> <span class="n">RealTimeWindow</span>
 
 <div class="viewcode-block" id="cvWindow"><a class="viewcode-back" href="../../../pycharmers.cli.cvWindow.html#pycharmers.cli.cvWindow.cvWindow">[docs]</a><span class="k">def</span> <span class="nf">cvWindow</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-    <span class="n">window</span> <span class="o">=</span> <span class="n">TrackingWindow</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">,</span> <span class="n">tracker</span><span class="o">=</span><span class="s2">&quot;boosting&quot;</span><span class="p">,</span> <span class="n">coord_type</span><span class="o">=</span><span class="s2">&quot;xywh&quot;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Use :meth:`cvWindow &lt;pycharmers.opencv.windows.cvWindow&gt;` to control frames.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        --path (str) : Path to images directory or video file.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+<span class="sd">            </span>
+<span class="sd">            $ cv-window path/to/video.mp4</span>
+<span class="sd">            $ cv-window path/to/image_directories</span>
+<span class="sd">            $ cv-window</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;render-template&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Use cvWindow to control frame.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--path&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to image directory or video file.&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">RealTimeWindow</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">FrameWindow</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">window</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">is_break</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">recieveKey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">is_break</span><span class="p">:</span>
-            <span class="k">break</span>
-    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span></div>
-
-<span class="c1"># #coding: utf-8</span>
-<span class="c1"># import os</span>
-<span class="c1"># import re</span>
-<span class="c1"># import sys</span>
-<span class="c1"># import json</span>
-<span class="c1"># import argparse</span>
-<span class="c1"># from pathlib import Path</span>
-
-<span class="c1"># from ._path import PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR</span>
-<span class="c1"># from ..utils._colorings import toBLUE, toGREEN</span>
-<span class="c1"># from ..utils.generic_utils import pycat</span>
-
-<span class="c1"># def cvWindow(argv=sys.argv[1:]):</span>
-<span class="c1">#     &quot;&quot;&quot;String replacement using regular expression</span>
-
-<span class="c1">#     - ``.json`` path can be specified by &quot;``json-dir`` / ``json-file``&quot; or &quot;``json-path``&quot;</span>
-<span class="c1">#     - output file path can be specified by &quot;``output-path``&quot; or &quot;``input-path`` + ``suffix``&quot;</span>
-
-<span class="c1">#     Args:</span>
-<span class="c1">#         -I/--input-path (str)  : Path/to/input file.</span>
-<span class="c1">#         -O/--output-path (str) : Path/to/output file.</span>
-<span class="c1">#         -jd/--json-dir (str)   : Path/to/json directory.</span>
-<span class="c1">#         -jf/--json-file (str)  : File name in ``json-dir``.</span>
-<span class="c1">#         -jp/--json-path (str)  : Path/to/json file.</span>
-<span class="c1">#         -suf/--suffix (str)    : Suffix of output filename.</span>
-<span class="c1">#         -ext/--extension (str) : When &#39;input-path&#39; is directory, only file in &#39;input-path&#39; with this extension will be replaced.</span>
-<span class="c1">#         --show-all (bool)      : If ``True``, show all json file descriptions in ``json-dir``</span>
-<span class="c1">#         --show (bool)          : If ``True``, show the content of a specified json file.</span>
-<span class="c1">#         --quiet (bool)         : Whether to make the output quiet.</span>
-
-<span class="c1">#     Note:</span>
-<span class="c1">#         When you run from the command line, execute as follows::</span>
-        
-<span class="c1">#         $ regexp_replacement -I sample.md -jf sample.json</span>
-<span class="c1">#         $ regexp_replacement --show-all</span>
-<span class="c1">#         $ regexp_replacement -jf sample.json --show</span>
-
-<span class="c1">#     Examples:</span>
-
-<span class="c1">#         - Replace Input file using regular expression.</span>
-<span class="c1">#             .. code-block:: shell</span>
-
-<span class="c1">#                 $ regexp-replacement -I sample.md -jf sample.json</span>
-<span class="c1">#                     Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json</span>
-<span class="c1">#                     Input  file : sample.md</span>
-<span class="c1">#                     Output file : sample.md</span>
-<span class="c1">#                 $ regexp-replacement -I sample.md -jf sample.json -suf suffix</span>
-<span class="c1">#                     Json: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json</span>
-<span class="c1">#                     Input path : sample.md</span>
-<span class="c1">#                     Output path: sample_suffix.md</span>
-
-<span class="c1">#         - Show all json file in ``json-dir``</span>
-
-<span class="c1">#             .. code-block:: shell</span>
-
-<span class="c1">#                 $ regexp-replacement --show-all</span>
-<span class="c1">#                 Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement</span>
-<span class="c1">#                 * sample.json: Sample Json</span>
-
-<span class="c1">#         - Show the content of the file at ``json-path``</span>
-
-<span class="c1">#             .. code-block:: shell</span>
-
-<span class="c1">#                 $ regexp-replacement -jf sample.json --show</span>
-<span class="c1">#                 Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json</span>
-<span class="c1">#                 {</span>
-<span class="c1">#                     &quot;description&quot; : &quot;Sample Json&quot;,</span>
-<span class="c1">#                     &quot;patterns&quot; : [</span>
-<span class="c1">#                         [&quot;`(.*?)`&quot;, &quot;&lt;span class=\&quot;code\&quot;&gt;\\1&lt;/span&gt;&quot;],</span>
-<span class="c1">#                         [&quot;+(.*?)+&quot;, &quot;&lt;span class=\&quot;strong\&quot;&gt;\\1&lt;/span&gt;&quot;]</span>
-<span class="c1">#                     ]</span>
-<span class="c1">#                 }</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     parser = argparse.ArgumentParser(prog=&quot;regexp-replace&quot;, add_help=True)</span>
-<span class="c1">#     parser.add_argument(&quot;-I&quot;,  &quot;--input-path&quot;,  type=str, default=None, help=&quot;Path/to/input file.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-O&quot;,  &quot;--output-path&quot;, type=str, default=None, help=&quot;Path/to/output file.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-jd&quot;, &quot;--json-dir&quot;,    type=str, default=PYCHARMERS_CLI_REGEXP_REPLACEMENT_DIR, help=&quot;Path to JSON dir.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-jf&quot;, &quot;--json-file&quot;,   type=str, default=None, help=&quot;Path to JSON file from &#39;json-dir&#39;&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-jp&quot;, &quot;--json-path&quot;,   type=str, default=None, help=&quot;Path to JSON file.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-suf&quot;, &quot;--suffix&quot;,     type=str, default=&quot;&quot;,   help=&quot;Suffix of output filename.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;-ext&quot;, &quot;--extension&quot;,  type=str, default=&quot;&quot;,   help=&quot;When &#39;input-path&#39; is directory, only file in &#39;input-path&#39; with this extension will be replaced.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;--show-all&quot;, action=&quot;store_true&quot;, help=&quot;If True, show all json file descriptions in &#39;json-dir&#39;&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;--show&quot;,     action=&quot;store_true&quot;, help=&quot;If True, show the content of a specified json file.&quot;)</span>
-<span class="c1">#     parser.add_argument(&quot;--quiet&quot;,    action=&quot;store_true&quot;, help=&quot;Whether to make the output quiet&quot;)</span>
-<span class="c1">#     args = parser.parse_args(argv)</span>
-
-<span class="c1">#     verbose = not args.quiet</span>
-<span class="c1">#     # Show all json file in &#39;json-dir&#39;</span>
-<span class="c1">#     if args.show_all:</span>
-<span class="c1">#         json_dir = args.json_dir</span>
-<span class="c1">#         print(f&quot;Json directory: {toGREEN(json_dir)}&quot;)</span>
-<span class="c1">#         p = Path(json_dir)</span>
-<span class="c1">#         for fn in p.glob(&quot;**/*.json&quot;):</span>
-<span class="c1">#             with open(fn.absolute()) as f:</span>
-<span class="c1">#                 print(f&quot;* {toBLUE(fn.name)}: {json.load(f).get(&#39;description&#39;)}&quot;)</span>
-<span class="c1">#         sys.exit(-1)</span>
-
-<span class="c1">#     # Show the content of the file at `json-path`</span>
-<span class="c1">#     json_path = args.json_path or os.path.join(args.json_dir, args.json_file)</span>
-<span class="c1">#     if verbose: print(f&quot;Json: {toBLUE(json_path)}&quot;)</span>
-<span class="c1">#     if args.show:</span>
-<span class="c1">#         pycat(json_path)</span>
-<span class="c1">#         sys.exit(-1)</span>
-
-<span class="c1">#     # Get the contents from json and create a replacement functions.</span>
-<span class="c1">#     with open(json_path, mode=&quot;r&quot;) as f_json:</span>
-<span class="c1">#         data = json.load(f_json).get(&quot;patterns&quot;, [])</span>
-
-<span class="c1">#     # Replace Strings.</span>
-<span class="c1">#     def replace_str(string):</span>
-<span class="c1">#         for pat, repl in data:</span>
-<span class="c1">#             string = re.sub(pattern=rf&quot;{pat}&quot;, repl=rf&quot;{repl}&quot;, string=string)</span>
-<span class="c1">#         return string</span>
-<span class="c1">#     # Replace File contents.</span>
-<span class="c1">#     def replace_file(input_path, output_path):</span>
-<span class="c1">#         if verbose: print(f&quot;- {input_path} -&gt; {output_path}&quot;)</span>
-<span class="c1">#         with open(input_path, mode=&quot;r&quot;) as f_in:</span>
-<span class="c1">#             readlines = f_in.readlines()</span>
-<span class="c1">#         with open(output_path, mode=&quot;w&quot;) as f_out:</span>
-<span class="c1">#             f_out.writelines([replace_str(line) for line in readlines])</span>
-
-<span class="c1">#     def add_suffix(path, suffix, sep=&quot;.&quot;):</span>
-<span class="c1">#         *fp, ext = path.split(sep)</span>
-<span class="c1">#         return sep.join(fp) + suffix + sep + ext</span>
-
-<span class="c1">#     input_path = args.input_path</span>
-<span class="c1">#     suffix = args.suffix</span>
-<span class="c1">#     if len(suffix)&gt;0 and (not suffix.startswith(&quot;.&quot;)): suffix = &quot;_&quot; + suffix</span>
-<span class="c1">#     if os.path.isfile(input_path):</span>
-<span class="c1">#         output_path = args.output_path or add_suffix(input_path,suffix)</span>
-<span class="c1">#         replace_file(input_path, output_path)</span>
-<span class="c1">#     elif os.path.isdir(input_path):</span>
-<span class="c1">#         if input_path.endswith(&quot;/&quot;): input_path = input_path[:-1]</span>
-<span class="c1">#         output_dir = args.output_path</span>
-<span class="c1">#         if output_dir is None:</span>
-<span class="c1">#             in2out = add_suffix</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             if output_dir.endswith(&quot;/&quot;): output_dir = output_dir[:-1]</span>
-<span class="c1">#             in2out = lambda path, suffix : path.replace(input_path, output_dir)</span>
-        
-<span class="c1">#         if verbose: </span>
-<span class="c1">#             print(f&quot;Input dir : {toBLUE(input_path)}&quot;)</span>
-<span class="c1">#             print(f&quot;Output dir: {toBLUE(output_dir or &#39;&#39;)}&quot;)</span>
-<span class="c1">#         ext = args.extension</span>
-<span class="c1">#         if not ext.startswith(&quot;.&quot;): ext = &quot;.&quot; + ext</span>
-
-<span class="c1">#         p = Path(input_path)</span>
-<span class="c1">#         for fp in p.glob(f&quot;**/*{ext}&quot;):</span>
-<span class="c1">#             if fp.is_file():</span>
-<span class="c1">#                 fp = str(fp)</span>
-<span class="c1">#                 replace_file(fp, in2out(fp, suffix))</span>
+            <span class="k">break</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -289,8 +157,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

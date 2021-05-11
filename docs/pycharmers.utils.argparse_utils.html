@@ -68,27 +68,30 @@
             
   <div class="section" id="module-pycharmers.utils.argparse_utils">
 <span id="pycharmers-utils-argparse-utils-module"></span><h1>pycharmers.utils.argparse_utils module<a class="headerlink" href="#module-pycharmers.utils.argparse_utils" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="pycharmers.utils.argparse_utils.ListParamProcessor">
-<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.argparse_utils.</code><code class="sig-name descname">ListParamProcessor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">option_strings</span></em>, <em class="sig-param"><span class="n">dest</span></em>, <em class="sig-param"><span class="n">nargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">const</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">choices</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">required</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">help</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metavar</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/argparse_utils.html#ListParamProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.argparse_utils.ListParamProcessor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Action</span></code></p>
-<p>Receive List arguments.</p>
+<dl class="py function">
+<dt id="pycharmers.utils.argparse_utils.ListParamProcessorCreate">
+<code class="sig-prename descclassname">pycharmers.utils.argparse_utils.</code><code class="sig-name descname">ListParamProcessorCreate</code><span class="sig-paren">(</span><em class="sig-param">type=&lt;class 'str'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/argparse_utils.html#ListParamProcessorCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.argparse_utils.ListParamProcessorCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a ListParamProcessor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>type</strong> (<em>type</em>) – type of each element in list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Processor which receives list arguments.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ListParamProcessor (argparse.Action)</p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">argparse</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">ListParamProcessor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">ListParamProcessorCreate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--list_params&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--list_params&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--list_params&quot;</span><span class="p">,</span> <span class="s2">&quot;[あ, い, う]&quot;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">list_params</span>
 <span class="go">[&#39;あ&#39;, &#39;い&#39;, &#39;う&#39;]</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you run from the command line, execute as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python app.py --list_params &quot;[あ, い, う]&quot;
-</pre></div>
-</div>
 </div>
 </dd></dl>
 
@@ -147,6 +150,29 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.argparse_utils.cv2ArgumentParser">
+<code class="sig-prename descclassname">pycharmers.utils.argparse_utils.</code><code class="sig-name descname">cv2ArgumentParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parser</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prog</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">add_help</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/argparse_utils.html#cv2ArgumentParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.argparse_utils.cv2ArgumentParser" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ArgumentParser</span></code> for OpenCV project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>--winname</strong> (<em>str</em>) – Window name.</p></li>
+<li><p><strong>--path</strong> (<em>str</em>) – Path to video or image.</p></li>
+<li><p><strong>--cam</strong> (<em>int</em>) – The ID of the web camera.</p></li>
+<li><p><strong>--ext</strong> (<em>str</em>) – The extension for saved image.</p></li>
+<li><p><strong>--gui-width</strong> (<em>int</em>) – The width of the GUI tools.</p></li>
+<li><p><strong>--gui-margin</strong> (<em>int</em>) – The margin of GUI control tools.</p></li>
+<li><p><strong>--gui-color</strong> (<em>list</em>) – The background color of GUI tool.</p></li>
+<li><p><strong>--monitor-size</strong> (<em>list</em>) – Monitor size. ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+<li><p><strong>--autofit</strong> (<em>bool</em>) – Whether to fit display size to window size.</p></li>
+<li><p><strong>--twitter</strong> (<em>bool</em>) – Whether you want to run for tweet. ( <code class="docutils literal notranslate"><span class="pre">display_size</span></code> will be () )</p></li>
+<li><p><strong>--capture</strong> (<em>bool</em>) – Whether you want to save as video.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -199,6 +225,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.inspect_utils.html">pycharmers.utils.inspect_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
@@ -206,7 +233,9 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.subprocess_utils.html">pycharmers.utils.subprocess_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.tkinter_utils.html">pycharmers.utils.tkinter_utils module</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
@@ -272,8 +301,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

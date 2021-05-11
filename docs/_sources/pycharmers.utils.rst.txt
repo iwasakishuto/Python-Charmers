@@ -12,6 +12,7 @@ Submodules
    pycharmers.utils.download_utils
    pycharmers.utils.driver_utils
    pycharmers.utils.generic_utils
+   pycharmers.utils.inspect_utils
    pycharmers.utils.json_utils
    pycharmers.utils.monitor_utils
    pycharmers.utils.numpy_utils
@@ -19,7 +20,9 @@ Submodules
    pycharmers.utils.pil_utils
    pycharmers.utils.print_utils
    pycharmers.utils.soup_utils
+   pycharmers.utils.subprocess_utils
    pycharmers.utils.templates
+   pycharmers.utils.tkinter_utils
 
 Module contents
 ---------------

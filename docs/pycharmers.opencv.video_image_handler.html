@@ -198,7 +198,7 @@
 <dl class="py function">
 <dt id="pycharmers.opencv.video_image_handler.create_VideoWriter">
 <code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">create_VideoWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fps</span><span class="o">=</span><span class="default_value">30</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#create_VideoWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.create_VideoWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code></p>
+<dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code> which creates a video whose option is same as that of input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -214,6 +214,36 @@
 <span class="go">cv2.VideoWriter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span><span class="s2">&quot;./data/video/sample.mp4&quot;</span><span class="p">)</span>
 <span class="go">cv2.VideoWriter</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.video_image_handler.VideoCaptureCreate">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">VideoCaptureCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cam</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#VideoCaptureCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.VideoCaptureCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a VideoCapture (mimic) object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to video or image.</p></li>
+<li><p><strong>cam</strong> (<em>int</em>) – The ID of the web camera</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>VideoCapture (mimic) object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>cap (cv2.VideoCapture)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">VideoCaptureCreate</span><span class="p">,</span> <span class="n">cv2plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">[</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">ret</span><span class="p">,</span><span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">cv2plot</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -265,11 +295,13 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
@@ -339,8 +371,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

@@ -8,7 +8,7 @@
   <meta property="og:title" content="pycharmers.opencv package" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.html" />
-  <meta property="og:description" content="Submodules: pycharmers.opencv.backsub module, pycharmers.opencv.cascade module, pycharmers.opencv.cvui module, pycharmers.opencv.drawing module, pycharmers.opencv.editing module, pycharmers.opencv...." />
+  <meta property="og:description" content="Submodules: pycharmers.opencv.backsub module, pycharmers.opencv.binary module, pycharmers.opencv.cascade module, pycharmers.opencv.cvui module, pycharmers.opencv.drawing module, pycharmers.opencv.e..." />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
@@ -72,11 +72,13 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
@@ -87,6 +89,34 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycharmers.opencv" title="Permalink to this headline">¶</a></h2>
 <p>Utility programs for <a class="reference external" href="https://opencv.org/">OpenCV</a></p>
 <p>OpenCV (Open Source Computer Vision Library) is a library of programming functions mainly aimed at real-time computer vision. Originally developed by Intel, it was later supported by Willow Garage then Itseez (which was later acquired by Intel). The library is cross-platform and free for use under the open-source BSD license.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">SAMPLE_VTEST_VIDEO</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>variable names</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SAMPLE_LENA_IMG</span></code></p></td>
+<td><img alt="_images/opencv.SAMPLE_LENA_IMG.jpg" src="_images/opencv.SAMPLE_LENA_IMG.jpg" />
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SAMPLE_VTEST_VIDEO</span></code></p></td>
+<td>
+    <video width="100%" height="" controls >
+        <source src="_images/opencv.SAMPLE_VTEST_VIDEO.mp4" type="video/mp4">
+        Video
+    </video>
+    </td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -135,11 +165,13 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pycharmers.opencv package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
@@ -208,8 +240,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

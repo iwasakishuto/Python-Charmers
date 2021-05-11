@@ -52,6 +52,7 @@
 <span></span><span class="c1"># coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
@@ -686,6 +687,160 @@
     <span class="c1"># if num == XXX1X, use &quot;th&quot;</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;th&quot;</span> <span class="k">if</span> <span class="n">q</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;nd&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;rd&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span><span class="s2">&quot;th&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="filenaming"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.filenaming">[docs]</a><span class="k">def</span> <span class="nf">filenaming</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Avoid having the same name as an existing file.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        name (str) : File name you want to name</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str : File name that is not the same name as an existing file.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import filenaming</span>
+<span class="sd">        &gt;&gt;&gt; print(os.listdir())</span>
+<span class="sd">        [&#39;Untitled.ipynb&#39;, &#39;Untitled(1).ipynb&#39;, &#39;Untitled(3).ipynb&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; filenaming(&quot;Untitled.ipynb&quot;)</span>
+<span class="sd">        &#39;./Untitled(2).ipynb&#39;</span>
+<span class="sd">        &gt;&gt;&gt; filenaming(&quot;Untitled.py&quot;)</span>
+<span class="sd">        &#39;Untitled.py&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Untitled&quot;</span>
+    <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">dirname</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+    <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+    <span class="n">filenames_in_samedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">basename</span> <span class="ow">in</span> <span class="n">filenames_in_samedir</span><span class="p">:</span>        
+        <span class="n">existing_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">fr</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">\((\d+)\)</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">filenames_in_samedir</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">existing_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">no</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">no</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_numbers</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">no</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_pyenv"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.get_pyenv">[docs]</a><span class="k">def</span> <span class="nf">get_pyenv</span><span class="p">(</span><span class="n">scope_variables</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;In what environment python is running.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        scope_variables (dict) : the dictionary containing the current scope&#39;s global (local) variables. ( ``globals()`` or ``locals()`` )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str : wheather the environment is Jupyter Notebook or not.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import get_pyenv</span>
+<span class="sd">        &gt;&gt;&gt; get_pyenv(globals())</span>
+<span class="sd">        &#39;Jupyter Notebook&#39;</span>
+
+<span class="sd">    TODO:</span>
+<span class="sd">        Execute this function without arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># global locals</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Python shell&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;get_ipython&quot;</span> <span class="ow">in</span> <span class="n">scope_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">ipython_class_name</span> <span class="o">=</span> <span class="n">scope_variables</span><span class="p">[</span><span class="s2">&quot;get_ipython&quot;</span><span class="p">]()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">ipython_class_name</span> <span class="o">==</span> <span class="s2">&quot;ZMQInteractiveShell&quot;</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Jupyter Notebook&quot;</span>
+        <span class="k">elif</span> <span class="n">ipython_class_name</span> <span class="o">==</span> <span class="s2">&quot;TerminalInteractiveShell&quot;</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;Ipython&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="s2">&quot;OtherShell&quot;</span>
+    <span class="k">return</span> <span class="n">env</span></div>
+
+<div class="viewcode-block" id="assign_trbl"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.assign_trbl">[docs]</a><span class="k">def</span> <span class="nf">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the ``name`` &#39;s values of [``Top``, ``Right``, ``Bottom``, ``Left``] from ``data``</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        data (dict) : Data Dictionary.</span>
+<span class="sd">        name (str)  : The name of the value you want to assign.</span>
+<span class="sd">        default     : Default Value.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Values of ``Top``, ``Right``, ``Bottom``, ``Left`` </span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import assign_trbl</span>
+<span class="sd">        &gt;&gt;&gt; assign_trbl(data={&quot;margin&quot;: [1,2,3,4]}, name=&quot;margin&quot;)</span>
+<span class="sd">        (1, 2, 3, 4)</span>
+<span class="sd">        &gt;&gt;&gt; assign_trbl(data={&quot;margin&quot;: [1,2,3]}, name=&quot;margin&quot;)</span>
+<span class="sd">        (1, 2, 3, 2)</span>
+<span class="sd">        &gt;&gt;&gt; assign_trbl(data={&quot;margin&quot;: [1,2]}, name=&quot;margin&quot;)</span>
+<span class="sd">        (1, 2, 1, 2)</span>
+<span class="sd">        &gt;&gt;&gt; assign_trbl(data={&quot;margin&quot;: 1}, name=&quot;margin&quot;)</span>
+<span class="sd">        (1, 1, 1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; assign_trbl(data={&quot;margin&quot;: 1}, name=&quot;padding&quot;, default=5)</span>
+<span class="sd">        (5, 5, 5, 5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">vals</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">r</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span>  <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">r</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">r</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">vals</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">r</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">4</span><span class="p">:</span>
+        <span class="n">t</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">l</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+        
+    <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-top&quot;</span><span class="p">,</span>    <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_top&quot;</span><span class="p">,</span>    <span class="n">t</span><span class="p">))</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-right&quot;</span><span class="p">,</span>  <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_right&quot;</span><span class="p">,</span>  <span class="n">r</span><span class="p">))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-bottom&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_bottom&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-left&quot;</span><span class="p">,</span>   <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_left&quot;</span><span class="p">,</span>   <span class="n">l</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">l</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="relative_import"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.relative_import">[docs]</a><span class="k">def</span> <span class="nf">relative_import</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">absfile</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Relative import that can be used with script files such as those executed by python commands</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        f (str)       : ``&quot;XXX&quot;`` of ``from XXX``</span>
+<span class="sd">        i (str)       : ``&quot;YYY&quot;`` of ``import YYY``</span>
+<span class="sd">        absfile (str) : ``os.path.abspath(__file__)``</span>
+<span class="sd">        name (str)    : ``__name__``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Object : ``exec(i)``</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import relative_import</span>
+<span class="sd">        &gt;&gt;&gt; relative_import(f=&quot;..utils&quot;, i=&quot;LeNet&quot;, absfile=os.path.abspath(__file__), name=__name__)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">is_main_</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">is_main_</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="n">is_main_</span> <span class="o">=</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^(\.+)(.*)&quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_start_period</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_main_</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_start_period</span><span class="p">):</span>
+                <span class="n">absfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">absfile</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">absfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">absfile</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absfile</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="n">num_start_period</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;from </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -760,8 +915,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

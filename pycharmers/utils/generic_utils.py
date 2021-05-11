@@ -1,6 +1,7 @@
 # coding: utf-8
 import os
 import re
+import sys
 import json
 import math
 import urllib
@@ -635,3 +636,157 @@ def int2ordinal(num):
     # if num == XXX1X, use "th"
     suffix = "th" if q % 10 == 1 else {1: "st", 2: "nd", 3: "rd"}.get(mod,"th")
     return f"{num}{suffix}"
+
+def filenaming(name=None):
+    """Avoid having the same name as an existing file.
+    
+    Args:
+        name (str) : File name you want to name
+        
+    Returns:
+        str : File name that is not the same name as an existing file.
+        
+    Examples:
+        >>> import os
+        >>> from pycharmers.utils import filenaming
+        >>> print(os.listdir())
+        ['Untitled.ipynb', 'Untitled(1).ipynb', 'Untitled(3).ipynb']
+        >>> filenaming("Untitled.ipynb")
+        './Untitled(2).ipynb'
+        >>> filenaming("Untitled.py")
+        'Untitled.py'
+    """
+    if name is None:
+        name = "Untitled"
+    dirname, basename = os.path.split(name)
+    if len(dirname)==0: dirname = "."
+    root, ext = os.path.splitext(basename)
+    filenames_in_samedir = os.listdir(dirname)
+    if basename in filenames_in_samedir:        
+        existing_numbers = []
+        pattern = fr"{root}\((\d+)\){ext}"
+        for fn in filenames_in_samedir:
+            m = re.match(pattern=pattern, string=fn)
+            if m is not None:
+                existing_numbers.append(int(m.group(1)))
+        no = 1
+        while True:
+            if no not in existing_numbers:
+                break
+            no += 1
+        basename = f"{root}({no}){ext}"
+    return os.path.join(dirname, basename)
+
+def get_pyenv(scope_variables):
+    """In what environment python is running.
+    
+    Args:
+        scope_variables (dict) : the dictionary containing the current scope's global (local) variables. ( ``globals()`` or ``locals()`` )
+
+    Returns:
+        str : wheather the environment is Jupyter Notebook or not.
+
+    Examples:
+        >>> from pycharmers.utils import get_pyenv
+        >>> get_pyenv(globals())
+        'Jupyter Notebook'
+
+    TODO:
+        Execute this function without arguments.
+    """
+    # global locals
+    env = "Python shell"
+    if "get_ipython" in scope_variables.keys():
+        ipython_class_name = scope_variables["get_ipython"]().__class__.__name__
+        if ipython_class_name == "ZMQInteractiveShell":
+            env = "Jupyter Notebook"
+        elif ipython_class_name == "TerminalInteractiveShell":
+            env = "Ipython"
+        else:
+            env = "OtherShell"
+    return env
+
+def assign_trbl(data, name, default=None):
+    """Return the ``name`` 's values of [``Top``, ``Right``, ``Bottom``, ``Left``] from ``data``
+    
+    Args:
+        data (dict) : Data Dictionary.
+        name (str)  : The name of the value you want to assign.
+        default     : Default Value.
+        
+    Returns:
+        tuple: Values of ``Top``, ``Right``, ``Bottom``, ``Left`` 
+        
+    Examples:
+        >>> from pycharmers.utils import assign_trbl
+        >>> assign_trbl(data={"margin": [1,2,3,4]}, name="margin")
+        (1, 2, 3, 4)
+        >>> assign_trbl(data={"margin": [1,2,3]}, name="margin")
+        (1, 2, 3, 2)
+        >>> assign_trbl(data={"margin": [1,2]}, name="margin")
+        (1, 2, 1, 2)
+        >>> assign_trbl(data={"margin": 1}, name="margin")
+        (1, 1, 1, 1)
+        >>> assign_trbl(data={"margin": 1}, name="padding", default=5)
+        (5, 5, 5, 5)
+    """
+    vals = data.get(name, default)
+    if not isinstance(vals, list):
+        vals = [vals]
+
+    if len(vals)==0:
+        t = r = b = l = None
+    elif  len(vals)==1:
+        t = r = b = l = vals[0]
+    elif len(vals)==2:
+        t = b = vals[0]
+        l = r = vals[1]
+    elif len(vals)==3:
+        t, r, b = vals
+        l = r
+    elif len(vals)>=4:
+        t,r,b,l = vals[:4]
+        
+    t = data.get(f"{name}-top",    data.get(f"{name}_top",    t))
+    r = data.get(f"{name}-right",  data.get(f"{name}_right",  r))
+    b = data.get(f"{name}-bottom", data.get(f"{name}_bottom", b))
+    l = data.get(f"{name}-left",   data.get(f"{name}_left",   l))
+    return (t,r,b,l)
+
+def relative_import(f, i, absfile, name):
+    """Relative import that can be used with script files such as those executed by python commands
+
+    Args:
+        f (str)       : ``"XXX"`` of ``from XXX``
+        i (str)       : ``"YYY"`` of ``import YYY``
+        absfile (str) : ``os.path.abspath(__file__)``
+        name (str)    : ``__name__``
+
+    Returns:
+        Object : ``exec(i)``
+
+    Examples:
+        >>> import os
+        >>> from pycharmers.utils import relative_import
+        >>> relative_import(f="..utils", i="LeNet", absfile=os.path.abspath(__file__), name=__name__)
+    """
+    global is_main_
+    try:
+        is_main_
+    except NameError:
+        is_main_ = name == "__main__"
+    m = re.match(pattern=r"^(\.+)(.*)", string=f)
+    if m is not None:
+        num_start_period = len(m.group(1))
+        if is_main_:
+            for _ in range(num_start_period):
+                absfile = os.path.dirname(absfile)
+            g = m.group(2).split(".")
+            for p in g[1:-1]:
+                absfile = os.path.join(absfile, p)
+            f = g[-1]
+            sys.path.append(absfile)
+        else:
+            f = ".".join(name.split(".")[:-num_start_period]) + "." + m.group(2)
+    exec(f"from {f} import {i}")
+    return eval(i)

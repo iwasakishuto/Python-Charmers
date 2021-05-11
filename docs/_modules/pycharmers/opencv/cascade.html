@@ -55,7 +55,7 @@
 <span class="kn">import</span> <span class="nn">glob</span>
 
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">handleTypeError</span>
-<span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_DATA_DIR</span>
+<span class="kn">from</span> <span class="nn">._cvpath</span> <span class="kn">import</span> <span class="n">PYCHARMERS_OPENCV_DATA_DIR</span>
 
 <span class="n">OPENCV_CASCADES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">path</span>
@@ -65,7 +65,7 @@
 <div class="viewcode-block" id="cascade_creator"><a class="viewcode-back" href="../../../pycharmers.opencv.cascade.html#pycharmers.opencv.cascade.cascade_creator">[docs]</a><span class="k">def</span> <span class="nf">cascade_creator</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a ``cv2.CascadeClassifier`` instance.</span>
 <span class="sd">    Args:</span>
-<span class="sd">        cascade (str, cv2.CascadeClassifier) : </span>
+<span class="sd">        cascade (str, cv2.CascadeClassifier) : The identifier of Cascades.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ``cv2.CascadeClassifier``</span>
@@ -199,8 +199,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

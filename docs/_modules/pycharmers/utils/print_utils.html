@@ -183,7 +183,9 @@
     <span class="sd">&quot;&quot;&quot;Create a beautiful table and show.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        tablefmt (str)        : The format of tabel.</span>
 <span class="sd">        enable_colspan (bool) : Whether to enable ``colspan`` or not.</span>
+<span class="sd">        mincolwidth (int)     : The minimum width of each column.</span>
 
 <span class="sd">    Properties:</span>
 <span class="sd">        ncols(int) : the number of columns.</span>
@@ -208,11 +210,15 @@
 <span class="sd">        |    |    \x1b[32mde\x1b[0m |</span>
 <span class="sd">        +----+-------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable_colspan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">SUPPORTED_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="s2">&quot;rst&quot;</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;rst&quot;</span><span class="p">,</span> <span class="n">enable_colspan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mincolwidth</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">Table</span><span class="o">.</span><span class="n">SUPPORTED_FORMATS</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="n">tablefmt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_width</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tablefmt</span> <span class="o">=</span> <span class="n">tablefmt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enable_colspan</span> <span class="o">=</span> <span class="n">enable_colspan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mincolwidth</span> <span class="o">=</span> <span class="n">mincolwidth</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ncols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -229,55 +235,120 @@
             <span class="n">options</span><span class="p">[</span><span class="s2">&quot;print_title&quot;</span><span class="p">](</span><span class="n">colname</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_print_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_print_border</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">alignmark</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print border.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            vertex (str) : The symbol of vertex.</span>
-<span class="sd">            hedge (str)  : The symbol of the horizontal edge.</span>
+<span class="sd">            vertex (str)            : The symbol of vertex.</span>
+<span class="sd">            hedge (str)             : The symbol of the horizontal edge.</span>
+<span class="sd">            alignmark (str)         : The symbol which implies the alignment.</span>
+<span class="sd">            is_next_has_vals (list) : is each next column has the value or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">alignmark</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">alignmark</span><span class="o">=</span><span class="n">hedge</span>
         <span class="n">is_next_has_vals</span> <span class="o">=</span> <span class="n">is_next_has_vals</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ncols</span>
         <span class="n">border</span> <span class="o">=</span> <span class="n">vertex</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">colname</span><span class="p">,</span> <span class="n">options</span><span class="p">),</span><span class="n">is_next_has_val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span><span class="n">is_next_has_vals</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_colspan</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_next_has_val</span><span class="p">:</span>
-                <span class="n">border</span> <span class="o">+=</span> <span class="n">hedge</span><span class="o">*</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;colwidth&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vertex</span>
+                <span class="n">edge</span> <span class="o">=</span> <span class="n">alignmark</span> <span class="o">+</span> <span class="n">hedge</span><span class="o">*</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;colwidth&quot;</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">alignmark</span>
+                <span class="n">align</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;align&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">align</span><span class="o">==</span><span class="s2">&quot;right&quot;</span><span class="p">:</span>
+                    <span class="n">edge</span> <span class="o">=</span> <span class="n">hedge</span> <span class="o">+</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">elif</span> <span class="n">align</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
+                    <span class="n">edge</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">hedge</span>
+                <span class="n">border</span> <span class="o">+=</span> <span class="n">edge</span> <span class="o">+</span> <span class="n">vertex</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">border</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;colwidth&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vertex</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">border</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_print_tbody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_print_tbody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">need_border</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print Values.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            head (int)  : How many lines to display.</span>
-<span class="sd">            vedge (str) : The symbol of the vertical edge.</span>
-<span class="sd">            hedge (str) : The symbol of the horizontal edge.</span>
+<span class="sd">            head (int)         : How many lines to display.</span>
+<span class="sd">            vedge (str)        : The symbol of the vertical edge.</span>
+<span class="sd">            hedge (str)        : The symbol of the horizontal edge.</span>
+<span class="sd">            need_border (bool) : Whether the border between tbodys are needed or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">head</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">head</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span>
         <span class="n">loop_not_last</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> <span class="n">loop_not_last</span><span class="o">=</span><span class="kc">False</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">==</span><span class="n">head</span><span class="p">:</span> 
+                <span class="n">loop_not_last</span><span class="o">=</span><span class="kc">False</span>
             <span class="n">is_next_has_vals</span><span class="o">=</span><span class="p">[]</span>
             <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">options</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
                 <span class="n">options</span><span class="p">[</span><span class="s2">&quot;print_values&quot;</span><span class="p">](</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-                <span class="k">if</span> <span class="n">loop_not_last</span><span class="p">:</span> <span class="n">is_next_has_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loop_not_last</span><span class="p">:</span> 
+                    <span class="n">is_next_has_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">vedge</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">loop_not_last</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="n">hedge</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="n">is_next_has_vals</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">need_border</span> <span class="ow">and</span> <span class="n">loop_not_last</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="n">hedge</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="n">is_next_has_vals</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.show"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Show a table</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
 <span class="sd">            table_width (int) : The table width.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_thead</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_tbody</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span></div>
+        <span class="n">tablefmt</span> <span class="o">=</span> <span class="n">tablefmt</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tablefmt</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">Table</span><span class="o">.</span><span class="n">SUPPORTED_FORMATS</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="n">tablefmt</span><span class="p">)</span>
+        <span class="n">show_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;show_</span><span class="si">{</span><span class="n">tablefmt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">show_func</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="n">table_width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Table.show_github"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show_github">[docs]</a>    <span class="k">def</span> <span class="nf">show_github</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show a table with github format.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
+<span class="sd">            table_width (int) : The table width.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.utils import Table</span>
+<span class="sd">            &gt;&gt;&gt; table = Table()</span>
+<span class="sd">            &gt;&gt;&gt; table.set_cols(values=range(3), colname=&quot;Number&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; table.set_cols(values=[&quot;iwa&quot;, &quot;saki&quot;, &quot;shuto&quot;], colname=&quot;Name&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; table.show_github()</span>
+<span class="sd">            | Number | Name  |</span>
+<span class="sd">            |:------:|:-----:|</span>
+<span class="sd">            |      0 |   iwa |</span>
+<span class="sd">            |      1 |  saki |</span>
+<span class="sd">            |      2 | shuto |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_thead</span><span class="p">(</span><span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">alignmark</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_tbody</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">need_border</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Table.show_rst"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.show_rst">[docs]</a>    <span class="k">def</span> <span class="nf">show_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show a table with rst format.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            head (str)        : Show the first ``head`` rows for the table. </span>
+<span class="sd">            table_width (int) : The table width.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.utils import Table</span>
+<span class="sd">            &gt;&gt;&gt; table = Table()</span>
+<span class="sd">            &gt;&gt;&gt; table.set_cols(values=range(3), colname=&quot;Number&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; table.set_cols(values=[&quot;iwa&quot;, &quot;saki&quot;, &quot;shuto&quot;], colname=&quot;Name&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; table.show_rst()</span>
+<span class="sd">            +--------+-------+</span>
+<span class="sd">            | Number | Name  |</span>
+<span class="sd">            +========+=======+</span>
+<span class="sd">            |      0 |   iwa |</span>
+<span class="sd">            +--------+-------+</span>
+<span class="sd">            |      1 |  saki |</span>
+<span class="sd">            +--------+-------+</span>
+<span class="sd">            |      2 | shuto |</span>
+<span class="sd">            +--------+-------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_thead</span><span class="p">(</span><span class="n">vedge</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_tbody</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">need_border</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_print_border</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">hedge</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">is_next_has_vals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.set_cols"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.Table.set_cols">[docs]</a>    <span class="k">def</span> <span class="nf">set_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="n">zero_padding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grouping_option</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -315,14 +386,15 @@
                 <span class="s2">&quot;print_values&quot;</span> <span class="p">:</span> <span class="n">print_values</span><span class="p">,</span>
                 <span class="s2">&quot;print_title&quot;</span>  <span class="p">:</span> <span class="n">print_title</span><span class="p">,</span>
                 <span class="s2">&quot;values&quot;</span>       <span class="p">:</span> <span class="n">values</span><span class="p">,</span>
-                <span class="s2">&quot;colwidth&quot;</span>     <span class="p">:</span> <span class="n">width</span><span class="o">+</span><span class="n">left_margin</span><span class="o">+</span><span class="n">right_margin</span><span class="p">,</span>
+                <span class="s2">&quot;colwidth&quot;</span>     <span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">width</span><span class="o">+</span><span class="n">left_margin</span><span class="o">+</span><span class="n">right_margin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mincolwidth</span><span class="p">),</span>
+                <span class="s2">&quot;align&quot;</span>        <span class="p">:</span> <span class="n">align</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">})</span>
         <span class="n">nrows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">nrows</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nrows</span></div></div>
 
-<div class="viewcode-block" id="tabulate"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.tabulate">[docs]</a><span class="k">def</span> <span class="nf">tabulate</span><span class="p">(</span><span class="n">tabular_data</span><span class="o">=</span><span class="p">[[]],</span> <span class="n">headers</span><span class="o">=</span><span class="p">[],</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="tabulate"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.tabulate">[docs]</a><span class="k">def</span> <span class="nf">tabulate</span><span class="p">(</span><span class="n">tabular_data</span><span class="o">=</span><span class="p">[[]],</span> <span class="n">headers</span><span class="o">=</span><span class="p">[],</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;rst&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Format a fixed width table for pretty printing.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
@@ -347,7 +419,7 @@
     <span class="n">ncols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tabular_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">nheaders</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
     <span class="n">headers</span> <span class="o">+=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">ncols</span><span class="o">-</span><span class="n">nheaders</span><span class="p">)</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">tablefmt</span><span class="o">=</span><span class="n">tablefmt</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">col_value</span><span class="p">,</span> <span class="n">header</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tabular_data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
         <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">col_value</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
@@ -397,10 +469,10 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pretty_3quote</span>
 <span class="sd">        &gt;&gt;&gt; print(*pretty_3quote(\&quot;\&quot;\&quot;</span>
-<span class="sd">            When I was 17, I read a quote that went something like: </span>
-<span class="sd">            “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
-<span class="sd">            It made an impression on me, and since then, for the past 33 years, </span>
-<span class="sd">        \&quot;\&quot;\&quot;))</span>
+<span class="sd">        ...     When I was 17, I read a quote that went something like: </span>
+<span class="sd">        ...     “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
+<span class="sd">        ...     It made an impression on me, and since then, for the past 33 years, </span>
+<span class="sd">        &gt;&gt;&gt; \&quot;\&quot;\&quot;))</span>
 <span class="sd">        When I was 17, I read a quote that went something like: </span>
 <span class="sd">        “If you live each day as if it was your last, someday you’ll most certainly be right.”</span>
 <span class="sd">        It made an impression on me, and since then, for the past 33 years, </span>
@@ -452,6 +524,39 @@
         <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="n">strip_invisible</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">wcwidth</span><span class="o">.</span><span class="n">wcswidth</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="str2pyexample"><a class="viewcode-back" href="../../../pycharmers.utils.print_utils.html#pycharmers.utils.print_utils.str2pyexample">[docs]</a><span class="k">def</span> <span class="nf">str2pyexample</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a python example code.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        string (str) : A string of Python Example Code.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import str2pyexample</span>
+<span class="sd">        &gt;&gt;&gt; str2pyexample(\&quot;\&quot;\&quot;</span>
+<span class="sd">        ... import cv2</span>
+<span class="sd">        ... import numpy as np</span>
+<span class="sd">        ... frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)</span>
+<span class="sd">        ... while (True):</span>
+<span class="sd">        ...     cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">        ...     if cv2.waitKey(0) == 27: break</span>
+<span class="sd">        ... cv2.destroyAllWindows()</span>
+<span class="sd">        ... \&quot;\&quot;\&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; frame = np.zeros(shape=(50, 100, 3), dtype=np.uint8)</span>
+<span class="sd">        &gt;&gt;&gt; while (True):</span>
+<span class="sd">        ...     cv2.imshow(WINDOW_NAME, frame)</span>
+<span class="sd">        ...     if cv2.waitKey(0) == 27: break</span>
+<span class="sd">        &gt;&gt;&gt; cv2.destroyAllWindows()</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;&gt;&gt;&gt;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -526,8 +631,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

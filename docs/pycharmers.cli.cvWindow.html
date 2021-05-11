@@ -33,8 +33,8 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.cli.pdfmine module" href="pycharmers.cli.pdfmine.html" />
-    <link rel="prev" title="pycharmers.cli.cvCascades module" href="pycharmers.cli.cvCascades.html" /> 
+    <link rel="next" title="pycharmers.cli.form_auto_fill_in module" href="pycharmers.cli.form_auto_fill_in.html" />
+    <link rel="prev" title="pycharmers.cli.cvPencilSketch module" href="pycharmers.cli.cvPencilSketch.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.pdfmine.html" title="pycharmers.cli.pdfmine module"
+          <a href="pycharmers.cli.form_auto_fill_in.html" title="pycharmers.cli.form_auto_fill_in module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvCascades.html" title="pycharmers.cli.cvCascades module"
+          <a href="pycharmers.cli.cvPencilSketch.html" title="pycharmers.cli.cvPencilSketch module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -71,7 +71,22 @@
 <dl class="py function">
 <dt id="pycharmers.cli.cvWindow.cvWindow">
 <code class="sig-prename descclassname">pycharmers.cli.cvWindow.</code><code class="sig-name descname">cvWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/cvWindow.html#cvWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.cvWindow.cvWindow" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Use <a class="reference internal" href="pycharmers.opencv.windows.html#pycharmers.opencv.windows.cvWindow" title="pycharmers.opencv.windows.cvWindow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cvWindow</span></code></a> to control frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>--path</strong> (<em>str</em>) – Path to images directory or video file.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cv-window path/to/video.mp4
+$ cv-window path/to/image_directories
+$ cv-window
+</pre></div>
+</div>
+</div>
+</dd></dl>
 
 </div>
 
@@ -117,13 +132,21 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCanny.html">pycharmers.cli.cvCanny module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.book2img.html">pycharmers.cli.book2img module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.cvWindow module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.form_auto_fill_in.html">pycharmers.cli.form_auto_fill_in module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.lyricVideo.html">pycharmers.cli.lyricVideo module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.openBrowser.html">pycharmers.cli.openBrowser module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.pdfmine.html">pycharmers.cli.pdfmine module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.requirements.html">pycharmers.cli.requirements module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.cli.html#module-pycharmers.cli">Module contents</a></li>
@@ -140,11 +163,11 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.cli.cvCascades.html"
-                        title="previous chapter">pycharmers.cli.cvCascades module</a></p>
+  <p class="topless"><a href="pycharmers.cli.cvPencilSketch.html"
+                        title="previous chapter">pycharmers.cli.cvPencilSketch module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.cli.pdfmine.html"
-                        title="next chapter">pycharmers.cli.pdfmine module</a></p>
+  <p class="topless"><a href="pycharmers.cli.form_auto_fill_in.html"
+                        title="next chapter">pycharmers.cli.form_auto_fill_in module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -176,10 +199,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.pdfmine.html" title="pycharmers.cli.pdfmine module"
+          <a href="pycharmers.cli.form_auto_fill_in.html" title="pycharmers.cli.form_auto_fill_in module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvCascades.html" title="pycharmers.cli.cvCascades module"
+          <a href="pycharmers.cli.cvPencilSketch.html" title="pycharmers.cli.cvPencilSketch module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -192,8 +215,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

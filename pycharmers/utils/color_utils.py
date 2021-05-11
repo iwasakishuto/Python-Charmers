@@ -1,4 +1,5 @@
 #coding: utf-8
+import math
 from .generic_utils import handleTypeError
 
 SUPPORTED_COLOR_CODES = ["hex", "rgb", "rgba"]
@@ -88,58 +89,71 @@ toHEX  = _toColorCode_create("hex")
 toRGB  = _toColorCode_create("rgb")
 toRGBA = _toColorCode_create("rgba")
 
-def choose_text_color(color, max_val=1):
+def choose_text_color(color, max_val=255, is_bgr=False):
     """Select an easy-to-read text color from the given color.
 
     Args:
-        color (tuple / str): color code.
+        color (tuple / str) : color code.
+        max_val (int)       : Maximum value.
 
     References: 
-        `WCAG <https://www.w3.org/TR/WCAG20/>`_
+        `WCAG <https://www.w3.org/TR/WCAG20/#relativeluminancede>`_
 
     Examples:
         >>> from pycharmers.utils import choose_text_color
-        # BLACK
-        >>> choose_text_color((0,     0,   0), max_val=255)
-        (255, 255, 255)
-        # RED
-        >>> choose_text_color((0,     0, 255), max_val=255)
-        (255, 255, 255)
-        # GREEN
-        >>> choose_text_color((0,   128,   0), max_val=255)
-        (0, 0, 0)
-        # YELLOW
-        >>> choose_text_color((0,   255, 255), max_val=255)
-        (0, 0, 0)
-        # BLUE
-        >>> choose_text_color((255,   0,   0), max_val=255)
-        (0, 0, 0)
-        # MAGENTA
-        >>> choose_text_color((255,   0, 255), max_val=255)
-        (0, 0, 0)
-        # CYAN
-        >>> choose_text_color((255, 255,   0), max_val=255)
-        (0, 0, 0)
-        # WHITE
-        >>> choose_text_color((255, 255, 255), max_val=255)
-        (0, 0, 0)
-
+        >>> from pycharmers.opencv import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE) 
+        >>> colors = locals().copy()
+        >>> for name,color in colors.items():
+        ...     if name.startswith("cv2") and isinstance(color, tuple):
+        ...         print(f"{name.lstrip('cv2'):<7}: {str(color):<15} -> {choose_text_color(color=color, max_val=255, is_bgr=True)}")        
     """
     color_code = detect_color_code_type(color=color)
-    rgb = toRGB(color=color)
+    rgb = toRGB(color=color, max_val=max_val)
+    if is_bgr: rgb = rgb[::-1]
 
-    R,G,B = [e/max_val for e in rgb]
+    def sRGB2RGB(e):
+        i = e/max_val
+        return i/12.92 if i <= 0.03928 else math.pow((i+0.055)/1.055, 2.4)
+    R,G,B = [sRGB2RGB(e) for e in rgb]
     # Relative Brightness BackGround.
     Lbg = 0.2126*R + 0.7152*G + 0.0722*B
 
     Lw = 1 # Relative Brightness of White
     Lb = 0 # Relative Brightness of Black
 
-    Cw = (Lw + 0.05) / (Lbg + 0.05)
-    Cb = (Lbg + 0.05) / (Lb + 0.05)
-    text_rgb = (0,0,0) if Cb>Cw else (max_val,max_val,max_val)
+    Cw = (Lw  + 0.05) / (Lbg + 0.05)
+    Cb = (Lbg + 0.05) / (Lb  + 0.05)
+    text_rgb = (0,0,0) if Cb>Cw else (max_val, max_val, max_val)
     return {
         "rgb"  : _do_nothing,
         "hex"  : rgb2hex,
         "rgba" : _do_nothing,
     }.get(color_code)(text_rgb, max_val=max_val)
+
+def generateLightDarks(color, variation, diff=10, reverse=False):
+    """Generate light and dark colors.
+
+    Args:
+        color (tuple)   : Color [0,255]
+        variation (int) : How many colors to create.
+        diff (int)      : How much to change
+        reverse (bool)  : If ``True``, sort in descending order.
+
+    Returns:
+        colors (list) : colors.
+
+    Examples:
+        >>> from pycharmers.utils import generateLightDarks
+        >>> generateLightDarks(color=(245,20,25), variation=3, diff=10)
+        [(235, 10, 15), (245, 20, 25), (255, 30, 35)]
+        >>> generateLightDarks(color=(245, 20, 25), variation=3, diff=-10)
+        [(225, 0, 5), (235, 10, 15), (245, 20, 25)]
+    """
+    val = max(color[:3]) if diff>0 else min(color[:3])
+    u = 0
+    for _ in range(variation-1):
+        val+=diff
+        if not 255>=val>=0:
+            break
+        u+=1
+    return sorted([tuple([max(min(e+diff*(u-v), 255), 0) if i<3 else e for i,e in enumerate(color)]) for v in range(variation)], reverse=reverse)

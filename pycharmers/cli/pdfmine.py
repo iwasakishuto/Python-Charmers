@@ -7,9 +7,10 @@ import camelot
 import argparse
 from PIL import Image
 
-from ..utils._colorings import toBLUE, toGREEN
+from ..utils._colorings import toBLUE, toGREEN, toRED
 from ..utils._path import _makedirs
 from ..utils.generic_utils import formatted_enumerator
+from ..utils.print_utils import pretty_3quote
 
 SUPPORTED_TARGETS = ["img", "image", "table"]
 
@@ -17,7 +18,7 @@ def pdfmine(argv=sys.argv[1:]):
     """Analyze PDF and extract various elements.
 
     Args:
-        -I/--input-path (str)  : Path/to/input PDF file.
+        path (str)             : Path/to/input PDF file.
         -O/--output-path (str) : Path/to/output directory.
         -T/--target (str)      : Target to extract.
         --quiet (bool)         : Whether to make the output quiet.
@@ -40,10 +41,13 @@ def pdfmine(argv=sys.argv[1:]):
     target = args.target
     verbose = not args.quiet
 
-    if verbose: print(f"""[pdfmine]
-    * Input PDF file is at {toBLUE(input_path)}
-    * Extracted data will be saved at {toBLUE(output_dir)}
-    * Extraction target is {toGREEN(target)}""")
+    if verbose: 
+        print(*pretty_3quote(f"""
+        [pdfmine]
+        * Input PDF file is at {toBLUE(input_path)}
+        * Extracted data will be saved at {toBLUE(output_dir)}
+        * Extraction target is {toGREEN(target)}
+        """))
 
     if target in ["img", "image"]:
         pdf_file = fitz.open(input_path)
@@ -51,13 +55,24 @@ def pdfmine(argv=sys.argv[1:]):
         for page_idx, page in pdf_gen:
             img_list = page.getImageList()
             img_gen = formatted_enumerator(img_list, start=1)
-            if verbose: print(f"[+] Found a total of {toGREEN(img_gen.total)} images in {page_idx}" if img_gen.total>0 else f"[!] No images found on page {page_idx}")
+            if verbose:
+                if img_gen.total>0:
+                    print(f"[+] Found a total of {toGREEN(img_gen.total)} images in {page_idx}")
+                else:
+                    print(f"[!] No images found on page {page_idx}")
             for img_idx, img in formatted_enumerator(img_list, start=1):
-                print("\t- ", end="")
-                base_image  = pdf_file.extractImage(xref=img[0])
+                print("    - ", end="")
+                xref = img[0]
+                base_image = pdf_file.extractImage(xref=xref)
                 fp = os.path.join(output_dir, f"p{page_idx}_{img_idx}.{base_image['ext']}")
-                with open(fp, "wb"):
-                    Image.open(io.BytesIO(base_image["image"])).save(fp)
+                try:
+                    with open(fp, "wb"):
+                        Image.open(io.BytesIO(base_image["image"])).save(fp)
+                    msg = toGREEN("saved")
+                except Exception as e:
+                    msg = toRED(e)
+                print(f"\033[1F\033[{28+len(str(xref))}G {msg}")
+                
     elif target == "table":
         tables = camelot.read_pdf(input_path)
         table_gen = formatted_enumerator(tables, start=1)

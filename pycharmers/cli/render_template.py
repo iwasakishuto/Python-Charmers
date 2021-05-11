@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
-from ._path import PYCHARMERS_CLI_RENDER_TEMPLATES_DIR
+from ._clipath import PYCHARMERS_CLI_RENDER_TEMPLATES_DIR
 from ..utils._colorings import toBLUE, toGREEN
 
 def add_title_prefix_for_rawmeta(fp, ext=".raw"):

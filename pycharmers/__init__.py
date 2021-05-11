@@ -11,4 +11,4 @@ from . import opencv
 from . import utils
 
 # Import to create directories.
-from .cli import _path
+from .cli import _clipath

@@ -1,0 +1,7 @@
+pycharmers.opencv.project module
+================================
+
+.. automodule:: pycharmers.opencv.project
+   :members:
+   :undoc-members:
+   :show-inheritance:

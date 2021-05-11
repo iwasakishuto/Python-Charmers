@@ -59,7 +59,7 @@
 <span class="kn">from</span> <span class="nn">..utils.templates</span> <span class="kn">import</span> <span class="n">render_template</span>
 <span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">PYCHARMERS_HTML_DIR</span>
 
-<div class="viewcode-block" id="FigAxes_create"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.FigAxes_create">[docs]</a><span class="k">def</span> <span class="nf">FigAxes_create</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfigs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FigAxes_create"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.FigAxes_create">[docs]</a><span class="k">def</span> <span class="nf">FigAxes_create</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nplots</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Create a figure and a subplot (a set of subplots).</span>
 
 <span class="sd">    Args:</span>
@@ -67,34 +67,39 @@
 <span class="sd">        ax (Axes)        : The ``Axes`` instance.</span>
 <span class="sd">        figsize (tuple)  : The figure size for ``1`` plot.</span>
 <span class="sd">        projection (str) : The projection type of the subplot.</span>
-<span class="sd">        nfigs (int)      : Total number of figures.</span>
+<span class="sd">        nplots (int)     : Total number of Plots.</span>
 <span class="sd">        nrows (int)      : The number of rows</span>
 <span class="sd">        ncols (int)      : The number of columns.</span>
 <span class="sd">        axis (int)       : ``0`` or ``1`` Direction to arrange axes.</span>
+<span class="sd">        facecolor (str)  : The background color. (default= ``&quot;white&quot;`` )</span>
 <span class="sd">        \*\*kwargs         : ``kwargs`` for add_subplot(\*args, \*\*kwargs) method of ``matplotlib.figure.Figure`` instance.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        fig (Figure) : The ``Figure`` instance</span>
-<span class="sd">        ax (Axes)    : ``ax`` can be either a single ``Axes`` object or an array of ``Axes`` objects if more than one subplot was created.</span>
+<span class="sd">        ax (Axes)    : An array of ``Axes`` objects if more than one subplot was created.</span>
 <span class="sd">    </span>
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import FigAxes_create</span>
 <span class="sd">        &gt;&gt;&gt; num_data = 10</span>
 <span class="sd">        &gt;&gt;&gt; data = range(num_data)</span>
-<span class="sd">        &gt;&gt;&gt; fig, axes = FigAxes_create(nfigs=num_data, ncols=4, figsize=(4,4))</span>
+<span class="sd">        &gt;&gt;&gt; fig, axes = FigAxes_create(nplots=num_data, ncols=4, figsize=(4,4))</span>
 <span class="sd">        &gt;&gt;&gt; for x,ax in zip(data,axes):</span>
 <span class="sd">        ...     ax.scatter(x,x,s=x+1)</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">facecolor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;facecolor&quot;</span><span class="p">,</span> <span class="n">facecolor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span> <span class="o">=</span> <span class="n">measure_canvas</span><span class="p">(</span><span class="n">nfigs</span><span class="o">=</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="n">ncols</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
-            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">total_figsize</span><span class="p">)</span>
-        <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfigs</span><span class="p">)]</span>
+            <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span> <span class="o">=</span> <span class="n">measure_canvas</span><span class="p">(</span><span class="n">nplots</span><span class="o">=</span><span class="n">nplots</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="n">ncols</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">total_figsize</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ncols</span><span class="o">*</span><span class="n">nrows</span><span class="o">&lt;</span><span class="n">nplots</span><span class="p">:</span>
+            <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">nplots</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">ncols</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nplots</span><span class="p">)]</span>
         <span class="k">if</span> <span class="n">axis</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">list_transpose</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">ncols</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">nfigs</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="set_ax_info"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.set_ax_info">[docs]</a><span class="k">def</span> <span class="nf">set_ax_info</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -110,7 +115,7 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import set_ax_info</span>
-<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots()</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots(nplots=1)[0]</span>
 <span class="sd">        &gt;&gt;&gt; ax = set_ax_info(ax, aspect=5, title=&quot;Title&quot;, xlabel=&quot;Xlabel&quot;, ylabel=&quot;Ylabel&quot;, yticks={&quot;ticks&quot;:[]})</span>
 <span class="sd">        &gt;&gt;&gt; ax.scatter(1,1)</span>
 <span class="sd">        &gt;&gt;&gt; plt.show() </span>
@@ -139,7 +144,7 @@
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pyutils.matplotlib import clear_grid, FigAxes_create</span>
-<span class="sd">        &gt;&gt;&gt; fig,ax = FigAxes_create()</span>
+<span class="sd">        &gt;&gt;&gt; fig,ax = FigAxes_create(nplots=1)[0]</span>
 <span class="sd">        &gt;&gt;&gt; ax = clear_grid(ax=ax, pos=[&quot;x&quot;, &quot;y&quot;])</span>
 <span class="sd">        &gt;&gt;&gt; ax = clear_grid(ax=ax, pos=list(&quot;ltrb&quot;))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -160,11 +165,11 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">ax</span></div>
 
-<div class="viewcode-block" id="measure_canvas"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.measure_canvas">[docs]</a><span class="k">def</span> <span class="nf">measure_canvas</span><span class="p">(</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
+<div class="viewcode-block" id="measure_canvas"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.measure_canvas">[docs]</a><span class="k">def</span> <span class="nf">measure_canvas</span><span class="p">(</span><span class="n">nplots</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot; Measure Canvas size.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        nfigs (int)     : Total number of figures.</span>
+<span class="sd">        nplots (int)    : Total number of figures.</span>
 <span class="sd">        ncols (int)     : The number of columns.</span>
 <span class="sd">        figsize (tuple) : The figure size for ``1`` plot.</span>
 
@@ -178,7 +183,7 @@
 <span class="sd">        &gt;&gt;&gt; from pycharmers.matplotlib import measure_canvas</span>
 <span class="sd">        &gt;&gt;&gt; num_data = 10</span>
 <span class="sd">        &gt;&gt;&gt; data = range(num_data)</span>
-<span class="sd">        &gt;&gt;&gt; ncols, nrows, total_figsize = measure_canvas(nfigs=num_data, ncols=4, figsize=(4,4))</span>
+<span class="sd">        &gt;&gt;&gt; ncols, nrows, total_figsize = measure_canvas(nplots=num_data, ncols=4, figsize=(4,4))</span>
 <span class="sd">        &gt;&gt;&gt; fig, axes = plt.subplots(nrows=nrows, ncols=ncols, sharex=&quot;all&quot;, sharey=&quot;all&quot;, figsize=total_figsize)</span>
 <span class="sd">        &gt;&gt;&gt; plot_all = False</span>
 <span class="sd">        &gt;&gt;&gt; for i,ax_row in enumerate(axes):</span>
@@ -193,7 +198,7 @@
 <span class="sd">        ...             ax.scatter(x,x,s=x*10)</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">nfigs</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">ncols</span><span class="p">)</span>
+    <span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">calc_rectangle_size</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">nplots</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">ncols</span><span class="p">)</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">figsize</span>
     <span class="n">total_figsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="o">*</span><span class="n">ncols</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="n">nrows</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">total_figsize</span><span class="p">)</span></div>
@@ -208,6 +213,11 @@
         <span class="n">path</span><span class="o">=</span><span class="n">path</span>
     <span class="p">)</span>
     <span class="n">open_new_tab</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="mpljapanize"><a class="viewcode-back" href="../../../pycharmers.matplotlib.layout.html#pycharmers.matplotlib.layout.mpljapanize">[docs]</a><span class="k">def</span> <span class="nf">mpljapanize</span><span class="p">(</span><span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;IPAMincho&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make matplotlib compatible with Japanese&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+    <span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">font_family</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -282,8 +292,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

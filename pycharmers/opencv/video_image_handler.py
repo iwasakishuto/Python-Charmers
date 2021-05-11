@@ -6,7 +6,7 @@ import numpy as np
 
 from .editing import vconcat_resize_min, hconcat_resize_min
 from ..utils.generic_utils import calc_rectangle_size, now_str
-from ._path import save_dir_create
+from ._cvpath import save_dir_create
 
 IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
 
@@ -155,7 +155,7 @@ def basenaming(path):
     return name
 
 def create_VideoWriter(in_path, out_path=None, fps=30):
-    """Create a ``cv2.VideoWriter``
+    """Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.
 
     Args:
         in_path (str)  : Input path. (fn: video / directory: images)
@@ -171,18 +171,66 @@ def create_VideoWriter(in_path, out_path=None, fps=30):
     """
     if out_path is None:
         out_path = save_dir_create(dirname=None, video=True)[0]
-
     if os.path.isfile(in_path):
-        video = cv2.VideoCapture(in_path)
-        W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-        H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = video.get(cv2.CAP_PROP_FPS)
+        if re.search(pattern=IMAGE_FILE_PATTERN, string=in_path, flags=re.IGNORECASE):
+            img = cv2.imread(in_path)
+            H,W = img.shape[:2]
+        else:
+            video = cv2.VideoCapture(in_path)
+            W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+            H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = video.get(cv2.CAP_PROP_FPS)
     else:
         for fn in os.listdir(in_path):
             img_path = os.path.join(in_path, fn)
             img = cv2.imread(img_path)
             if img is not None:
                 break
-        H,W,_ = img.shape
-    out_video = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc('m','p','4','v'), int(fps), (W, H))
+        H,W = img.shape[:2]
+    fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+    out_video = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
     return out_video
+
+def VideoCaptureCreate(path=None, cam=0):
+    """Create a VideoCapture (mimic) object.
+
+    Args:
+        path (str) : path to video or image.
+        cam (int)  : The ID of the web camera
+
+    Returns:
+        cap (cv2.VideoCapture) : VideoCapture (mimic) object.
+
+    Examples:
+        >>> from pycharmers.opencv import VideoCaptureCreate, cv2plot
+        >>> from pycharmers.opencv import SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO
+        >>> for path in [SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO, None]:
+        ...     cap = VideoCaptureCreate(path=path, cam=0)
+        ...     ret,frame = cap.read()
+        ...     cv2plot(frame)
+        ...     cap.release()
+    """
+    if path is None:
+        cap = cv2.VideoCapture(cam)
+    elif re.search(pattern=IMAGE_FILE_PATTERN, string=path, flags=re.IGNORECASE):
+        class VideoMimic():
+            def __init__(self, path):
+                frame = cv2.imread(path)
+                self.frame = frame
+                self.info = {
+                    cv2.CAP_PROP_FRAME_WIDTH  : frame.shape[1],
+                    cv2.CAP_PROP_FRAME_HEIGHT : frame.shape[0],
+                    cv2.CAP_PROP_FPS          : 30.0,
+                }
+            def read(self):
+                return True, self.frame
+            def release(self):
+                return True
+            def get(self, id):
+                return self.info.get(id)  
+            def set(self, id):
+                pass
+        cap = VideoMimic(path)
+    else:
+        cap = cv2.VideoCapture(path)
+    return cap

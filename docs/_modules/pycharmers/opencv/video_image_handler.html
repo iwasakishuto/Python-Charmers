@@ -57,7 +57,7 @@
 
 <span class="kn">from</span> <span class="nn">.editing</span> <span class="kn">import</span> <span class="n">vconcat_resize_min</span><span class="p">,</span> <span class="n">hconcat_resize_min</span>
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span><span class="p">,</span> <span class="n">now_str</span>
-<span class="kn">from</span> <span class="nn">._path</span> <span class="kn">import</span> <span class="n">save_dir_create</span>
+<span class="kn">from</span> <span class="nn">._cvpath</span> <span class="kn">import</span> <span class="n">save_dir_create</span>
 
 <span class="n">IMAGE_FILE_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;.*\.(jpg|png|bmp|jpeg)&quot;</span>
 
@@ -206,7 +206,7 @@
     <span class="k">return</span> <span class="n">name</span></div>
 
 <div class="viewcode-block" id="create_VideoWriter"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.create_VideoWriter">[docs]</a><span class="k">def</span> <span class="nf">create_VideoWriter</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a ``cv2.VideoWriter``</span>
+    <span class="sd">&quot;&quot;&quot;Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        in_path (str)  : Input path. (fn: video / directory: images)</span>
@@ -222,21 +222,69 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">out_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_path</span> <span class="o">=</span> <span class="n">save_dir_create</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">video</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">in_path</span><span class="p">):</span>
-        <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">in_path</span><span class="p">)</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>
-        <span class="n">H</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
-        <span class="n">fps</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">IMAGE_FILE_PATTERN</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">in_path</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">in_path</span><span class="p">)</span>
+            <span class="n">H</span><span class="p">,</span><span class="n">W</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">in_path</span><span class="p">)</span>
+            <span class="n">W</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>
+            <span class="n">H</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">in_path</span><span class="p">):</span>
             <span class="n">img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">break</span>
-        <span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">))</span>
+        <span class="n">H</span><span class="p">,</span><span class="n">W</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">H</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">out_video</span></div>
+
+<div class="viewcode-block" id="VideoCaptureCreate"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.VideoCaptureCreate">[docs]</a><span class="k">def</span> <span class="nf">VideoCaptureCreate</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cam</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a VideoCapture (mimic) object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str) : path to video or image.</span>
+<span class="sd">        cam (int)  : The ID of the web camera</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        cap (cv2.VideoCapture) : VideoCapture (mimic) object.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import VideoCaptureCreate, cv2plot</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO</span>
+<span class="sd">        &gt;&gt;&gt; for path in [SAMPLE_LENA_IMG, SAMPLE_VTEST_VIDEO, None]:</span>
+<span class="sd">        ...     cap = VideoCaptureCreate(path=path, cam=0)</span>
+<span class="sd">        ...     ret,frame = cap.read()</span>
+<span class="sd">        ...     cv2plot(frame)</span>
+<span class="sd">        ...     cap.release()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">IMAGE_FILE_PATTERN</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">VideoMimic</span><span class="p">():</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span>  <span class="p">:</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span> <span class="p">:</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span>          <span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+            <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>  
+            <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+                <span class="k">pass</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoMimic</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cap</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -311,8 +359,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

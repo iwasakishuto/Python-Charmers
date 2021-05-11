@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.opencv.binary module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.opencv.binary.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.opencv.binary module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.opencv.cascade module" href="pycharmers.opencv.cascade.html" />
+    <link rel="prev" title="pycharmers.opencv.backsub module" href="pycharmers.opencv.backsub.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.backsub.html" title="pycharmers.opencv.backsub module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" accesskey="U">pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.binary module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.opencv.binary">
+<span id="pycharmers-opencv-binary-module"></span><h1>pycharmers.opencv.binary module<a class="headerlink" href="#module-pycharmers.opencv.binary" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.opencv.binary.binarizer_creator">
+<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">binarizer_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span></em>, <em class="sig-param"><span class="n">maxval</span><span class="o">=</span><span class="default_value">255</span></em>, <em class="sig-param"><span class="n">thresh</span><span class="o">=</span><span class="default_value">127</span></em>, <em class="sig-param"><span class="n">thresholdType</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">blockSize</span><span class="o">=</span><span class="default_value">11</span></em>, <em class="sig-param"><span class="n">const</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#binarizer_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.binarizer_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function which performs advanced morphological transformations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str/int</em>) – The identifier of binarization.</p></li>
+<li><p><strong>thresh</strong> (<em>int</em>) – Threshold value used in <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> binarizer.</p></li>
+<li><p><strong>maxval</strong> (<em>int</em>) – The maximum value.</p></li>
+<li><p><strong>thresholdType</strong> (<em>int</em>) – Thresholding type.</p></li>
+<li><p><strong>blockSize</strong> (<em>odd</em>) – Size of a pixel neighborhood that is used to calculate a threshold value for the pixel: <code class="docutils literal notranslate"><span class="pre">3</span></code> , <code class="docutils literal notranslate"><span class="pre">5</span></code> , <code class="docutils literal notranslate"><span class="pre">7</span></code> , and so on.</p></li>
+<li><p><strong>const</strong> (<em>int</em>) – Constant subtracted from the mean or weighted mean (see the details below). Normally, it is positive but may be zero or negative as well.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Binarizer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">binarizer_creator</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">vconcat_resize_min</span><span class="p">,</span> <span class="n">cv2plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.binary</span> <span class="kn">import</span> <span class="n">OPENCV_BINARYZATIONS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">gray</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">binarizer_creator</span><span class="p">(</span><span class="n">key</span><span class="p">)(</span><span class="n">gray</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OPENCV_BINARYZATIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">images</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="n">figkeywargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figsize&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.binary.findBiggestContour">
+<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">findBiggestContour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contours</span></em>, <em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#findBiggestContour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.findBiggestContour" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>contours</strong> (<em>list</em>) – Contours. (e.g. The return of <code class="docutils literal notranslate"><span class="pre">cv2.findContours</span></code> )</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Countour of the biggest area.
+max_area (int)       : Area of the biggest area.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>biggest (np.ndarray)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">findBiggestContour</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_th</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">img_th</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">biggest</span><span class="p">,</span> <span class="n">max_area</span> <span class="o">=</span> <span class="n">findBiggestContour</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_area</span>
+<span class="go">0 # There is no closed countour.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.binary.reorder_contour">
+<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">reorder_contour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#reorder_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.reorder_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder the points created by <code class="docutils literal notranslate"><span class="pre">cv2.approxPolyDP</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>np.ndarray</em>) – Points.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Reordered Points.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ret (np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.binary module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.backsub.html"
+                        title="previous chapter">pycharmers.opencv.backsub module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.opencv.cascade.html"
+                        title="next chapter">pycharmers.opencv.cascade module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.opencv.binary.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.cascade.html" title="pycharmers.opencv.cascade module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.opencv.backsub.html" title="pycharmers.opencv.backsub module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.opencv.html" >pycharmers.opencv package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.opencv.binary module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

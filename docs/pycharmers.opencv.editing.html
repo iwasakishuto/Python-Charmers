@@ -143,6 +143,68 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.opencv.editing.resize_aspect">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">resize_aspect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">src</span></em>, <em class="sig-param"><span class="n">dsize</span></em>, <em class="sig-param"><span class="n">interpolation</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#resize_aspect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.resize_aspect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize the image while keeping the aspect ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<em>np.ndarray</em>) – Input image.</p></li>
+<li><p><strong>dsize</strong> (<em>tuple</em>) – Output image size ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code>)</p></li>
+<li><p><strong>interpolation</strong> (<em>int</em>) – Interpolation method (default= <code class="docutils literal notranslate"><span class="pre">cv2.INTER_AREA</span></code> )</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resized image.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>resized (np.ndarray)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">resize_aspect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1080</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resized</span> <span class="o">=</span> <span class="n">resize_aspect</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resized</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(300, 200, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.editing.transparency">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">transparency</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lower_bgr</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">upper_bgr</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">thresh</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">check_exist</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#transparency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.transparency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transparency processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_path</strong> (<em>str</em>) – Path to input image.</p></li>
+<li><p><strong>out_path</strong> (<em>str</em>) – Path to output image.</p></li>
+<li><p><strong>lower_bgr</strong> (<em>tuple/int</em>) – Lower bound of image value to be transparent.</p></li>
+<li><p><strong>upper_bgr</strong> (<em>tuple/int</em>) – Upper bound of image value to be transparent.</p></li>
+<li><p><strong>mode</strong> (<em>int</em>) – Contour retrieval mode used in <code class="docutils literal notranslate"><span class="pre">cv2.findContours</span></code> (default = <code class="docutils literal notranslate"><span class="pre">cv2.RETR_EXTERNAL</span></code> )</p></li>
+<li><p><strong>method</strong> (<em>int</em>) – ontour approximation method used in <code class="docutils literal notranslate"><span class="pre">cv2.findContours</span></code> (default = <code class="docutils literal notranslate"><span class="pre">cv2.CHAIN_APPROX_SIMPLE</span></code> )</p></li>
+<li><p><strong>thresh</strong> (<em>int</em>) – Threshold value.</p></li>
+<li><p><strong>check_exist</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, there is a possibility of overwriting the image.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">transparency</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transparency</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
+<span class="go">Saved at /Users/iwasakishuto/.pycharmers/opencv/image/lena_transparency.png</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.opencv.editing.pil2cv">
+<code class="sig-prename descclassname">pycharmers.opencv.editing.</code><code class="sig-name descname">pil2cv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/editing.html#pil2cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.editing.pil2cv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object into <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array. (BGR)</p>
+</dd></dl>
+
 </div>
 
 
@@ -190,11 +252,13 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
@@ -264,8 +328,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

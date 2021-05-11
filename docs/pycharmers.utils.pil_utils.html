@@ -121,34 +121,92 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.utils.pil_utils.draw_text">
-<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ttfontname</span><span class="o">=</span><span class="default_value">'SFNSTextCondensed-Bold.otf'</span></em>, <em class="sig-param"><span class="n">img_size</span><span class="o">=</span><span class="default_value">250, 250</span></em>, <em class="sig-param"><span class="n">text_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="o">=</span><span class="default_value">16</span></em>, <em class="sig-param"><span class="n">margin</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">bgRGB</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="o">=</span><span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_text" title="Permalink to this definition">¶</a></dt>
+<dt id="pycharmers.utils.pil_utils.draw_text_in_pil">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_text_in_pil</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">img</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ttfontname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">img_size</span><span class="o">=</span><span class="default_value">250, 250</span></em>, <em class="sig-param"><span class="n">text_width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="o">=</span><span class="default_value">16</span></em>, <em class="sig-param"><span class="n">fontwidth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fontheight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">margin</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">line_height</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bgRGB</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="o">=</span><span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'RGB'</span></em>, <em class="sig-param"><span class="n">ret_position</span><span class="o">=</span><span class="default_value">'line'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_text_in_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_text_in_pil" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw text in <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<em>str</em>) – Text to be drawn to <code class="docutils literal notranslate"><span class="pre">img</span></code>.</p></li>
 <li><p><strong>img</strong> (<em>PIL.Image</em>) – The image to draw in. If this argment is <code class="docutils literal notranslate"><span class="pre">None</span></code>, img will be created using <code class="docutils literal notranslate"><span class="pre">img_size</span></code> and <code class="docutils literal notranslate"><span class="pre">bgRGB</span></code> arguments.</p></li>
-<li><p><strong>ttfontname</strong> (<em>str</em>) – A filename or file-like object containing a TrueType font. (default = <code class="docutils literal notranslate"><span class="pre">os.listdir(&quot;/System/Library/Fonts&quot;)[0]</span></code>)</p></li>
+<li><p><strong>ttfontname</strong> (<em>str</em>) – A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the <code class="docutils literal notranslate"><span class="pre">fonts/</span></code> directory on Windows or <code class="docutils literal notranslate"><span class="pre">/Library/Fonts/</span></code> , <code class="docutils literal notranslate"><span class="pre">/System/Library/Fonts/</span></code> and <code class="docutils literal notranslate"><span class="pre">~/Library/Fonts/</span></code> on macOS.</p></li>
 <li><p><strong>img_size</strong> (<em>tuple</em>) – The image size.</p></li>
 <li><p><strong>text_width</strong> (<em>int</em>) – The length of characters in one line.</p></li>
 <li><p><strong>fontsize</strong> (<em>int</em>) – The requested size, in points.</p></li>
+<li><p><strong>fontwidth</strong> (<em>int</em>) – The font width. (If not given, automatically calculated.)</p></li>
+<li><p><strong>fontheight</strong> (<em>int</em>) – The font height. (If not given, automatically calculated.)</p></li>
 <li><p><strong>margin</strong> (<em>int</em>) – The margin size.</p></li>
+<li><p><strong>line_height</strong> (<em>int</em>) – The line height. If not specify, use <code class="docutils literal notranslate"><span class="pre">font.getsize(string.ascii_letters)</span></code></p></li>
 <li><p><strong>bgRGB</strong> (<em>tuple</em>) – The color of background image. (RGB)</p></li>
 <li><p><strong>textRGB</strong> (<em>tuple</em>) – The color of text. (RGB)</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Optional mode to use for color values.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Specify <code class="docutils literal notranslate"><span class="pre">margin_top</span></code> , <code class="docutils literal notranslate"><span class="pre">margin_right</span></code> , <code class="docutils literal notranslate"><span class="pre">margin_bottom</span></code> , <code class="docutils literal notranslate"><span class="pre">margin_left</span></code> .</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>img, Length from top to bottom text line.</p>
+<dd class="field-even"><p>img, Position of next text ( <code class="docutils literal notranslate"><span class="pre">x</span></code> , <code class="docutils literal notranslate"><span class="pre">y</span></code> ).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple (PIL.Image, int)</p>
+<dd class="field-odd"><p>tuple (PIL.Image, pos)</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">draw_text</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">draw_text</span><span class="p">(</span><span class="s2">&quot;Hello World!!&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">draw_text_in_pil</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">draw_text_in_pil</span><span class="p">(</span><span class="s2">&quot;Hello World!!&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;sample.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.pil_utils.draw_cross">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_cross</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">fill_color</span><span class="o">=</span><span class="default_value">255, 0, 0, 255</span></em>, <em class="sig-param"><span class="n">outline</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color_mode</span><span class="o">=</span><span class="default_value">'RGBA'</span></em>, <em class="sig-param"><span class="n">margin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw Cross Mark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – Pillow Image.</p></li>
+<li><p><strong>size</strong> (<em>int/tuple</em>) – Cross mark size. (width,Height)</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – The width of the cross mark.</p></li>
+<li><p><strong>fill_color</strong> (<em>tuple</em>) – The color in the line.</p></li>
+<li><p><strong>outline</strong> (<em>tuple</em>) – The color of the edge of the line.</p></li>
+<li><p><strong>color_mode</strong> (<em>str</em>) – Color Mode (ex. <code class="docutils literal notranslate"><span class="pre">&quot;RGBA&quot;</span></code> , <code class="docutils literal notranslate"><span class="pre">&quot;P&quot;</span></code> )</p></li>
+<li><p><strong>margin</strong> (<em>int/list</em>) – Specify the position.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Specify the individual margin ( <code class="docutils literal notranslate"><span class="pre">margin_top</span></code> , <code class="docutils literal notranslate"><span class="pre">margin_right</span></code> )</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">draw_cross</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_cross</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_cross</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.pil_utils.draw_frame">
+<code class="sig-prename descclassname">pycharmers.utils.pil_utils.</code><code class="sig-name descname">draw_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">border_color</span><span class="o">=</span><span class="default_value">255, 255, 255</span></em>, <em class="sig-param"><span class="n">is_radius</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/pil_utils.html#draw_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.pil_utils.draw_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw Frame with Image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>PIL.Image</em>) – Pillow Image.</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – The width of the border.</p></li>
+<li><p><strong>border_color</strong> (<em>tuple</em>) – The color in the border.</p></li>
+<li><p><strong>is_radius</strong> (<em>bool</em>) – Whether to round the corners.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">SAMPLE_LENA_IMG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">draw_frame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_frame</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -205,6 +263,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.generic_utils.html">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.inspect_utils.html">pycharmers.utils.inspect_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
@@ -212,7 +271,9 @@
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.pil_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.subprocess_utils.html">pycharmers.utils.subprocess_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.tkinter_utils.html">pycharmers.utils.tkinter_utils module</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
@@ -278,8 +339,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

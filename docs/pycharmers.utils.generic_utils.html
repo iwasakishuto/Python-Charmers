@@ -33,7 +33,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.utils.json_utils module" href="pycharmers.utils.json_utils.html" />
+    <link rel="next" title="pycharmers.utils.inspect_utils module" href="pycharmers.utils.inspect_utils.html" />
     <link rel="prev" title="pycharmers.utils.driver_utils module" href="pycharmers.utils.driver_utils.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -46,7 +46,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+          <a href="pycharmers.utils.inspect_utils.html" title="pycharmers.utils.inspect_utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pycharmers.utils.driver_utils.html" title="pycharmers.utils.driver_utils module"
@@ -639,6 +639,124 @@ b'ÿØÿàJFIFIIÿþ...
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.filenaming">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">filenaming</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#filenaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.filenaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Avoid having the same name as an existing file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – File name you want to name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>File name that is not the same name as an existing file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">filenaming</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">())</span>
+<span class="go">[&#39;Untitled.ipynb&#39;, &#39;Untitled(1).ipynb&#39;, &#39;Untitled(3).ipynb&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filenaming</span><span class="p">(</span><span class="s2">&quot;Untitled.ipynb&quot;</span><span class="p">)</span>
+<span class="go">&#39;./Untitled(2).ipynb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filenaming</span><span class="p">(</span><span class="s2">&quot;Untitled.py&quot;</span><span class="p">)</span>
+<span class="go">&#39;Untitled.py&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.get_pyenv">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_pyenv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scope_variables</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_pyenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_pyenv" title="Permalink to this definition">¶</a></dt>
+<dd><p>In what environment python is running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scope_variables</strong> (<em>dict</em>) – the dictionary containing the current scope’s global (local) variables. ( <code class="docutils literal notranslate"><span class="pre">globals()</span></code> or <code class="docutils literal notranslate"><span class="pre">locals()</span></code> )</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>wheather the environment is Jupyter Notebook or not.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">get_pyenv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_pyenv</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+<span class="go">&#39;Jupyter Notebook&#39;</span>
+</pre></div>
+</div>
+<div class="admonition-todo admonition" id="id3">
+<p class="admonition-title">Todo</p>
+<p>Execute this function without arguments.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.assign_trbl">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">assign_trbl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#assign_trbl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.assign_trbl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">name</span></code> ‘s values of [<code class="docutils literal notranslate"><span class="pre">Top</span></code>, <code class="docutils literal notranslate"><span class="pre">Right</span></code>, <code class="docutils literal notranslate"><span class="pre">Bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">Left</span></code>] from <code class="docutils literal notranslate"><span class="pre">data</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – Data Dictionary.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the value you want to assign.</p></li>
+<li><p><strong>default</strong> – Default Value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Values of <code class="docutils literal notranslate"><span class="pre">Top</span></code>, <code class="docutils literal notranslate"><span class="pre">Right</span></code>, <code class="docutils literal notranslate"><span class="pre">Bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">Left</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">assign_trbl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 3, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 3, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 2, 1, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+<span class="go">(1, 1, 1, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;padding&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">(5, 5, 5, 5)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.relative_import">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">relative_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">absfile</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#relative_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.relative_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative import that can be used with script files such as those executed by python commands</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;XXX&quot;</span></code> of <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">XXX</span></code></p></li>
+<li><p><strong>i</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;YYY&quot;</span></code> of <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">YYY</span></code></p></li>
+<li><p><strong>absfile</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">os.path.abspath(__file__)</span></code></p></li>
+<li><p><strong>name</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">__name__</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">exec(i)</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Object</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">relative_import</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relative_import</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s2">&quot;..utils&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="s2">&quot;LeNet&quot;</span><span class="p">,</span> <span class="n">absfile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="vm">__name__</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
@@ -691,6 +809,7 @@ b'ÿØÿàJFIFIIÿþ...
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.download_utils.html">pycharmers.utils.download_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.driver_utils.html">pycharmers.utils.driver_utils module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.utils.generic_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.inspect_utils.html">pycharmers.utils.inspect_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.json_utils.html">pycharmers.utils.json_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.monitor_utils.html">pycharmers.utils.monitor_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.numpy_utils.html">pycharmers.utils.numpy_utils module</a></li>
@@ -698,7 +817,9 @@ b'ÿØÿàJFIFIIÿþ...
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.pil_utils.html">pycharmers.utils.pil_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.print_utils.html">pycharmers.utils.print_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.soup_utils.html">pycharmers.utils.soup_utils module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.subprocess_utils.html">pycharmers.utils.subprocess_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.templates.html">pycharmers.utils.templates module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.utils.tkinter_utils.html">pycharmers.utils.tkinter_utils module</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.utils.html#module-pycharmers.utils">Module contents</a></li>
@@ -715,8 +836,8 @@ b'ÿØÿàJFIFIIÿþ...
   <p class="topless"><a href="pycharmers.utils.driver_utils.html"
                         title="previous chapter">pycharmers.utils.driver_utils module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.utils.json_utils.html"
-                        title="next chapter">pycharmers.utils.json_utils module</a></p>
+  <p class="topless"><a href="pycharmers.utils.inspect_utils.html"
+                        title="next chapter">pycharmers.utils.inspect_utils module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -748,7 +869,7 @@ b'ÿØÿàJFIFIIÿþ...
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.utils.json_utils.html" title="pycharmers.utils.json_utils module"
+          <a href="pycharmers.utils.inspect_utils.html" title="pycharmers.utils.inspect_utils module"
              >next</a> |</li>
         <li class="right" >
           <a href="pycharmers.utils.driver_utils.html" title="pycharmers.utils.driver_utils module"
@@ -764,8 +885,7 @@ b'ÿØÿàJFIFIIÿþ...
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

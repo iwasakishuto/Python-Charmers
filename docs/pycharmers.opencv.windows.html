@@ -186,6 +186,39 @@
 </tr>
 </tbody>
 </table>
+<dl class="py function">
+<dt id="pycharmers.opencv.windows.cv2key2chr">
+<code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">cv2key2chr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cv2key2chr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cv2key2chr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a key event into a Unicode string or an easy-to-understand string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – The key event. (return of <code class="docutils literal notranslate"><span class="pre">cv2.waitKey</span></code> )</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a Unicode string of one character or an easy-to-understand string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(str)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cv2key2chr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">cv2key2chr</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">winname</span> <span class="o">=</span> <span class="s2">&quot;cv2key2chr&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">key</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">,</span> <span class="n">mat</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">key</span><span class="o">!=-</span><span class="mi">1</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">cv2key2chr</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="mi">27</span><span class="p">:</span> <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="n">winname</span><span class="o">=</span><span class="n">winname</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py class">
 <dt id="pycharmers.opencv.windows.cvKeys">
 <em class="property">class </em><code class="sig-prename descclassname">pycharmers.opencv.windows.</code><code class="sig-name descname">cvKeys</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">cv_keys</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvKeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys" title="Permalink to this definition">¶</a></dt>
@@ -328,11 +361,6 @@
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.opencv.windows.cvKeys.info">
-<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#pycharmers.opencv.windows.cvKeys.info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pycharmers.opencv.windows.cvKeys.describe">
@@ -663,6 +691,12 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="pycharmers.opencv.windows.cvWindow.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the necessary processing at the end.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pycharmers.opencv.windows.cvWindow.recieveKey">
 <code class="sig-name descname">recieveKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#cvWindow.recieveKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.cvWindow.recieveKey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Response according to Recieved key.</p>
@@ -767,6 +801,12 @@
 <dd class="field-odd"><p><strong>mat</strong> (<em>np.ndarray</em>) – Image to be shown.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.opencv.windows.RealTimeWindow.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/windows.html#RealTimeWindow.destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.windows.RealTimeWindow.destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the necessary processing at the end.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1048,11 +1088,13 @@
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.opencv.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.backsub.html">pycharmers.opencv.backsub module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.binary.html">pycharmers.opencv.binary module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cascade.html">pycharmers.opencv.cascade module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.cvui.html">pycharmers.opencv.cvui module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.drawing.html">pycharmers.opencv.drawing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.editing.html">pycharmers.opencv.editing module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.morphology.html">pycharmers.opencv.morphology module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.project.html">pycharmers.opencv.project module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.tracking.html">pycharmers.opencv.tracking module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.video_image_handler.html">pycharmers.opencv.video_image_handler module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.opencv.windows module</a></li>
@@ -1122,8 +1164,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

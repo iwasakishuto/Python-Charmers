@@ -55,18 +55,20 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 
 <span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">REPO_DIR</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span>
 <span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">Table</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">REPO_DIR</span><span class="p">,</span> <span class="s2">&quot;console_scripts.txt&quot;</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">CONSOLE_SCRIPTS</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span>
+    <span class="n">CONSOLE_SCRIPTS</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)]</span>
 
 <div class="viewcode-block" id="show_command_line_programs"><a class="viewcode-back" href="../../../pycharmers.cli.show.html#pycharmers.cli.show.show_command_line_programs">[docs]</a><span class="k">def</span> <span class="nf">show_command_line_programs</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
     <span class="sd">&quot;&quot;&quot;Show all Python-Charmers&#39;s command line programs.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        -H/--head (str)  : Show the first ``head`` rows for the table.</span>
-<span class="sd">        -W/--width (int) : Table width.</span>
-<span class="sd">        --mark (str)      : The border mark. (default &quot;=&quot;)</span>
+<span class="sd">        -H/--head (str)      : Show the first ``head`` rows for the table.</span>
+<span class="sd">        -W/--width (int)     : Table width.</span>
+<span class="sd">        --description (bool) : Whether to show description or path. (default= ``False`` )</span>
+<span class="sd">        --tablefmt (str)     : Table format.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        When you run from the command line, execute as follows::</span>
@@ -75,41 +77,68 @@
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; $ pycharmers-show</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            |       command       |                         path                          |</span>
-<span class="sd">            +=====================+=======================================================+</span>
-<span class="sd">            |    pycharmers-show  |        pycharmers.cli.show:show_command_line_programs |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            | regexp-replacement  |  pycharmers.cli.regexp_replacement:regexp_replacement |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            |    render-template  |        pycharmers.cli.render_template:render_template |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            |          cv-window  |                      pycharmers.cli.cvWindow:cvWindow |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            |           cv-canny  |                        pycharmers.cli.cvCanny:cvCanny |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
-<span class="sd">            |            pdfmine  |                        pycharmers.cli.pdfmine:pdfmine |</span>
-<span class="sd">            +---------------------+-------------------------------------------------------+</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |       command       |                         path                         |</span>
+<span class="sd">        +=====================+======================================================+</span>
+<span class="sd">        |            book2img | pycharmers.cli.book2img:book2img                     |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |         cv-cascades | pycharmers.cli.cvCascades:cvCascades                 |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |    cv-paper-scanner | pycharmers.cli.cvPaperScanner:cvPaperScanner         |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |    cv-pencil-sketch | pycharmers.cli.cvPencilSketch:cvPencilSketch         |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |           cv-window | pycharmers.cli.cvWindow:cvWindow                     |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |          lyricVideo | pycharmers.cli.lyricVideo:lyricVideo                 |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |   form-auto-fill-in | pycharmers.cli.form_auto_fill_in:form_auto_fill_in   |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |         openBrowser | pycharmers.cli.openBrowser:openBrowser               |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |             pdfmine | pycharmers.cli.pdfmine:pdfmine                       |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |  regexp-replacement | pycharmers.cli.regexp_replacement:regexp_replacement |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |     render-template | pycharmers.cli.render_template:render_template       |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        | requirements-create | pycharmers.cli.requirements:requirements_create      |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |     pycharmers-show | pycharmers.cli.show:show_command_line_programs       |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |            tweetile | pycharmers.cli.tweetile:tweetile                     |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
+<span class="sd">        |           video2gif | pycharmers.cli.video2gif:video2gif                   |</span>
+<span class="sd">        +---------------------+------------------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;pycharmers-show&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-H&quot;</span><span class="p">,</span> <span class="s2">&quot;--head&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show the first ``head`` rows for the table.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-W&quot;</span><span class="p">,</span> <span class="s2">&quot;--width&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Table width.&quot;</span><span class="p">)</span>
-    <span class="c1"># parser.add_argument(&quot;--mark&quot;,        type=str, default=&quot;=&quot;, help=&#39;The border mark. (default &quot;=&quot;)&#39;)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--description&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to show description or path. (default= ``False`` )&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--tablefmt&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">Table</span><span class="o">.</span><span class="n">SUPPORTED_FORMATS</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The format of table.&quot;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
 
     <span class="n">head</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">head</span>
     <span class="n">table_width</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">width</span>
     <span class="c1"># mark = args.mark</span>
 
-    <span class="n">commands</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">paths</span>       <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">commands</span>    <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">descriptons</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">console_script</span> <span class="ow">in</span> <span class="n">CONSOLE_SCRIPTS</span><span class="p">:</span>
-        <span class="n">command</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">console_script</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="n">command</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">str_strip</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">console_script</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)]</span>
         <span class="n">commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
         <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">,</span><span class="n">i</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;from </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">descriptons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.__doc__.split(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)[0]&quot;</span><span class="p">))</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">tablefmt</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tablefmt</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">commands</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;GREEN&quot;</span><span class="p">)</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">paths</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;BLUE&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">descriptons</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;BLUE&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">set_cols</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">paths</span><span class="p">,</span> <span class="n">colname</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;BLUE&quot;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">head</span><span class="o">=</span><span class="n">head</span><span class="p">,</span> <span class="n">table_width</span><span class="o">=</span><span class="n">table_width</span><span class="p">)</span></div>
 </pre></div>
 
@@ -185,8 +214,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

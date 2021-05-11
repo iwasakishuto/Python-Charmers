@@ -5,7 +5,7 @@ from pathlib import Path
 from ._colorings import toBLUE
 from .download_utils import download_file
 
-def _makedirs(name, mode=511, msg=""):
+def _makedirs(name, mode=511, msg="", verbose=True):
     """Create a directory if it does not exist.
 
     Args:
@@ -20,7 +20,7 @@ def _makedirs(name, mode=511, msg=""):
     """
     if not os.path.exists(name):
         os.makedirs(name=name, mode=mode)
-        print(f"{toBLUE(name)} is created. {msg}")
+        if verbose: print(f"{toBLUE(name)} is created. {msg}")
   
 def _download_sample_data(url, path, msg=""):
     """Download sample data.
@@ -50,19 +50,26 @@ def _download_sample_data(url, path, msg=""):
 
 __all__ = [
     "_makedirs", "_download_sample_data",
-    "UTILS_DIR", "MODULE_DIR", "TEMPLATES_DIR", "REPO_DIR", "CLI_DIR", "PYCHARMERS_DIR", "PYCHARMERS_HTML_DIR",
+    "UTILS_DIR", "MODULE_DIR", "TEMPLATES_DIR", "REPO_DIR", "CLI_DIR", "PYCHARMERS_DIR", 
+    "PYCHARMERS_HTML_DIR", "PYCHARMERS_ICON"
 ]
 
-UTILS_DIR      = os.path.dirname(os.path.abspath(__file__))           # path/to/Python-Charmers/pycharmers/utils
-MODULE_DIR     = os.path.dirname(UTILS_DIR)                           # path/to/Python-Charmers/pycharmers
-TEMPLATES_DIR  = os.path.join(MODULE_DIR, "templates")                # path/to/Python-Charmers/pycharmers/templates
-REPO_DIR       = os.path.dirname(MODULE_DIR)                          # path/to/Python-Charmers
-CLI_DIR        = os.path.join(MODULE_DIR, "cli")                      # path/to/Python-Charmers/pycharmers/cli
-PYCHARMERS_DIR = os.path.join(os.path.expanduser("~"), ".pycharmers") # /Users/<username>/.pycharmers
+UTILS_DIR       = os.path.dirname(os.path.abspath(__file__))           # path/to/Python-Charmers/pycharmers/utils
+MODULE_DIR      = os.path.dirname(UTILS_DIR)                           # path/to/Python-Charmers/pycharmers
+TEMPLATES_DIR   = os.path.join(MODULE_DIR, "templates")                # path/to/Python-Charmers/pycharmers/templates
+REPO_DIR        = os.path.dirname(MODULE_DIR)                          # path/to/Python-Charmers
+CLI_DIR         = os.path.join(MODULE_DIR, "cli")                      # path/to/Python-Charmers/pycharmers/cli
+PYCHARMERS_DIR  = os.path.join(os.path.expanduser("~"), ".pycharmers") # /Users/<username>/.pycharmers
 # Check whether uid/gid has the write access to DATADIR_BASE
 if os.path.exists(PYCHARMERS_DIR) and not os.access(PYCHARMERS_DIR, os.W_OK):
     PYCHARMERS_DIR = os.path.join("/tmp", ".pycharmers")
 _makedirs(name=PYCHARMERS_DIR)
 
-PYCHARMERS_HTML_DIR = os.path.join(PYCHARMERS_DIR, "html")            # /Users/<username>/.pycharmers/html
+PYCHARMERS_HTML_DIR = os.path.join(PYCHARMERS_DIR, "html") # /Users/<username>/.pycharmers/html
 _makedirs(name=PYCHARMERS_HTML_DIR)
+
+PYCHARMERS_ICON = os.path.join(os.path.join(PYCHARMERS_DIR, "icon.png")) # /Users/<username>/.pycharmers/icon.png
+_download_sample_data(
+    url="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/favicon.png?raw=true", 
+    path=PYCHARMERS_ICON,
+)

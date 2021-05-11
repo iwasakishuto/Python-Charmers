@@ -1,0 +1,7 @@
+pycharmers.cli.book2img module
+==============================
+
+.. automodule:: pycharmers.cli.book2img
+   :members:
+   :undoc-members:
+   :show-inheritance:

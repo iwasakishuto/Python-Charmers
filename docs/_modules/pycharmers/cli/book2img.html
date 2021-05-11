@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.cli.book2img &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.book2img</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.cli.book2img</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pyautogui</span> <span class="k">as</span> <span class="nn">pygui</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">._clipath</span> <span class="kn">import</span> <span class="n">PYCHARMERS_CLI_BOOK2IMG_DIR</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span>
+<span class="kn">from</span> <span class="nn">..utils.tkinter_utils</span> <span class="kn">import</span> <span class="n">PortionSelector</span>
+<span class="kn">from</span> <span class="nn">..utils.monitor_utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
+<span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
+
+<div class="viewcode-block" id="guiOperations"><a class="viewcode-back" href="../../../pycharmers.cli.book2img.html#pycharmers.cli.book2img.guiOperations">[docs]</a><span class="k">class</span> <span class="nc">guiOperations</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Packaged Gui Operations.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ops (dict/str) : Operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HEADER_KEYS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">ops</span><span class="o">=</span><span class="n">ops</span><span class="p">)</span>
+
+<div class="viewcode-block" id="guiOperations.init"><a class="viewcode-back" href="../../../pycharmers.cli.book2img.html#pycharmers.cli.book2img.guiOperations.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the operation instance.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ops</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ops</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">jf</span><span class="p">:</span>
+                <span class="n">ops</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ops</span> <span class="o">=</span> <span class="n">ops</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">guiOperations</span><span class="o">.</span><span class="n">HEADER_KEYS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="guiOperations.run"><a class="viewcode-back" href="../../../pycharmers.cli.book2img.html#pycharmers.cli.book2img.guiOperations.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the packaged operations.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">)</span>
+            <span class="n">args</span>   <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pygui.</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">(*args, **kwargs)&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="book2img"><a class="viewcode-back" href="../../../pycharmers.cli.book2img.html#pycharmers.cli.book2img.book2img">[docs]</a><span class="k">def</span> <span class="nf">book2img</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot;Convert Book into Sequential Images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        -N/--num (int)         : Number of screenshots to take.</span>
+<span class="sd">        -I/--interval (int)    : Interval to take screenshots.</span>
+<span class="sd">        -OP/--operations (str) : Path or Abbreviation for Operations.</span>
+<span class="sd">        -O/--output (str)      : Path to the output directory.</span>
+<span class="sd">        -S/--sec (int)         : Time to take a screenshot.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+<span class="sd">        </span>
+<span class="sd">        $ book2img -N 10 -I 1 -OP KindleApp</span>
+
+<span class="sd">    .. code-block:: sh</span>
+<span class="sd">    </span>
+<span class="sd">        $ cat ~/.pycharmers/cli/book2img/kindleApp.json</span>
+<span class="sd">        {</span>
+<span class="sd">          &quot;description&quot;: &quot;Operations for KindleApp (Examples)&quot;,</span>
+<span class="sd">          &quot;1&quot;: {</span>
+<span class="sd">            &quot;method&quot;: &quot;keyDown&quot;,</span>
+<span class="sd">            &quot;args&quot;: [</span>
+<span class="sd">              &quot;right&quot;</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;kwargs&quot;: {}</span>
+<span class="sd">          }</span>
+<span class="sd">        }</span>
+
+<span class="sd">    +--------------------------------------+</span>
+<span class="sd">    |                Sample                |</span>
+<span class="sd">    +======================================+</span>
+<span class="sd">    | .. image:: _images/cli.book2img.gif  |</span>
+<span class="sd">    +--------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">tabulate</span><span class="p">([[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="n">open</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">PYCHARMERS_CLI_BOOK2IMG_DIR</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.json&quot;</span><span class="p">)],</span> <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Abbreviation&quot;</span><span class="p">,</span> <span class="s2">&quot;Description&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You can use these operations by</span><span class="se">\n</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="s1">&#39;$ book2img -OP &lt;Abbreviation&gt;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;book2img&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Convert Books to Image.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-N&quot;</span><span class="p">,</span>  <span class="s2">&quot;--num&quot;</span><span class="p">,</span>        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of screenshots to take.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-I&quot;</span><span class="p">,</span>  <span class="s2">&quot;--interval&quot;</span><span class="p">,</span>   <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Interval to take screenshots.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-OP&quot;</span><span class="p">,</span> <span class="s2">&quot;--operations&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path or Abbreviation for Operations.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-O&quot;</span><span class="p">,</span>  <span class="s2">&quot;--output&quot;</span><span class="p">,</span>     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;books-</span><span class="si">{</span><span class="n">now_str</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the output directory.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-S&quot;</span><span class="p">,</span>  <span class="s2">&quot;--sec&quot;</span><span class="p">,</span>        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Time to take a screenshot&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    
+    <span class="n">num</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">num</span>
+    <span class="n">digit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span> 
+    <span class="n">interval</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">interval</span>
+    <span class="n">sec</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">sec</span>
+    <span class="n">ops</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">operations</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ops</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ops</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)):</span>
+        <span class="n">ops</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PYCHARMERS_CLI_BOOK2IMG_DIR</span><span class="p">,</span> <span class="n">ops</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+    <span class="n">ops</span> <span class="o">=</span> <span class="n">guiOperations</span><span class="p">(</span><span class="n">ops</span><span class="o">=</span><span class="n">ops</span><span class="p">)</span>
+
+    <span class="n">ps</span> <span class="o">=</span> <span class="n">PortionSelector</span><span class="p">()</span>
+    <span class="n">ps</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">get_xywh</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Region (x,y,w,h): </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">region</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> Images will saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Screenshot will be taken in </span><span class="si">{</span><span class="n">sec</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">num</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;book2img&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">it</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">num_screenshots</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="n">pygui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+        <span class="n">ss</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;img</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">&gt;0</span><span class="si">{</span><span class="n">digit</span><span class="si">}}</span><span class="s2">.png&quot;</span><span class="p">))</span>
+        <span class="n">ops</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.book2img</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

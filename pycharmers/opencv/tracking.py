@@ -2,7 +2,7 @@
 import os
 import cv2
 
-from ._path import save_dir_create
+from ._cvpath import save_dir_create
 from .video_image_handler import basenaming
 from .drawing import SUPPORTED_COORD_TYPES, draw_bboxes_create, draw_text_with_bg
 from ..utils.generic_utils import get_create, handleKeyError
@@ -10,14 +10,14 @@ from ..utils.json_utils import save_json
 from ..utils._colorings import toBLUE, toGREEN
 
 all = OPENCV_TRACKER_CREATORS = {
-    "boosting"   : cv2.TrackerBoosting_create,
+    # "boosting"   : cv2.TrackerBoosting_create, # cv2.legacy_TrackerBoosting
     "csrt"       : cv2.TrackerCSRT_create,
     "goturn"     : cv2.TrackerGOTURN_create,
     "kcf"        : cv2.TrackerKCF_create,
     "mil"        : cv2.TrackerMIL_create,
-    "mosse"      : cv2.TrackerMOSSE_create,
-    "medianflow" : cv2.TrackerMedianFlow_create,
-    "tld"        : cv2.TrackerTLD_create,
+    # "mosse"      : cv2.TrackerMOSSE_create, # cv2.legacy_TrackerMOSSE
+    # "medianflow" : cv2.TrackerMedianFlow_create,
+    # "tld"        : cv2.TrackerTLD_create,
 }
 
 tracker_create = get_create(corresp_dict=all, class_=[cv2.Tracker], genre="tracker")

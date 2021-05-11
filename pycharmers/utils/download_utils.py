@@ -1,9 +1,16 @@
 # coding: utf-8
 import os
 import urllib
+
 from .generic_utils import readable_bytes
 from .monitor_utils import progress_reporthook_create
+from .print_utils import pretty_3quote
 from ._colorings import toBLUE, toRED, toGREEN
+
+# Use Specific Opener
+opener = urllib.request.build_opener()
+opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+urllib.request.install_opener(opener)
 
 CONTENT_ENCODING2EXT = {
     "x-gzip"                    : ".gz",
@@ -108,11 +115,13 @@ def download_file(url, dirname=".", path=None, bar_width=20, verbose=True):
             guessed_ext = decide_extension(content_encoding, content_type, fn)
             path = os.path.join(dirname, name+guessed_ext)
         if verbose:
-            print(f"""Download a file from {toBLUE(url)}
+            print(*pretty_3quote(f"""
+            Download a file from {toBLUE(url)}
             * Content-Encoding : {toGREEN(content_encoding)}
             * Content-Length   : {toGREEN(content_length)}
             * Content-Type     : {toGREEN(content_type)}
-            * Save Destination : {toBLUE(path)}""")
+            * Save Destination : {toBLUE(path)}"""
+            ))
         _, res = urllib.request.urlretrieve(url=url, filename=path, reporthook=progress_reporthook_create(filename=fn, bar_width=bar_width, verbose=verbose))
     except urllib.error.URLError as e:
         if verbose: print(f"{toRED(e)} : url={toBLUE(url)}")

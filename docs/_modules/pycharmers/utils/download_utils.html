@@ -52,9 +52,16 @@
 <span></span><span class="c1"># coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
+
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">readable_bytes</span>
 <span class="kn">from</span> <span class="nn">.monitor_utils</span> <span class="kn">import</span> <span class="n">progress_reporthook_create</span>
+<span class="kn">from</span> <span class="nn">.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toGREEN</span>
+
+<span class="c1"># Use Specific Opener</span>
+<span class="n">opener</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">build_opener</span><span class="p">()</span>
+<span class="n">opener</span><span class="o">.</span><span class="n">addheaders</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span><span class="s1">&#39;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36&#39;</span><span class="p">)]</span>
+<span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">opener</span><span class="p">)</span>
 
 <span class="n">CONTENT_ENCODING2EXT</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;x-gzip&quot;</span>                    <span class="p">:</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span>
@@ -159,11 +166,13 @@
             <span class="n">guessed_ext</span> <span class="o">=</span> <span class="n">decide_extension</span><span class="p">(</span><span class="n">content_encoding</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
             <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">name</span><span class="o">+</span><span class="n">guessed_ext</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;Download a file from </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+            <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            Download a file from </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            * Content-Encoding : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_encoding</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            * Content-Length   : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_length</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            * Content-Type     : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            * Save Destination : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">            * Save Destination : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="p">))</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_reporthook_create</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">bar_width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">))</span>
     <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toRED</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> : url=</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -242,8 +251,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

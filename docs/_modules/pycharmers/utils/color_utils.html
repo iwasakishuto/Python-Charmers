@@ -50,6 +50,7 @@
             
   <h1>Source code for pycharmers.utils.color_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">handleTypeError</span>
 
 <span class="n">SUPPORTED_COLOR_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hex&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rgba&quot;</span><span class="p">]</span>
@@ -139,61 +140,74 @@
 <span class="n">toRGB</span>  <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgb&quot;</span><span class="p">)</span>
 <span class="n">toRGBA</span> <span class="o">=</span> <span class="n">_toColorCode_create</span><span class="p">(</span><span class="s2">&quot;rgba&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pycharmers.utils.color_utils.html#pycharmers.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="choose_text_color"><a class="viewcode-back" href="../../../pycharmers.utils.color_utils.html#pycharmers.utils.color_utils.choose_text_color">[docs]</a><span class="k">def</span> <span class="nf">choose_text_color</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">is_bgr</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Select an easy-to-read text color from the given color.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        color (tuple / str): color code.</span>
+<span class="sd">        color (tuple / str) : color code.</span>
+<span class="sd">        max_val (int)       : Maximum value.</span>
 
 <span class="sd">    References: </span>
-<span class="sd">        `WCAG &lt;https://www.w3.org/TR/WCAG20/&gt;`_</span>
+<span class="sd">        `WCAG &lt;https://www.w3.org/TR/WCAG20/#relativeluminancede&gt;`_</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import choose_text_color</span>
-<span class="sd">        # BLACK</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((0,     0,   0), max_val=255)</span>
-<span class="sd">        (255, 255, 255)</span>
-<span class="sd">        # RED</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((0,     0, 255), max_val=255)</span>
-<span class="sd">        (255, 255, 255)</span>
-<span class="sd">        # GREEN</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((0,   128,   0), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        # YELLOW</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((0,   255, 255), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        # BLUE</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((255,   0,   0), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        # MAGENTA</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((255,   0, 255), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        # CYAN</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((255, 255,   0), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-<span class="sd">        # WHITE</span>
-<span class="sd">        &gt;&gt;&gt; choose_text_color((255, 255, 255), max_val=255)</span>
-<span class="sd">        (0, 0, 0)</span>
-
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import (cv2BLACK, cv2RED, cv2GREEN, cv2YELLOW, cv2BLUE, cv2MAGENTA, cv2CYAN, cv2WHITE) </span>
+<span class="sd">        &gt;&gt;&gt; colors = locals().copy()</span>
+<span class="sd">        &gt;&gt;&gt; for name,color in colors.items():</span>
+<span class="sd">        ...     if name.startswith(&quot;cv2&quot;) and isinstance(color, tuple):</span>
+<span class="sd">        ...         print(f&quot;{name.lstrip(&#39;cv2&#39;):&lt;7}: {str(color):&lt;15} -&gt; {choose_text_color(color=color, max_val=255, is_bgr=True)}&quot;)        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">color_code</span> <span class="o">=</span> <span class="n">detect_color_code_type</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-    <span class="n">rgb</span> <span class="o">=</span> <span class="n">toRGB</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">toRGB</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_bgr</span><span class="p">:</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">/</span><span class="n">max_val</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">sRGB2RGB</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">e</span><span class="o">/</span><span class="n">max_val</span>
+        <span class="k">return</span> <span class="n">i</span><span class="o">/</span><span class="mf">12.92</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mf">0.03928</span> <span class="k">else</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="mf">0.055</span><span class="p">)</span><span class="o">/</span><span class="mf">1.055</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="n">sRGB2RGB</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">]</span>
     <span class="c1"># Relative Brightness BackGround.</span>
     <span class="n">Lbg</span> <span class="o">=</span> <span class="mf">0.2126</span><span class="o">*</span><span class="n">R</span> <span class="o">+</span> <span class="mf">0.7152</span><span class="o">*</span><span class="n">G</span> <span class="o">+</span> <span class="mf">0.0722</span><span class="o">*</span><span class="n">B</span>
 
     <span class="n">Lw</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Relative Brightness of White</span>
     <span class="n">Lb</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Relative Brightness of Black</span>
 
-    <span class="n">Cw</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lw</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lbg</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span>
-    <span class="n">Cb</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lbg</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lb</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span>
-    <span class="n">text_rgb</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Cb</span><span class="o">&gt;</span><span class="n">Cw</span> <span class="k">else</span> <span class="p">(</span><span class="n">max_val</span><span class="p">,</span><span class="n">max_val</span><span class="p">,</span><span class="n">max_val</span><span class="p">)</span>
+    <span class="n">Cw</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lw</span>  <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lbg</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">Cb</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lbg</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">Lb</span>  <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">text_rgb</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">Cb</span><span class="o">&gt;</span><span class="n">Cw</span> <span class="k">else</span> <span class="p">(</span><span class="n">max_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;rgb&quot;</span>  <span class="p">:</span> <span class="n">_do_nothing</span><span class="p">,</span>
         <span class="s2">&quot;hex&quot;</span>  <span class="p">:</span> <span class="n">rgb2hex</span><span class="p">,</span>
         <span class="s2">&quot;rgba&quot;</span> <span class="p">:</span> <span class="n">_do_nothing</span><span class="p">,</span>
     <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">color_code</span><span class="p">)(</span><span class="n">text_rgb</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="n">max_val</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="generateLightDarks"><a class="viewcode-back" href="../../../pycharmers.utils.color_utils.html#pycharmers.utils.color_utils.generateLightDarks">[docs]</a><span class="k">def</span> <span class="nf">generateLightDarks</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">variation</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate light and dark colors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        color (tuple)   : Color [0,255]</span>
+<span class="sd">        variation (int) : How many colors to create.</span>
+<span class="sd">        diff (int)      : How much to change</span>
+<span class="sd">        reverse (bool)  : If ``True``, sort in descending order.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        colors (list) : colors.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import generateLightDarks</span>
+<span class="sd">        &gt;&gt;&gt; generateLightDarks(color=(245,20,25), variation=3, diff=10)</span>
+<span class="sd">        [(235, 10, 15), (245, 20, 25), (255, 30, 35)]</span>
+<span class="sd">        &gt;&gt;&gt; generateLightDarks(color=(245, 20, 25), variation=3, diff=-10)</span>
+<span class="sd">        [(225, 0, 5), (235, 10, 15), (245, 20, 25)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">color</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span> <span class="k">if</span> <span class="n">diff</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">color</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">variation</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">val</span><span class="o">+=</span><span class="n">diff</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">255</span><span class="o">&gt;=</span><span class="n">val</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">u</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">tuple</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="n">diff</span><span class="o">*</span><span class="p">(</span><span class="n">u</span><span class="o">-</span><span class="n">v</span><span class="p">),</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">color</span><span class="p">)])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">variation</span><span class="p">)],</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -268,8 +282,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

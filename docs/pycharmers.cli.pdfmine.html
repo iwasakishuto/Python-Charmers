@@ -34,7 +34,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pycharmers.cli.regexp_replacement module" href="pycharmers.cli.regexp_replacement.html" />
-    <link rel="prev" title="pycharmers.cli.cvWindow module" href="pycharmers.cli.cvWindow.html" /> 
+    <link rel="prev" title="pycharmers.cli.openBrowser module" href="pycharmers.cli.openBrowser.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -49,7 +49,7 @@
           <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvWindow.html" title="pycharmers.cli.cvWindow module"
+          <a href="pycharmers.cli.openBrowser.html" title="pycharmers.cli.openBrowser module"
              accesskey="P">previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -75,7 +75,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>-I/--input-path</strong> (<em>str</em>) – Path/to/input PDF file.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path/to/input PDF file.</p></li>
 <li><p><strong>-O/--output-path</strong> (<em>str</em>) – Path/to/output directory.</p></li>
 <li><p><strong>-T/--target</strong> (<em>str</em>) – Target to extract.</p></li>
 <li><p><strong>--quiet</strong> (<em>bool</em>) – Whether to make the output quiet.</p></li>
@@ -135,13 +135,21 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCanny.html">pycharmers.cli.cvCanny module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.book2img.html">pycharmers.cli.book2img module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvWindow.html">pycharmers.cli.cvWindow module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.form_auto_fill_in.html">pycharmers.cli.form_auto_fill_in module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.lyricVideo.html">pycharmers.cli.lyricVideo module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.openBrowser.html">pycharmers.cli.openBrowser module</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.pdfmine module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.requirements.html">pycharmers.cli.requirements module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="pycharmers.cli.html#module-pycharmers.cli">Module contents</a></li>
@@ -158,8 +166,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="pycharmers.cli.cvWindow.html"
-                        title="previous chapter">pycharmers.cli.cvWindow module</a></p>
+  <p class="topless"><a href="pycharmers.cli.openBrowser.html"
+                        title="previous chapter">pycharmers.cli.openBrowser module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pycharmers.cli.regexp_replacement.html"
                         title="next chapter">pycharmers.cli.regexp_replacement module</a></p>
@@ -197,7 +205,7 @@
           <a href="pycharmers.cli.regexp_replacement.html" title="pycharmers.cli.regexp_replacement module"
              >next</a> |</li>
         <li class="right" >
-          <a href="pycharmers.cli.cvWindow.html" title="pycharmers.cli.cvWindow module"
+          <a href="pycharmers.cli.openBrowser.html" title="pycharmers.cli.openBrowser module"
              >previous</a> |</li>
     <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
     
@@ -210,8 +218,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

@@ -1,0 +1,7 @@
+pycharmers.cli.form\_auto\_fill\_in module
+==========================================
+
+.. automodule:: pycharmers.cli.form_auto_fill_in
+   :members:
+   :undoc-members:
+   :show-inheritance:

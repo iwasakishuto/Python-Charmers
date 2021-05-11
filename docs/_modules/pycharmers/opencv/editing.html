@@ -50,7 +50,14 @@
             
   <h1>Source code for pycharmers.opencv.editing</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.drawing</span> <span class="kn">import</span> <span class="n">cv2WHITE</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">filenaming</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span>
 
 <div class="viewcode-block" id="cv2paste"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.cv2paste">[docs]</a><span class="k">def</span> <span class="nf">cv2paste</span><span class="p">(</span><span class="n">bg_img</span><span class="p">,</span> <span class="n">fg_img</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pastes ``fg_image`` into ``bg_image``</span>
@@ -127,6 +134,88 @@
                    <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span>
         <span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span>
     <span class="p">])</span></div>
+
+<div class="viewcode-block" id="resize_aspect"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.resize_aspect">[docs]</a><span class="k">def</span> <span class="nf">resize_aspect</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dsize</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resize the image while keeping the aspect ratio.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        src (np.ndarray)    : Input image.</span>
+<span class="sd">        dsize (tuple)       : Output image size ( ``width`` , ``height``)</span>
+<span class="sd">        interpolation (int) : Interpolation method (default= ``cv2.INTER_AREA`` )</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        resized (np.ndarray) : Resized image.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import resize_aspect</span>
+<span class="sd">        &gt;&gt;&gt; img = np.random.randint(low=0, high=255, size=(1080, 720, 3), dtype=np.uint8)</span>
+<span class="sd">        &gt;&gt;&gt; resized = resize_aspect(src=img, dsize=(300, 300))</span>
+<span class="sd">        &gt;&gt;&gt; resized.shape</span>
+<span class="sd">        (300, 200, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sh</span><span class="p">,</span> <span class="n">sw</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span> <span class="o">=</span> <span class="n">dsize</span>
+    
+    <span class="k">if</span> <span class="n">sh</span><span class="o">/</span><span class="n">sw</span> <span class="o">&gt;</span> <span class="n">dh</span><span class="o">/</span><span class="n">dw</span><span class="p">:</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">dh</span><span class="o">/</span><span class="n">sh</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">dw</span><span class="o">/</span><span class="n">sw</span>
+    <span class="n">dsize</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="o">*</span><span class="n">sw</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="o">*</span><span class="n">sh</span><span class="p">))</span>
+    <span class="n">resized</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="n">dsize</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">interpolation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resized</span></div>
+
+<div class="viewcode-block" id="transparency"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.transparency">[docs]</a><span class="k">def</span> <span class="nf">transparency</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_bgr</span><span class="o">=</span><span class="n">cv2WHITE</span><span class="p">,</span> <span class="n">upper_bgr</span><span class="o">=</span><span class="n">cv2WHITE</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_exist</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transparency processing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        in_path (str)         : Path to input image.</span>
+<span class="sd">        out_path (str)        : Path to output image.</span>
+<span class="sd">        lower_bgr (tuple/int) : Lower bound of image value to be transparent.</span>
+<span class="sd">        upper_bgr (tuple/int) : Upper bound of image value to be transparent.</span>
+<span class="sd">        mode (int)            : Contour retrieval mode used in ``cv2.findContours`` (default = ``cv2.RETR_EXTERNAL`` )</span>
+<span class="sd">        method (int)          : ontour approximation method used in ``cv2.findContours`` (default = ``cv2.CHAIN_APPROX_SIMPLE`` )</span>
+<span class="sd">        thresh (int)          : Threshold value.</span>
+<span class="sd">        check_exist (bool)    : If ``True``, there is a possibility of overwriting the image.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import transparency, SAMPLE_LENA_IMG</span>
+<span class="sd">        &gt;&gt;&gt; transparency(SAMPLE_LENA_IMG)</span>
+<span class="sd">        Saved at /Users/iwasakishuto/.pycharmers/opencv/image/lena_transparency.png</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Naming the output path.</span>
+    <span class="k">if</span> <span class="n">out_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">in_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_transparency&quot;</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">root</span><span class="p">,</span><span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span><span class="o">==</span><span class="s2">&quot;.jpg&quot;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Since transparent image cannot be created with &#39;.jpg&#39; image, use &#39;.png&#39;.&quot;</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span>
+    <span class="n">out_path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="n">ext</span>
+    <span class="k">if</span> <span class="n">check_exist</span><span class="p">:</span>
+        <span class="n">out_path</span> <span class="o">=</span> <span class="n">filenaming</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
+
+    <span class="n">src</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">in_path</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_UNCHANGED</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">thresh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Checks if array elements lie between the elements of two other arrays.</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="mi">255</span><span class="o">-</span><span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">src</span><span class="p">[:,:,:</span><span class="mi">3</span><span class="p">],</span> <span class="n">lowerb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lower_bgr</span><span class="p">),</span> <span class="n">upperb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">upper_bgr</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Thresholding</span>
+        <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">in_path</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+        <span class="n">binary</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">contours</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">binary</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">binary</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">src</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">fillPoly</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">pts</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">out_path</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">src</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="pil2cv"><a class="viewcode-back" href="../../../pycharmers.opencv.editing.html#pycharmers.opencv.editing.pil2cv">[docs]</a><span class="k">def</span> <span class="nf">pil2cv</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert ``PIL.Image`` object into ``numpy`` array. (BGR)&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_RGBA2BGR</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -201,8 +290,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Shuto.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2021, Shuto.
     </div>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>

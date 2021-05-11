@@ -1,0 +1,7 @@
+pycharmers.utils.tkinter\_utils module
+======================================
+
+.. automodule:: pycharmers.utils.tkinter_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

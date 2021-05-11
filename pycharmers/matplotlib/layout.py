@@ -8,7 +8,7 @@ from ..utils.generic_utils import calc_rectangle_size, list_transpose, open_new_
 from ..utils.templates import render_template
 from ..utils._path import PYCHARMERS_HTML_DIR
 
-def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, ncols=1, nrows=1, axis=0, **kwargs):
+def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nplots=1, ncols=1, nrows=1, axis=0, facecolor="white", **kwargs):
     """ Create a figure and a subplot (a set of subplots).
 
     Args:
@@ -16,34 +16,39 @@ def FigAxes_create(fig=None, ax=None, figsize=(6,4), projection=None, nfigs=1, n
         ax (Axes)        : The ``Axes`` instance.
         figsize (tuple)  : The figure size for ``1`` plot.
         projection (str) : The projection type of the subplot.
-        nfigs (int)      : Total number of figures.
+        nplots (int)     : Total number of Plots.
         nrows (int)      : The number of rows
         ncols (int)      : The number of columns.
         axis (int)       : ``0`` or ``1`` Direction to arrange axes.
+        facecolor (str)  : The background color. (default= ``"white"`` )
         \*\*kwargs         : ``kwargs`` for add_subplot(\*args, \*\*kwargs) method of ``matplotlib.figure.Figure`` instance.
 
     Returns:
         fig (Figure) : The ``Figure`` instance
-        ax (Axes)    : ``ax`` can be either a single ``Axes`` object or an array of ``Axes`` objects if more than one subplot was created.
+        ax (Axes)    : An array of ``Axes`` objects if more than one subplot was created.
     
     Examples:
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.matplotlib import FigAxes_create
         >>> num_data = 10
         >>> data = range(num_data)
-        >>> fig, axes = FigAxes_create(nfigs=num_data, ncols=4, figsize=(4,4))
+        >>> fig, axes = FigAxes_create(nplots=num_data, ncols=4, figsize=(4,4))
         >>> for x,ax in zip(data,axes):
         ...     ax.scatter(x,x,s=x+1)
         >>> plt.show()
     """
+    facecolor = kwargs.pop("facecolor", facecolor)
     if ax is None:
         if fig is None:
-            ncols, nrows, total_figsize = measure_canvas(nfigs=nfigs, ncols=ncols, figsize=figsize)
-            fig = plt.figure(figsize=total_figsize)
-        ax = [fig.add_subplot(nrows, ncols, i+1, projection=projection, **kwargs) for i in range(nfigs)]
+            ncols, nrows, total_figsize = measure_canvas(nplots=nplots, ncols=ncols, figsize=figsize)
+            fig = plt.figure(figsize=total_figsize, facecolor=facecolor)
+        elif ncols*nrows<nplots:
+            ncols, nrows = calc_rectangle_size(area=nplots, w=ncols)
+        ax = [fig.add_subplot(nrows, ncols, i+1, projection=projection, **kwargs) for i in range(nplots)]
         if axis==1:
             ax = list_transpose(lst=ax, width=ncols)
-        if nfigs==1: ax = ax[0]
+    elif not isinstance(ax, list):
+        ax = [ax]
     return (fig, ax)
 
 def set_ax_info(ax, **kwargs):
@@ -59,7 +64,7 @@ def set_ax_info(ax, **kwargs):
     Examples:
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.matplotlib import set_ax_info
-        >>> fig, ax = plt.subplots()
+        >>> fig, ax = plt.subplots(nplots=1)[0]
         >>> ax = set_ax_info(ax, aspect=5, title="Title", xlabel="Xlabel", ylabel="Ylabel", yticks={"ticks":[]})
         >>> ax.scatter(1,1)
         >>> plt.show() 
@@ -88,7 +93,7 @@ def clear_grid(ax, pos=["x","y"]):
 
     Examples:
         >>> from pyutils.matplotlib import clear_grid, FigAxes_create
-        >>> fig,ax = FigAxes_create()
+        >>> fig,ax = FigAxes_create(nplots=1)[0]
         >>> ax = clear_grid(ax=ax, pos=["x", "y"])
         >>> ax = clear_grid(ax=ax, pos=list("ltrb"))
     """
@@ -109,11 +114,11 @@ def clear_grid(ax, pos=["x","y"]):
             ax.set_axis_off()
     return ax
 
-def measure_canvas(nfigs, ncols=2, figsize=(6,4)):
+def measure_canvas(nplots, ncols=2, figsize=(6,4)):
     """ Measure Canvas size.
 
     Args:
-        nfigs (int)     : Total number of figures.
+        nplots (int)    : Total number of figures.
         ncols (int)     : The number of columns.
         figsize (tuple) : The figure size for ``1`` plot.
 
@@ -127,7 +132,7 @@ def measure_canvas(nfigs, ncols=2, figsize=(6,4)):
         >>> from pycharmers.matplotlib import measure_canvas
         >>> num_data = 10
         >>> data = range(num_data)
-        >>> ncols, nrows, total_figsize = measure_canvas(nfigs=num_data, ncols=4, figsize=(4,4))
+        >>> ncols, nrows, total_figsize = measure_canvas(nplots=num_data, ncols=4, figsize=(4,4))
         >>> fig, axes = plt.subplots(nrows=nrows, ncols=ncols, sharex="all", sharey="all", figsize=total_figsize)
         >>> plot_all = False
         >>> for i,ax_row in enumerate(axes):
@@ -142,7 +147,7 @@ def measure_canvas(nfigs, ncols=2, figsize=(6,4)):
         ...             ax.scatter(x,x,s=x*10)
         >>> plt.show()
     """
-    ncols, nrows = calc_rectangle_size(area=nfigs, w=ncols)
+    ncols, nrows = calc_rectangle_size(area=nplots, w=ncols)
     w, h = figsize
     total_figsize = (w*ncols, h*nrows)
     return (ncols, nrows, total_figsize)
@@ -157,3 +162,8 @@ def show_all_fonts():
         path=path
     )
     open_new_tab(path)
+
+def mpljapanize(font_family="IPAMincho"):
+    """Make matplotlib compatible with Japanese"""
+    from matplotlib import rcParams
+    rcParams["font.family"] = font_family
