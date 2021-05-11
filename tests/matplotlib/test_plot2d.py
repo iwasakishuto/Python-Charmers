@@ -3,11 +3,18 @@ def test_plot_classification_performance():
     import numpy as np
     import matplotlib.pyplot as plt
     from pycharmers.matplotlib import plot_classification_performance
+    fig, ax = plt.subplots(figsize=(5,5))
     rnd = np.random.RandomState(123)
     y_true = rnd.randint(low=0, high=4, size=100)
     y_pred = rnd.randint(low=0, high=4, size=100)
-    plot_classification_performance(y_true=y_true, y_pred=y_pred)
-    plt.show()
+    plot_classification_performance(y_true=y_true, y_pred=y_pred, ax=ax)
+    fig.savefig("matplotlib.plot2d.plot_classification_performance.jpg")
+
+    # ------------------------------------------------------------------------------+
+    #                                   Results                                     |
+    # ==============================================================================+
+    #  image:: _images/matplotlib.plot2d.plot_classification_performance.jpg        |
+    # ------------------------------------------------------------------------------+
 
 def test_plot_lines():
     import matplotlib.pyplot as plt
@@ -36,5 +43,37 @@ def test_plot_lines():
     })
     ax.legend()
     plt.tight_layout()
-    plt.show()
+    fig.savefig("matplotlib.plot2d.plot_lines.jpg")
+
+    # ---------------------------------------------------------+
+    #                         Results                          |
+    # =========================================================+
+    #  image:: _images/matplotlib.plot2d.plot_lines.jpg        |
+    # ---------------------------------------------------------+
+
+
+def test_plot_radar_charts():
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from pycharmers.matplotlib import plot_radar_charts, mpljapanize
+    data = np.random.RandomState(123).uniform(low=0.3, high=1.0, size=(2,3,6))
+    varlabels  = ["Hit Points", "Attack", "Defense", "Special Attack", "Special Defense", "Speed"] 
+    datalabels = ["Evo.1", "Evo.2", "Evo.3"]
+    plottitles = ["Ruby", "Sapphire"]
+    fig = plt.figure(figsize=(12,6))
+    fig.text(x=0.5, y=0.965, s="Stats", horizontalalignment="center", color="black", weight="bold", size="large")
+    axes = plot_radar_charts(data=data, varlabels=varlabels, datalabels=datalabels, plottitles=plottitles, cmap="jet", fig=fig, ncols=2)
+    fig.tight_layout()
+    fig.savefig("matplotlib.plot2d.plot_radar_charts.jpg")        
+
+    # --------+--------------------------------------------------------------------+
+    #                               Results                                        |
+    # ========+====================================================================+
+    # frame`` |                                                             figure |
+    # --------+--------------------------------------------------------------------+
+    #  Circle |  .. image:: _images/matplotlib.plot2d.plot_radar_charts-Circle.jpg |
+    # --------+--------------------------------------------------------------------+
+    # polygon | .. image:: _images/matplotlib.plot2d.plot_radar_charts-polygon.jpg |
+    # --------+--------------------------------------------------------------------+
+
 

@@ -127,6 +127,7 @@ def test_split_section():
     # ]
 
 def test_str2soup():
+    from pycharmers.utils import str2soup
     string = "<title>Python-Charmers</title>"
     type(string)
     # str

@@ -98,6 +98,8 @@ def replaceArray(a, old=(255,255,255), new=(0,0,0)):
         np.ndarray: New Array
 
     Examples:
+        >>> import cv2
+        >>> import numpy as np
         >>> from pycharmers.opencv import SAMPLE_LENA_IMG, cv2plot
         >>> from pycharmers.utils import replaceArray
         >>> img = cv2.imread(SAMPLE_LENA_IMG)

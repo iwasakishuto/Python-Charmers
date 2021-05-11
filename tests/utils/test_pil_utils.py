@@ -1,4 +1,19 @@
 # coding: utf-8
+def test_draw_cross():
+    from PIL import Image
+    from pycharmers.opencv import SAMPLE_LENA_IMG
+    from pycharmers.utils import draw_cross
+    img = Image.open(SAMPLE_LENA_IMG)
+    draw_cross(img=img, size=200, width=10)
+    draw_cross(img=img, size=(100,200), width=10, outline=(0,255,0))
+
+def test_draw_frame():
+    from PIL import Image
+    from pycharmers.opencv import SAMPLE_LENA_IMG
+    from pycharmers.utils import draw_frame
+    img = Image.open(SAMPLE_LENA_IMG)
+    draw_frame(img=img, width=10)
+
 def test_pilread():
     from pycharmers.utils import pilread
     img = pilread(img=None, path="https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png")

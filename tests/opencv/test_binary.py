@@ -9,6 +9,7 @@ def test_binarizer_creator():
     ax = cv2plot(vconcat_resize_min(*images), cmap="binary", figkeywargs={"figsize": (10,10)})
 
 def test_findBiggestContour():
+    import cv2
     from pycharmers.opencv import findBiggestContour, SAMPLE_LENA_IMG
     img_gray = cv2.imread(SAMPLE_LENA_IMG, 0)
     img_th = cv2.Canny(img_gray, 100, 100)

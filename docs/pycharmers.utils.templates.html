@@ -89,11 +89,6 @@
 <span class="gp">... </span>    <span class="n">template_name_or_string</span><span class="o">=</span><span class="s2">&quot;fonts.html&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fonts&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">]))}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="go">    &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
-<span class="go">    &lt;ul&gt;</span>
-<span class="go">    &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
-<span class="go">    &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
-<span class="go">    :</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -176,6 +171,11 @@
 {%- endif -%}
 </pre></div>
 </div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils.templates</span> <span class="kn">import</span> <span class="n">base_html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">base_html</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -247,6 +247,11 @@ def {{ func_name }}(
     &quot;&quot;&quot;
 </pre></div>
 </div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils.templates</span> <span class="kn">import</span> <span class="n">def_html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">def_html</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -274,6 +279,11 @@ def {{ func_name }}(
 {%- endblock %}
 </pre></div>
 </div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils.templates</span> <span class="kn">import</span> <span class="n">fonts_html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fonts_html</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -295,6 +305,11 @@ def {{ func_name }}(
     <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils.templates</span> <span class="kn">import</span> <span class="n">style_html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">style_html</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>

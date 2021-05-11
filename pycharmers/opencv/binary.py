@@ -51,6 +51,7 @@ def findBiggestContour(contours, eta=0.1):
         max_area (int)       : Area of the biggest area.
 
     Examples:
+        >>> import cv2
         >>> from pycharmers.opencv import findBiggestContour, SAMPLE_LENA_IMG
         >>> img_gray = cv2.imread(SAMPLE_LENA_IMG, 0)
         >>> img_th = cv2.Canny(img_gray, 100, 100)

@@ -1,13 +1,15 @@
 # coding: utf-8
-def test_def_html():
+def test__mk_func():
+    from pycharmers.utils.templates import _mk_func
+    func = _mk_func(fn="base.html", name="base_html")
 
+def test_base_html():
+    from pycharmers.utils.templates import base_html
+    base_html()
 
-
-
-
-
-
-
+def test_fonts_html():
+    from pycharmers.utils.templates import fonts_html
+    fonts_html()
 
 def test_render_template():
     import matplotlib
@@ -16,9 +18,8 @@ def test_render_template():
         template_name_or_string="fonts.html", 
         context={"fonts": sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))}
     )
-    #     <h1>Available Fonts</h1>
-    #     <ul>
-    #     <li>.Aqua Kana: <span style='font-family:.Aqua Kana; font-size: 2em;'>.Aqua Kana</li>
-    #     <li>.Arabic UI Display: <span style='font-family:.Arabic UI Display; font-size: 2em;'>.Arabic UI Display</li>
-    #     : 
+
+def test_style_html():
+    from pycharmers.utils.templates import style_html
+    style_html()
 

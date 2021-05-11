@@ -32,6 +32,21 @@ def test_TrackingWindow():
             break
     cv2.destroyAllWindows()
 
+def test_cv2key2chr():
+    from pycharmers.opencv import cv2key2chr
+    import cv2
+    import numpy as np
+    from pycharmers.opencv import cv2key2chr
+     
+    winname = "cv2key2chr"
+    image = np.random.randint(low=0, high=255, size=(200,200,3), dtype=np.uint8)
+    while True:
+        key = cv2.waitKey(1)
+        cv2.imshow(winname=winname, mat=image)
+        if key!=-1: print(key, cv2key2chr(key))
+        if key==27: break
+    cv2.destroyWindow(winname=winname)
+
 def test_cvKeys():
     from pycharmers.opencv import cvKeys, DEFAULT_CV_KEYS
     cvKey = cvKeys(**DEFAULT_CV_KEYS)

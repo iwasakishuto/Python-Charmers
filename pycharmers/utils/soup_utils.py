@@ -15,6 +15,7 @@ def str2soup(string):
         bs4.BeautifulSoup : A data structure representing a parsed HTML or XML document.
 
     Examples:
+        >>> from pycharmers.utils import str2soup
         >>> string = "<title>Python-Charmers</title>"
         >>> type(string)
         str

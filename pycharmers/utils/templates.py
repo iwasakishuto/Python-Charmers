@@ -20,11 +20,6 @@ def render_template(template_name_or_string, context={}, path=None, searchpath=T
         ...     template_name_or_string="fonts.html", 
         ...     context={"fonts": sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))}
         >>> )
-            <h1>Available Fonts</h1>
-            <ul>
-            <li>.Aqua Kana: <span style='font-family:.Aqua Kana; font-size: 2em;'>.Aqua Kana</li>
-            <li>.Arabic UI Display: <span style='font-family:.Arabic UI Display; font-size: 2em;'>.Arabic UI Display</li>
-            : 
     """
     env = Environment(loader=FileSystemLoader(searchpath=searchpath), **envkwargs)
     try:
@@ -39,7 +34,19 @@ def render_template(template_name_or_string, context={}, path=None, searchpath=T
             f.write(string)
         print(f"Content was saved at {toBLUE(path)}.")
 
-def _mk_func(fn):  
+def _mk_func(fn, name):
+    """Make a function which is for documentation.
+
+    Args:
+        fn (str): Filename.
+
+    Returns:
+        function: function which has the google docstrings (HTML content is contained.)
+
+    Examples:
+        >>> from pycharmers.utils.templates import _mk_func
+        >>> func = _mk_func(fn="base.html", name="base_html")
+    """
     fp = os.path.join(TEMPLATES_DIR, fn)
     with open(fp, mode="r") as f:
         code = "\t".join(f.readlines())
@@ -55,13 +62,17 @@ def _mk_func(fn):
     .. code-block:: html
         
         {code}
+
+    Examples:
+        >>> from pycharmers.utils.templates import {name}
+        >>> {name}()
     """
     return func
 
 for fn in os.listdir(TEMPLATES_DIR):
     if fn[-5:] != ".html": continue
     name = fn.replace(".", "_")
-    exec(f"{name} = _mk_func('{fn}')")
+    exec(f"{name} = _mk_func('{fn}', '{name}')")
 
 class defFunction():
     def __init__(self, func_name, short_description="", description="", is_method=False):

@@ -482,6 +482,7 @@ def str2pyexample(string):
         
     Examples:
         >>> from pycharmers.utils import str2pyexample
+        >>> WINDOW_NAME = "string2python"
         >>> str2pyexample(\"\"\"
         ... import cv2
         ... import numpy as np

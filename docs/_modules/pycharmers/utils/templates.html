@@ -71,11 +71,6 @@
 <span class="sd">        ...     template_name_or_string=&quot;fonts.html&quot;, </span>
 <span class="sd">        ...     context={&quot;fonts&quot;: sorted(set([f.name for f in matplotlib.font_manager.fontManager.ttflist]))}</span>
 <span class="sd">        &gt;&gt;&gt; )</span>
-<span class="sd">            &lt;h1&gt;Available Fonts&lt;/h1&gt;</span>
-<span class="sd">            &lt;ul&gt;</span>
-<span class="sd">            &lt;li&gt;.Aqua Kana: &lt;span style=&#39;font-family:.Aqua Kana; font-size: 2em;&#39;&gt;.Aqua Kana&lt;/li&gt;</span>
-<span class="sd">            &lt;li&gt;.Arabic UI Display: &lt;span style=&#39;font-family:.Arabic UI Display; font-size: 2em;&#39;&gt;.Arabic UI Display&lt;/li&gt;</span>
-<span class="sd">            : </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">searchpath</span><span class="o">=</span><span class="n">searchpath</span><span class="p">),</span> <span class="o">**</span><span class="n">envkwargs</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -90,7 +85,19 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Content was saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
-<span class="k">def</span> <span class="nf">_mk_func</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>  
+<span class="k">def</span> <span class="nf">_mk_func</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a function which is for documentation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fn (str): Filename.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        function: function which has the google docstrings (HTML content is contained.)</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils.templates import _mk_func</span>
+<span class="sd">        &gt;&gt;&gt; func = _mk_func(fn=&quot;base.html&quot;, name=&quot;base_html&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEMPLATES_DIR</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
@@ -106,13 +113,17 @@
 <span class="s2">    .. code-block:: html</span>
 <span class="s2">        </span>
 <span class="s2">        </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">    Examples:</span>
+<span class="s2">        &gt;&gt;&gt; from pycharmers.utils.templates import </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &gt;&gt;&gt; </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">()</span>
 <span class="s2">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">func</span>
 
 <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">TEMPLATES_DIR</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">fn</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">!=</span> <span class="s2">&quot;.html&quot;</span><span class="p">:</span> <span class="k">continue</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-    <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> = _mk_func(&#39;</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span>
+    <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> = _mk_func(&#39;</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&#39;, &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="defFunction"><a class="viewcode-back" href="../../../pycharmers.utils.templates.html#pycharmers.utils.templates.defFunction">[docs]</a><span class="k">class</span> <span class="nc">defFunction</span><span class="p">():</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">short_description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">is_method</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>

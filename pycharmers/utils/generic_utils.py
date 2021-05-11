@@ -179,6 +179,7 @@ def calc_rectangle_size(area, w=None):
         The tuple of the lengths of horizontal, and vertical lines. (width, height)
 
     Examples:
+        >>> from pycharmers.utils import calc_rectangle
         >>> calc_rectangle(12, 3)
         (3, 4)
         >>> calc_rectangle(12, 18)
@@ -282,7 +283,6 @@ def pycat(file, head=-1, mode="r", buffering=-1, encoding=None, errors=None, new
         >>> from pycharmers.opencv import SAMPLE_LENA_IMG
         >>> from pycharmers.utils import pycat
         >>> pycat(SAMPLE_LENA_IMG, mode="rb")
-        b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00I\x00I\x00\x00\xff\xfe...
     """
     with open(file, mode=mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline) as f:
         for i,line in enumerate(f.readlines()):
@@ -429,7 +429,7 @@ class formatted_enumerator():
     def _idx(self):
         return self._i + self._start
     
-    def __next__(self):  # Python2だと next(self) で定義
+    def __next__(self):
         if self._i == self.total:
             raise StopIteration
         element = self._iterable[self._i]

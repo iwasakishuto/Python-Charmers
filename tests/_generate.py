@@ -10,6 +10,7 @@ from pycharmers.utils._colorings import toGREEN, toBLUE
 tab = " "*4
 remove_sections = ["Note:", "Reference"]
 TEST_DIR = MODULE_DIR.replace("pycharmers", "tests")
+REMOVE_FUNCIONS = ["def_html"]
 
 p = Path(MODULE_DIR)
 for init in p.glob("**/__init__.py"):
@@ -28,10 +29,10 @@ for init in p.glob("**/__init__.py"):
         lines = ["# coding: utf-8\n"]
         file_name = submodule_match.group(1)
         test_filename = f"test_{file_name}.py"
-        for funclass, member in get_defined_members(eval(file_name)).items():
-            if member.__doc__ is None or "Examples:\n" not in member.__doc__:
+        for funcclass, member in get_defined_members(eval(file_name)).items():
+            if (member.__doc__ is None) or ("Examples:\n" not in member.__doc__) or (funcclass in REMOVE_FUNCIONS):
                 continue
-            line = f"def test_{funclass}():\n"
+            line = f"def test_{funcclass}():\n"
             example = member.__doc__[member.__doc__.index("Examples:\n")+10:]
             # Delete unnecessary lines          
             for section in remove_sections: example = example[:example.find(section)]    

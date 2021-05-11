@@ -79,6 +79,7 @@ def test_print_func_create():
 
 def test_str2pyexample():
     from pycharmers.utils import str2pyexample
+    WINDOW_NAME = "string2python"
     str2pyexample("""
     import cv2
     import numpy as np
