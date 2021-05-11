@@ -5,6 +5,8 @@ opencv-contrib-python
 Pillow
 requests
 selenium
+lxml
+html5lib
 beautifulsoup4
 Jinja2
 numpy-stl

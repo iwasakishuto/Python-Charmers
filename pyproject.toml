@@ -23,6 +23,8 @@ selenium = "^3.141.0"
 Jinja2 = "^2.11.3"
 opencv-contrib-python = "^4.5.2"
 moviepy = "^1.0.3"
+lxml = "^4.6.3"
+html5lib = "^1.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
