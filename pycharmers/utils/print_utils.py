@@ -132,7 +132,9 @@ class Table():
     """Create a beautiful table and show.
 
     Args:
+        tablefmt (str)        : The format of tabel.
         enable_colspan (bool) : Whether to enable ``colspan`` or not.
+        mincolwidth (int)     : The minimum width of each column.
 
     Properties:
         ncols(int) : the number of columns.
@@ -157,11 +159,15 @@ class Table():
         |    |    \x1b[32mde\x1b[0m |
         +----+-------+
     """
-    def __init__(self, enable_colspan=True):
+    SUPPORTED_FORMATS = ["github", "rst"]
+    def __init__(self, tablefmt="rst", enable_colspan=True, mincolwidth=3):
+        handleKeyError(lst=Table.SUPPORTED_FORMATS, tablefmt=tablefmt)
         self.cols = {}
         self.table_width = 1
         self.head = 0
+        self.tablefmt = tablefmt
         self.enable_colspan = enable_colspan
+        self.mincolwidth = mincolwidth
     
     @property
     def ncols(self):
@@ -178,55 +184,120 @@ class Table():
             options["print_title"](colname)
         print(vedge)
 
-    def _print_border(self, vertex="+", hedge="-", is_next_has_vals=None):
+    def _print_border(self, vertex="+", hedge="-", alignmark=None, is_next_has_vals=None):
         """Print border.
 
         Args:
-            vertex (str) : The symbol of vertex.
-            hedge (str)  : The symbol of the horizontal edge.
+            vertex (str)            : The symbol of vertex.
+            hedge (str)             : The symbol of the horizontal edge.
+            alignmark (str)         : The symbol which implies the alignment.
+            is_next_has_vals (list) : is each next column has the value or not.
         """
+        if alignmark is None:
+            alignmark=hedge
         is_next_has_vals = is_next_has_vals or [True]*self.ncols
         border = vertex
         for (colname, options),is_next_has_val in zip(self.cols.items(),is_next_has_vals):
             if (not self.enable_colspan) or is_next_has_val:
-                border += hedge*options["colwidth"] + vertex
+                edge = alignmark + hedge*(options["colwidth"]-2) + alignmark
+                align = options["align"]
+                if align=="right":
+                    edge = hedge + edge[1:]
+                elif align == "left":
+                    edge = edge[:-1] + hedge
+                border += edge + vertex
             else:
                 border += " "*options["colwidth"] + vertex
         print(border)
 
-    def _print_tbody(self, head=None, vedge="|", hedge="-"):
+    def _print_tbody(self, head=None, vedge="|", hedge="-", need_border=True):
         """Print Values.
 
         Args:
-            head (int)  : How many lines to display.
-            vedge (str) : The symbol of the vertical edge.
-            hedge (str) : The symbol of the horizontal edge.
+            head (int)         : How many lines to display.
+            vedge (str)        : The symbol of the vertical edge.
+            hedge (str)        : The symbol of the horizontal edge.
+            need_border (bool) : Whether the border between tbodys are needed or not.
         """
         if head is None: head=self.head
         loop_not_last = True
         for i in range(head):
-            if i+1==head: loop_not_last=False
+            if i+1==head: 
+                loop_not_last=False
             is_next_has_vals=[]
             for colname, options in self.cols.items():
                 print(vedge, end="")
                 values = options["values"]
                 options["print_values"](str(values[i]))
-                if loop_not_last: is_next_has_vals.append(len(str(values[i+1]))!=0)
+                if loop_not_last: 
+                    is_next_has_vals.append(len(str(values[i+1]))!=0)
             print(vedge)
-            if loop_not_last: self._print_border(hedge=hedge, is_next_has_vals=is_next_has_vals)
+            if need_border and loop_not_last:
+                self._print_border(hedge=hedge, is_next_has_vals=is_next_has_vals)
 
-    def show(self, head=None, table_width=None):
+    def show(self, head=None, table_width=None, tablefmt=None):
         """Show a table
         
         Args:
             head (str)        : Show the first ``head`` rows for the table. 
             table_width (int) : The table width.
         """
-        self._print_border(hedge="-")
-        self._print_thead()
-        self._print_border(hedge="=")
-        self._print_tbody(head=head, hedge="-")
-        self._print_border(hedge="-")
+        tablefmt = tablefmt or self.tablefmt
+        handleKeyError(lst=Table.SUPPORTED_FORMATS, tablefmt=tablefmt)
+        show_func = getattr(self, f"show_{tablefmt}")
+        show_func(head=head, table_width=table_width)
+
+    def show_github(self, head=None, table_width=None):
+        """Show a table with github format.
+        
+        Args:
+            head (str)        : Show the first ``head`` rows for the table. 
+            table_width (int) : The table width.
+
+        Examples:
+            >>> from pycharmers.utils import Table
+            >>> table = Table()
+            >>> table.set_cols(values=range(3), colname="Number")
+            >>> table.set_cols(values=["iwa", "saki", "shuto"], colname="Name")
+            >>> table.show_github()
+            | Number | Name  |
+            |:------:|:-----:|
+            |      0 |   iwa |
+            |      1 |  saki |
+            |      2 | shuto |
+        """
+        self._print_thead(vedge="|")
+        self._print_border(vertex="|", hedge="-", alignmark=":", is_next_has_vals=None)
+        self._print_tbody(head=head, hedge="-", need_border=False)
+
+    def show_rst(self, head=None, table_width=None):
+        """Show a table with rst format.
+        
+        Args:
+            head (str)        : Show the first ``head`` rows for the table. 
+            table_width (int) : The table width.
+
+        Examples:
+            >>> from pycharmers.utils import Table
+            >>> table = Table()
+            >>> table.set_cols(values=range(3), colname="Number")
+            >>> table.set_cols(values=["iwa", "saki", "shuto"], colname="Name")
+            >>> table.show_rst()
+            +--------+-------+
+            | Number | Name  |
+            +========+=======+
+            |      0 |   iwa |
+            +--------+-------+
+            |      1 |  saki |
+            +--------+-------+
+            |      2 | shuto |
+            +--------+-------+
+        """
+        self._print_border(vertex="+", hedge="-", is_next_has_vals=None)
+        self._print_thead(vedge="|")
+        self._print_border(vertex="+", hedge="=", is_next_has_vals=None)
+        self._print_tbody(head=head, hedge="-", need_border=True)
+        self._print_border(vertex="+", hedge="-", is_next_has_vals=None)
 
     def set_cols(self, values, colname=None, width=0, align=">", sign="",
                  zero_padding=False, grouping_option="", fmt="", color="",
@@ -264,14 +335,15 @@ class Table():
                 "print_values" : print_values,
                 "print_title"  : print_title,
                 "values"       : values,
-                "colwidth"     : width+left_margin+right_margin,
+                "colwidth"     : max(width+left_margin+right_margin, self.mincolwidth),
+                "align"        : align,
             }
         })
         nrows = len(values)
         if self.head==0 or nrows < self.head:
             self.head = nrows
 
-def tabulate(tabular_data=[[]], headers=[], tablefmt='simple', align='left'):
+def tabulate(tabular_data=[[]], headers=[], tablefmt="rst", align="left"):
     """Format a fixed width table for pretty printing.
     
     Args:
@@ -296,7 +368,7 @@ def tabulate(tabular_data=[[]], headers=[], tablefmt='simple', align='left'):
     ncols = len(tabular_data[0])
     nheaders = len(headers)
     headers += [None] * (ncols-nheaders)
-    table = Table()
+    table = Table(tablefmt=tablefmt)
     for col_value, header in zip(np.array(tabular_data).T, headers):
         table.set_cols(values=col_value, colname=header)
     table.show()

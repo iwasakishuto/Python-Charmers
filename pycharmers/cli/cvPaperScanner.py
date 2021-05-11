@@ -7,7 +7,7 @@ from ..opencv import cvui, cv2Project
 from ..opencv import draw_text_with_bg, findBiggestContour, reorder_contour, draw_bboxes_xywh
 
 def cvPaperScanner(argv=sys.argv[1:]):
-    """Control the OpenCV cascade Examples.
+    """Paper Scanner using OpenCV.
 
     Please see :meth:`cv2ArgumentParser <pycharmers.utils.argparse_utils.cv2ArgumentParser>` for arguments.
 

@@ -55,10 +55,20 @@ $ poetry run book2img
 
 **CLI** is a command line program that accepts text input to execute operating system functions.
 
-|Command|Description|
-|:-:|:-|
-| `pycharmers-show`    | Show all Python-Charmers's command line programs. |
-| `regexp-replacement` | String replacement in a file using regular expression. |
-| `render-template`    | Render templates. |
-| `cv-window`          | Handle OpenCV Windows. |
-| `pdfmine`            | Mine a PDF file. |
+|       command       |                                 description                                  |
+|:-------------------:|:-----------------------------------------------------------------------------|
+|            book2img | Convert Book into Sequential Images.                                         |
+|         cv-cascades | Control the OpenCV cascade Examples.                                         |
+|    cv-paper-scanner | Paper Scanner using OpenCV.                                                  |
+|    cv-pencil-sketch | Convert the image like a pencil drawing.                                     |
+|           cv-window | Use :meth:`cvWindow <pycharmers.opencv.windows.cvWindow>` to control frames. |
+|          lyricVideo | Create a lyric Video.                                                        |
+|   form-auto-fill-in | Auto fill in your form using your saved information (or answer on the spot). |
+|         openBrowser | Display url using the default browser.                                       |
+|             pdfmine | Analyze PDF and extract various elements.                                    |
+|  regexp-replacement | String replacement in a file using regular expression                        |
+|     render-template | Render templates.                                                            |
+| requirements-create | Create a ``requirements.text``                                               |
+|     pycharmers-show | Show all Python-Charmers's command line programs.                            |
+|            tweetile | Divide one image into three so that you can tweet beautifully.               |
+|           video2gif | Convert Video into Gif.                                                      |

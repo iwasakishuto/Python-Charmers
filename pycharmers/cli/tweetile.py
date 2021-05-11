@@ -9,7 +9,7 @@ from ..utils.generic_utils import filenaming
 from ..utils._colorings import toBLUE
 
 def tweetile(argv=sys.argv[1:]):
-    """Convert Video into Gif.
+    """Divide one image into three so that you can tweet beautifully.
 
     Args:
         path (str) : Path to the input image.

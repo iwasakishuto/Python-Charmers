@@ -61,14 +61,14 @@
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
 
 <span class="nb">all</span> <span class="o">=</span> <span class="n">OPENCV_TRACKER_CREATORS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;boosting&quot;</span>   <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerBoosting_create</span><span class="p">,</span>
+    <span class="c1"># &quot;boosting&quot;   : cv2.TrackerBoosting_create, # cv2.legacy_TrackerBoosting</span>
     <span class="s2">&quot;csrt&quot;</span>       <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerCSRT_create</span><span class="p">,</span>
     <span class="s2">&quot;goturn&quot;</span>     <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerGOTURN_create</span><span class="p">,</span>
     <span class="s2">&quot;kcf&quot;</span>        <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerKCF_create</span><span class="p">,</span>
     <span class="s2">&quot;mil&quot;</span>        <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMIL_create</span><span class="p">,</span>
-    <span class="s2">&quot;mosse&quot;</span>      <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMOSSE_create</span><span class="p">,</span>
-    <span class="s2">&quot;medianflow&quot;</span> <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMedianFlow_create</span><span class="p">,</span>
-    <span class="s2">&quot;tld&quot;</span>        <span class="p">:</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerTLD_create</span><span class="p">,</span>
+    <span class="c1"># &quot;mosse&quot;      : cv2.TrackerMOSSE_create, # cv2.legacy_TrackerMOSSE</span>
+    <span class="c1"># &quot;medianflow&quot; : cv2.TrackerMedianFlow_create,</span>
+    <span class="c1"># &quot;tld&quot;        : cv2.TrackerTLD_create,</span>
 <span class="p">}</span>
 
 <span class="n">tracker_create</span> <span class="o">=</span> <span class="n">get_create</span><span class="p">(</span><span class="n">corresp_dict</span><span class="o">=</span><span class="nb">all</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">Tracker</span><span class="p">],</span> <span class="n">genre</span><span class="o">=</span><span class="s2">&quot;tracker&quot;</span><span class="p">)</span>
