@@ -1,0 +1,72 @@
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      max-parallel: 6
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+        chrome-version: ['87.0.4280.88']
+        platform: [ubuntu-latest, ubuntu-16.04, macos-latest]
+    env:
+      DISPLAY: :0
+      XAUTHORITY: /run/user/1000/gdm/Xauthority
+
+    steps:
+    - name: Checkout Repository
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Download Chrome driver ${{ matrix.chrome-version }}
+      run: |
+        sh ${GITHUB_WORKSPACE}/.github/workflows-bin/setup-chromedriver.sh ${{ matrix.platform }} ${{ matrix.chrome-version }}
+  
+    - name: Setup xvfb (for linux)
+      if: startsWith(matrix.platform, 'ubuntu')
+      run: |
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
+        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
+
+    - name: Install dependencies (for mac)
+      if: startsWith(matrix.platform, 'macos')
+      run: |
+        # brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
+        # brew install homebrew/cask/wkhtmltopdf
+        # brew install gcc
+    - name: Install dependencies (for linux)
+      if: startsWith(matrix.platform, 'ubuntu')
+      run: |
+        # sudo apt-get clean && sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade
+        # sudo apt-get update --allow-releaseinfo-change
+        # sudo apt-get install -y cmake gcc g++
+    
+    - name: Set up Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pytest-cov
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test with pytest
+      continue-on-error: true
+      run: |
+        pip install pytest-github-actions-annotate-failures
+        pytest
