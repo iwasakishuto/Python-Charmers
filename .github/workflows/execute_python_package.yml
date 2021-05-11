@@ -1,4 +1,4 @@
-name: Python package
+name: Execute Python package
 
 on:
   push:
@@ -16,13 +16,13 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
         chrome-version: ['87.0.4280.88']
         platform: [ubuntu-latest, ubuntu-16.04, macos-latest]
+
     env:
-      DISPLAY: :0
       XAUTHORITY: /run/user/1000/gdm/Xauthority
 
     steps:
     - name: Checkout Repository
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -32,25 +32,20 @@ jobs:
     - name: Download Chrome driver ${{ matrix.chrome-version }}
       run: |
         sh ${GITHUB_WORKSPACE}/.github/workflows-bin/setup-chromedriver.sh ${{ matrix.platform }} ${{ matrix.chrome-version }}
+
+    - name: Set up Chrome driver (for macos)
+      if: startsWith(matrix.platform, 'macos')
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &    
   
-    - name: Setup xvfb (for linux)
+    - name: Setup up Chrome driver and xvfb (for linux)
       if: startsWith(matrix.platform, 'ubuntu')
       run: |
         sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
+        chromedriver --url-base=/wd/hub &
         sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
-
-    - name: Install dependencies (for mac)
-      if: startsWith(matrix.platform, 'macos')
-      run: |
-        # brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup
-        # brew install homebrew/cask/wkhtmltopdf
-        # brew install gcc
-    - name: Install dependencies (for linux)
-      if: startsWith(matrix.platform, 'ubuntu')
-      run: |
-        # sudo apt-get clean && sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade
-        # sudo apt-get update --allow-releaseinfo-change
-        # sudo apt-get install -y cmake gcc g++
     
     - name: Set up Python dependencies
       run: |
