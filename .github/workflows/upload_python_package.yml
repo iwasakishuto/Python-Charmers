@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DISPLAY: :0
+      DISPLAY: :0.0
       XAUTHORITY: /run/user/1000/gdm/Xauthority
 
     steps:
