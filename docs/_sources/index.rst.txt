@@ -24,19 +24,83 @@ A collection of useful python programs.
 Installation
 ------------
 
-There are two ways to install **Python-Charmers**:
+1. Install **``Python-Charmers``** (There are two ways to install):
 
-* **Install Python-Charmers from PyPI (recommended):**
+   -  Create an environment for Python-Charmers using `Pyenv <https://github.com/pyenv/pyenv>`__ and `Poetry <https://python-poetry.org/>`__ **(recommended)**
+      ::
+
+         $ pyenv install 3.8.9
+         $ pyenv local 3.8.9
+         $ python -V
+         Python 3.8.9
+         $ poetry install
+
+   -  Install in a specific environment
+
+      -  Install from PyPI:
+         ::
+
+            $ sudo pip install Python-Charmers
+
+      -  Alternatively: install PyGuitar from the GitHub source:
+         ::
+            
+            $ git clone https://github.com/iwasakishuto/Python-Charmers.git
+            # If you want to use the latest version (under development)
+            $ git clone -b develop https://github.com/iwasakishuto/Python-Charmers.git
+            $ cd Python-Charmers
+            $ sudo python setup.py install
+
+2. Install **driver** for ``selenium`` . ``Selenium`` requires a driver to interface with the chosen browser, so please visit the `documentation <https://selenium-python.readthedocs.io/installation.html#drivers>`__ to install it.
    ::
 
-       $ sudo pip install Python-Charmers
+      # Example: Chrome
+      # visit "chrome://settings/help" to check your chrome version.     
+      # visit "https://chromedriver.chromium.org/downloads" to check <Suitable.Driver.Version> for your chrome.     
+      $ wget https://chromedriver.storage.googleapis.com/<Suitable.Driver.Version>/chromedriver_mac64.zip     
+      $ unzip chromedriver_mac64.zip     
+      $ mv chromedriver /usr/local/bin/chromedriver     
+      $ chmod +x /usr/local/bin/chromedriver
 
-* **Alternatively: install Python-Charmers from the GitHub source:**
-   ::
+CLI
+---
 
-       $ git clone https://github.com/iwasakishuto/Python-Charmers.git
-       $ cd Python-Charmers
-       $ sudo python setup.py install
+**CLI** is a command line program that accepts text input to execute operating system functions.
+
++---------------------+------------------------------------------------------------------------------+
+|       command       |                                 description                                  |
++=====================+==============================================================================+
+|            book2img | Convert Book into Sequential Images.                                         |
++---------------------+------------------------------------------------------------------------------+
+|         cv-cascades | Control the OpenCV cascade Examples.                                         |
++---------------------+------------------------------------------------------------------------------+
+|    cv-paper-scanner | Paper Scanner using OpenCV.                                                  |
++---------------------+------------------------------------------------------------------------------+
+|    cv-pencil-sketch | Convert the image like a pencil drawing.                                     |
++---------------------+------------------------------------------------------------------------------+
+|           cv-window | Use :meth:`cvWindow <pycharmers.opencv.windows.cvWindow>` to control frames. |
++---------------------+------------------------------------------------------------------------------+
+|          lyricVideo | Create a lyric Video.                                                        |
++---------------------+------------------------------------------------------------------------------+
+|   form-auto-fill-in | Auto fill in your form using your saved information (or answer on the spot). |
++---------------------+------------------------------------------------------------------------------+
+|         openBrowser | Display url using the default browser.                                       |
++---------------------+------------------------------------------------------------------------------+
+|             pdfmine | Analyze PDF and extract various elements.                                    |
++---------------------+------------------------------------------------------------------------------+
+|  regexp-replacement | String replacement in a file using regular expression                        |
++---------------------+------------------------------------------------------------------------------+
+|     render-template | Render templates.                                                            |
++---------------------+------------------------------------------------------------------------------+
+| requirements-create | Create a ``requirements.text``                                               |
++---------------------+------------------------------------------------------------------------------+
+|     pycharmers-show | Show all Python-Charmers's command line programs.                            |
++---------------------+------------------------------------------------------------------------------+
+|            tweetile | Divide one image into three so that you can tweet beautifully.               |
++---------------------+------------------------------------------------------------------------------+
+|           video2gif | Convert Video into Gif.                                                      |
++---------------------+------------------------------------------------------------------------------+
+
 
 Contents
 --------
