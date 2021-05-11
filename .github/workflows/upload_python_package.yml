@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DISPLAY: :0.0
+      # DISPLAY: :0.0
       XAUTHORITY: /run/user/1000/gdm/Xauthority
+      LIBGL_ALWAYS_INDIRECT: 1
 
     steps:
     - uses: actions/checkout@v2
@@ -20,6 +21,7 @@ jobs:
         python-version: '3.x'
     - name: Setup Device Information.
       run: |
+        echo "export DISPLAY=\$(cat /etc/resolv.conf | grep nameserver | awk '{print \$2}'):0.0" >> ~/.profile
         pip install xkeysnail
         xhost +SI:localuser:root
         xkeysnail config.py
