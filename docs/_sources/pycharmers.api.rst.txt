@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pycharmers.api.github
+   pycharmers.api.google_drive
    pycharmers.api.slack
 
 Module contents

@@ -357,10 +357,13 @@
 <span class="sd">        /Users/iwasakishuto/Github/portfolio/Python-Charmers</span>
 <span class="sd">        ├── build</span>
 <span class="sd">        │   └── lib</span>
-<span class="sd">        │       ├── pycharmers</span>
-<span class="sd">        │       └── pyutils</span>
-<span class="sd">        ├── pycharmers</span>
-<span class="sd">        │   ├── __init__.py</span>
+<span class="sd">        │       └── pycharmers</span>
+<span class="sd">        ├── develop</span>
+<span class="sd">        │   ├── colorbar.py</span>
+<span class="sd">        │   ├── cvCascade.old.py</span>
+<span class="sd">        │   ├── drawing.py</span>
+<span class="sd">        │   ├── drawingpad.py</span>
+<span class="sd">        │   └── monitor.py</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">class</span> <span class="nc">Tree</span><span class="p">():</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepaths</span><span class="o">=</span><span class="p">[],</span> <span class="n">disp_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
@@ -376,12 +379,15 @@
 <span class="sd">                &gt;&gt;&gt; tree = Tree()</span>
 <span class="sd">                &gt;&gt;&gt; tree.run(REPO_DIR)</span>
 <span class="sd">                /Users/iwasakishuto/Github/portfolio/Python-Charmers</span>
-<span class="sd">                ├── Icon</span>
-<span class="sd">                ├── LICENSE</span>
-<span class="sd">                ├── MANIFEST.in</span>
-<span class="sd">                ├── Python_Charmers.egg-info</span>
-<span class="sd">                │   ├── PKG-INFO</span>
-<span class="sd">                :            </span>
+<span class="sd">                ├── build</span>
+<span class="sd">                │   └── lib</span>
+<span class="sd">                │       └── pycharmers</span>
+<span class="sd">                ├── develop</span>
+<span class="sd">                │   ├── colorbar.py</span>
+<span class="sd">                │   ├── cvCascade.old.py</span>
+<span class="sd">                │   ├── drawing.py</span>
+<span class="sd">                │   ├── drawingpad.py</span>
+<span class="sd">                │   └── monitor.py   </span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="o">=</span> <span class="n">filepaths</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">disp_all</span> <span class="o">=</span> <span class="n">disp_all</span>
@@ -423,7 +429,7 @@
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">filenames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span>
                 <span class="n">fn</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span> 
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="n">fp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">([</span><span class="n">fp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">fn</span><span class="p">))</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">])</span>
             <span class="p">])</span> 
             <span class="n">num_filenames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
             
