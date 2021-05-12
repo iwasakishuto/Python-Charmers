@@ -306,10 +306,13 @@ def pytree(*args, pattern="**/*", disp_all=False, max_level=-1, **kwargs):
         /Users/iwasakishuto/Github/portfolio/Python-Charmers
         ├── build
         │   └── lib
-        │       ├── pycharmers
-        │       └── pyutils
-        ├── pycharmers
-        │   ├── __init__.py
+        │       └── pycharmers
+        ├── develop
+        │   ├── colorbar.py
+        │   ├── cvCascade.old.py
+        │   ├── drawing.py
+        │   ├── drawingpad.py
+        │   └── monitor.py
     """
     class Tree():
         def __init__(self, filepaths=[], disp_all=False, max_level=-1):
@@ -325,12 +328,15 @@ def pytree(*args, pattern="**/*", disp_all=False, max_level=-1, **kwargs):
                 >>> tree = Tree()
                 >>> tree.run(REPO_DIR)
                 /Users/iwasakishuto/Github/portfolio/Python-Charmers
-                ├── Icon
-                ├── LICENSE
-                ├── MANIFEST.in
-                ├── Python_Charmers.egg-info
-                │   ├── PKG-INFO
-                :            
+                ├── build
+                │   └── lib
+                │       └── pycharmers
+                ├── develop
+                │   ├── colorbar.py
+                │   ├── cvCascade.old.py
+                │   ├── drawing.py
+                │   ├── drawingpad.py
+                │   └── monitor.py   
             """
             self.filepaths = filepaths
             self.disp_all = disp_all
@@ -372,7 +378,7 @@ def pytree(*args, pattern="**/*", disp_all=False, max_level=-1, **kwargs):
             """
             filenames = sorted([
                 fn for fn in os.listdir(dirname) 
-                if len(self.filepaths)==0 or any([fp.startswith(self.pathjoin(dirname, fn)) for fp in self.filepaths])
+                if len(self.filepaths)!=0 and any([fp.startswith(self.pathjoin(dirname, fn)) for fp in self.filepaths])
             ]) 
             num_filenames = len(filenames)
             
