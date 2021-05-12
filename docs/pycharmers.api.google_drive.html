@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.api.google_drive module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.api.google_drive.html" />
+  <meta property="og:description" content="A Wrapper class for GoogleDrive in PyDrive" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.api.google_drive module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.api.slack module" href="pycharmers.api.slack.html" />
+    <link rel="prev" title="pycharmers.api.github module" href="pycharmers.api.github.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.slack.html" title="pycharmers.api.slack module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.github.html" title="pycharmers.api.github module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" accesskey="U">pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.google_drive module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.api.google_drive">
+<span id="pycharmers-api-google-drive-module"></span><h1>pycharmers.api.google_drive module<a class="headerlink" href="#module-pycharmers.api.google_drive" title="Permalink to this headline">¶</a></h1>
+<p>A Wrapper class for GoogleDrive in <a class="reference external" href="https://pythonhosted.org/PyDrive/index.html">PyDrive</a></p>
+<dl class="py class">
+<dt id="pycharmers.api.google_drive.PyCharmersGoogleDrive">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.api.google_drive.</code><code class="sig-name descname">PyCharmersGoogleDrive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">settings_file</span><span class="o">=</span><span class="default_value">'settings.yaml'</span></em>, <em class="sig-param"><span class="n">http_timeout</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#PyCharmersGoogleDrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.PyCharmersGoogleDrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydrive.drive.GoogleDrive</span></code></p>
+<p>Wrapper class for GoogleDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>settings_file</strong> (<em>str</em>) – path of settings file. Defaults to <code class="docutils literal notranslate"><span class="pre">'settings.yaml'</span></code> .</p></li>
+<li><p><strong>http_timeout</strong> (<em>int</em>) – HTTP timeout. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PyCharmersGoogleDrive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drive</span> <span class="o">=</span> <span class="n">PyCharmersGoogleDrive</span><span class="p">(</span><span class="n">settings_file</span><span class="o">=</span><span class="s1">&#39;dir/subdir/settings.yaml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drive</span>
+</pre></div>
+</div>
+<p>When executed as above, the directory structure is as follows.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ tree .
+.
+└── dir
+    └── subdir
+        ├── client_secrets.json
+        ├── credentials.json
+        └── settings.yaml
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">settings.yaml</span></code> is like <a class="reference external" href="https://pythonhosted.org/PyDrive/oauth.html?highlight=yaml#sample-settings-yaml">this</a> .</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">client_config_backend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">settings</span>
+<span class="nt">client_config</span><span class="p">:</span>
+    <span class="nt">client_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;CLIENT_ID&gt;</span>
+    <span class="nt">client_secret</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;CLIENT_SECRET</span>
+<span class="nt">save_credentials</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">save_credentials_backend</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">file</span>
+<span class="nt">save_credentials_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">credentials.json</span>
+<span class="nt">get_refresh_token</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">oauth_scope</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://www.googleapis.com/auth/drive.file</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://www.googleapis.com/auth/drive.install</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://www.googleapis.com/auth/drive</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="pycharmers.api.google_drive.PyCharmersGoogleDrive.authenticate">
+<em class="property">static </em><code class="sig-name descname">authenticate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">settings_file</span><span class="o">=</span><span class="default_value">'settings.yaml'</span></em>, <em class="sig-param"><span class="n">http_timeout</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#PyCharmersGoogleDrive.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.PyCharmersGoogleDrive.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an Authentication. See the <a class="reference external" href="https://pythonhosted.org/PyDrive/oauth.html?highlight=yaml#sample-settings-yaml">PyDrive’s documentation</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>settings_file</strong> (<em>str</em>) – path of settings file. Defaults to <code class="docutils literal notranslate"><span class="pre">'settings.yaml'</span></code> .</p></li>
+<li><p><strong>http_timeout</strong> (<em>int</em>) – HTTP timeout. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wrapper class for oauth2client library in google-api-python-client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>GoogleAuth</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.google_drive.PyCharmersGoogleDrive.arrange_queries">
+<em class="property">static </em><code class="sig-name descname">arrange_queries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">queries</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">ext</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">isfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trashed</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#PyCharmersGoogleDrive.arrange_queries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.PyCharmersGoogleDrive.arrange_queries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arrange queries for <code class="docutils literal notranslate"><span class="pre">Files.List()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>queries</strong> (<em>list</em>) – Current queries. Defaults to [].</p></li>
+<li><p><strong>only_mp4</strong> (<em>bool</em>) – Whether to extract only <code class="docutils literal notranslate"><span class="pre">.mp4</span></code> (zoom). Defaults to True.</p></li>
+<li><p><strong>minetypes</strong> (<em>str</em>) – If <a href="#id1"><span class="problematic" id="id2">``</span></a>minetypes``[description]. Defaults to “file”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>parameter to be sent to <code class="docutils literal notranslate"><span class="pre">Files.List()</span></code> .</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PyCharmersGoogleDrive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PyCharmersGoogleDrive</span><span class="o">.</span><span class="n">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="p">[],</span> <span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">{&#39;q&#39;: &#39;title contains &quot;.mp4&quot; and mimeType != &quot;application/vnd.google-apps.folder&quot; and trashed = false&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PyCharmersGoogleDrive</span><span class="o">.</span><span class="n">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="p">[],</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">{&#39;q&#39;: &#39;mimeType  = &quot;application/vnd.google-apps.folder&quot; and trashed = none&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.google_drive.PyCharmersGoogleDrive.getListFile">
+<code class="sig-name descname">getListFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">param</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#PyCharmersGoogleDrive.getListFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.PyCharmersGoogleDrive.getListFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of GoogleDriveFileList with auth of this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> (<em>dict</em>) – parameter to be sent to <code class="docutils literal notranslate"><span class="pre">Files.List()</span></code> .</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Google Drive File List.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>GoogleDriveFileList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.google_drive.PyCharmersGoogleDrive.get_file_list">
+<code class="sig-name descname">get_file_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dirname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dirId</span><span class="o">=</span><span class="default_value">'root'</span></em>, <em class="sig-param"><span class="n">ext</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">isfile</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#PyCharmersGoogleDrive.get_file_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.PyCharmersGoogleDrive.get_file_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use queries effortlessly to get a list of files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dirname</strong> (<em>str</em>) – Directory Name. Defaults to None.</p></li>
+<li><p><strong>dirId</strong> (<em>str</em>) – Directory Id</p></li>
+<li><p><strong>ext</strong> (<em>str</em>) – File Extensions.</p></li>
+<li><p><strong>isfile</strong> (<em>bool</em>) – If this value is <code class="docutils literal notranslate"><span class="pre">True</span></code>, extract only “file”, else if this value is <code class="docutils literal notranslate"><span class="pre">False</span></code>, extract only “folder”, else (if this value is <code class="docutils literal notranslate"><span class="pre">None</span></code> ) extract “both”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Google Drive File List.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>GoogleDriveFileList</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PyCharmersGoogleDrive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drive</span> <span class="o">=</span> <span class="n">PyCharmersGoogleDrive</span><span class="p">(</span><span class="n">settings_file</span><span class="o">=</span><span class="s2">&quot;settings.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">drive</span><span class="o">.</span><span class="n">get_file_list</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="s2">&quot;DIRNAME&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.api.google_drive.QUERY">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.api.google_drive.</code><code class="sig-name descname">QUERY</code><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#QUERY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.QUERY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Query to be sent to <code class="docutils literal notranslate"><span class="pre">Files.List()</span></code> .</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>References</p></th>
+<th class="head"><p>URL</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Japanese cheatsheet</p></td>
+<td><p><a class="reference external" href="https://note.nkmk.me/python-pydrive-list-file/">https://note.nkmk.me/python-pydrive-list-file/</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Commonly Used MIME Types</p></td>
+<td><p><a class="reference external" href="https://learndataanalysis.org/commonly-used-mime-types/">https://learndataanalysis.org/commonly-used-mime-types/</a></p></td>
+</tr>
+<tr class="row-even"><td><p>G Suite and Drive MIME Types</p></td>
+<td><p><a class="reference external" href="https://developers.google.com/drive/api/v3/mime-types">https://developers.google.com/drive/api/v3/mime-types</a></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.FOLDERS">
+<code class="sig-name descname">FOLDERS</code><em class="property"> = 'mimeType  = &quot;application/vnd.google-apps.folder&quot;'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.FOLDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.FILES">
+<code class="sig-name descname">FILES</code><em class="property"> = 'mimeType != &quot;application/vnd.google-apps.folder&quot;'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.FILES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.TITLE_MATCH">
+<code class="sig-name descname">TITLE_MATCH</code><em class="property"> = 'title = &quot;{q}&quot;'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.TITLE_MATCH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.TITLE_CONTAIN">
+<code class="sig-name descname">TITLE_CONTAIN</code><em class="property"> = 'title contains &quot;{q}&quot;'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.TITLE_CONTAIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.PARENT">
+<code class="sig-name descname">PARENT</code><em class="property"> = '&quot;{q}&quot; in parents'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.PARENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pycharmers.api.google_drive.QUERY.TRASHED">
+<code class="sig-name descname">TRASHED</code><em class="property"> = 'trashed = {q}'</em><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.TRASHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.google_drive.QUERY.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/google_drive.html#QUERY.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.google_drive.QUERY.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show all Queries.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api.google_drive</span> <span class="kn">import</span> <span class="n">QUERY</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">QUERY</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.api.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.api.github.html">pycharmers.api.github module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.api.google_drive module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.api.slack.html">pycharmers.api.slack module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.api.html#module-pycharmers.api">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.api.github.html"
+                        title="previous chapter">pycharmers.api.github module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.api.slack.html"
+                        title="next chapter">pycharmers.api.slack module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.api.google_drive.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.slack.html" title="pycharmers.api.slack module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.github.html" title="pycharmers.api.github module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" >pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.google_drive module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>
