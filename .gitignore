@@ -5,6 +5,7 @@ __pycache__
 !examples/*.ipynb
 examples/*.html
 develop/*
+.vscode
 
 # Icon
 Icon?
