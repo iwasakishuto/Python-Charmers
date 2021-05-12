@@ -53,9 +53,11 @@
 <span class="c1">#coding: utf-8</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
 <span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="kn">import</span> <span class="n">GoogleAuth</span>
 <span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
+
+<span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
 
 <div class="viewcode-block" id="PyCharmersGoogleDrive"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive">[docs]</a><span class="k">class</span> <span class="nc">PyCharmersGoogleDrive</span><span class="p">(</span><span class="n">GoogleDrive</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper class for GoogleDrive.</span>
@@ -101,6 +103,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings_file</span><span class="o">=</span><span class="s1">&#39;settings.yaml&#39;</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">settings_file</span><span class="o">=</span><span class="n">settings_file</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="n">http_timeout</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirId2name</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="PyCharmersGoogleDrive.authenticate"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.authenticate">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">settings_file</span><span class="o">=</span><span class="s1">&#39;settings.yaml&#39;</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -124,13 +127,15 @@
         <span class="k">return</span> <span class="n">gauth</span></div>
 
 <div class="viewcode-block" id="PyCharmersGoogleDrive.arrange_queries"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.arrange_queries">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="p">[],</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="p">[],</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Arrange queries for ``Files.List()``</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            queries (list)  : Current queries. Defaults to [].</span>
-<span class="sd">            only_mp4 (bool) : Whether to extract only ``.mp4`` (zoom). Defaults to True.</span>
-<span class="sd">            minetypes (str) : If ``minetypes``[description]. Defaults to &quot;file&quot;.</span>
+<span class="sd">            queries (list) : Current queries. Defaults to ``[]`` .</span>
+<span class="sd">            ext (str)      : File Extensions. Defaults to ``None`` .</span>
+<span class="sd">            isfile (bool)  : If this value is ``True``, extract only &quot;file&quot;, else if this value is ``False``, extract only &quot;folder&quot;, else (if this value is ``None`` ) extract &quot;both&quot;.</span>
+<span class="sd">            trashed (bool) : Whether trashed file or not. Defaults to ``False``</span>
+<span class="sd">            verbose (bool) : Whether to print the query or not. Defaults to ``False``</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: parameter to be sent to ``Files.List()`` .</span>
@@ -150,6 +155,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QUERY</span><span class="o">.</span><span class="n">FOLDERS</span><span class="p">)</span>
         <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QUERY</span><span class="o">.</span><span class="n">TRASHED</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">trashed</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Queries]&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="s2">&quot; and &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">queries</span><span class="p">)}</span></div>
 
 <div class="viewcode-block" id="PyCharmersGoogleDrive.getListFile"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.getListFile">[docs]</a>    <span class="k">def</span> <span class="nf">getListFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -163,14 +172,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListFile</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">)</span><span class="o">.</span><span class="n">GetList</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyCharmersGoogleDrive.get_file_list"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.get_file_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PyCharmersGoogleDrive.get_file_list"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.get_file_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Use queries effortlessly to get a list of files.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            dirname (str) : Directory Name. Defaults to None.</span>
-<span class="sd">            dirId (str)   : Directory Id</span>
-<span class="sd">            ext (str)     : File Extensions.</span>
-<span class="sd">            isfile (bool) : If this value is ``True``, extract only &quot;file&quot;, else if this value is ``False``, extract only &quot;folder&quot;, else (if this value is ``None`` ) extract &quot;both&quot;.</span>
+<span class="sd">            filename (str) : File Name. Defaults to ``None`` .</span>
+<span class="sd">            dirname (str)  : Directory Name. Defaults to ``None`` .</span>
+<span class="sd">            dirId (str)    : Directory Id. Defaults to ``None`` .</span>
+<span class="sd">            ext (str)      : File Extensions. Defaults to ``None`` .</span>
+<span class="sd">            isfile (bool)  : If this value is ``True``, extract only &quot;file&quot;, else if this value is ``False``, extract only &quot;folder&quot;, else (if this value is ``None`` ) extract &quot;both&quot;.</span>
+<span class="sd">            trashed (bool) : Whether trashed file or not. Defaults to ``False``</span>
+<span class="sd">            verbose (bool) : Whether to print the query or not. Defaults to ``False``</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            GoogleDriveFileList: Google Drive File List.</span>
@@ -181,13 +193,139 @@
 <span class="sd">            &gt;&gt;&gt; for f in drive.get_file_list(dirname=&quot;DIRNAME&quot;):</span>
 <span class="sd">            ...     print(f[&quot;title&quot;], f[&quot;id&quot;])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QUERY</span><span class="o">.</span><span class="n">TITLE_MATCH</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">filename</span><span class="p">))</span>
+        <span class="n">dirId</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dirId</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">dirId</span><span class="p">)</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QUERY</span><span class="o">.</span><span class="n">PARENT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">dirId</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getListFile</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="n">queries</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="n">isfile</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="n">trashed</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PyCharmersGoogleDrive.get_dirId"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.get_dirId">[docs]</a>    <span class="k">def</span> <span class="nf">get_dirId</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get directory Id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dirname (str) : Directory Name. Defaults to ``None`` .</span>
+<span class="sd">            dirId (str)   : Directory Id. Defaults to ``&quot;root&quot;`` .</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str : Directory Id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dirname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getListFile</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">QUERY</span><span class="o">.</span><span class="n">TITLE_MATCH</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">dirname</span><span class="p">)})</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
                 <span class="n">dirId</span> <span class="o">=</span> <span class="n">directory</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dirname</span><span class="si">}</span><span class="s2"> is not found.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getListFile</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arrange_queries</span><span class="p">(</span><span class="n">queries</span><span class="o">=</span><span class="p">[</span><span class="n">QUERY</span><span class="o">.</span><span class="n">PARENT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">dirId</span><span class="p">)],</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="n">isfile</span><span class="p">))</span></div></div>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Folder </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not found in your GoogleDrive. Try to specify the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;dirId&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dirId</span></div>
+
+<div class="viewcode-block" id="PyCharmersGoogleDrive.upload"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.upload">[docs]</a>    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filepath (str): name of the file to be uploaded.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GoogleDriveFile: Google Drive File Info.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">()</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">SetContentFile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">file</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;[success]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> Upload </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="si">}</span><span class="s2"> (ID=</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file</span></div>
+
+<div class="viewcode-block" id="PyCharmersGoogleDrive.download_file"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_bom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str)    : File Name. Defaults to ``None`` .</span>
+<span class="sd">            dirname (str)     : Directory Name. Defaults to ``None`` .</span>
+<span class="sd">            dirId (str)       : Directory Id. Defaults to ``None`` .</span>
+<span class="sd">            ext (str)         : File Extensions. Defaults to ``None`` .</span>
+<span class="sd">            isfile (bool)     : If this value is ``True``, extract only &quot;file&quot;, else if this value is ``False``, extract only &quot;folder&quot;, else (if this value is ``None`` ) extract &quot;both&quot;.</span>
+<span class="sd">            trashed (bool)    : Whether trashed file or not. Defaults to ``False``</span>
+<span class="sd">            dst (str)         : Where to download the file. Defaults to ``None`` .</span>
+<span class="sd">            mimetype (str)    : mimeType of the file.. Defaults to ``None`` .</span>
+<span class="sd">            remove_bom (bool) : Whether to remove the byte order marking.. Defaults to ``False``.</span>
+<span class="sd">            verbose (bool)    : Whether to print the result or not. Defaults to ``True``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str : Path to downloaded file.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.api import PyCharmersGoogleDrive</span>
+<span class="sd">            &gt;&gt;&gt; drive = PyCharmersGoogleDrive(settings_file=&quot;settings.json&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; drive.download_file(filename=&quot;file.png&quot;, dirId=&quot;root&quot;, verbose=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filelist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_file_list</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">dirId</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">isfile</span><span class="o">=</span><span class="n">isfile</span><span class="p">,</span> <span class="n">trashed</span><span class="o">=</span><span class="n">trashed</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">filelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]})</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="n">dst</span> <span class="ow">or</span> <span class="n">filename</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">GetContentFile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">dst</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">,</span> <span class="n">remove_bom</span><span class="o">=</span><span class="n">remove_bom</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;[success]&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">toRED</span><span class="p">(</span><span class="s1">&#39;[failure]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> Downloaded </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dst</span></div>
+
+<div class="viewcode-block" id="PyCharmersGoogleDrive.tree"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.tree">[docs]</a>    <span class="k">def</span> <span class="nf">tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list contents of directories in a tree-like format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dirname (str) : Directory Name. Defaults to ``None`` .</span>
+<span class="sd">            dirId (str)   : Directory Id. Defaults to ``&quot;root&quot;`` .</span>
+
+<span class="sd">        TODO: To display the file contents in a tree-like format.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.api import PyCharmersGoogleDrive</span>
+<span class="sd">            &gt;&gt;&gt; drive = PyCharmersGoogleDrive(settings_file=&quot;settings.json&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; drive.tree()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">root_file_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_file_list</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">root_file_list</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;parents&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dirId2name</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dirId2name</span><span class="p">[</span><span class="s2">&quot;root/&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+                <span class="k">break</span>
+
+        <span class="k">def</span> <span class="nf">dirId2name</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">o</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirId2name</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">f</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">dirId2name</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_recursive</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">dirId</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[])])):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyCharmersGoogleDrive.tree_recursive"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive.tree_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">tree_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dirname (str)  : Directory Name. Defaults to ``None`` .</span>
+<span class="sd">            dirId (str)    : Directory Id. Defaults to ``&quot;root&quot;`` .</span>
+<span class="sd">            parents (list) : Parent Directories. Defaults to ``[]``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: All filepaths from initial ``dirname`` ( ``dirId`` )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dirId</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dirId</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">dirId</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">dirId</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_file_list</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">dirId</span><span class="p">):</span>
+            <span class="n">title</span>     <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+            <span class="n">is_folder</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;mimeType&quot;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;application/vnd.google-apps.folder&#39;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;parents&quot;</span><span class="p">])</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">fp</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parents</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;parents&quot;</span><span class="p">])]</span> <span class="o">+</span> <span class="p">[</span><span class="n">title</span><span class="p">])</span> 
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;shared/</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_folder</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dirId2name</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+                <span class="n">filepaths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_recursive</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirId</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">parents</span><span class="o">=</span><span class="n">parents</span><span class="o">+</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]))</span>
+        <span class="k">return</span> <span class="n">filepaths</span></div></div>
 
 <div class="viewcode-block" id="QUERY"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.QUERY">[docs]</a><span class="k">class</span> <span class="nc">QUERY</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Query to be sent to ``Files.List()`` .</span>
