@@ -12,16 +12,27 @@ A collection of useful python programs.
 ## Installation
 
 1. Install **`Python-Charmers`** (There are two ways to install):
-    - **Install from PyPI (recommended):**
+   -  Create an environment for Python-Charmers using [Pyenv](https://github.com/pyenv/pyenv) and [Poetry](https://python-poetry.org/) **(recommended)**
         ```sh
-        $ sudo pip install Python-Charmers
+        $ pyenv install 3.8.9
+        $ pyenv local 3.8.9
+        $ python -V
+        Python 3.8.9
+        $ poetry install
         ```
-    - **Alternatively: install PyGuitar from the GitHub source:**
-        ```sh
-        $ git clone https://github.com/iwasakishuto/Python-Charmers.git
-        $ cd Python-Charmers
-        $ sudo python setup.py install
-        ```
+   -  Install in a specific environment
+      -  Install from PyPI:
+            ```sh
+            $ sudo pip install Python-Charmers
+            ```
+      -  Alternatively: install PyGuitar from the GitHub source:
+            ```sh            
+            $ git clone https://github.com/iwasakishuto/Python-Charmers.git
+            # If you want to use the latest version (under development)
+            $ git clone -b develop https://github.com/iwasakishuto/Python-Charmers.git
+            $ cd Python-Charmers
+            $ sudo python setup.py install
+            ```
 2. Install **driver** for `selenium`:
 **`Selenium`** requires a driver to interface with the chosen browser, so please visit the [documentation](https://selenium-python.readthedocs.io/installation.html#drivers) to install it.
     ```sh
