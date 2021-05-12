@@ -1,4 +1,4 @@
-name: Execute Python package
+name: Execute Python-Charmers
 
 on:
   push:
