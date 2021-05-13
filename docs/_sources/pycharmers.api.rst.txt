@@ -10,6 +10,7 @@ Submodules
    pycharmers.api.github
    pycharmers.api.google_drive
    pycharmers.api.slack
+   pycharmers.api.trello
 
 Module contents
 ---------------

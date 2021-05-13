@@ -796,3 +796,25 @@ def relative_import(f, i, absfile, name):
             f = ".".join(name.split(".")[:-num_start_period]) + "." + m.group(2)
     exec(f"from {f} import {i}")
     return eval(i)
+
+def verbose2print(verbose=True):
+    """Create a simple print function based on verbose
+    
+    Args:
+        verbose (bool) : Whether to print or not.
+
+    Returns:
+        function : Print function
+
+    Examples:
+        >>> from pycharmers.utils import verbose2print
+        >>> print_verbose = verbose2print(verbose=True)
+        >>> print_non_verbose = verbose2print(verbose=False)
+        >>> print_verbose("Hello, world.")
+        Hello, world.
+        >>> print_non_verbose = verbose2print("Hello, world.")    
+    """
+    if verbose:
+        return print
+    else:
+        return lambda *args,**kwargs: None

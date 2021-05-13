@@ -11,6 +11,7 @@ Submodules
    pycharmers.utils.color_utils
    pycharmers.utils.download_utils
    pycharmers.utils.driver_utils
+   pycharmers.utils.environ_utils
    pycharmers.utils.generic_utils
    pycharmers.utils.inspect_utils
    pycharmers.utils.json_utils

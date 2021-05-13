@@ -1,0 +1,7 @@
+pycharmers.api.trello module
+============================
+
+.. automodule:: pycharmers.api.trello
+   :members:
+   :undoc-members:
+   :show-inheritance:

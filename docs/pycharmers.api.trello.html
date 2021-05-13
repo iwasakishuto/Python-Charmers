@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.api.trello module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.api.trello.html" />
+  <meta property="og:description" content="A wrapper class for Trello API" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.api.trello module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.cli package" href="pycharmers.cli.html" />
+    <link rel="prev" title="pycharmers.api.slack module" href="pycharmers.api.slack.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.slack.html" title="pycharmers.api.slack module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" accesskey="U">pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.trello module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.api.trello">
+<span id="pycharmers-api-trello-module"></span><h1>pycharmers.api.trello module<a class="headerlink" href="#module-pycharmers.api.trello" title="Permalink to this headline">¶</a></h1>
+<p>A wrapper class for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/">Trello API</a></p>
+<dl class="py class">
+<dt id="pycharmers.api.trello.Trello">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.api.trello.</code><code class="sig-name descname">Trello</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.api._base.PycharmersAPI</span></code></p>
+<p>A wrapper class for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/">Trello API</a></p>
+<p>Visit <a class="reference external" href="https://trello.com/app-key">https://trello.com/app-key</a> to get an API key and Token. (NOTE: You have to login before visiting)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> (<em>str</em>) – API-key.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – Token.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print logs or not.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.api_call">
+<code class="sig-name descname">api_call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.api_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.api_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about the memberships users have to the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – URL to which the API sends the request.</p></li>
+<li><p><strong>api_key</strong> (<em>str</em>) – API-key.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – Token.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.show_results">
+<em class="property">static </em><code class="sig-name descname">show_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em>, <em class="sig-param"><span class="n">keynames</span><span class="o">=</span><span class="default_value">['name', 'id']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.show_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.show_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static Method for displaying result beautifullly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>list</em>) – Result.</p></li>
+<li><p><strong>keynames</strong> (<em>list</em>) – The keyname to extract and display the value from the <code class="docutils literal notranslate"><span class="pre">result</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">Trello</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Trello</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="s2">&quot;slack&quot;</span><span class="p">,</span>  <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">]},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;post&quot;</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">],</span> <span class="n">keynames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">])</span>
+<span class="go">+--------+------+</span>
+<span class="go">|  api   |  b   |</span>
+<span class="go">+========+======+</span>
+<span class="go">|  slack | None |</span>
+<span class="go">+--------+------+</span>
+<span class="go">| github | None |</span>
+<span class="go">+--------+------+</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.setup_show_func">
+<code class="sig-name descname">setup_show_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.setup_show_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.setup_show_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the <code class="docutils literal notranslate"><span class="pre">show_XXX</span></code> funciton.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.get_memberships_of_a_board">
+<code class="sig-name descname">get_memberships_of_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.get_memberships_of_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.get_memberships_of_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-memberships-get">Get Memberships of a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.get_lists_on_a_board">
+<code class="sig-name descname">get_lists_on_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">board_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.get_lists_on_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.get_lists_on_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-lists-get">Get Lists on a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.get_cards_on_a_board">
+<code class="sig-name descname">get_cards_on_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">board_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.get_cards_on_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.get_cards_on_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-cards-get">Get Cards on a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.trello.Trello.get_cards_in_a_list">
+<code class="sig-name descname">get_cards_in_a_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">card_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/api/trello.html#Trello.get_cards_in_a_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.trello.Trello.get_cards_in_a_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-lists/#api-lists-id-cards-get">Get Cards in a List</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.api.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.api.github.html">pycharmers.api.github module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.api.google_drive.html">pycharmers.api.google_drive module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.api.slack.html">pycharmers.api.slack module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.api.trello module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.api.html#module-pycharmers.api">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.api.slack.html"
+                        title="previous chapter">pycharmers.api.slack module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.cli.html"
+                        title="next chapter">pycharmers.cli package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.api.trello.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.html" title="pycharmers.cli package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.api.slack.html" title="pycharmers.api.slack module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.api.html" >pycharmers.api package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.trello module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

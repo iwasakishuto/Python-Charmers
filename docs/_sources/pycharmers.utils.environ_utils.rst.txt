@@ -1,0 +1,7 @@
+pycharmers.utils.environ\_utils module
+======================================
+
+.. automodule:: pycharmers.utils.environ_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
