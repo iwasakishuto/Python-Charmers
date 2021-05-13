@@ -34,6 +34,7 @@ flake8 = "^3.9.2"
 isort = "^5.8.0"
 mypy = "^0.812"
 black = "^21.5b1"
+pylint = "^2.8.2"
 
 [tool.poetry.scripts]
 book2img            = "pycharmers.cli.book2img:book2img"
