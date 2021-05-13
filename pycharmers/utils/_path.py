@@ -50,7 +50,7 @@ def _download_sample_data(url, path, msg=""):
 
 __all__ = [
     "_makedirs", "_download_sample_data",
-    "UTILS_DIR", "MODULE_DIR", "TEMPLATES_DIR", "REPO_DIR", "CLI_DIR", "PYCHARMERS_DIR", 
+    "UTILS_DIR", "MODULE_DIR", "TEMPLATES_DIR", "REPO_DIR", "CLI_DIR", "PYCHARMERS_DIR", "DOTENV_PATH",
     "PYCHARMERS_HTML_DIR", "PYCHARMERS_ICON"
 ]
 
@@ -64,10 +64,15 @@ PYCHARMERS_DIR  = os.path.join(os.path.expanduser("~"), ".pycharmers") # /Users/
 if os.path.exists(PYCHARMERS_DIR) and not os.access(PYCHARMERS_DIR, os.W_OK):
     PYCHARMERS_DIR = os.path.join("/tmp", ".pycharmers")
 _makedirs(name=PYCHARMERS_DIR)
-
+# Dot Environment Path.
+DOTENV_PATH     = os.path.join(PYCHARMERS_DIR, ".env")                 # /Users/<username>/.pycharmers/.env
+if not os.path.exists(DOTENV_PATH):
+    Path(DOTENV_PATH).touch()
+    print(f"{toBLUE(DOTENV_PATH)} is created. Environment variables should be stored here.")
+# HTML directory
 PYCHARMERS_HTML_DIR = os.path.join(PYCHARMERS_DIR, "html") # /Users/<username>/.pycharmers/html
 _makedirs(name=PYCHARMERS_HTML_DIR)
-
+# Icon 
 PYCHARMERS_ICON = os.path.join(os.path.join(PYCHARMERS_DIR, "icon.png")) # /Users/<username>/.pycharmers/icon.png
 _download_sample_data(
     url="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/favicon.png?raw=true", 

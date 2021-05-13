@@ -6,6 +6,7 @@ from . import _warnings
 from . import argparse_utils
 from . import color_utils
 from . import download_utils
+from . import environ_utils
 from . import generic_utils
 from . import inspect_utils
 from . import json_utils
@@ -56,6 +57,14 @@ from .driver_utils import pass_forms
 from .driver_utils import click
 from .driver_utils import wait_until_all_elements
 from .driver_utils import scrollDown
+
+from .environ_utils import name2envname
+from .environ_utils import where_is_envfile
+from .environ_utils import read_environ
+from .environ_utils import write_environ
+from .environ_utils import show_environ
+from .environ_utils import load_environ
+from .environ_utils import check_environ
 
 from .generic_utils import handleKeyError
 from .generic_utils import handleTypeError
