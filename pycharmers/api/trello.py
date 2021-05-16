@@ -89,7 +89,7 @@ class Trello(PycharmersAPI):
         for method_name, default_keynames in method2showkeynames.items():
             def show_func(*args, keynames=default_keynames, method_name=method_name, **kwargs):
                 get_func = getattr(self, f"get_{method_name}")
-                self.show_results(ret=get_func(*args, **kwargs), keynames=keynames)
+                self.show_results(result=get_func(*args, **kwargs), keynames=keynames)
             show_func.__doc__ = f"See :meth:`get_{method_name} <pycharmers.api.trello.get_{method_name}>` for the required arguments."
             setattr(self, f"show_{method_name}", show_func)
 
@@ -105,6 +105,6 @@ class Trello(PycharmersAPI):
         """API wrapper for `Get Cards on a Board <https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-cards-get>`_"""
         return self.api_call(url=f"https://api.trello.com/1/boards/{board_id}/cards", apikey=apikey, token=token)
 
-    def get_cards_in_a_list(self, card_id, apikey=None, token=None):
+    def get_cards_in_a_list(self, board_id, apikey=None, token=None):
         """API wrapper for `Get Cards in a List <https://developer.atlassian.com/cloud/trello/rest/api-group-lists/#api-lists-id-cards-get>`_"""
-        return self.api_call(url=f"https://api.trello.com/1/lists/{card_id}/cards", apikey=apikey, token=token)
+        return self.api_call(url=f"https://api.trello.com/1/lists/{board_id}/cards", apikey=apikey, token=token)

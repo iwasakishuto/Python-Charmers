@@ -187,6 +187,34 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--twitter&quot;</span><span class="p">,</span>      <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether you want to run for tweet. ( ``display_size`` will be ( ``1300`` , ``730`` ) ).&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--capture&quot;</span><span class="p">,</span>      <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether you want to save as video.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span></div>
+
+<div class="viewcode-block" id="define_neg_sides"><a class="viewcode-back" href="../../../pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.define_neg_sides">[docs]</a><span class="k">def</span> <span class="nf">define_neg_sides</span><span class="p">(</span><span class="n">args</span><span class="p">:</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;un_&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Define the negative side in ``argparse.Namespace``</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args (argparse.Namespace) : Simple object for storing attributes.</span>
+<span class="sd">        prefix (str, optional)    : Prefix indicating ``&quot;Negative&quot;`` . Defaults to ``&quot;un_&quot;`` .</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import argparse</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import define_neg_sides</span>
+<span class="sd">        &gt;&gt;&gt; parser = argparse.ArgumentParser(prog=&quot;Python-Charmers Examples&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; parser.add_argument(&quot;un_debug&quot;, action=&quot;store_true&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; parser.add_argument(&quot;-ur&quot;, &quot;--un-reload&quot;, action=&quot;store_true&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; args = parser.parse_args([])</span>
+<span class="sd">        &gt;&gt;&gt; define_neg_sides(args)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;debug={args.debug}, reload={args.reload}, un_debug={args.un_debug}, un_reload={args.un_reload}&quot;)</span>
+<span class="sd">            debug=False, reload=True, un_debug=True, un_reload=False</span>
+<span class="sd">        &gt;&gt;&gt; args = parser.parse_args([&quot;-ur&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; define_neg_sides(args)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;debug={args.debug}, reload={args.reload}, un_debug={args.un_debug}, un_reload={args.un_reload}&quot;)</span>
+<span class="sd">            debug=False, reload=False, un_debug=True, un_reload=True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">_get_kwargs</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="nb">bool</span><span class="p">):</span>
+            <span class="n">new_k</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">new_k</span><span class="p">)):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">new_k</span><span class="p">,</span> <span class="ow">not</span> <span class="n">v</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

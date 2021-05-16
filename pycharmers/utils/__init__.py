@@ -30,6 +30,7 @@ from .argparse_utils import ListParamProcessorCreate
 from .argparse_utils import DictParamProcessor
 from .argparse_utils import KwargsParamProcessor
 from .argparse_utils import cv2ArgumentParser
+from .argparse_utils import define_neg_sides
 
 from .color_utils import detect_color_code_type
 from .color_utils import toHEX

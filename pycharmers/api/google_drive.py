@@ -6,7 +6,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 from ..utils.print_utils import tabulate
-from ..utils._colorings import toBLUE, toGREEN
+from ..utils._colorings import toBLUE, toGREEN, toRED
 
 class PyCharmersGoogleDrive(GoogleDrive):
     """Wrapper class for GoogleDrive.
@@ -296,6 +296,7 @@ class QUERY:
     PARENT        = '"{q}" in parents'
     TRASHED       = 'trashed = {q}'
     
+    @staticmethod
     def show():
         """Show all Queries.
 

@@ -136,3 +136,31 @@ def cv2ArgumentParser(parser=None, prog="", description=None, add_help=True, **k
     parser.add_argument("--twitter",      action="store_true", help="Whether you want to run for tweet. ( ``display_size`` will be ( ``1300`` , ``730`` ) ).")
     parser.add_argument("--capture",      action="store_true", help="Whether you want to save as video.")
     return parser
+
+def define_neg_sides(args:argparse.Namespace, prefix:str="un_"):
+    """Define the negative side in ``argparse.Namespace``
+
+    Args:
+        args (argparse.Namespace) : Simple object for storing attributes.
+        prefix (str, optional)    : Prefix indicating ``"Negative"`` . Defaults to ``"un_"`` .
+
+    Examples:
+        >>> import argparse
+        >>> from pycharmers.utils import define_neg_sides
+        >>> parser = argparse.ArgumentParser(prog="Python-Charmers Examples")
+        >>> parser.add_argument("un_debug", action="store_true")
+        >>> parser.add_argument("-ur", "--un-reload", action="store_true")
+        >>> args = parser.parse_args([])
+        >>> define_neg_sides(args)
+        >>> print(f"debug={args.debug}, reload={args.reload}, un_debug={args.un_debug}, un_reload={args.un_reload}")
+            debug=False, reload=True, un_debug=True, un_reload=False
+        >>> args = parser.parse_args(["-ur"])
+        >>> define_neg_sides(args)
+        >>> print(f"debug={args.debug}, reload={args.reload}, un_debug={args.un_debug}, un_reload={args.un_reload}")
+            debug=False, reload=False, un_debug=True, un_reload=True
+    """
+    for k,v in args._get_kwargs():
+        if k.startswith(prefix) and isinstance(v,bool):
+            new_k = k[len(prefix):]
+            if (not hasattr(args, new_k)):
+                setattr(args, new_k, not v)

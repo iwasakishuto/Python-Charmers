@@ -57,7 +57,7 @@
 <span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="kn">import</span> <span class="n">GoogleDrive</span>
 
 <span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
-<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toRED</span>
 
 <div class="viewcode-block" id="PyCharmersGoogleDrive"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.PyCharmersGoogleDrive">[docs]</a><span class="k">class</span> <span class="nc">PyCharmersGoogleDrive</span><span class="p">(</span><span class="n">GoogleDrive</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper class for GoogleDrive.</span>
@@ -347,7 +347,8 @@
     <span class="n">PARENT</span>        <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">{q}</span><span class="s1">&quot; in parents&#39;</span>
     <span class="n">TRASHED</span>       <span class="o">=</span> <span class="s1">&#39;trashed = </span><span class="si">{q}</span><span class="s1">&#39;</span>
     
-<div class="viewcode-block" id="QUERY.show"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.QUERY.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">():</span>
+<div class="viewcode-block" id="QUERY.show"><a class="viewcode-back" href="../../../pycharmers.api.google_drive.html#pycharmers.api.google_drive.QUERY.show">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;Show all Queries.</span>
 
 <span class="sd">        Examples:</span>
