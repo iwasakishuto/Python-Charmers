@@ -138,7 +138,9 @@ def cv2ArgumentParser(parser=None, prog="", description=None, add_help=True, **k
     return parser
 
 def define_neg_sides(args:argparse.Namespace, prefix:str="un_"):
-    """Define the negative side in ``argparse.Namespace``
+    """Define the negative side in ``argparse.Namespace`` 
+
+    I know that ``action="store_false"`` can do the similar, but I defined this function because of the readability and ease of use of the code.
 
     Args:
         args (argparse.Namespace) : Simple object for storing attributes.

@@ -11,39 +11,57 @@ A collection of useful python programs.
 
 ## Installation
 
-1. Install **`Python-Charmers`** (There are two ways to install):
-   -  Create an environment for Python-Charmers using [Pyenv](https://github.com/pyenv/pyenv) and [Poetry](https://python-poetry.org/) **(recommended)**
-        ```sh
-        $ pyenv install 3.8.9
-        $ pyenv local 3.8.9
-        $ python -V
-        Python 3.8.9
-        $ poetry install
-        ```
-   -  Install in a specific environment
-      -  Install from PyPI:
-            ```sh
-            $ sudo pip install Python-Charmers
-            ```
-      -  Alternatively: install PyGuitar from the GitHub source:
-            ```sh            
-            $ git clone https://github.com/iwasakishuto/Python-Charmers.git
-            # If you want to use the latest version (under development)
-            $ git clone -b develop https://github.com/iwasakishuto/Python-Charmers.git
-            $ cd Python-Charmers
-            $ sudo python setup.py install
-            ```
-2. Install **driver** for `selenium`:
+1. Install **MySQL**
+	- **Debian/Ubuntu**
+		```sh
+		$ sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
+		```
+	- **Red Hat/Cent OS**
+		```sh
+		% sudo yum install python3-devel mysql-devel
+		```
+	- **macOS**
+		```sh
+		# Install MySQL server
+		$ brew install mysql
+		# If you don't want to install MySQL server, you can use mysql-client instead:
+		$ brew install mysql-client
+		$ echo 'export PATH="/usr/local/opt/mysql-client/bin:$PATH"' >> ~/.zprofile
+		$ export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+		```
+2. Install **`Python-Charmers`** (There are two ways to install):
+	-  Create an environment for Python-Charmers using [Pyenv](https://github.com/pyenv/pyenv) and [Poetry](https://python-poetry.org/) **(recommended)**
+		```sh
+		$ pyenv install 3.8.9
+		$ pyenv local 3.8.9
+		$ python -V
+		Python 3.8.9
+		$ poetry install
+		```
+	-  Install in a specific environment
+		-  Install from PyPI:
+			```sh
+			$ sudo pip install Python-Charmers
+			```
+		-  Alternatively: install PyGuitar from the GitHub source:
+			```sh            
+			$ git clone https://github.com/iwasakishuto/Python-Charmers.git
+			# If you want to use the latest version (under development)
+			$ git clone -b develop https://github.com/iwasakishuto/Python-Charmers.git
+			$ cd Python-Charmers
+			$ sudo python setup.py install
+			```
+3. Install **driver** for `selenium`:
 **`Selenium`** requires a driver to interface with the chosen browser, so please visit the [documentation](https://selenium-python.readthedocs.io/installation.html#drivers) to install it.
-    ```sh
-    # Example: Chrome
-    # visit "chrome://settings/help" to check your chrome version.
-    # visit "https://chromedriver.chromium.org/downloads" to check <Suitable.Driver.Version> for your chrome.
-    $ wget https://chromedriver.storage.googleapis.com/<Suitable.Driver.Version>/chromedriver_mac64.zip
-    $ unzip chromedriver_mac64.zip
-    $ mv chromedriver /usr/local/bin/chromedriver
-    $ chmod +x /usr/local/bin/chromedriver
-    ```
+	```sh
+	# Example: Chrome
+	# visit "chrome://settings/help" to check your chrome version.
+	# visit "https://chromedriver.chromium.org/downloads" to check <Suitable.Driver.Version> for your chrome.
+	$ wget https://chromedriver.storage.googleapis.com/<Suitable.Driver.Version>/chromedriver_mac64.zip
+	$ unzip chromedriver_mac64.zip
+	$ mv chromedriver /usr/local/bin/chromedriver
+	$ chmod +x /usr/local/bin/chromedriver
+	```
 
 ### Pyenv + Poetry
 
