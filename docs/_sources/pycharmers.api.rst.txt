@@ -9,6 +9,7 @@ Submodules
 
    pycharmers.api.github
    pycharmers.api.google_drive
+   pycharmers.api.mysql
    pycharmers.api.slack
    pycharmers.api.trello
 

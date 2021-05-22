@@ -64,7 +64,7 @@ def wgit(base_url="", base_dir=".", depth=0):
         base_dir = os.path.join(base_dir, os.path.basename(base_url))
         _makedirs(name=base_dir)
     soup = BeautifulSoup(markup=requests.get(url=base_url).content, features="lxml")
-    indent = "\t"*depth
+    # indent = "\t"*depth
     for row in soup.find_all(name="div", class_="py-2", role="row"):
         href = row.find(name="a", class_="js-navigation-open").get("href", "")
         url  = urllib.parse.urljoin(base=base_url, url=href)

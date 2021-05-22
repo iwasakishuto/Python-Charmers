@@ -1,0 +1,7 @@
+pycharmers.api.mysql module
+===========================
+
+.. automodule:: pycharmers.api.mysql
+   :members:
+   :undoc-members:
+   :show-inheritance:

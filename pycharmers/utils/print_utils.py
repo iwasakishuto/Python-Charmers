@@ -343,14 +343,14 @@ class Table():
         if self.head==0 or nrows < self.head:
             self.head = nrows
 
-def tabulate(tabular_data=[[]], headers=[], tablefmt="rst", align="left"):
+def tabulate(tabular_data=[[]], headers=[], tablefmt="rst", aligns="left"):
     """Format a fixed width table for pretty printing.
     
     Args:
         tabular_data (list) : tbody contents. Must be a dual list.
         headers (list)      : thead contents.
         tablefmt (str)      : Table format for :py:class:`Table <pycharmers.utils.print_utils.Table>`
-        align (str)         : How to align values.
+        aligns (list)       : How to align values in each col.
 
     Examples:
         >>> from pycharmers.utils import tabulate
@@ -369,8 +369,10 @@ def tabulate(tabular_data=[[]], headers=[], tablefmt="rst", align="left"):
     nheaders = len(headers)
     headers += [None] * (ncols-nheaders)
     table = Table(tablefmt=tablefmt)
-    for col_value, header in zip(np.array(tabular_data).T, headers):
-        table.set_cols(values=col_value, colname=header)
+    if isinstance(aligns, str):
+        aligns = [aligns]*len(headers)
+    for col_value, header,align in zip(np.array(tabular_data).T, headers, aligns):
+        table.set_cols(values=col_value, colname=header, align=align)
     table.show()
 
 def print_dict_tree(dictionary, indent=4, rank=0, marks=["-", "*", "#"]):

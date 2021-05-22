@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.api.mysql &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.mysql</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.api.mysql</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">MySQLdb</span>
+<span class="kn">from</span> <span class="nn">MySQLdb.cursors</span> <span class="kn">import</span> <span class="n">Cursor</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span><span class="n">Optional</span><span class="p">,</span><span class="n">Callable</span><span class="p">,</span><span class="n">Union</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toRED</span>
+<span class="kn">from</span> <span class="nn">..utils.environ_utils</span> <span class="kn">import</span> <span class="n">check_environ</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">handleKeyError</span>
+<span class="kn">from</span> <span class="nn">._base</span> <span class="kn">import</span> <span class="n">PycharmersAPI</span>
+
+<div class="viewcode-block" id="PycharmersMySQL"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL">[docs]</a><span class="k">class</span> <span class="nc">PycharmersMySQL</span><span class="p">(</span><span class="n">PycharmersAPI</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper class for MySQL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        host (Optional[str], optional)     : host to connect. Defaults to ``None``.</span>
+<span class="sd">        password (Optional[str], optional) : user to connect as. Defaults to ``None``.</span>
+<span class="sd">        user (Optional[str], optional)     : password to use. Defaults to ``None``.</span>
+<span class="sd">        database (Optional[str], optional) : database to ues. Defaults to ``None``.</span>
+<span class="sd">        verbose (bool, optional)           : Whether to print message or not Defaults to ``False``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">api_name</span><span class="o">=</span><span class="s2">&quot;MySQL&quot;</span><span class="p">,</span> 
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PycharmersMySQL.format_data"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.format_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">Any</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Format python data to match sql data format</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (Any): Python any data.</span>
+<span class="sd">            type (str): SQL data type. (ex. ``&quot;int(11)&quot;``, ``&quot;varchar(100)&quot;``)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Correctly formatted python data.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; import datetime</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.api import PycharmersMySQL</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersMySQL.format_data(data=1, type=&quot;int(8)&quot;)</span>
+<span class="sd">                &#39;1&#39;</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersMySQL.format_data(data=1, type=&quot;varchar(10)&quot;)</span>
+<span class="sd">                &#39;&quot;1&quot;&#39;</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersMySQL.format_data(data=datetime.datetime(1998,7,3), type=&quot;datetime&quot;)</span>
+<span class="sd">                &#39;&quot;1998-07-03 00:00:00&quot;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+    
+<div class="viewcode-block" id="PycharmersMySQL.connect"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span><span class="n">Callable</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Use ``MySQLdb.connect`` to create a connection to the database, and close it after excuting ``func`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable)                    : The function you want to execute. Receive ``cursor`` as the first argument.</span>
+<span class="sd">            host (Optional[str], optional)     : host to connect. Defaults to ``None``.</span>
+<span class="sd">            password (Optional[str], optional) : user to connect as. Defaults to ``None``.</span>
+<span class="sd">            user (Optional[str], optional)     : password to use. Defaults to ``None``.</span>
+<span class="sd">            database (Optional[str], optional) : database to ues. Defaults to ``None``.</span>
+<span class="sd">            \*\*kwargs (dict)                     : See a table below.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: Return value of ``func``</span>
+
+<span class="sd">        Keyword arguments for ``MySQLdb.connect`` is below.</span>
+
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        |          Name          |   Type   |                                                                                                                                      Description                                                                                                                                       |</span>
+<span class="sd">        +========================+==========+========================================================================================================================================================================================================================================================================================+</span>
+<span class="sd">        | ``port``               | ``int``  | TCP/IP port to connect to                                                                                                                                                                                                                                                              |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``unix_socket``        | ``str``  | location of unix_socket to use                                                                                                                                                                                                                                                         |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``conv``               | ``dict`` | conversion dictionary, see MySQLdb.converters                                                                                                                                                                                                                                          |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``connect_timeout``    | ``int``  | number of seconds to wait before the connection attempt fails.                                                                                                                                                                                                                         |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``compress``           | ``bool`` | if set, compression is enabled                                                                                                                                                                                                                                                         |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``named_pipe``         | ``str``  | if set, a named pipe is used to connect (Windows only)                                                                                                                                                                                                                                 |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``init_command``       | ``str``  | command which is run once the connection is created                                                                                                                                                                                                                                    |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``read_default_file``  | ``str``  | file from which default client values are read                                                                                                                                                                                                                                         |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``read_default_group`` | ``str``  | configuration group to use from the default file                                                                                                                                                                                                                                       |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``cursorclass``        | ``type`` | class object, used to create cursors (keyword only)                                                                                                                                                                                                                                    |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``use_unicode``        | ``bool`` | If ``True``, text-like columns are returned as unicode objects using the connection``&#39;s character set. Otherwise, text-like columns are returned as bytes. Unicode objects will always be encoded to the connection&#39;``s character set regardless of this setting. Default to ``True``. |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``charset``            | ``str``  | If supplied, the connection character set will be changed to this character set.                                                                                                                                                                                                       |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``auth_plugin``        | ``str``  | If supplied, the connection default authentication plugin will be changed to this value. Example values are ``mysql_native_password`` or ``caching_sha2_password``                                                                                                                     |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``sql_mode``           | ``str``  | If supplied, the session SQL mode will be changed to this setting. For more details and legal values, see the MySQL documentation.                                                                                                                                                     |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``client_flag``        | ``int``  | flags to use or 0 (see MySQL docs or constants/CLIENTS.py)                                                                                                                                                                                                                             |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``ssl_mode``           | ``str``  | specify the security settings for connection to the server; see the MySQL documentation for more details (mysql_option(), MYSQL_OPT_SSL_MODE). Only one of ``&#39;DISABLED&#39;``, ``&#39;PREFERRED&#39;``, ``&#39;REQUIRED&#39;``, ``&#39;VERIFY_CA&#39;``, ``&#39;VERIFY_IDENTITY&#39;`` can be specified.                   |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``ssl``                | ``dict`` | dictionary or mapping contains SSL connection parameters; see the MySQL documentation for more details (mysql_ssl_set()).  If this is set, and the client does not support SSL, NotSupportedError will be raised.                                                                      |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``local_infile``       | ``bool`` | enables LOAD LOCAL INFILE; zero disables                                                                                                                                                                                                                                               |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``autocommit``         | ``bool`` | If False (default), autocommit is disabled. If ``True``, autocommit is enabled. If None, autocommit isn&#39;t set and server default is used.                                                                                                                                              |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        | ``binary_prefix``      | ``bool`` | If set, the ``&#39;_binary&#39;`` prefix will be used for raw byte query arguments (e.g. Binary). This is disabled by default.                                                                                                                                                                 |</span>
+<span class="sd">        +------------------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_environ</span><span class="p">(</span>
+            <span class="n">required_keynames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_keynames</span><span class="p">,</span> 
+            <span class="n">required_env_varnames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_env_varnames</span><span class="p">,</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">),</span>
+            <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">),</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">),</span>
+            <span class="n">database</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">),</span>
+            <span class="n">use_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">cursorclass</span><span class="o">=</span><span class="n">Cursor</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.execute"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="p">[],</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute a SQL query.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str)              : Query to execute on server.</span>
+<span class="sd">            columns (list, optional) : If this value is fiven, Return value will be as a ``pd.DataFrame`` format. Defaults to ``[]``.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[pd.DataFrame, Tuple[tuple], None]: Return value of query.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.api import PycharmersMySQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersMySQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.execute(&quot;show databases;&quot;)</span>
+<span class="sd">            ((&#39;information_schema&#39;,),</span>
+<span class="sd">             (&#39;mysql&#39;,),</span>
+<span class="sd">             (&#39;performance_schema&#39;,),</span>
+<span class="sd">             (&#39;remody&#39;,),</span>
+<span class="sd">             (&#39;sys&#39;,))</span>
+<span class="sd">            &gt;&gt;&gt; sql.execute(&quot;show databases;&quot;, columns=[&quot;name&quot;])</span>
+<span class="sd">            	    name</span>
+<span class="sd">                0	information_schema</span>
+<span class="sd">                1	mysql</span>
+<span class="sd">                2	performance_schema</span>
+<span class="sd">                3	remody</span>
+<span class="sd">                4	sys</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">execute_query</span><span class="p">(</span><span class="n">cursor</span><span class="p">:</span><span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">execute_query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">ret</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.describe"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get table structure.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Table structure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DESCRIBE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Field&quot;</span><span class="p">,</span><span class="s2">&quot;Type&quot;</span><span class="p">,</span><span class="s2">&quot;Null&quot;</span><span class="p">,</span><span class="s2">&quot;Key&quot;</span><span class="p">,</span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="s2">&quot;Extra&quot;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.get_colnames"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.get_colnames">[docs]</a>    <span class="k">def</span> <span class="nf">get_colnames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">col_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get column names in the specified ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            col_type (str, optional) : What types columns to extract. Defaults to ``&quot;all&quot;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Extracted Columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;input_field&quot;</span><span class="p">],</span> <span class="n">col_type</span><span class="o">=</span><span class="n">col_type</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;minimum&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">Extra</span><span class="o">!=</span><span class="s2">&quot;auto_increment&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Null</span><span class="o">==</span><span class="s2">&quot;NO&quot;</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;input_field&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Extra</span><span class="o">!=</span><span class="s2">&quot;auto_increment&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.show_tables"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.show_tables">[docs]</a>    <span class="k">def</span> <span class="nf">show_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show all tables.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Information for all Tables.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show table status;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Engine&#39;</span><span class="p">,</span> <span class="s1">&#39;Version&#39;</span><span class="p">,</span> <span class="s1">&#39;Row_format&#39;</span><span class="p">,</span> <span class="s1">&#39;Rows&#39;</span><span class="p">,</span> <span class="s1">&#39;Avg_row_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Data_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Max_data_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Index_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Data_free&#39;</span><span class="p">,</span> <span class="s1">&#39;Auto_increment&#39;</span><span class="p">,</span> <span class="s1">&#39;Create_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Update_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Check_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Collation&#39;</span><span class="p">,</span> <span class="s1">&#39;Checksum&#39;</span><span class="p">,</span> <span class="s1">&#39;Create_options&#39;</span><span class="p">,</span> <span class="s1">&#39;Comment&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.count_rows"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.count_rows">[docs]</a>    <span class="k">def</span> <span class="nf">count_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the number of rows in the ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of rows in the specified ``table`` .</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.selectAll"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.selectAll">[docs]</a>    <span class="k">def</span> <span class="nf">selectAll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Select All records.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: All records.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_colnames</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">col_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersMySQL.insert"><a class="viewcode-back" href="../../../pycharmers.api.mysql.html#pycharmers.api.mysql.PycharmersMySQL.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">:</span><span class="n">Cursor</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">columns</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="p">[],</span> <span class="n">col_type</span><span class="o">=</span><span class="s2">&quot;input_field&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Insert a record to specified ``table``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cursor (Cursor)          : Cursor</span>
+<span class="sd">            table (str)              : The name of the table.</span>
+<span class="sd">            data (List[list])        : Data to be inserted.</span>
+<span class="sd">            columns (list, optional) : Column names to be inserted values. Defaults to ``[]``.</span>
+<span class="sd">            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames &lt;pycharmers.api.mysql.PycharmersMySQL.get_colnames&gt;` to decide which columns to be inseted. Defaults to ``&quot;input_field&quot;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of rows in ``table``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_colnames</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">col_type</span><span class="o">=</span><span class="n">col_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+        <span class="n">df_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">coltypes</span> <span class="o">=</span> <span class="n">df_field</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Type</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">coltypes</span><span class="p">)])</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">) VALUES </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.api.mysql</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

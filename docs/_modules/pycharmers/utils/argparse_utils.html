@@ -189,7 +189,9 @@
     <span class="k">return</span> <span class="n">parser</span></div>
 
 <div class="viewcode-block" id="define_neg_sides"><a class="viewcode-back" href="../../../pycharmers.utils.argparse_utils.html#pycharmers.utils.argparse_utils.define_neg_sides">[docs]</a><span class="k">def</span> <span class="nf">define_neg_sides</span><span class="p">(</span><span class="n">args</span><span class="p">:</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;un_&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Define the negative side in ``argparse.Namespace``</span>
+    <span class="sd">&quot;&quot;&quot;Define the negative side in ``argparse.Namespace`` </span>
+
+<span class="sd">    I know that ``action=&quot;store_false&quot;`` can do the similar, but I defined this function because of the readability and ease of use of the code.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        args (argparse.Namespace) : Simple object for storing attributes.</span>
