@@ -258,11 +258,11 @@
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show databases;&quot;</span><span class="p">)</span>
-<span class="go">((&#39;information_schema&#39;,),</span>
-<span class="go"> (&#39;mysql&#39;,),</span>
-<span class="go"> (&#39;performance_schema&#39;,),</span>
-<span class="go"> (&#39;remody&#39;,),</span>
-<span class="go"> (&#39;sys&#39;,))</span>
+<span class="go">    ((&#39;information_schema&#39;,),</span>
+<span class="go">     (&#39;mysql&#39;,),</span>
+<span class="go">     (&#39;performance_schema&#39;,),</span>
+<span class="go">     (&#39;remody&#39;,),</span>
+<span class="go">     (&#39;sys&#39;,))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show databases;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 <span class="go">        name</span>
 <span class="go">    0       information_schema</span>
@@ -270,6 +270,51 @@
 <span class="go">    2       performance_schema</span>
 <span class="go">    3       remody</span>
 <span class="go">    4       sys</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">column_info</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Table named <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>columninfo</strong> (<em>dict</em>) – Key value style column information.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">,</span> <span class="n">column_info</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;id&quot;</span>      <span class="p">:</span> <span class="s1">&#39;int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT &quot;ID&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s1">&#39;VARCHAR(100) NOT NULL COMMENT &quot;ユーザー名&quot;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;created&quot;</span> <span class="p">:</span> <span class="s1">&#39;datetime DEFAULT NULL COMMENT &quot;登録日&quot;&#39;</span> <span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.drop">
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop the <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -292,6 +337,116 @@
 <dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">|    | Field    | Type         | Null   | Key   | Default   | Extra          |</span>
+<span class="go">|---:|:---------|:-------------|:-------|:------|:----------|:---------------|</span>
+<span class="go">|  0 | id       | int(11)      | NO     | PRI   |           | auto_increment |</span>
+<span class="go">|  1 | username | varchar(100) | NO     |       |           |                |</span>
+<span class="go">|  2 | created  | datetime     | YES    |       |           |                |</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">List<span class="p">[</span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">columns</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">col_type</span><span class="o">=</span><span class="default_value">'input_field'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a record to specified <code class="docutils literal notranslate"><span class="pre">table</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of the table.</p></li>
+<li><p><strong>data</strong> (<em>List</em><em>[</em><em>list</em><em>]</em>) – Data to be inserted.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em>, </em><em>optional</em>) – Column names to be inserted values. Defaults to <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></li>
+<li><p><strong>col_type</strong> (<em>str</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">columns</span></code> has no data, use <a class="reference internal" href="#pycharmers.api.mysql.PycharmersMySQL.get_colnames" title="pycharmers.api.mysql.PycharmersMySQL.get_colnames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_colnames</span></code></a> to decide which columns to be inseted. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;input_field&quot;</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of rows in <code class="docutils literal notranslate"><span class="pre">table</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="s2">&quot;now()&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="s2">&quot;shuto&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1998</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;created&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">new_column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">new_value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update records.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>old_column</strong> (<em>str</em>) – [description]</p></li>
+<li><p><strong>old_value</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>new_column</strong> (<em>str</em>) – [description]</p></li>
+<li><p><strong>new_value</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    |   id | username   | created             |</span>
+<span class="go">    |---:|-----:|:-----------|:--------------------|</span>
+<span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="go">    |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">,</span> <span class="n">old_column</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">old_value</span><span class="o">=</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="n">new_column</span><span class="o">=</span><span class="s2">&quot;created&quot;</span><span class="p">,</span> <span class="n">new_value</span><span class="o">=</span><span class="s2">&quot;now()&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    |   id | username   | created             |</span>
+<span class="go">    |---:|-----:|:-----------|:--------------------|</span>
+<span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |</span>
+<span class="go">    |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete records.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – </p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    |   id | username   | created             |</span>
+<span class="go">    |---:|-----:|:-----------|:--------------------|</span>
+<span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="go">    |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;shuto&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    |   id | username   | created             |</span>
+<span class="go">    |---:|-----:|:-----------|:--------------------|</span>
+<span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -312,43 +467,13 @@
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.api.mysql.PycharmersMySQL.show_tables">
-<code class="sig-name descname">show_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.show_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.show_tables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show all tables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Information for all Tables.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pd.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycharmers.api.mysql.PycharmersMySQL.count_rows">
-<code class="sig-name descname">count_rows</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.count_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.count_rows" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the number of rows in the <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The number of rows in the specified <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">get_colnames</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;created&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -369,29 +494,100 @@
 <dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    |   id | username   | created             |</span>
+<span class="go">    |---:|-----:|:-----------|:--------------------|</span>
+<span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="go">    |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycharmers.api.mysql.PycharmersMySQL.insert">
-<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cursor</span><span class="p">:</span> <span class="n">MySQLdb.cursors.Cursor</span></em>, <em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">List<span class="p">[</span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">columns</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">col_type</span><span class="o">=</span><span class="default_value">'input_field'</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.insert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a record to specified <code class="docutils literal notranslate"><span class="pre">table</span></code></p>
+<dt id="pycharmers.api.mysql.PycharmersMySQL.count_rows">
+<code class="sig-name descname">count_rows</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.count_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.count_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of rows in the <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cursor</strong> (<em>Cursor</em>) – Cursor</p></li>
-<li><p><strong>table</strong> (<em>str</em>) – The name of the table.</p></li>
-<li><p><strong>data</strong> (<em>List</em><em>[</em><em>list</em><em>]</em>) – Data to be inserted.</p></li>
-<li><p><strong>columns</strong> (<em>list</em><em>, </em><em>optional</em>) – Column names to be inserted values. Defaults to <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></li>
-<li><p><strong>col_type</strong> (<em>str</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">columns</span></code> has no data, use <a class="reference internal" href="#pycharmers.api.mysql.PycharmersMySQL.get_colnames" title="pycharmers.api.mysql.PycharmersMySQL.get_colnames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_colnames</span></code></a> to decide which columns to be inseted. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;input_field&quot;</span></code>.</p></li>
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The number of rows in <code class="docutils literal notranslate"><span class="pre">table</span></code></p>
+<dd class="field-even"><p>The number of rows in the specified <code class="docutils literal notranslate"><span class="pre">table</span></code> .</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">count_rows</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
+<span class="go">    2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.show_tables">
+<code class="sig-name descname">show_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.show_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.show_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show all tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Information for all Tables.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">show_tables</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    | Name            | Engine   |   Version | Row_format   |   Rows |   Avg_row_length |   Data_length |   Max_data_length |   Index_length |   Data_free |   Auto_increment | Create_time         | Update_time         | Check_time   | Collation       | Checksum   | Create_options   | Comment   |</span>
+<span class="go">    |---:|:----------------|:---------|----------:|:-------------|-------:|-----------------:|--------------:|------------------:|---------------:|------------:|-----------------:|:--------------------|:--------------------|:-------------|:----------------|:-----------|:-----------------|:----------|</span>
+<span class="go">    |  0 | pycharmers_user | InnoDB   |        10 | Dynamic      |      0 |                0 |         16384 |                 0 |              0 |           0 |                1 | 2021-05-22 07:06:17 | NaT                 |              | utf8_general_ci |            |                  |           |</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.explain">
+<code class="sig-name descname">explain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.explain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.explain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Explain records</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Explanation for records.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">|    |   id | select_type   | table           | partition   | type   | possible_keys   | key   | key_len   | ref   |   rows |   filtered | Extra   |</span>
+<span class="go">|---:|-----:|:--------------|:----------------|:------------|:-------|:----------------|:------|:----------|:------|-------:|-----------:|:--------|</span>
+<span class="go">|  0 |    1 | SIMPLE        | pycharmers_user |             | ALL    |                 |       |           |       |      2 |        100 |         |</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

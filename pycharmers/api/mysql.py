@@ -1,7 +1,8 @@
 #coding: utf-8
+import pandas as pd
+import datetime
 import MySQLdb
 from MySQLdb.cursors import Cursor
-import pandas as pd
 from typing import Any,Optional,Callable,Union,List,Tuple
 
 from ..utils._colorings import toBLUE, toGREEN, toRED
@@ -49,7 +50,7 @@ class PycharmersMySQL(PycharmersAPI):
         """
         if type.startswith("datetime") and (not isinstance(data, str)):
             data = data.strftime("%Y-%m-%d %H:%M:%S")
-        if type.startswith("int"):
+        if type.startswith("int") or ("now()" in data):
             data = str(data)
         else:
             data = f'"{data}"'
@@ -149,11 +150,11 @@ class PycharmersMySQL(PycharmersAPI):
             >>> from pycharmers.api import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.execute("show databases;")
-            (('information_schema',),
-             ('mysql',),
-             ('performance_schema',),
-             ('remody',),
-             ('sys',))
+                (('information_schema',),
+                 ('mysql',),
+                 ('performance_schema',),
+                 ('remody',),
+                 ('sys',))
             >>> sql.execute("show databases;", columns=["name"])
             	    name
                 0	information_schema
@@ -171,6 +172,39 @@ class PycharmersMySQL(PycharmersAPI):
             ret = pd.DataFrame(data=ret, columns=columns)
         return ret
 
+    def create(self, table:str, verbose:bool=False, column_info={}) -> None:
+        """Create a Table named ``table`` .
+
+        Args:
+            table (str)              : The name of table.
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+            columninfo (dict)        : Key value style column information.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> sql.create(table="pycharmers_user", column_info={
+            ...     "id"      : 'int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "ID"',
+            ...     "username": 'VARCHAR(100) NOT NULL COMMENT "ユーザー名"',
+            ...     "created" : 'datetime DEFAULT NULL COMMENT "登録日"' ,
+            >>> })
+        """
+        return self.execute(f"CREATE TABLE {table} ({','.join([f'`{k}` {v}' for k,v in column_info.items()])});", verbose=verbose)
+
+    def drop(self, table:str, verbose:bool=False) -> None:
+        """Drop the ``table`` .
+
+        Args:
+            table (str)              : The name of table.
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> sql.drop(table="pycharmers_user")
+        """
+        return self.execute(f"DROP TABLE {table};", verbose=verbose)
+
     def describe(self, table:str, verbose:bool=False) -> pd.DataFrame:
         """Get table structure.
 
@@ -180,8 +214,108 @@ class PycharmersMySQL(PycharmersAPI):
 
         Returns:
             pd.DataFrame: Table structure.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> df = sql.describe(table="pycharmers_user")
+            >>> print(df.to_markdown())
+            |    | Field    | Type         | Null   | Key   | Default   | Extra          |
+            |---:|:---------|:-------------|:-------|:------|:----------|:---------------|
+            |  0 | id       | int(11)      | NO     | PRI   |           | auto_increment |
+            |  1 | username | varchar(100) | NO     |       |           |                |
+            |  2 | created  | datetime     | YES    |       |           |                |
         """
         return self.execute(f"DESCRIBE {table};", columns=["Field","Type","Null","Key","Default","Extra"], verbose=verbose)
+
+    def insert(self, table:str, data:List[list], columns:list=[], col_type="input_field", verbose:bool=False) -> int:
+        """Insert a record to specified ``table``
+
+        Args:
+            table (str)              : The name of the table.
+            data (List[list])        : Data to be inserted.
+            columns (list, optional) : Column names to be inserted values. Defaults to ``[]``.
+            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames <pycharmers.api.mysql.PycharmersMySQL.get_colnames>` to decide which columns to be inseted. Defaults to ``"input_field"``.
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Returns:
+            int: The number of rows in ``table``
+
+        Examples:
+            >>> import datetime
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> sql.insert(table="pycharmers_user", data=[
+            ...     ["iwasaki", "now()"],
+            ...     ["shuto", datetime.datetime(1998,7,3)]
+            >>> ], columns=["username", "created"])
+        """
+        if len(columns)==0:
+            columns = self.get_colnames(table=table, col_type=col_type)
+        if not isinstance(data[0], list):
+            data = [data]
+        df_field = self.describe(table=table)
+        coltypes = df_field.set_index("Field").filter(items=columns, axis=0).Type
+        values = ", ".join([f"({', '.join([self.format_data(e,t) for e,t in zip(d,coltypes)])})" for d in data])
+        return self.execute(f"INSERT INTO {table} ({', '.join(columns)}) VALUES {values}", verbose=verbose)
+
+    def update(self, table:str, old_column:str, old_value:Any, new_column:str, new_value:Any, verbose:bool=False) -> None:
+        """Update records.
+
+        Args:
+            table (str)              : The name of table.
+            old_column (str)         : [description]
+            old_value (Any)          : 
+            new_column (str)         : [description]
+            new_value (Any)          : 
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+                |    |   id | username   | created             |
+                |---:|-----:|:-----------|:--------------------|
+                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
+                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
+            >>> sql.update(table="pycharmers_user", old_column="username", old_value="iwasaki", new_column="created", new_value="now()")
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+                |    |   id | username   | created             |
+                |---:|-----:|:-----------|:--------------------|
+                |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |
+                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
+        """
+        df_field = self.describe(table=table)
+        old_type = df_field[df_field.Field==old_column].Type.values[0]
+        new_type = df_field[df_field.Field==new_column].Type.values[0]
+        return self.execute(f"UPDATE {table} SET {new_column} = {self.format_data(new_value, new_type)} WHERE {old_column} = {self.format_data(old_value, old_type)}", verbose=verbose)
+
+    def delete(self, table:str, column:str, value:Any, verbose:bool=False) -> None:
+        """Delete records.
+
+        Args:
+            table (str)              : The name of table.
+            column (str)             : 
+            value (Any)              : 
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+                |    |   id | username   | created             |
+                |---:|-----:|:-----------|:--------------------|
+                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
+                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
+            >>> sql.delete(table="pycharmers_user", column="username", value="shuto")
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+                |    |   id | username   | created             |
+                |---:|-----:|:-----------|:--------------------|
+                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
+        """
+        df_field = self.describe(table=table)
+        type = df_field[df_field.Field==column].Type.values[0]
+        return self.execute(f"DELETE FROM {table} WHERE {column} = {self.format_data(value, type)}", verbose=verbose)
 
     def get_colnames(self, table:str, col_type:str="all") -> list:
         """Get column names in the specified ``table`` .
@@ -192,6 +326,12 @@ class PycharmersMySQL(PycharmersAPI):
 
         Returns:
             list: Extracted Columns.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> sql.get_colnames(table="pycharmers_user")
+            >>> ['id', 'username', 'created']
         """
         handleKeyError(lst=["all", "minimum", "input_field"], col_type=col_type)
         df = self.describe(table=table)
@@ -203,29 +343,6 @@ class PycharmersMySQL(PycharmersAPI):
             df = df[df.Extra!="auto_increment"]
         return df.Field.to_list()
 
-    def show_tables(self, verbose:bool=False) -> pd.DataFrame:
-        """Show all tables.
-
-        Args:
-            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
-
-        Returns:
-            pd.DataFrame: Information for all Tables.
-        """
-        return self.execute("show table status;", columns=['Name', 'Engine', 'Version', 'Row_format', 'Rows', 'Avg_row_length', 'Data_length', 'Max_data_length', 'Index_length', 'Data_free', 'Auto_increment', 'Create_time', 'Update_time', 'Check_time', 'Collation', 'Checksum', 'Create_options', 'Comment'], verbose=verbose)
-
-    def count_rows(self, table:str, verbose:bool=True) -> int:
-        """Get the number of rows in the ``table`` .
-
-        Args:
-            table (str)              : The name of table.
-            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
-
-        Returns:
-            int: The number of rows in the specified ``table`` .
-        """
-        return self.execute(f"SELECT count(*) FROM {table};")[0][0]
-
     def selectAll(self, table:str, verbose:bool=False) -> pd.DataFrame:
         """Select All records.
 
@@ -235,27 +352,74 @@ class PycharmersMySQL(PycharmersAPI):
 
         Returns:
             pd.DataFrame: All records.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> df = sql.selectAll(table="pycharmers_user")
+            >>> print(df.to_markdown())
+                |    |   id | username   | created             |
+                |---:|-----:|:-----------|:--------------------|
+                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
+                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
         """
         return self.execute(f"SELECT * FROM {table};", columns=self.get_colnames(table=table, col_type="all"), verbose=verbose)
 
-    def insert(self, cursor:Cursor, table:str, data:List[list], columns:list=[], col_type="input_field") -> int:
-        """Insert a record to specified ``table``
+    def count_rows(self, table:str, verbose:bool=False) -> int:
+        """Get the number of rows in the ``table`` .
 
         Args:
-            cursor (Cursor)          : Cursor
-            table (str)              : The name of the table.
-            data (List[list])        : Data to be inserted.
-            columns (list, optional) : Column names to be inserted values. Defaults to ``[]``.
-            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames <pycharmers.api.mysql.PycharmersMySQL.get_colnames>` to decide which columns to be inseted. Defaults to ``"input_field"``.
+            table (str)              : The name of table.
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Returns:
-            int: The number of rows in ``table``
+            int: The number of rows in the specified ``table`` .
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> sql.count_rows(table="pycharmers_user")
+                2
         """
-        if len(columns)==0:
-            columns = self.get_colnames(table=table, col_type=col_type)
-        if not isinstance(data[0], list):
-            data = [data]
-        df_field = self.describe(table=table)
-        coltypes = df_field.set_index("Field").filter(items=columns, axis=0).Type
-        values = ", ".join([f"({', '.join([self.format_data(e,t) for e,t in zip(d,coltypes)])})" for d in data])
-        return self.execute(f"INSERT INTO {table} ({', '.join(columns)}) VALUES {values}")
+        return self.execute(f"SELECT count(*) FROM {table};")[0][0]
+
+    def show_tables(self, verbose:bool=False) -> pd.DataFrame:
+        """Show all tables.
+
+        Args:
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Returns:
+            pd.DataFrame: Information for all Tables.
+
+        >>> from pycharmers.api import PycharmersMySQL
+        >>> sql = PycharmersMySQL()
+        >>> df = sql.show_tables()
+        >>> print(df.to_markdown())
+            |    | Name            | Engine   |   Version | Row_format   |   Rows |   Avg_row_length |   Data_length |   Max_data_length |   Index_length |   Data_free |   Auto_increment | Create_time         | Update_time         | Check_time   | Collation       | Checksum   | Create_options   | Comment   |
+            |---:|:----------------|:---------|----------:|:-------------|-------:|-----------------:|--------------:|------------------:|---------------:|------------:|-----------------:|:--------------------|:--------------------|:-------------|:----------------|:-----------|:-----------------|:----------|
+            |  0 | pycharmers_user | InnoDB   |        10 | Dynamic      |      0 |                0 |         16384 |                 0 |              0 |           0 |                1 | 2021-05-22 07:06:17 | NaT                 |              | utf8_general_ci |            |                  |           |
+        """
+        return self.execute("show table status;", columns=['Name', 'Engine', 'Version', 'Row_format', 'Rows', 'Avg_row_length', 'Data_length', 'Max_data_length', 'Index_length', 'Data_free', 'Auto_increment', 'Create_time', 'Update_time', 'Check_time', 'Collation', 'Checksum', 'Create_options', 'Comment'], verbose=verbose)
+
+    def explain(self, table:str, verbose:bool=False) -> pd.DataFrame:
+        """Explain records
+
+        Args:
+            table (str)              : The name of table.
+            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+
+        Returns:
+            pd.DataFrame: Explanation for records.
+
+        Examples:
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql = PycharmersMySQL()
+            >>> df = sql.explain(table="pycharmers_user")
+            >>> print(df.to_markdown())
+            |    |   id | select_type   | table           | partition   | type   | possible_keys   | key   | key_len   | ref   |   rows |   filtered | Extra   |
+            |---:|-----:|:--------------|:----------------|:------------|:-------|:----------------|:------|:----------|:------|-------:|-----------:|:--------|
+            |  0 |    1 | SIMPLE        | pycharmers_user |             | ALL    |                 |       |           |       |      2 |        100 |         |
+        """
+        return self.execute(f"EXPLAIN SELECT * FROM {table};", columns=["id","select_type","table","partition","type","possible_keys","key","key_len","ref","rows","filtered","Extra"], verbose=verbose)
+ 
