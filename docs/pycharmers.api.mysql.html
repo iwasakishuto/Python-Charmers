@@ -263,13 +263,16 @@
 <span class="go">     (&#39;performance_schema&#39;,),</span>
 <span class="go">     (&#39;remody&#39;,),</span>
 <span class="go">     (&#39;sys&#39;,))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show databases;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-<span class="go">        name</span>
-<span class="go">    0       information_schema</span>
-<span class="go">    1       mysql</span>
-<span class="go">    2       performance_schema</span>
-<span class="go">    3       remody</span>
-<span class="go">    4       sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Receive as a DataFrame.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show databases;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="go">    |    | name               |</span>
+<span class="go">    |---:|:-------------------|</span>
+<span class="go">    |  0 | information_schema |</span>
+<span class="go">    |  1 | mysql              |</span>
+<span class="go">    |  2 | performance_schema |</span>
+<span class="go">    |  3 | remody             |</span>
+<span class="go">    |  4 | sys                |</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -445,6 +448,32 @@
 <span class="go">    |    |   id | username   | created             |</span>
 <span class="go">    |---:|-----:|:-----------|:--------------------|</span>
 <span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.api.mysql.PycharmersMySQL.merge">
+<code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table1info</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">table2info</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'inner'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select values from table1 and table2 using <code class="docutils literal notranslate"><span class="pre">method</span></code> JOIN</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table1info</strong> (<em>dict</em>) – [description]</p></li>
+<li><p><strong>table2info</strong> (<em>dict</em>) – [description]</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;inner&quot;</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers</span>
 </pre></div>
 </div>
 </dd></dl>

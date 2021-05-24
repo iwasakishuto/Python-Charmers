@@ -68,7 +68,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
         dirname, filename = os.path.split(settings_file)
         cwd = os.getcwd()
         # Change directory to where settings_file exists.
-        os.chdir(dirname)
+        if dirname!="": os.chdir(dirname)
         gauth = GoogleAuth(settings_file=filename)
         gauth.LocalWebserverAuth()
         # Back to the original directory.
@@ -121,17 +121,18 @@ class PyCharmersGoogleDrive(GoogleDrive):
         """
         return self.ListFile(param=param).GetList()
 
-    def get_file_list(self, filename=None, dirname=None, dirId="root", ext=None, isfile=None, trashed=False, verbose=False):
+    def get_file_list(self, filename=None, dirname=None, dirId="root", ext=None, isfile=None, trashed=False, recursive=False, verbose=False):
         """Use queries effortlessly to get a list of files.
 
         Args:
-            filename (str) : File Name. Defaults to ``None`` .
-            dirname (str)  : Directory Name. Defaults to ``None`` .
-            dirId (str)    : Directory Id. Defaults to ``None`` .
-            ext (str)      : File Extensions. Defaults to ``None`` .
-            isfile (bool)  : If this value is ``True``, extract only "file", else if this value is ``False``, extract only "folder", else (if this value is ``None`` ) extract "both".
-            trashed (bool) : Whether trashed file or not. Defaults to ``False``
-            verbose (bool) : Whether to print the query or not. Defaults to ``False``
+            filename (str)   : Exact File Name. Defaults to ``None`` .
+            dirname (str)    : Directory Name. Defaults to ``None`` .
+            dirId (str)      : Directory Id. Defaults to ``None`` .
+            ext (str)        : File Extensions. Defaults to ``None`` .
+            isfile (bool)    : If this value is ``True``, extract only "file", else if this value is ``False``, extract only "folder", else (if this value is ``None`` ) extract "both".
+            trashed (bool)   : Whether trashed file or not. Defaults to ``False``
+            recursive (bool) : Whether to find files recursively. Defaults to ``False`` 
+            verbose (bool)   : Whether to print the query or not. Defaults to ``False``
 
         Returns:
             GoogleDriveFileList: Google Drive File List.
@@ -142,12 +143,14 @@ class PyCharmersGoogleDrive(GoogleDrive):
             >>> for f in drive.get_file_list(dirname="DIRNAME"):
             ...     print(f["title"], f["id"])
         """
-        queries = []
+        queries = [QUERY.PARENT.format(q=self.get_dirId(dirname=dirname, dirId=dirId))]
         if filename is not None:
             queries.append(QUERY.TITLE_MATCH.format(q=filename))
-        dirId = self.get_dirId(dirname=dirname, dirId=dirId)
-        queries.append(QUERY.PARENT.format(q=dirId))
-        return self.getListFile(param=self.arrange_queries(queries=queries, ext=ext, isfile=isfile, trashed=trashed, verbose=verbose))
+        fileLists = self.getListFile(param=self.arrange_queries(queries=queries, ext=ext, isfile=isfile, trashed=trashed, verbose=verbose))
+        if recursive:
+            for f in self.getListFile(param=self.arrange_queries(queries=queries[:1], isfile=False, trashed=trashed, verbose=verbose)):
+                fileLists.extend(self.get_file_list(filename=filename, dirname=None, dirId=f["id"], ext=ext, isfile=isfile, trashed=trashed, recursive=recursive, verbose=verbose))
+        return fileLists
 
     def get_dirId(self, dirname=None, dirId="root"):
         """Get directory Id.

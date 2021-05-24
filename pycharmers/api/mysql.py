@@ -155,13 +155,16 @@ class PycharmersMySQL(PycharmersAPI):
                  ('performance_schema',),
                  ('remody',),
                  ('sys',))
-            >>> sql.execute("show databases;", columns=["name"])
-            	    name
-                0	information_schema
-                1	mysql
-                2	performance_schema
-                3	remody
-                4	sys
+            >>> # Receive as a DataFrame.
+            >>> df = sql.execute("show databases;", columns=["name"])
+            >>> print(df.to_markdown())
+                |    | name               |
+                |---:|:-------------------|
+                |  0 | information_schema |
+                |  1 | mysql              |
+                |  2 | performance_schema |
+                |  3 | remody             |
+                |  4 | sys                |
         """
         if verbose: print(query)
         def execute_query(cursor:Cursor) -> Tuple[tuple]:
@@ -316,6 +319,27 @@ class PycharmersMySQL(PycharmersAPI):
         df_field = self.describe(table=table)
         type = df_field[df_field.Field==column].Type.values[0]
         return self.execute(f"DELETE FROM {table} WHERE {column} = {self.format_data(value, type)}", verbose=verbose)
+
+    def merge(self, table1info:dict, table2info:dict, method:str="inner", verbose:bool=False) -> pd.DataFrame:
+        """Select values from table1 and table2 using ``method`` JOIN
+
+        Args:
+            table1info (dict)        : [description]
+            table2info (dict)        : [description]
+            method (str, optional)   : [description]. Defaults to ``"inner"``.
+            verbose (bool, optional) : [description]. Defaults to ``False``.
+
+        Returns:
+            pd.DataFrame: [description]
+
+        Examples:
+            >>> from pycharmers
+        """
+        table1,columns1 = table1info.popitem()
+        table2,columns2 = table2info.popitem()
+        col_merge1 = columns1.pop(0)
+        col_merge2 = columns2.pop(0)
+        return self.execute(f"SELECT {', '.join([f'{table1}.{col}' for col in columns1] + [f'{table2}.{col}' for col in columns2])} FROM {table1} {method} JOIN {table2} ON {table1}.{col_merge1} = {table2}.{col_merge2};", columns=columns1+columns2, verbose=verbose)
 
     def get_colnames(self, table:str, col_type:str="all") -> list:
         """Get column names in the specified ``table`` .
