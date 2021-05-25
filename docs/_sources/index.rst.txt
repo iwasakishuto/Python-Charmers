@@ -26,17 +26,17 @@ Installation
 
 1. Install **MySQL**:
 
-	- **Debian/Ubuntu**
+	- **Debian/Ubuntu**:
       ::
 
          $ sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
 
-	- **Red Hat/Cent OS**
+	- **Red Hat/Cent OS**:
       ::
 
 		   % sudo yum install python3-devel mysql-devel
 
-	- **macOS**
+	- **macOS**:
       ::
 
          # Install MySQL server

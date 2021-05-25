@@ -3,7 +3,7 @@ import pandas as pd
 import datetime
 import MySQLdb
 from MySQLdb.cursors import Cursor
-from typing import Any,Optional,Callable,Union,List,Tuple
+from typing import Any,Optional,Callable,Union,List,Tuple,Dict
 
 from ..utils._colorings import toBLUE, toGREEN, toRED
 from ..utils.environ_utils import check_environ
@@ -294,7 +294,7 @@ class PycharmersMySQL(PycharmersAPI):
         return self.execute(f"UPDATE {table} SET {new_column} = {self.format_data(new_value, new_type)} WHERE {old_column} = {self.format_data(old_value, old_type)}", verbose=verbose)
 
     def delete(self, table:str, column:str, value:Any, verbose:bool=False) -> None:
-        """Delete records.
+        """Delete the records whose ``column`` is ``value`` from the table named ``table`` .
 
         Args:
             table (str)              : The name of table.
@@ -320,26 +320,32 @@ class PycharmersMySQL(PycharmersAPI):
         type = df_field[df_field.Field==column].Type.values[0]
         return self.execute(f"DELETE FROM {table} WHERE {column} = {self.format_data(value, type)}", verbose=verbose)
 
-    def merge(self, table1info:dict, table2info:dict, method:str="inner", verbose:bool=False) -> pd.DataFrame:
+    def merge(self, table1info:Dict[str,List[str]], table2info:Dict[str,List[str]], method:str="inner", verbose:bool=False) -> pd.DataFrame:
         """Select values from table1 and table2 using ``method`` JOIN
 
         Args:
-            table1info (dict)        : [description]
-            table2info (dict)        : [description]
-            method (str, optional)   : [description]. Defaults to ``"inner"``.
-            verbose (bool, optional) : [description]. Defaults to ``False``.
+            table1info (Dict[str,List[str]]) : Table1 information ( ``key`` : table name, ``value`` : selected columns (0th column is used for merging.))
+            table2info (Dict[str,List[str]]) : Table2 information ( ``key`` : table name, ``value`` : selected columns (0th column is used for merging.))
+            method (str, optional)           : How to merge two tables. Defaults to ``"inner"``.
+            verbose (bool, optional)         : Whether to display the query or not. Defaults to ``False``.
 
         Returns:
-            pd.DataFrame: [description]
+            pd.DataFrame: Merged table records.
 
         Examples:
-            >>> from pycharmers
+            >>> from pycharmers.api import PycharmersMySQL
+            >>> sql.merge(
+            ...     table1info={"user": ["id", "name", "job_id"]}, 
+            ...     table2info={"jobs": ["id", "job_name"]}, 
+            ...     method="inner", verbose=True
+            >>> )
+            >>> SELECT user.name, user.job_id, jobs.job_name FROM user INNER JOIN jobs ON user.id = jobs.id;
         """
         table1,columns1 = table1info.popitem()
         table2,columns2 = table2info.popitem()
         col_merge1 = columns1.pop(0)
         col_merge2 = columns2.pop(0)
-        return self.execute(f"SELECT {', '.join([f'{table1}.{col}' for col in columns1] + [f'{table2}.{col}' for col in columns2])} FROM {table1} {method} JOIN {table2} ON {table1}.{col_merge1} = {table2}.{col_merge2};", columns=columns1+columns2, verbose=verbose)
+        return self.execute(f"SELECT {', '.join([f'{table1}.{col}' for col in columns1] + [f'{table2}.{col}' for col in columns2])} FROM {table1} {method.upper()} JOIN {table2} ON {table1}.{col_merge1} = {table2}.{col_merge2};", columns=columns1+columns2, verbose=verbose)
 
     def get_colnames(self, table:str, col_type:str="all") -> list:
         """Get column names in the specified ``table`` .
@@ -367,27 +373,36 @@ class PycharmersMySQL(PycharmersAPI):
             df = df[df.Extra!="auto_increment"]
         return df.Field.to_list()
 
-    def selectAll(self, table:str, verbose:bool=False) -> pd.DataFrame:
-        """Select All records.
+    def select(self, table:str, columns:List[str]=[], verbose:bool=False) -> pd.DataFrame:
+        """Get selected records.
 
         Args:
-            table (str)              : The name of table.
-            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
+            table (str)                   : The name of table.
+            columns (List[str], optional) : Selected Columns. If you don't specify any columns, extract all columns. Defaults to ``[]``.
+            verbose (bool, optional)      : Whether to display the query or not. Defaults to ``False``.
 
         Returns:
-            pd.DataFrame: All records.
+            pd.DataFrame: Selected Records.
 
         Examples:
             >>> from pycharmers.api import PycharmersMySQL
             >>> sql = PycharmersMySQL()
-            >>> df = sql.selectAll(table="pycharmers_user")
+            >>> df = sql.select(table="pycharmers_user")
             >>> print(df.to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
                 |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
+            >>> df = sql.select(table="pycharmers_user", columns=["id", "username"])
+            >>> print(df.to_markdown())
+                |    |   id | username   |
+                |---:|-----:|:-----------|
+                |  0 |    1 | iwasaki    |
+                |  1 |    2 | shuto      |
         """
-        return self.execute(f"SELECT * FROM {table};", columns=self.get_colnames(table=table, col_type="all"), verbose=verbose)
+        if len(columns)==0:
+            columns = self.get_colnames(table=table, col_type="all")
+        return self.execute(f"SELECT {', '.join(columns)} FROM {table};", columns=columns, verbose=verbose)
 
     def count_rows(self, table:str, verbose:bool=False) -> int:
         """Get the number of rows in the ``table`` .
