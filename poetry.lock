@@ -571,6 +571,17 @@ python-versions = ">=3.6"
 numpy = ">=1.13.3"
 
 [[package]]
+name = "opencv-python"
+version = "4.5.2.52"
+description = "Wrapper package for OpenCV python bindings."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = ">=1.13.3"
+
+[[package]]
 name = "openpyxl"
 version = "3.0.7"
 description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
@@ -2881,7 +2892,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "d70d4ce77dcfa134acd94a5b82d114b508c01a16a9d111342f07a46bd96edb44"
+content-hash = "be7ce3da1300aaa2793cc74fc3d66325415f0879cfe0af0da5c5ea737b553218"
 
 [metadata.files]
 appdirs = [
@@ -3334,6 +3345,24 @@ opencv-contrib-python = [
     {file = "opencv_contrib_python-4.5.2.52-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:add0e4350701e0393f0ac4d77dc0a0459a3585e5af2cfad86249ef026baefd58"},
     {file = "opencv_contrib_python-4.5.2.52-cp39-cp39-win32.whl", hash = "sha256:e289839368a428fad89ee221e85eddc8fa9920dff7382b0a8d3f2ba654c77cb1"},
     {file = "opencv_contrib_python-4.5.2.52-cp39-cp39-win_amd64.whl", hash = "sha256:c0cd167426740565f4c2e9defc1a7ab9298ed762bc0a95f8d47a2bd453297167"},
+]
+opencv-python = [
+    {file = "opencv_python-4.5.2.52-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:950242774a367efc90e3bed89e6e2fab7ff2867e2eafa440e4775b1ae57ac9f8"},
+    {file = "opencv_python-4.5.2.52-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:72f4e4f28169ecb9282570c4a86e992a762ea35ff67b19c05aab2c84eee212ca"},
+    {file = "opencv_python-4.5.2.52-cp36-cp36m-win32.whl", hash = "sha256:68f1baa789a1ae92642ad436d29088051471b2e5cea40705cb8c9f8c9fc3c050"},
+    {file = "opencv_python-4.5.2.52-cp36-cp36m-win_amd64.whl", hash = "sha256:2cc96b8a9011fa3451d71699069a6a8c3578d91d0158c559def997a1a049ae0c"},
+    {file = "opencv_python-4.5.2.52-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:71adc9f528d54fb41bfe275d7038ed4c9c5f1a4468419d4cac12dde6e938f3b8"},
+    {file = "opencv_python-4.5.2.52-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:b236001a5bacd18622db037e581521b38cffae070f345e05a7dd837dc3b7f2ef"},
+    {file = "opencv_python-4.5.2.52-cp37-cp37m-win32.whl", hash = "sha256:642ff6fe8d0a8297e248bf21676172381afbda767cd15ad51ab9d10201d99078"},
+    {file = "opencv_python-4.5.2.52-cp37-cp37m-win_amd64.whl", hash = "sha256:c8ee913a45aec73c4bb14c6c72c3c6ddbb0a1dd3ca45338b68bf169220396941"},
+    {file = "opencv_python-4.5.2.52-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:35d4fccd1e339df1e38eb1938af36c1972ab818684a747160403c1562008d867"},
+    {file = "opencv_python-4.5.2.52-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:a7aa72195cfd325a51fba287fadc61166367a3f89c57e7fe3e041132e192ac06"},
+    {file = "opencv_python-4.5.2.52-cp38-cp38-win32.whl", hash = "sha256:dfa168f827561c52f746d5d80e3b10f31d6428bf6f72652765139129f189110b"},
+    {file = "opencv_python-4.5.2.52-cp38-cp38-win_amd64.whl", hash = "sha256:cd231e073579192a8e4c88739e263de23bdaee0be7d85daae3afbda77e477da7"},
+    {file = "opencv_python-4.5.2.52-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:fd2e9e70ce30bdfdba6beeffeab117b760e6390e6b606e4b9f4ff03ccd2d7d1f"},
+    {file = "opencv_python-4.5.2.52-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:7e8e31b0e206c3567cb96408eb0e27314bb1526eb072f9e509db77af0262ecaf"},
+    {file = "opencv_python-4.5.2.52-cp39-cp39-win32.whl", hash = "sha256:1a9d6dd0b1d5cb6031c38b6acf2043b2ec1717093b39592c2a0b98f5b31c8d3e"},
+    {file = "opencv_python-4.5.2.52-cp39-cp39-win_amd64.whl", hash = "sha256:31d6a413d459a18ef280d88e8d9257cc5e5009657022c88bb88694a94ccce3ba"},
 ]
 openpyxl = [
     {file = "openpyxl-3.0.7-py2.py3-none-any.whl", hash = "sha256:46af4eaf201a89b610fcca177eed957635f88770a5462fb6aae4a2a52b0ff516"},
