@@ -19,6 +19,7 @@ Submodules
    pycharmers.cli.regexp_replacement
    pycharmers.cli.render_template
    pycharmers.cli.requirements
+   pycharmers.cli.revise_text
    pycharmers.cli.show
    pycharmers.cli.tweetile
    pycharmers.cli.video2gif

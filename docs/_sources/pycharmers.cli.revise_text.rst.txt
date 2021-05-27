@@ -1,0 +1,7 @@
+pycharmers.cli.revise\_text module
+==================================
+
+.. automodule:: pycharmers.cli.revise_text
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -10,6 +10,7 @@ pdfmine             = pycharmers.cli.pdfmine:pdfmine
 regexp-replacement  = pycharmers.cli.regexp_replacement:regexp_replacement
 render-template     = pycharmers.cli.render_template:render_template
 requirements-create = pycharmers.cli.requirements:requirements_create
+revise_text         = pycharmers.cli.revise_text:revise_text
 pycharmers-show     = pycharmers.cli.show:show_command_line_programs
 tweetile            = pycharmers.cli.tweetile:tweetile
 video2gif           = pycharmers.cli.video2gif:video2gif

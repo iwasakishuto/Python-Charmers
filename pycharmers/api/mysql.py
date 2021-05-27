@@ -276,13 +276,13 @@ class PycharmersMySQL(PycharmersAPI):
         Examples:
             >>> from pycharmers.api import PycharmersMySQL
             >>> sql = PycharmersMySQL()
-            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+            >>> print(sql.select(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
                 |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
             >>> sql.update(table="pycharmers_user", old_column="username", old_value="iwasaki", new_column="created", new_value="now()")
-            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+            >>> print(sql.select(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |
@@ -305,13 +305,13 @@ class PycharmersMySQL(PycharmersAPI):
         Examples:
             >>> from pycharmers.api import PycharmersMySQL
             >>> sql = PycharmersMySQL()
-            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+            >>> print(sql.select(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
                 |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
             >>> sql.delete(table="pycharmers_user", column="username", value="shuto")
-            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
+            >>> print(sql.select(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
@@ -373,13 +373,14 @@ class PycharmersMySQL(PycharmersAPI):
             df = df[df.Extra!="auto_increment"]
         return df.Field.to_list()
 
-    def select(self, table:str, columns:List[str]=[], verbose:bool=False) -> pd.DataFrame:
+    def select(self, table:str, columns:List[str]=[], where:Dict[str,Any]={}, verbose:bool=False) -> pd.DataFrame:
         """Get selected records.
 
         Args:
-            table (str)                   : The name of table.
-            columns (List[str], optional) : Selected Columns. If you don't specify any columns, extract all columns. Defaults to ``[]``.
-            verbose (bool, optional)      : Whether to display the query or not. Defaults to ``False``.
+            table (str)                     : The name of table.
+            columns (List[str], optional)   : Selected Columns. If you don't specify any columns, extract all columns. Defaults to ``[]``.
+            where (Dict[str,Any], optional) : Specify the condition of the column to be extracted. { ``colname`` : ``value`` }
+            verbose (bool, optional)        : Whether to display the query or not. Defaults to ``False``.
 
         Returns:
             pd.DataFrame: Selected Records.
@@ -402,7 +403,13 @@ class PycharmersMySQL(PycharmersAPI):
         """
         if len(columns)==0:
             columns = self.get_colnames(table=table, col_type="all")
-        return self.execute(f"SELECT {', '.join(columns)} FROM {table};", columns=columns, verbose=verbose)
+        if len(where)>0:
+            df_field = self.describe(table=table)
+            coltypes = df_field.set_index("Field").filter(items=list(where.keys()), axis=0).Type
+            WHERE = f'WHERE {" AND ".join([f"{key} = {self.format_data(val,type)}" for type,(key,val) in zip(coltypes,where.items())])}'
+        else:
+            WHERE = ""
+        return self.execute(f"SELECT {', '.join(columns)} FROM {table} {WHERE};", columns=columns, verbose=verbose)
 
     def count_rows(self, table:str, verbose:bool=False) -> int:
         """Get the number of rows in the ``table`` .
