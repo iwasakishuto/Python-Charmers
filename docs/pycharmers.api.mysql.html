@@ -389,7 +389,7 @@
 
 <dl class="py method">
 <dt id="pycharmers.api.mysql.PycharmersMySQL.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">new_column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">new_value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_column</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">old_value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">new_columns</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">new_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/api/mysql.html#PycharmersMySQL.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.api.mysql.PycharmersMySQL.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update records.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -397,8 +397,8 @@
 <li><p><strong>table</strong> (<em>str</em>) – The name of table.</p></li>
 <li><p><strong>old_column</strong> (<em>str</em>) – [description]</p></li>
 <li><p><strong>old_value</strong> (<em>Any</em>) – </p></li>
-<li><p><strong>new_column</strong> (<em>str</em>) – [description]</p></li>
-<li><p><strong>new_value</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>new_columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – [description]</p></li>
+<li><p><strong>new_values</strong> (<em>List</em><em>[</em><em>Any</em><em>]</em>) – </p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the query or not. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
@@ -406,13 +406,13 @@
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.api</span> <span class="kn">import</span> <span class="n">PycharmersMySQL</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span> <span class="o">=</span> <span class="n">PycharmersMySQL</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
 <span class="go">    |    |   id | username   | created             |</span>
 <span class="go">    |---:|-----:|:-----------|:--------------------|</span>
 <span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
 <span class="go">    |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sql</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">,</span> <span class="n">old_column</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="n">old_value</span><span class="o">=</span><span class="s2">&quot;iwasaki&quot;</span><span class="p">,</span> <span class="n">new_column</span><span class="o">=</span><span class="s2">&quot;created&quot;</span><span class="p">,</span> <span class="n">new_value</span><span class="o">=</span><span class="s2">&quot;now()&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">selectAll</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;pycharmers_user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
 <span class="go">    |    |   id | username   | created             |</span>
 <span class="go">    |---:|-----:|:-----------|:--------------------|</span>
 <span class="go">    |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |</span>

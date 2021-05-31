@@ -262,27 +262,27 @@ class PycharmersMySQL(PycharmersAPI):
         values = ", ".join([f"({', '.join([self.format_data(e,t) for e,t in zip(d,coltypes)])})" for d in data])
         return self.execute(f"INSERT INTO {table} ({', '.join(columns)}) VALUES {values}", verbose=verbose)
 
-    def update(self, table:str, old_column:str, old_value:Any, new_column:str, new_value:Any, verbose:bool=False) -> None:
+    def update(self, table:str, old_column:str, old_value:Any, new_columns:List[str], new_values:List[Any], verbose:bool=False) -> None:
         """Update records.
 
         Args:
             table (str)              : The name of table.
             old_column (str)         : [description]
             old_value (Any)          : 
-            new_column (str)         : [description]
-            new_value (Any)          : 
+            new_columns (List[str])  : [description]
+            new_values (List[Any])   : 
             verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Examples:
             >>> from pycharmers.api import PycharmersMySQL
             >>> sql = PycharmersMySQL()
-            >>> print(sql.select(table="pycharmers_user").to_markdown())
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |
                 |  1 |    2 | shuto      | 1998-07-03 00:00:00 |
             >>> sql.update(table="pycharmers_user", old_column="username", old_value="iwasaki", new_column="created", new_value="now()")
-            >>> print(sql.select(table="pycharmers_user").to_markdown())
+            >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
                 |---:|-----:|:-----------|:--------------------|
                 |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |
@@ -290,8 +290,9 @@ class PycharmersMySQL(PycharmersAPI):
         """
         df_field = self.describe(table=table)
         old_type = df_field[df_field.Field==old_column].Type.values[0]
-        new_type = df_field[df_field.Field==new_column].Type.values[0]
-        return self.execute(f"UPDATE {table} SET {new_column} = {self.format_data(new_value, new_type)} WHERE {old_column} = {self.format_data(old_value, old_type)}", verbose=verbose)
+        new_coltypes = df_field.set_index("Field").filter(items=new_columns, axis=0).Type
+        update_values = ", ".join([f"{col} = {self.format_data(val, type)}" for col,val,type in zip(new_columns, new_values, new_coltypes)])
+        return self.execute(f"UPDATE {table} SET {update_values} WHERE {old_column} = {self.format_data(old_value, old_type)}", verbose=verbose)
 
     def delete(self, table:str, column:str, value:Any, verbose:bool=False) -> None:
         """Delete the records whose ``column`` is ``value`` from the table named ``table`` .

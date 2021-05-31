@@ -21,6 +21,7 @@ Submodules
    pycharmers.utils.pil_utils
    pycharmers.utils.print_utils
    pycharmers.utils.soup_utils
+   pycharmers.utils.ssh_utils
    pycharmers.utils.subprocess_utils
    pycharmers.utils.templates
    pycharmers.utils.tkinter_utils
