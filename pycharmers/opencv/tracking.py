@@ -11,9 +11,9 @@ from ..utils._colorings import toBLUE, toGREEN
 
 all = OPENCV_TRACKER_CREATORS = {
     # "boosting"   : cv2.TrackerBoosting_create, # cv2.legacy_TrackerBoosting
-    "csrt"       : cv2.TrackerCSRT_create,
+    # "csrt"       : cv2.TrackerCSRT_create, # Comment out if you use opencv-python
     "goturn"     : cv2.TrackerGOTURN_create,
-    "kcf"        : cv2.TrackerKCF_create,
+    # "kcf"        : cv2.TrackerKCF_create,  # Comment out if you use opencv-python
     "mil"        : cv2.TrackerMIL_create,
     # "mosse"      : cv2.TrackerMOSSE_create, # cv2.legacy_TrackerMOSSE
     # "medianflow" : cv2.TrackerMedianFlow_create,

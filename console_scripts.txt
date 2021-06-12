@@ -5,6 +5,7 @@ cv-pencil-sketch    = pycharmers.cli.cvPencilSketch:cvPencilSketch
 cv-window           = pycharmers.cli.cvWindow:cvWindow
 lyricVideo          = pycharmers.cli.lyricVideo:lyricVideo
 form-auto-fill-in   = pycharmers.cli.form_auto_fill_in:form_auto_fill_in
+jupyter-arrange     = pycharmers.cli.jupyter_arrange:jupyter_arrange
 openBrowser         = pycharmers.cli.openBrowser:openBrowser
 pdfmine             = pycharmers.cli.pdfmine:pdfmine
 regexp-replacement  = pycharmers.cli.regexp_replacement:regexp_replacement

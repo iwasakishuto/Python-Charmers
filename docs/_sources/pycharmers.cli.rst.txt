@@ -13,6 +13,7 @@ Submodules
    pycharmers.cli.cvPencilSketch
    pycharmers.cli.cvWindow
    pycharmers.cli.form_auto_fill_in
+   pycharmers.cli.jupyter_arrange
    pycharmers.cli.lyricVideo
    pycharmers.cli.openBrowser
    pycharmers.cli.pdfmine

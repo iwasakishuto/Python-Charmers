@@ -217,7 +217,7 @@ def readable_bytes(size, type="bytes"):
         >>> print(f"{size:.2f}[{unit}]")
         9.31[GB]
     """
-    for unit in ["K","M","G"]:
+    for unit in ["","K","M","G"]:
         if abs(size) < 1024.0:
             break
         size /= 1024.0

@@ -66,8 +66,89 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-utils-ssh-utils-module">
-<h1>pycharmers.utils.ssh_utils module<a class="headerlink" href="#pycharmers-utils-ssh-utils-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.utils.ssh_utils">
+<span id="pycharmers-utils-ssh-utils-module"></span><h1>pycharmers.utils.ssh_utils module<a class="headerlink" href="#module-pycharmers.utils.ssh_utils" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.utils.ssh_utils.</code><code class="sig-name descname">RemodySSHClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hostname</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">password</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">22</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/ssh_utils.html#RemodySSHClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SSH Client for Remody Video Analysis Server.</p>
+<dl class="py method">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; paramiko.client.SSHClient<a class="reference internal" href="_modules/pycharmers/utils/ssh_utils.html#RemodySSHClient.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Connection to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A high-level representation of a session with an SSH server.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>paramiko.SSHClient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient.connection">
+<em class="property">property </em><code class="sig-name descname">connection</code><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient.exec_command">
+<code class="sig-name descname">exec_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">bufsize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">get_pty</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">environment</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">, </span>str<span class="p">]</span><a class="reference internal" href="_modules/pycharmers/utils/ssh_utils.html#RemodySSHClient.exec_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient.exec_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command on the SSH server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – The command to execute.</p></li>
+<li><p><strong>bufsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Interpreted the same way as by the built-in <code class="docutils literal notranslate"><span class="pre">file()</span></code> function in Python. Defaults to <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Set command’s channel timeout.. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>get_pty</strong> (<em>bool</em><em>, </em><em>optional</em>) – Request a pseudo-terminal from the server. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>environment</strong> (<em>Optional</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>optional</em>) – A dict of shell environment variables, to be merged into the default environment that the remote command executes within.. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the stdin, stdout, and stderr of the executing command, as a 3-tuple.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[str,str,str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient.scp_get">
+<code class="sig-name descname">scp_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">remote_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">local_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">recursive</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">preserve_times</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/ssh_utils.html#RemodySSHClient.scp_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient.scp_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transfer files and directories from remote host to localhost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_path</strong> (<em>str</em>) – Path to retrieve from remote host. since this is evaluated by scp on the remote host, shell wildcards and environment variables may be used.</p></li>
+<li><p><strong>local_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path in which to receive files locally. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
+<li><p><strong>recursive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Transfer files and directories recursively. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>preserve_times</strong> (<em>bool</em><em>, </em><em>optional</em>) – Preserve mtime and atime of transferred files and directories. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.utils.ssh_utils.RemodySSHClient.scp_put">
+<code class="sig-name descname">scp_put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">files</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">remote_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">b'.'</span></em>, <em class="sig-param"><span class="n">recursive</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">preserve_times</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/ssh_utils.html#RemodySSHClient.scp_put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.ssh_utils.RemodySSHClient.scp_put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transfer files and directories to remote host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> (<em>Union</em><em>[</em><em>str</em><em>,</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A single path, or a list of paths to be transferred. <code class="docutils literal notranslate"><span class="pre">recursive</span></code> must be <code class="docutils literal notranslate"><span class="pre">True</span></code> to transfer directories.</p></li>
+<li><p><strong>remote_path</strong> (<em>str</em><em>, </em><em>optional</em>) – spath in which to receive the files on the remote host. Defaults to <code class="docutils literal notranslate"><span class="pre">b&quot;.&quot;</span></code>.</p></li>
+<li><p><strong>recursive</strong> (<em>bool</em><em>, </em><em>optional</em>) – transfer files and directories recursively. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>preserve_times</strong> (<em>bool</em><em>, </em><em>optional</em>) – preserve mtime and atime of transferred files and directories. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
