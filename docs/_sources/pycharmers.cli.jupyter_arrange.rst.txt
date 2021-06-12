@@ -1,0 +1,7 @@
+pycharmers.cli.jupyter\_arrange module
+======================================
+
+.. automodule:: pycharmers.cli.jupyter_arrange
+   :members:
+   :undoc-members:
+   :show-inheritance:

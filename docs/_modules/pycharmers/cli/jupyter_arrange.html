@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.cli.jupyter_arrange &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.jupyter_arrange</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.cli.jupyter_arrange</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span><span class="n">Dict</span>
+
+<div class="viewcode-block" id="reorder_jupyter"><a class="viewcode-back" href="../../../pycharmers.cli.jupyter_arrange.html#pycharmers.cli.jupyter_arrange.reorder_jupyter">[docs]</a><span class="k">def</span> <span class="nf">reorder_jupyter</span><span class="p">(</span><span class="n">jupyter_dict</span><span class="p">:</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">])</span><span class="o">-&gt;</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Reorder the execution count in Jupyter Notebook (``.ipynb``)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        jupyter_dict (Dict[str,Any]): The contents of the jupyter notebook file (``.ipynb``).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str,Any]: The reordered contents of the jupyter notebook file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">jupyter_dict</span><span class="p">[</span><span class="s1">&#39;cells&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;execution_count&#39;</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">])</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">jupyter_dict</span><span class="p">[</span><span class="s1">&#39;cells&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s1">&#39;execution_count&#39;</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
+            <span class="n">num</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">cell</span><span class="p">[</span><span class="s1">&#39;execution_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span>
+            <span class="k">if</span> <span class="s1">&#39;outputs&#39;</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="s1">&#39;outputs&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;execution_count&#39;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+                        <span class="n">cell</span><span class="p">[</span><span class="s1">&#39;outputs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;execution_count&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">num</span>
+                        <span class="c1"># output[&#39;execution_count&#39;] = num</span>
+            <span class="k">if</span> <span class="n">num</span><span class="o">==</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">jupyter_dict</span></div>
+
+
+<span class="n">name2method</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;reorder&quot;</span> <span class="p">:</span> <span class="n">reorder_jupyter</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="jupyter_arrange"><a class="viewcode-back" href="../../../pycharmers.cli.jupyter_arrange.html#pycharmers.cli.jupyter_arrange.jupyter_arrange">[docs]</a><span class="k">def</span> <span class="nf">jupyter_arrange</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot;Arrange Jupyter Notebook.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        -I/-in/--input-jupyter (str)   : The path to ``input_jupyter.ipynb``.</span>
+<span class="sd">        -O/-out/--output-jupyter (str) : The path to ``output_jupyter.ipynb``.</span>
+<span class="sd">        -M/--method (str)              :　Which method to apply?</span>
+<span class="sd">    </span>
+<span class="sd">    NOTE:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+
+<span class="sd">            $ jupyter-arrange -I path/to/input.ipynb -O path/to/output.ipynb -M reorder</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;jupyter-arrange&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arrange jupyter notebook.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-I&quot;</span><span class="p">,</span> <span class="s2">&quot;-in&quot;</span><span class="p">,</span>  <span class="s2">&quot;--input-jupyter&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to input_jupyter.ipynb&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-O&quot;</span><span class="p">,</span> <span class="s2">&quot;-out&quot;</span><span class="p">,</span> <span class="s2">&quot;--output-jupyter&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to output_jupyter.ipynb&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-M&quot;</span><span class="p">,</span> <span class="s2">&quot;--method&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">name2method</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;reorder&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Which method to apply?&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">input_jupyter</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">input_jupyter</span>
+    <span class="n">output_jupyter</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output_jupyter</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">method</span>
+    <span class="k">if</span> <span class="n">output_jupyter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_jupyter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">input_jupyter</span><span class="p">))</span>
+    
+    <span class="c1"># Read jupyter file.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_jupyter</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
+        <span class="n">jupyter_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="c1"># Arrange</span>
+    <span class="n">jupyter_dict</span> <span class="o">=</span> <span class="n">name2method</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="n">jupyter_dict</span><span class="p">)</span>
+    <span class="c1"># Write jupyter file.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_jupyter</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_file</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">jupyter_dict</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.jupyter_arrange</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

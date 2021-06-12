@@ -84,6 +84,18 @@ $ poetry run book2img
 
 **CLI** is a command line program that accepts text input to execute operating system functions.
 
+```sh
+# If you use Poetry to set up the environment.
+$ poetry run pycharmers-show
+|       command       |                         path                         |
+|:-------------------:|:-----------------------------------------------------|
+|            book2img | pycharmers.cli.book2img:book2img                     |
+|         cv-cascades | pycharmers.cli.cvCascades:cvCascades                 |
+|               :     |              :                                       |
+|            tweetile | pycharmers.cli.tweetile:tweetile                     |
+|           video2gif | pycharmers.cli.video2gif:video2gif                   |
+```
+
 |       command       |                                 description                                  |
 |:-------------------:|:-----------------------------------------------------------------------------|
 |            book2img | Convert Book into Sequential Images.                                         |
