@@ -17,7 +17,7 @@ def url2raw(url):
 
     Examples:
         >>> from pycharmers.utils import pycat, download_file
-        >>> from pycharmers.api import url2raw
+        >>> from pycharmers.sdk import url2raw
         >>> github_url = "https://github.com/opencv/opencv/blob/master/data/CMakeLists.txt"
         >>> path = download_file(url=github_url, dirname=".")
         >>> pycat(path, head=10)
@@ -46,7 +46,7 @@ def wgit(base_url="", base_dir=".", depth=0):
         depth (int)    : Depth of the directory tree.
 
     Examples:
-        >>> from pycharmers.api import wgit
+        >>> from pycharmers.sdk import wgit
         >>> from pycharmers.opencv import PYCHARMERS_OPENCV_DIR
         >>> wgit(base_url="https://github.com/opencv/opencv/tree/master/data", base_dir=PYCHARMERS_OPENCV_DIR)
         /Users/iwasakishuto/.pycharmers/opencv/data is created. 

@@ -1,7 +1,7 @@
-pycharmers.api.google\_drive module
+pycharmers.sdk.google\_drive module
 ===================================
 
-.. automodule:: pycharmers.api.google_drive
+.. automodule:: pycharmers.sdk.google_drive
    :members:
    :undoc-members:
    :show-inheritance:

@@ -54,7 +54,6 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">str_strip</span><span class="p">,</span> <span class="n">handleKeyError</span>
-<span class="kn">from</span> <span class="nn">.driver_utils</span> <span class="kn">import</span> <span class="n">scrollDown</span><span class="p">,</span> <span class="n">wait_until_all_elements</span>
 
 <div class="viewcode-block" id="str2soup"><a class="viewcode-back" href="../../../pycharmers.utils.soup_utils.html#pycharmers.utils.soup_utils.str2soup">[docs]</a><span class="k">def</span> <span class="nf">str2soup</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert strings to soup, and removed extra tags such as ``&lt;html&gt;``, ``&lt;body&gt;``, and ``&lt;head&gt;``.</span>
@@ -399,6 +398,7 @@
     <span class="k">if</span> <span class="n">driver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.driver_utils</span> <span class="kn">import</span> <span class="n">scrollDown</span><span class="p">,</span> <span class="n">wait_until_all_elements</span>
         <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="n">wait_until_all_elements</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">scrollDown</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

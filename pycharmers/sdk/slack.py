@@ -67,7 +67,7 @@ This class is created by the following programs.
     ...            ).replace("below", "here").replace("false", "False").replace("true", "True").replace("none", "None")
     ...        )
     ...       
-    ...    def_func.set_example(prefix="\\n".join([">>> import os", ">>> from pycharmers.api import SlackClient", '>>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])', ">>> res = client.{func_name}("]))
+    ...    def_func.set_example(prefix="\\n".join([">>> import os", ">>> from pycharmers.sdk import SlackClient", '>>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])', ">>> res = client.{func_name}("]))
     ...    def_func.create()
     ...    
     ...    render_template(template_name_or_string='{%- from "_macros/utils.html" import pythonalization %}    params = locals()\\n    params.pop("self")\\n    self._api_wrapper(\\n        api_method={{ pythonalization(api_method) }}, \\n        http_method={{ pythonalization(http_method) }}, \\n        content_types={{ pythonalization(content_types) }},\\n        **params,        \\n    )', context={"api_method": api_method, "http_method": http_method, "content_types": accepted_content_types})
@@ -132,7 +132,7 @@ class SlackClient():
         self.token = token
 
     def _api_wrapper(self, api_method, http_method="POST", content_types=["application/x-www-form-urlencoded"], **params):
-        """Wrapper for :meth:`api_call <pycharmers.api.slack.SlackClient.api_call>`."""
+        """Wrapper for :meth:`api_call <pycharmers.sdk.slack.SlackClient.api_call>`."""
         for content_type in content_types:
             if content_type=="application/json;charset=utf-8":
                 data = {"json": params}
@@ -226,7 +226,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_analytics_getFile(
             ...     type="member",
@@ -260,7 +260,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_approve(
             ...     app_id="A12345",
@@ -295,7 +295,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_clearResolution(
             ...     app_id="A12345",
@@ -330,7 +330,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_restrict(
             ...     app_id="A12345",
@@ -366,7 +366,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_approved_list(
             ...     cursor="5c3e53d5",
@@ -401,7 +401,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_requests_list(
             ...     cursor="5c3e53d5",
@@ -436,7 +436,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_apps_restricted_list(
             ...     cursor="5c3e53d5",
@@ -471,7 +471,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_barriers_create(
             ...     barriered_from_usergroup_ids=None,
@@ -503,7 +503,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_barriers_delete(
             ...     barrier_id=None,
@@ -534,7 +534,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_barriers_list(
             ...     cursor="5c3e53d5",
@@ -568,7 +568,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_barriers_update(
             ...     barrier_id=None,
@@ -601,7 +601,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_archive(
             ...     channel_id="C12345",
@@ -631,7 +631,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_convertToPrivate(
             ...     channel_id="C12345",
@@ -665,7 +665,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_create(
             ...     is_private=True,
@@ -699,7 +699,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_delete(
             ...     channel_id="C12345",
@@ -729,7 +729,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_disconnectShared(
             ...     channel_id="C12345",
@@ -760,7 +760,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_getConversationPrefs(
             ...     channel_id="C12345",
@@ -790,7 +790,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_getCustomRetention(
             ...     channel_id="C12345678",
@@ -822,7 +822,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_getTeams(
             ...     channel_id="C12345",
@@ -855,7 +855,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_invite(
             ...     channel_id="C12345",
@@ -886,7 +886,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_removeCustomRetention(
             ...     channel_id="C12345678",
@@ -917,7 +917,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_rename(
             ...     channel_id="C12345",
@@ -954,7 +954,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_search(
             ...     cursor="dXNlcjpVMEc5V0ZYTlo=",
@@ -991,7 +991,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_setConversationPrefs(
             ...     channel_id="C1234",
@@ -1023,7 +1023,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_setCustomRetention(
             ...     channel_id="C12345678",
@@ -1057,7 +1057,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_setTeams(
             ...     channel_id=None,
@@ -1090,7 +1090,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_unarchive(
             ...     channel_id="C12345",
@@ -1123,7 +1123,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_ekm_listOriginalConnectedChannelInfo(
             ...     channel_ids=None,
@@ -1158,7 +1158,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_restrictAccess_addGroup(
             ...     channel_id=None,
@@ -1191,7 +1191,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_restrictAccess_listGroups(
             ...     channel_id=None,
@@ -1224,7 +1224,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_restrictAccess_removeGroup(
             ...     channel_id=None,
@@ -1257,7 +1257,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_emoji_add(
             ...     name=None,
@@ -1289,7 +1289,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_emoji_addAlias(
             ...     alias_for=None,
@@ -1321,7 +1321,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_emoji_list(
             ...     cursor="5c3e53d5",
@@ -1352,7 +1352,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_emoji_remove(
             ...     name=None,
@@ -1383,7 +1383,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_emoji_rename(
             ...     name=None,
@@ -1415,7 +1415,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_inviteRequests_approve(
             ...     invite_request_id="Ir1234",
@@ -1447,7 +1447,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_inviteRequests_deny(
             ...     invite_request_id="Ir1234",
@@ -1480,7 +1480,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_inviteRequests_list(
             ...     cursor="5cweb43",
@@ -1514,7 +1514,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_inviteRequests_approved_list(
             ...     cursor="5cweb43",
@@ -1548,7 +1548,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_inviteRequests_denied_list(
             ...     cursor="5cweb43",
@@ -1582,7 +1582,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_admins_list(
             ...     team_id="T1234567890",
@@ -1617,7 +1617,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_create(
             ...     team_domain=None,
@@ -1651,7 +1651,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_list(
             ...     cursor="5c3e53d5",
@@ -1684,7 +1684,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_owners_list(
             ...     team_id="T1234567890",
@@ -1716,7 +1716,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_info(
             ...     team_id="T1234567890",
@@ -1747,7 +1747,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_setDefaultChannels(
             ...     channel_ids=None,
@@ -1779,7 +1779,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_setDescription(
             ...     description=None,
@@ -1811,7 +1811,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_setDiscoverability(
             ...     discoverability=None,
@@ -1843,7 +1843,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_setIcon(
             ...     image_url="http://mysite.com/icon.jpeg",
@@ -1875,7 +1875,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_teams_settings_setName(
             ...     name=None,
@@ -1908,7 +1908,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_usergroups_addChannels(
             ...     channel_ids="C00000000,C00000001",
@@ -1942,7 +1942,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_usergroups_addTeams(
             ...     team_ids="T12345678,T98765432",
@@ -1976,7 +1976,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_usergroups_listChannels(
             ...     usergroup_id="S00000000",
@@ -2009,7 +2009,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_usergroups_removeChannels(
             ...     channel_ids="C00000000,C00000001",
@@ -2044,7 +2044,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_assign(
             ...     team_id="T1234567890",
@@ -2086,7 +2086,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_invite(
             ...     channel_ids="C1A2B3C4D,C26Z25Y24",
@@ -2126,7 +2126,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_list(
             ...     cursor="5c3e53d5",
@@ -2159,7 +2159,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_remove(
             ...     team_id="T1234567890",
@@ -2191,7 +2191,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_setAdmin(
             ...     team_id="T1234567890",
@@ -2224,7 +2224,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_setExpiration(
             ...     expiration_ts=1234567890,
@@ -2257,7 +2257,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_setOwner(
             ...     team_id="T1234567890",
@@ -2289,7 +2289,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_setRegular(
             ...     team_id="T1234567890",
@@ -2321,7 +2321,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_session_invalidate(
             ...     session_id=12345,
@@ -2355,7 +2355,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_session_list(
             ...     cursor="5c3e53d5",
@@ -2390,7 +2390,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_users_session_reset(
             ...     user_id="W12345678",
@@ -2420,7 +2420,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.api_test(
             >>> )
@@ -2451,7 +2451,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_event_authorizations_list(
             ...     event_context=None,
@@ -2481,7 +2481,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_info(
             >>> )
@@ -2510,7 +2510,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_request(
             ...     scopes=None,
@@ -2541,7 +2541,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_resources_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -2570,7 +2570,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_scopes_list(
             >>> )
@@ -2599,7 +2599,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_users_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -2631,7 +2631,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_permissions_users_request(
             ...     scopes=None,
@@ -2664,7 +2664,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.apps_uninstall(
             ...     client_id=56579136444.26251,
@@ -2699,7 +2699,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.auth_revoke(
             ...     test=True,
@@ -2734,7 +2734,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.auth_test(
             >>> )
@@ -2767,7 +2767,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.auth_teams_list(
             ...     cursor="5c3e53d5",
@@ -2804,7 +2804,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.bots_info(
             ...     bot="B12345678",
@@ -2846,7 +2846,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_add(
             ...     external_unique_id="025169F6-E37A-4E62-BB54-7F93A0FC4C1F",
@@ -2888,7 +2888,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_end(
             ...     id="R0E69JAIF",
@@ -2923,7 +2923,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_info(
             ...     id="R0E69JAIF",
@@ -2960,7 +2960,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_update(
             ...     id="R0E69JAIF",
@@ -2998,7 +2998,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_participants_add(
             ...     id="R0E69JAIF",
@@ -3034,7 +3034,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.calls_participants_remove(
             ...     id="R0E69JAIF",
@@ -3071,7 +3071,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_delete(
             ...     channel="C1234567890",
@@ -3109,7 +3109,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_deleteScheduledMessage(
             ...     channel="C123456789",
@@ -3146,7 +3146,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_getPermalink(
             ...     channel=53072,
@@ -3182,7 +3182,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_meMessage(
             ...     channel="C1234567890",
@@ -3228,7 +3228,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_postEphemeral(
             ...     attachments=[{'pretext': 'pre-hello', 'text': 'text-world'}],
@@ -3287,7 +3287,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_postMessage(
             ...     channel="C1234567890",
@@ -3346,7 +3346,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_scheduleMessage(
             ...     channel="C1234567890",
@@ -3394,7 +3394,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_unfurl(
             ...     channel="C1234567890",
@@ -3440,7 +3440,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_update(
             ...     channel="C1234567890",
@@ -3486,7 +3486,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.chat_scheduledMessages_list(
             ...     channel="C123456789",
@@ -3523,7 +3523,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_archive(
             ...     channel="C1234567890",
@@ -3557,7 +3557,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_close(
             ...     channel="G1234567890",
@@ -3591,7 +3591,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_create(
             ...     name="mychannel",
@@ -3632,7 +3632,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_history(
             ...     channel="C1234567890",
@@ -3673,7 +3673,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_info(
             ...     channel="C1234567890",
@@ -3708,7 +3708,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_invite(
             ...     channel="C1234567890",
@@ -3741,7 +3741,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_join(
             ...     channel="C1234567890",
@@ -3774,7 +3774,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_kick(
             ...     channel="C1234567890",
@@ -3807,7 +3807,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_leave(
             ...     channel="C1234567890",
@@ -3845,7 +3845,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -3884,7 +3884,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_mark(
             ...     channel="C012345678",
@@ -3921,7 +3921,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_members(
             ...     channel="C1234567890",
@@ -3959,7 +3959,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_open(
             ...     channel="G1234567890",
@@ -3994,7 +3994,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_rename(
             ...     channel="C1234567890",
@@ -4035,7 +4035,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_replies(
             ...     channel="C1234567890",
@@ -4076,7 +4076,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_setPurpose(
             ...     channel="C1234567890",
@@ -4112,7 +4112,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_setTopic(
             ...     channel="C1234567890",
@@ -4145,7 +4145,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.conversations_unarchive(
             ...     channel="C1234567890",
@@ -4180,7 +4180,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dialog_open(
             ...     dialog=None,
@@ -4210,7 +4210,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dnd_endDnd(
             >>> )
@@ -4238,7 +4238,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dnd_endSnooze(
             >>> )
@@ -4271,7 +4271,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dnd_info(
             ...     user="U1234",
@@ -4301,7 +4301,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dnd_setSnooze(
             ...     num_minutes=60,
@@ -4335,7 +4335,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.dnd_teamInfo(
             ...     users="U1234,W4567",
@@ -4368,7 +4368,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.emoji_list(
             >>> )
@@ -4402,7 +4402,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_comments_delete(
             ...     file="F1234567890",
@@ -4437,7 +4437,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_delete(
             ...     file="F1234567890",
@@ -4475,7 +4475,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_info(
             ...     file="F2147483862",
@@ -4519,7 +4519,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_list(
             ...     channel="C1234567890",
@@ -4557,7 +4557,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_revokePublicURL(
             ...     file="F1234567890",
@@ -4587,7 +4587,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_sharedPublicURL(
             ...     file="F1234567890",
@@ -4628,7 +4628,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_upload(
             ...     channels="C1234567890",
@@ -4672,7 +4672,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_add(
             ...     external_id=123456,
@@ -4712,7 +4712,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_info(
             ...     external_id=123456,
@@ -4751,7 +4751,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_list(
             ...     channel="C1234567890",
@@ -4788,7 +4788,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_remove(
             ...     external_id=123456,
@@ -4825,7 +4825,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_share(
             ...     channels="C1234567890",
@@ -4865,7 +4865,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.files_remote_update(
             ...     external_id=123456,
@@ -4907,7 +4907,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.migration_exchange(
             ...     users=None,
@@ -4937,7 +4937,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.oauth_access(
             ...     client_secret="33fea0113f5b1",
@@ -4968,7 +4968,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.oauth_token(
             ...     client_secret="33fea0113f5b1",
@@ -4998,7 +4998,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.oauth_v2_access(
             ...     client_id="4b39e9-752c4",
@@ -5035,7 +5035,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.pins_add(
             ...     channel="C1234567890",
@@ -5070,7 +5070,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.pins_list(
             ...     channel="C1234567890",
@@ -5105,7 +5105,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.pins_remove(
             ...     channel="C1234567890",
@@ -5142,7 +5142,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reactions_add(
             ...     channel="C1234567890",
@@ -5182,7 +5182,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reactions_get(
             ...     channel="C1234567890",
@@ -5226,7 +5226,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reactions_list(
             ...     count=20,
@@ -5270,7 +5270,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reactions_remove(
             ...     name="thumbsup",
@@ -5306,7 +5306,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reminders_add(
             ...     text="eat a banana",
@@ -5338,7 +5338,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reminders_complete(
             ...     reminder="Rm12345678",
@@ -5368,7 +5368,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reminders_delete(
             ...     reminder="Rm12345678",
@@ -5398,7 +5398,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reminders_info(
             ...     reminder="Rm23456789",
@@ -5427,7 +5427,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.reminders_list(
             >>> )
@@ -5459,7 +5459,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.rtm_connect(
             ...     batch_presence_aware=1,
@@ -5498,7 +5498,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.rtm_start(
             ...     batch_presence_aware=1,
@@ -5540,7 +5540,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.search_all(
             ...     query="pickleface",
@@ -5582,7 +5582,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.search_files(
             ...     query="pickleface",
@@ -5624,7 +5624,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.search_messages(
             ...     query="pickleface",
@@ -5667,7 +5667,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.stars_add(
             ...     channel="C1234567890",
@@ -5703,7 +5703,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.stars_list(
             ...     count=20,
@@ -5741,7 +5741,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.stars_remove(
             ...     channel="C1234567890",
@@ -5777,7 +5777,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.team_accessLogs(
             ...     before=1457989166,
@@ -5811,7 +5811,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.team_billableInfo(
             ...     team_id="T1234567890",
@@ -5846,7 +5846,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.team_info(
             ...     team="T1234567890",
@@ -5882,7 +5882,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.team_integrationLogs(
             ...     app_id=None,
@@ -5920,7 +5920,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.team_profile_get(
             ...     visibility="all",
@@ -5957,7 +5957,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_create(
             ...     name="My Test Team",
@@ -5996,7 +5996,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_disable(
             ...     usergroup="S0604QSJC",
@@ -6032,7 +6032,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_enable(
             ...     usergroup="S0604QSJC",
@@ -6069,7 +6069,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_list(
             ...     include_count=True,
@@ -6110,7 +6110,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_update(
             ...     usergroup="S0604QSJC",
@@ -6150,7 +6150,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_users_list(
             ...     usergroup="S0604QSJC",
@@ -6187,7 +6187,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.usergroups_users_update(
             ...     usergroup="S0604QSJC",
@@ -6229,7 +6229,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_conversations(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -6263,7 +6263,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_deletePhoto(
             >>> )
@@ -6296,7 +6296,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_getPresence(
             ...     user="W1234567890",
@@ -6325,7 +6325,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_identity(
             >>> )
@@ -6359,7 +6359,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_info(
             ...     user="W1234567890",
@@ -6397,7 +6397,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -6434,7 +6434,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_lookupByEmail(
             ...     email="spengler@ghostbusters.example.com",
@@ -6467,7 +6467,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_setActive(
             >>> )
@@ -6499,7 +6499,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_setPhoto(
             ...     crop_w=100,
@@ -6536,7 +6536,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_setPresence(
             ...     presence="away",
@@ -6569,7 +6569,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_profile_get(
             ...     include_labels=True,
@@ -6603,7 +6603,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.users_profile_set(
             ...     name="first_name",
@@ -6641,7 +6641,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.views_open(
             ...     trigger_id="12345.98765.abcd2358fdea",
@@ -6676,7 +6676,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.views_publish(
             ...     user_id="U0BPQUNTA",
@@ -6713,7 +6713,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.views_push(
             ...     trigger_id="12345.98765.abcd2358fdea",
@@ -6751,7 +6751,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.views_update(
             ...     view=None,
@@ -6785,7 +6785,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.workflows_stepCompleted(
             ...     workflow_step_execute_id=None,
@@ -6817,7 +6817,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.workflows_stepFailed(
             ...     error=None,
@@ -6852,7 +6852,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.workflows_updateStep(
             ...     workflow_step_edit_id=None,
@@ -6888,7 +6888,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_whitelist_add(
             ...     channel_id=None,
@@ -6921,7 +6921,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_whitelist_listGroupsLinkedToChannel(
             ...     channel_id=None,
@@ -6954,7 +6954,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.admin_conversations_whitelist_remove(
             ...     channel_id=None,
@@ -6988,7 +6988,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_archive(
             ...     channel="C1234567890",
@@ -7022,7 +7022,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_create(
             ...     name="mychannel",
@@ -7063,7 +7063,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_history(
             ...     channel="C1234567890",
@@ -7103,7 +7103,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_info(
             ...     channel="C1234567890",
@@ -7137,7 +7137,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_invite(
             ...     channel="C1234567890",
@@ -7172,7 +7172,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_join(
             ...     name="#general",
@@ -7207,7 +7207,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_kick(
             ...     channel="C1234567890",
@@ -7240,7 +7240,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_leave(
             ...     channel="C1234567890",
@@ -7278,7 +7278,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -7317,7 +7317,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_mark(
             ...     channel="C012345678",
@@ -7352,7 +7352,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_rename(
             ...     channel="C1234567890",
@@ -7389,7 +7389,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_replies(
             ...     channel="C1234567890",
@@ -7426,7 +7426,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_setPurpose(
             ...     channel="C1234567890",
@@ -7463,7 +7463,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_setTopic(
             ...     channel="C1234567890",
@@ -7494,7 +7494,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.channels_unarchive(
             ...     channel="C1234567890",
@@ -7526,7 +7526,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_archive(
             ...     channel="G1234567890",
@@ -7560,7 +7560,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_create(
             ...     name=None,
@@ -7594,7 +7594,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_createChild(
             ...     channel="G1234567890",
@@ -7633,7 +7633,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_history(
             ...     channel="G1234567890",
@@ -7673,7 +7673,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_info(
             ...     channel="G1234567890",
@@ -7707,7 +7707,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_invite(
             ...     channel="G1234567890",
@@ -7741,7 +7741,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_kick(
             ...     channel="G1234567890",
@@ -7774,7 +7774,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_leave(
             ...     channel="G1234567890",
@@ -7812,7 +7812,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -7851,7 +7851,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_mark(
             ...     channel="C012345678",
@@ -7886,7 +7886,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_open(
             ...     channel="G1234567890",
@@ -7920,7 +7920,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_rename(
             ...     channel="G1234567890",
@@ -7955,7 +7955,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_replies(
             ...     channel="C1234567890",
@@ -7991,7 +7991,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_setPurpose(
             ...     channel="G1234567890",
@@ -8027,7 +8027,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_setTopic(
             ...     channel="G1234567890",
@@ -8060,7 +8060,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.groups_unarchive(
             ...     channel="G1234567890",
@@ -8094,7 +8094,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_close(
             ...     channel="D1234567890",
@@ -8133,7 +8133,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_history(
             ...     channel="D1234567890",
@@ -8173,7 +8173,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -8209,7 +8209,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_mark(
             ...     channel="D1234567890",
@@ -8246,7 +8246,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_open(
             ...     user="W1234567890",
@@ -8283,7 +8283,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.im_replies(
             ...     channel="C1234567890",
@@ -8318,7 +8318,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_close(
             ...     channel="G1234567890",
@@ -8357,7 +8357,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_history(
             ...     channel="G1234567890",
@@ -8397,7 +8397,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_list(
             ...     cursor="dXNlcjpVMDYxTkZUVDI=",
@@ -8433,7 +8433,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_mark(
             ...     channel="C012345678",
@@ -8468,7 +8468,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_open(
             ...     users="W1234567890,U2345678901,U3456789012",
@@ -8501,7 +8501,7 @@ class SlackClient():
         
         Examples:
             >>> import os
-            >>> from pycharmers.api import SlackClient
+            >>> from pycharmers.sdk import SlackClient
             >>> client = SlackClient(token=os.environ["SLACK_BOT_TOKEN"])
             >>> res = client.mpim_replies(
             ...     channel="C1234567890",

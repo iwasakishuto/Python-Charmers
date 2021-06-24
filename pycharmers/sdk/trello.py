@@ -7,9 +7,9 @@ from ..utils._path import DOTENV_PATH
 from ..utils.environ_utils import name2envname, check_environ
 from ..utils.json_utils import dumps_json
 from ..utils.print_utils import tabulate
-from ._base import PycharmersAPI
+from ._base import PycharmersSDK
 
-class Trello(PycharmersAPI):
+class Trello(PycharmersSDK):
     """A wrapper class for `Trello API <https://developer.atlassian.com/cloud/trello/>`_
 
     Visit https://trello.com/app-key to get an API key and Token. (NOTE: You have to login before visiting)
@@ -63,7 +63,7 @@ class Trello(PycharmersAPI):
             keynames (list) : The keyname to extract and display the value from the ``result``
 
         Examples:
-            >>> from pycharmers.api import Trello
+            >>> from pycharmers.sdk import Trello
             >>> Trello.show_results(result=[
             ...     {"api": "slack",  "foo": 1, "bar": ["get"]},
             ...     {"api": "github", "foo": 2, "bar": ["post"]}
@@ -90,7 +90,7 @@ class Trello(PycharmersAPI):
             def show_func(*args, keynames=default_keynames, method_name=method_name, **kwargs):
                 get_func = getattr(self, f"get_{method_name}")
                 self.show_results(result=get_func(*args, **kwargs), keynames=keynames)
-            show_func.__doc__ = f"See :meth:`get_{method_name} <pycharmers.api.trello.get_{method_name}>` for the required arguments."
+            show_func.__doc__ = f"See :meth:`get_{method_name} <pycharmers.sdk.trello.get_{method_name}>` for the required arguments."
             setattr(self, f"show_{method_name}", show_func)
 
     def get_memberships_of_a_board(self, username=None, apikey=None, token=None):

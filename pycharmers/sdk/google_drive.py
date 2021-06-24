@@ -16,7 +16,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
         http_timeout (int)  : HTTP timeout. Defaults to None.
 
     Examples:
-        >>> from pycharmers.api import PyCharmersGoogleDrive
+        >>> from pycharmers.sdk import PyCharmersGoogleDrive
         >>> drive = PyCharmersGoogleDrive(settings_file='dir/subdir/settings.yaml')
         >>> drive
 
@@ -90,7 +90,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
             dict: parameter to be sent to ``Files.List()`` .
 
         Examples:
-            >>> from pycharmers.api import PyCharmersGoogleDrive
+            >>> from pycharmers.sdk import PyCharmersGoogleDrive
             >>> PyCharmersGoogleDrive.arrange_queries(queries=[], ext=".mp4", isfile=True, trashed=False)
             {'q': 'title contains ".mp4" and mimeType != "application/vnd.google-apps.folder" and trashed = false'}
             >>> PyCharmersGoogleDrive.arrange_queries(queries=[], ext=None, isfile=False, trashed=None)
@@ -138,7 +138,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
             GoogleDriveFileList: Google Drive File List.
 
         Examples:
-            >>> from pycharmers.api import PyCharmersGoogleDrive
+            >>> from pycharmers.sdk import PyCharmersGoogleDrive
             >>> drive = PyCharmersGoogleDrive(settings_file="settings.json")
             >>> for f in drive.get_file_list(dirname="DIRNAME"):
             ...     print(f["title"], f["id"])
@@ -206,7 +206,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
             str : Path to downloaded file.
 
         Examples:
-            >>> from pycharmers.api import PyCharmersGoogleDrive
+            >>> from pycharmers.sdk import PyCharmersGoogleDrive
             >>> drive = PyCharmersGoogleDrive(settings_file="settings.json")
             >>> drive.download_file(filename="file.png", dirId="root", verbose=True)
         """
@@ -231,7 +231,7 @@ class PyCharmersGoogleDrive(GoogleDrive):
         TODO: To display the file contents in a tree-like format.
 
         Examples:
-            >>> from pycharmers.api import PyCharmersGoogleDrive
+            >>> from pycharmers.sdk import PyCharmersGoogleDrive
             >>> drive = PyCharmersGoogleDrive(settings_file="settings.json")
             >>> drive.tree()
         """
@@ -304,7 +304,7 @@ class QUERY:
         """Show all Queries.
 
         Examples:
-            >>> from pycharmers.api.google_drive import QUERY
+            >>> from pycharmers.sdk.google_drive import QUERY
             >>> QUERY.show()
         """
         tabulate(tabular_data=[[k,v] for k,v in QUERY.__dict__.items() if re.match(pattern=r"[A-Z]+", string=k)], headers=["NAME", "query"])

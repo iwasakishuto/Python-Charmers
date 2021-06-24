@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.sdk.github &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.github</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.sdk.github</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">_makedirs</span>
+<span class="kn">from</span> <span class="nn">..utils.download_utils</span> <span class="kn">import</span> <span class="n">download_file</span>
+
+
+<div class="viewcode-block" id="url2raw"><a class="viewcode-back" href="../../../pycharmers.sdk.github.html#pycharmers.sdk.github.url2raw">[docs]</a><span class="k">def</span> <span class="nf">url2raw</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert from Github URL to Raw URL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (str) : Github URL.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pycat, download_file</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.sdk import url2raw</span>
+<span class="sd">        &gt;&gt;&gt; github_url = &quot;https://github.com/opencv/opencv/blob/master/data/CMakeLists.txt&quot;</span>
+<span class="sd">        &gt;&gt;&gt; path = download_file(url=github_url, dirname=&quot;.&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pycat(path, head=10)</span>
+<span class="sd">        &lt;!DOCTYPE html&gt;</span>
+<span class="sd">        &lt;html lang=&quot;en&quot;&gt;</span>
+<span class="sd">        &lt;head&gt;</span>
+<span class="sd">            &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="sd">        &lt;link rel=&quot;dns-prefetch&quot; href=&quot;https://github.githubassets.com&quot;&gt;</span>
+<span class="sd">        # The above file is HTML!!</span>
+<span class="sd">        # Therefore, convert from Github URL to Raw URL.</span>
+<span class="sd">        &gt;&gt;&gt; raw_url = url2raw(github_url)</span>
+<span class="sd">        &gt;&gt;&gt; path = download_file(url=raw_url, dirname=&quot;.&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pycat(path, head=2)</span>
+<span class="sd">        file(GLOB HAAR_CASCADES haarcascades/*.xml)</span>
+<span class="sd">        file(GLOB LBP_CASCADES lbpcascades/*.xml)</span>
+<span class="sd">        # Get the desired data :)    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;://github.com/&quot;</span><span class="p">,</span> <span class="s2">&quot;://raw.githubusercontent.com/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/blob/&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="wgit"><a class="viewcode-back" href="../../../pycharmers.sdk.github.html#pycharmers.sdk.github.wgit">[docs]</a><span class="k">def</span> <span class="nf">wgit</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download only a specific folder or directory from a remote Git repo hosted on GitHub.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        base_url (str) : URL for a specific folder or directory from a remote Git repository.</span>
+<span class="sd">        base_dir (str) : The directory where downloaded data will be saved.</span>
+<span class="sd">        depth (int)    : Depth of the directory tree.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.sdk import wgit</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import PYCHARMERS_OPENCV_DIR</span>
+<span class="sd">        &gt;&gt;&gt; wgit(base_url=&quot;https://github.com/opencv/opencv/tree/master/data&quot;, base_dir=PYCHARMERS_OPENCV_DIR)</span>
+<span class="sd">        /Users/iwasakishuto/.pycharmers/opencv/data is created. </span>
+<span class="sd">        /Users/iwasakishuto/.pycharmers/opencv/data/haarcascades is created. </span>
+<span class="sd">        Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye.xml</span>
+<span class="sd">                    * Content-Encoding : None</span>
+<span class="sd">                    * Content-Length   : (333.404296875, &#39;MB&#39;)</span>
+<span class="sd">                    * Content-Type     : text/plain; charset=utf-8</span>
+<span class="sd">                    * Save Destination : /Users/iwasakishuto/.pycharmers/opencv/data/haarcascades/haarcascade_eye.xml</span>
+<span class="sd">        haarcascade_eye.xml	100.0%[####################] 0.1[s] 4.5[GB/s]	eta -0.0[s]</span>
+<span class="sd">        Download a file from https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_eye_tree_eyeglasses.xml</span>
+<span class="sd">        :</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">depth</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">base_url</span><span class="p">))</span>
+        <span class="n">_makedirs</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">base_dir</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">markup</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">base_url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+    <span class="c1"># indent = &quot;\t&quot;*depth</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;py-2&quot;</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">):</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;js-navigation-open&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">url</span>  <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">href</span><span class="p">)</span>
+        <span class="n">icon_aria_label</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aria-label&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">icon_aria_label</span> <span class="o">==</span> <span class="s2">&quot;Directory&quot;</span><span class="p">:</span>
+            <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">href</span><span class="p">))</span>
+            <span class="n">_makedirs</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">dirname</span><span class="p">)</span>
+            <span class="n">wgit</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">dirname</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url2raw</span><span class="p">(</span><span class="n">url</span><span class="p">),</span> <span class="n">dirname</span><span class="o">=</span><span class="n">base_dir</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.github</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

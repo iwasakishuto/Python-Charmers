@@ -107,7 +107,7 @@ try:
     __DRIVER_SETUP__
 except NameError:
     DRIVER_TYPE = _check_driver(selenium_port="4444", verbose=False)
-    # print(f"DRIVER_TYPE: {toGREEN(DRIVER_TYPE)}")
+    print(f"DRIVER_TYPE: {toGREEN(DRIVER_TYPE)}")
     __DRIVER_SETUP__ = True
     if DRIVER_TYPE == "":
         warnings.warn(message="Fails to launch all supported drivers.", category=DriverNotFoundWarning)

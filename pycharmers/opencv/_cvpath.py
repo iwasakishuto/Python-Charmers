@@ -4,7 +4,7 @@ import os
 from ..utils._path import _makedirs, _download_sample_data, PYCHARMERS_DIR, PYCHARMERS_ICON
 from ..utils._colorings import toBLUE
 from ..utils.generic_utils import now_str
-from ..api.github import wgit
+from ..sdk.github import wgit
 
 __all__ = [
     "PYCHARMERS_OPENCV_DIR", "PYCHARMERS_OPENCV_DATA_DIR",

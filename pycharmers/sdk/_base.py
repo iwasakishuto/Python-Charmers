@@ -1,4 +1,4 @@
-"""Base class for Python-Charmers API"""
+"""Base class for Python-Charmers' SDK """
 #coding: utf-8
 import os
 from abc import ABC
@@ -6,7 +6,7 @@ from ..utils._path import DOTENV_PATH
 from ..utils.environ_utils import name2envname, load_environ
 from ..utils.generic_utils import verbose2print
 
-class PycharmersAPI(ABC):
+class PycharmersSDK(ABC):
     """Abstract Class for Python-Charmers API
     
     Args:
@@ -42,14 +42,14 @@ class PycharmersAPI(ABC):
             keyname (str) : Keyname for method.
 
         Examples:
-            >>> from gummy.api._base import PycharmersAPI
-            >>> api = PycharmersAPI()
-            >>> api.keyname2envname("id")
+            >>> from pycharmers.sdk._base import PycharmersSDK
+            >>> sdk = PycharmersSDK()
+            >>> sdk.keyname2envname("id")
             'TRANSLATION_GUMMY_GATEWAY_USELESS_NAME'
-            >>> api.keyname2envname("hoge")
+            >>> sdk.keyname2envname("hoge")
             'TRANSLATION_GUMMY_GATEWAY_USELESS_HOGE'
         """
-        return name2envname(name=keyname, prefix=self.api_name, service="api")
+        return name2envname(name=keyname, prefix=self.api_name, service="sdk")
 
     def get_val(self, keyname, **kwargs):
         """Get the value from ``gatewaykwargs`` or an environment variable.
@@ -59,11 +59,11 @@ class PycharmersAPI(ABC):
             \*\*kwargs (dict)   : Given ``kwargs``.
 
         Examples:
-            >>> from pycharmers.api._base import PycharmersAPI
-            >>> api = PycharmersAPI()
-            >>> print(api.get_val("hoge"))
+            >>> from pycharmers.sdk._base import PycharmersSDK
+            >>> sdk = PycharmersSDK()
+            >>> print(sdk.get_val("hoge"))
             None
-            >>> print(api.get_val("username"))
+            >>> print(sdk.get_val("username"))
             USERNAME_IN_ENVFILE
             >>> print(gateway.get_val("username", username=":)"))
             :)

@@ -3,7 +3,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from .generic_utils import str_strip, handleKeyError
-from .driver_utils import scrollDown, wait_until_all_elements
 
 def str2soup(string):
     """Convert strings to soup, and removed extra tags such as ``<html>``, ``<body>``, and ``<head>``.
@@ -348,6 +347,7 @@ def get_soup(url, driver=None, features="lxml", timeout=1):
     if driver is None:
         html = requests.get(url=url).content
     else:
+        from .driver_utils import scrollDown, wait_until_all_elements
         driver.get(url)
         wait_until_all_elements(driver=driver, timeout=timeout, verbose=False)
         scrollDown(driver=driver, verbose=False)

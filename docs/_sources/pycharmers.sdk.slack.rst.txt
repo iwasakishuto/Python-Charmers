@@ -1,7 +1,7 @@
-pycharmers.api.slack module
+pycharmers.sdk.slack module
 ===========================
 
-.. automodule:: pycharmers.api.slack
+.. automodule:: pycharmers.sdk.slack
    :members:
    :undoc-members:
    :show-inheritance:

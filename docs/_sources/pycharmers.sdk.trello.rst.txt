@@ -1,7 +1,7 @@
-pycharmers.api.trello module
+pycharmers.sdk.trello module
 ============================
 
-.. automodule:: pycharmers.api.trello
+.. automodule:: pycharmers.sdk.trello
    :members:
    :undoc-members:
    :show-inheritance:

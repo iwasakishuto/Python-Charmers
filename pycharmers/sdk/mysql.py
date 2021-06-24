@@ -8,9 +8,9 @@ from typing import Any,Optional,Callable,Union,List,Tuple,Dict
 from ..utils._colorings import toBLUE, toGREEN, toRED
 from ..utils.environ_utils import check_environ
 from ..utils.generic_utils import handleKeyError
-from ._base import PycharmersAPI
+from ._base import PycharmersSDK
 
-class PycharmersMySQL(PycharmersAPI):
+class PycharmersMySQL(PycharmersSDK):
     """Wrapper class for MySQL.
 
     Args:
@@ -40,7 +40,7 @@ class PycharmersMySQL(PycharmersAPI):
 
         Examples:
             >>> import datetime
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> PycharmersMySQL.format_data(data=1, type="int(8)")
                 '1'
             >>> PycharmersMySQL.format_data(data=1, type="varchar(10)")
@@ -147,7 +147,7 @@ class PycharmersMySQL(PycharmersAPI):
             Union[pd.DataFrame, Tuple[tuple], None]: Return value of query.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.execute("show databases;")
                 (('information_schema',),
@@ -184,7 +184,7 @@ class PycharmersMySQL(PycharmersAPI):
             columninfo (dict)        : Key value style column information.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.create(table="pycharmers_user", column_info={
             ...     "id"      : 'int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "ID"',
@@ -202,7 +202,7 @@ class PycharmersMySQL(PycharmersAPI):
             verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.drop(table="pycharmers_user")
         """
@@ -219,7 +219,7 @@ class PycharmersMySQL(PycharmersAPI):
             pd.DataFrame: Table structure.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> df = sql.describe(table="pycharmers_user")
             >>> print(df.to_markdown())
@@ -238,7 +238,7 @@ class PycharmersMySQL(PycharmersAPI):
             table (str)              : The name of the table.
             data (List[list])        : Data to be inserted.
             columns (list, optional) : Column names to be inserted values. Defaults to ``[]``.
-            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames <pycharmers.api.mysql.PycharmersMySQL.get_colnames>` to decide which columns to be inseted. Defaults to ``"input_field"``.
+            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames <pycharmers.sdk.mysql.PycharmersMySQL.get_colnames>` to decide which columns to be inseted. Defaults to ``"input_field"``.
             verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Returns:
@@ -246,7 +246,7 @@ class PycharmersMySQL(PycharmersAPI):
 
         Examples:
             >>> import datetime
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.insert(table="pycharmers_user", data=[
             ...     ["iwasaki", "now()"],
@@ -274,7 +274,7 @@ class PycharmersMySQL(PycharmersAPI):
             verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> print(sql.selectAll(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
@@ -304,7 +304,7 @@ class PycharmersMySQL(PycharmersAPI):
             verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> print(sql.select(table="pycharmers_user").to_markdown())
                 |    |   id | username   | created             |
@@ -334,7 +334,7 @@ class PycharmersMySQL(PycharmersAPI):
             pd.DataFrame: Merged table records.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql.merge(
             ...     table1info={"user": ["id", "name", "job_id"]}, 
             ...     table2info={"jobs": ["id", "job_name"]}, 
@@ -359,7 +359,7 @@ class PycharmersMySQL(PycharmersAPI):
             list: Extracted Columns.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.get_colnames(table="pycharmers_user")
             >>> ['id', 'username', 'created']
@@ -387,7 +387,7 @@ class PycharmersMySQL(PycharmersAPI):
             pd.DataFrame: Selected Records.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> df = sql.select(table="pycharmers_user")
             >>> print(df.to_markdown())
@@ -423,7 +423,7 @@ class PycharmersMySQL(PycharmersAPI):
             int: The number of rows in the specified ``table`` .
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> sql.count_rows(table="pycharmers_user")
                 2
@@ -439,7 +439,7 @@ class PycharmersMySQL(PycharmersAPI):
         Returns:
             pd.DataFrame: Information for all Tables.
 
-        >>> from pycharmers.api import PycharmersMySQL
+        >>> from pycharmers.sdk import PycharmersMySQL
         >>> sql = PycharmersMySQL()
         >>> df = sql.show_tables()
         >>> print(df.to_markdown())
@@ -460,7 +460,7 @@ class PycharmersMySQL(PycharmersAPI):
             pd.DataFrame: Explanation for records.
 
         Examples:
-            >>> from pycharmers.api import PycharmersMySQL
+            >>> from pycharmers.sdk import PycharmersMySQL
             >>> sql = PycharmersMySQL()
             >>> df = sql.explain(table="pycharmers_user")
             >>> print(df.to_markdown())

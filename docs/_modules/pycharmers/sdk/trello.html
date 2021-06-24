@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.sdk.trello &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.trello</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.sdk.trello</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A wrapper class for `Trello API &lt;https://developer.atlassian.com/cloud/trello/&gt;`_&quot;&quot;&quot;</span>
+<span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">DOTENV_PATH</span>
+<span class="kn">from</span> <span class="nn">..utils.environ_utils</span> <span class="kn">import</span> <span class="n">name2envname</span><span class="p">,</span> <span class="n">check_environ</span>
+<span class="kn">from</span> <span class="nn">..utils.json_utils</span> <span class="kn">import</span> <span class="n">dumps_json</span>
+<span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">._base</span> <span class="kn">import</span> <span class="n">PycharmersSDK</span>
+
+<div class="viewcode-block" id="Trello"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello">[docs]</a><span class="k">class</span> <span class="nc">Trello</span><span class="p">(</span><span class="n">PycharmersSDK</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A wrapper class for `Trello API &lt;https://developer.atlassian.com/cloud/trello/&gt;`_</span>
+
+<span class="sd">    Visit https://trello.com/app-key to get an API key and Token. (NOTE: You have to login before visiting)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api_key (str)  : API-key.</span>
+<span class="sd">        token (str)    : Token.</span>
+<span class="sd">        verbose (bool) : Whether to print logs or not. </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">api_name</span><span class="o">=</span><span class="s2">&quot;Trello&quot;</span><span class="p">,</span> 
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_show_func</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Trello.api_call"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.api_call">[docs]</a>    <span class="k">def</span> <span class="nf">api_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get information about the memberships users have to the board.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str)      : URL to which the API sends the request.</span>
+<span class="sd">            api_key (str)  : API-key.</span>
+<span class="sd">            token (str)    : Token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_environ</span><span class="p">(</span>
+            <span class="n">required_keynames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_keynames</span><span class="p">,</span> 
+            <span class="n">required_env_varnames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_env_varnames</span><span class="p">,</span>
+            <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;key&quot;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;apikey&quot;</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">),</span>
+                <span class="s2">&quot;token&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_val</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">),</span> 
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.show_results"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.show_results">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">show_results</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">keynames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Static Method for displaying result beautifullly.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            result (list)   : Result.</span>
+<span class="sd">            keynames (list) : The keyname to extract and display the value from the ``result``</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import Trello</span>
+<span class="sd">            &gt;&gt;&gt; Trello.show_results(result=[</span>
+<span class="sd">            ...     {&quot;api&quot;: &quot;slack&quot;,  &quot;foo&quot;: 1, &quot;bar&quot;: [&quot;get&quot;]},</span>
+<span class="sd">            ...     {&quot;api&quot;: &quot;github&quot;, &quot;foo&quot;: 2, &quot;bar&quot;: [&quot;post&quot;]}</span>
+<span class="sd">            &gt;&gt;&gt; ], keynames=[&quot;api&quot;, &quot;b&quot;])</span>
+<span class="sd">            +--------+------+</span>
+<span class="sd">            |  api   |  b   |</span>
+<span class="sd">            +========+======+</span>
+<span class="sd">            |  slack | None |</span>
+<span class="sd">            +--------+------+</span>
+<span class="sd">            | github | None |</span>
+<span class="sd">            +--------+------+</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tabulate</span><span class="p">(</span><span class="n">tabular_data</span><span class="o">=</span><span class="p">[[</span><span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">keynames</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">result</span><span class="p">],</span> <span class="n">headers</span><span class="o">=</span><span class="n">keynames</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.setup_show_func"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.setup_show_func">[docs]</a>    <span class="k">def</span> <span class="nf">setup_show_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up the ``show_XXX`` funciton.&quot;&quot;&quot;</span>
+        <span class="n">method2showkeynames</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;memberships_of_a_board&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;lists_on_a_board&quot;</span>       <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;cards_on_a_board&quot;</span>       <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;idList&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;cards_in_a_list&quot;</span>        <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">default_keynames</span> <span class="ow">in</span> <span class="n">method2showkeynames</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">def</span> <span class="nf">show_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">keynames</span><span class="o">=</span><span class="n">default_keynames</span><span class="p">,</span> <span class="n">method_name</span><span class="o">=</span><span class="n">method_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="n">get_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;get_</span><span class="si">{</span><span class="n">method_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">get_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">keynames</span><span class="o">=</span><span class="n">keynames</span><span class="p">)</span>
+            <span class="n">show_func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;See :meth:`get_</span><span class="si">{</span><span class="n">method_name</span><span class="si">}</span><span class="s2"> &lt;pycharmers.sdk.trello.get_</span><span class="si">{</span><span class="n">method_name</span><span class="si">}</span><span class="s2">&gt;` for the required arguments.&quot;</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;show_</span><span class="si">{</span><span class="n">method_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">show_func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.get_memberships_of_a_board"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.get_memberships_of_a_board">[docs]</a>    <span class="k">def</span> <span class="nf">get_memberships_of_a_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API wrapper for `Get Memberships of a Board &lt;https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-memberships-get&gt;`_&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_call</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.trello.com/1/members/</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">/boards&quot;</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.get_lists_on_a_board"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.get_lists_on_a_board">[docs]</a>    <span class="k">def</span> <span class="nf">get_lists_on_a_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API wrapper for `Get Lists on a Board &lt;https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-lists-get&gt;`_&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_call</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.trello.com/1/boards/</span><span class="si">{</span><span class="n">board_id</span><span class="si">}</span><span class="s2">/lists&quot;</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.get_cards_on_a_board"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.get_cards_on_a_board">[docs]</a>    <span class="k">def</span> <span class="nf">get_cards_on_a_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API wrapper for `Get Cards on a Board &lt;https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-cards-get&gt;`_&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_call</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.trello.com/1/boards/</span><span class="si">{</span><span class="n">board_id</span><span class="si">}</span><span class="s2">/cards&quot;</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trello.get_cards_in_a_list"><a class="viewcode-back" href="../../../pycharmers.sdk.trello.html#pycharmers.sdk.trello.Trello.get_cards_in_a_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_cards_in_a_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API wrapper for `Get Cards in a List &lt;https://developer.atlassian.com/cloud/trello/rest/api-group-lists/#api-lists-id-cards-get&gt;`_&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_call</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.trello.com/1/lists/</span><span class="si">{</span><span class="n">board_id</span><span class="si">}</span><span class="s2">/cards&quot;</span><span class="p">,</span> <span class="n">apikey</span><span class="o">=</span><span class="n">apikey</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.trello</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

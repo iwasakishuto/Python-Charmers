@@ -7,10 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   pycharmers.api
    pycharmers.cli
    pycharmers.matplotlib
    pycharmers.opencv
+   pycharmers.sdk
    pycharmers.utils
 
 Module contents

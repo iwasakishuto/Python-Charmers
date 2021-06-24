@@ -1,0 +1,22 @@
+pycharmers.sdk package
+======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycharmers.sdk.github
+   pycharmers.sdk.google_drive
+   pycharmers.sdk.mysql
+   pycharmers.sdk.slack
+   pycharmers.sdk.trello
+
+Module contents
+---------------
+
+.. automodule:: pycharmers.sdk
+   :members:
+   :undoc-members:
+   :show-inheritance:
