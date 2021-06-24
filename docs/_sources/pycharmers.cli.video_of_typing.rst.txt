@@ -1,0 +1,7 @@
+pycharmers.cli.video\_of\_typing module
+=======================================
+
+.. automodule:: pycharmers.cli.video_of_typing
+   :members:
+   :undoc-members:
+   :show-inheritance:

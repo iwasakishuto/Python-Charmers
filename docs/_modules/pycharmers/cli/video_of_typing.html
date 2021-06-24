@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.cli.video_of_typing &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_typing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.cli.video_of_typing</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">assign_trbl</span><span class="p">,</span> <span class="n">now_str</span><span class="p">,</span> <span class="n">verbose2print</span><span class="p">,</span> <span class="n">get_random_ttfontname</span>
+<span class="kn">from</span> <span class="nn">..utils.argparse_utils</span> <span class="kn">import</span> <span class="n">ListParamProcessorCreate</span>
+<span class="kn">from</span> <span class="nn">..utils.pil_utils</span> <span class="kn">import</span> <span class="n">draw_text_in_pil</span>
+<span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
+<span class="kn">from</span> <span class="nn">..utils.monitor_utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
+
+<div class="viewcode-block" id="video_of_typing"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_typing.html#pycharmers.cli.video_of_typing.video_of_typing">[docs]</a><span class="k">def</span> <span class="nf">video_of_typing</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot;Create a typing video. Before using this program, please do the following things</span>
+
+<span class="sd">    - Create a typing json file easily at `JS.35 タイピング風動画を楽に作成する &lt;https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html&gt;`_</span>
+<span class="sd">    - Add some keyword arguments for :func:`draw_text_in_pil &lt;pycharmers.utils.pil_utils.draw_text_in_pil&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        --typing (Tuple[str])   : Path to typing text file(s).</span>
+<span class="sd">        --typing-fontname (str) : Default Typing Font name</span>
+<span class="sd">        --size (List[int])      : Output video image size. Defaults to ``[1080,1920]``.</span>
+<span class="sd">        --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``. </span>
+<span class="sd">        --video (str)           : The path to video to paste. Defaults to ``None``.</span>
+<span class="sd">        --image (str)           : The path to image to paste. Defaults to ``None``.</span>
+<span class="sd">        --sec (float)           : The length of the created video. This value is used when ``--video`` is NOT specified. Defaults to ``5``.</span>
+<span class="sd">        --fps (float)           : The fps of the created video. This value is used when ``--video`` is NOT specified. Defaults to ``30``.</span>
+<span class="sd">        --margin (int)          : The margin size for pasting video or image. Defaults to ``0``.</span>
+<span class="sd">        --align (List[str])     : Horizontal and vertical alignment of the content (video/image).</span>
+<span class="sd">        --out (str)             : The filename of created typing video. Defaults to ``f&quot;typing_video_{now_str()}.mp4&quot;``.</span>
+<span class="sd">        --quiet (bool)          : Whether to make the output quiet.</span>
+<span class="sd">    </span>
+<span class="sd">    Note:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+<span class="sd">                </span>
+<span class="sd">            $ video_of_typing --typing /path/to/typing1.json \\</span>
+<span class="sd">                                       /path/to/typing2.json \\</span>
+<span class="sd">                                       /path/to/typing3.json \\</span>
+<span class="sd">                              --video /path/to/video.mp4 \\</span>
+<span class="sd">                              --bgRGB &quot;[48,105,152]&quot; \\</span>
+<span class="sd">                              --align &quot;[center,middle]&quot;</span>
+<span class="sd">            [Output Typing Video]</span>
+<span class="sd">            * Frame Count              : 285</span>
+<span class="sd">            * Frame Length             : 4.8[s]</span>
+<span class="sd">            * Size (W,H)               : [1080, 1920]</span>
+<span class="sd">            * Background Color (RGB)   : [48, 105, 152]</span>
+<span class="sd">            * Output Typing Video Path : typing_video_2021-06-24@23.34.01.mp4</span>
+<span class="sd">            [Image or Video data to paste]</span>
+<span class="sd">            * Data              : /path/to/video.mp4</span>
+<span class="sd">            * Size (W,H)        : (1034, 1590)</span>
+<span class="sd">            * Margin (top,left) : (165, 23)</span>
+<span class="sd">            [TypeWriter](/path/tp/typing1.json)</span>
+<span class="sd">            * ttfontname             : /path/to/851MkPOP_002.ttf</span>
+<span class="sd">            * fontsize               : 70</span>
+<span class="sd">            * textRGB                : (0, 0, 0)</span>
+<span class="sd">            * Number of Typing Texts : 62</span>
+<span class="sd">            * Move to the next typing every 4.6 from the 0th to the 285th</span>
+<span class="sd">            [TypeWriter](/path/tp/typing2.json)</span>
+<span class="sd">            * ttfontname             : /path/to/851MkPOP_002.ttf</span>
+<span class="sd">            * fontsize               : 100</span>
+<span class="sd">            * textRGB                : (255, 212, 59)</span>
+<span class="sd">            * Number of Typing Texts : 1</span>
+<span class="sd">            * Move to the next typing every 285.0 from the 0th to the 285th</span>
+<span class="sd">            [TypeWriter](/path/tp/typing3.json)</span>
+<span class="sd">            * ttfontname             : /path/to/851MkPOP_002.ttf</span>
+<span class="sd">            * fontsize               : 50</span>
+<span class="sd">            * textRGB                : (255, 212, 59)</span>
+<span class="sd">            * Number of Typing Texts : 1</span>
+<span class="sd">            * Move to the next typing every 285.0 from the 0th to the 285th</span>
+<span class="sd">            Video of Typing 285/285 [####################]100.00% - 14.107[s]</span>
+<span class="sd">            Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4</span>
+
+<span class="sd">    +---------------------------------------------+</span>
+<span class="sd">    |                Sample                       |</span>
+<span class="sd">    +=============================================+</span>
+<span class="sd">    | .. image:: _images/cli.video_of_typing.gif  |</span>
+<span class="sd">    +---------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;video_of_typing&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Create a typing Video.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--typing&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to typing text file(s).&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--typing-fontname&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Default Typing Font name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--size&quot;</span><span class="p">,</span>   <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">1080</span><span class="p">,</span><span class="mi">1920</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The image size.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bgRGB&quot;</span><span class="p">,</span>  <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The color of background image. (RGB)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--video&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to input video.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--sec&quot;</span><span class="p">,</span>    <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The length of the created video. This value is used when &#39;video&#39; is NOT specified.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fps&quot;</span><span class="p">,</span>    <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The fps of the created video. This value is used when &#39;video&#39; is NOT specified.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--image&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to input image.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--margin&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The margin size for pasting video or image.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--align&quot;</span><span class="p">,</span>  <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;horizontal and vertical alignment of the content (video/image).&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--out&quot;</span><span class="p">,</span>    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;typing_video_</span><span class="si">{</span><span class="n">now_str</span><span class="p">()</span><span class="si">}</span><span class="s2">.mp4&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The filename of created typing video.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--quiet&quot;</span><span class="p">,</span>  <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to make the output quiet.&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">video_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">video</span>
+    <span class="n">image_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">image</span>
+    <span class="n">out_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">out</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">W</span><span class="p">,</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">bgRGB</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">bgRGB</span>
+    <span class="n">bgBGR</span> <span class="o">=</span> <span class="n">bgRGB</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">align</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">align</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span>
+    <span class="n">args_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">_get_kwargs</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">video_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">_VideoCaptureMimic</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fps</span>
+        <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sec</span><span class="o">*</span><span class="n">fps</span><span class="p">)</span>
+
+    <span class="n">mt</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">args_kwargs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">align</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;left&quot;</span>   <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">ml</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;center&quot;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">ml</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="s2">&quot;right&quot;</span>  <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">ml</span> <span class="o">=</span> <span class="n">W</span><span class="o">-</span><span class="n">w</span>
+        <span class="k">if</span> <span class="s2">&quot;top&quot;</span>    <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">mt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;middle&quot;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">-</span><span class="n">h</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="s2">&quot;bottom&quot;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span> <span class="n">mt</span> <span class="o">=</span> <span class="n">H</span><span class="o">-</span><span class="n">h</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="s1">&#39;[Output Typing Video]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Frame Count              : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Frame Length             : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="o">/</span><span class="n">fps</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">[s]&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Size (W,H)               : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Background Color (RGB)   : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">bgRGB</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Output Typing Video Path : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span>
+<span class="s2">        </span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="s1">&#39;[Image or Video data to paste]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Data              : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_path</span> <span class="ow">or</span> <span class="n">image_path</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Size (W,H)        : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">))</span><span class="si">}</span><span class="s2">   </span>
+<span class="s2">        * Margin (top,left) : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">mt</span><span class="p">,</span><span class="n">ml</span><span class="p">))</span><span class="si">}</span><span class="s2">   </span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">))</span>
+    
+    <span class="n">type_writer</span> <span class="o">=</span> <span class="n">TypeWriter</span><span class="p">(</span><span class="n">frame_count</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">typing_json_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">typing</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s2">&quot;MP4V&quot;</span><span class="p">)</span>
+    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;Video of Typing&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">bgBGR</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">is_ok</span><span class="p">,</span><span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_ok</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span> 
+            <span class="k">break</span>
+        <span class="n">bg</span><span class="p">[</span><span class="n">mt</span><span class="p">:</span><span class="n">mt</span><span class="o">+</span><span class="n">h</span><span class="p">,</span><span class="n">ml</span><span class="p">:</span><span class="n">ml</span><span class="o">+</span><span class="n">w</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">frame</span>
+        <span class="n">bg_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">bg</span><span class="p">)</span>
+        <span class="n">bg_img</span> <span class="o">=</span> <span class="n">type_writer</span><span class="o">.</span><span class="n">draw_typing_texts</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">bg_img</span><span class="p">,</span> <span class="n">curt_frame_count</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">bg_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bg_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">out_video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bg_img</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">it</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="n">out_video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Typing Video is saved at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<span class="k">class</span> <span class="nc">_VideoCaptureMimic</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_path</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">image_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">image_path</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+
+    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="TypeWriter"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_typing.html#pycharmers.cli.video_of_typing.TypeWriter">[docs]</a><span class="k">class</span> <span class="nc">TypeWriter</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing_json_paths</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">(),</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Useful class for drawing typing text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            total_frame_count (int)                  : Total frame count of Typing video.</span>
+<span class="sd">            typing_json_paths (Tuple[str], optional) : Path to typing text file(s). Defaults to ``()``.</span>
+<span class="sd">            verbose (bool, optional)                 : Whether to output the typing file information. Defaults to ``True``.</span>
+<span class="sd">        </span>
+<span class="sd">        Attributes:</span>
+<span class="sd">            drawing_functions (List[callable]) : A list of drawing functions for each typing file in ``typing_json_paths``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print</span><span class="p">:</span><span class="n">callable</span> <span class="o">=</span> <span class="n">verbose2print</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawing_functions</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">typing_json_paths</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_typing_data</span><span class="p">(</span><span class="n">json_path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="o">=</span><span class="n">total_frame_count</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TypeWriter.set_typing_data"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_typing.html#pycharmers.cli.video_of_typing.TypeWriter.set_typing_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_typing_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">textRGB</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set a drawing function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            json_path (str)                        : Json file which contains typing data. You can easily create this file at `JS.35 タイピング風動画を楽に作成する &lt;https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html&gt;`_</span>
+<span class="sd">            total_frame_count (int)                : Total frame count of Typing video.</span>
+<span class="sd">            fontsize (int, optional)               : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.</span>
+<span class="sd">            textRGB (Tuple[int,int,int], optional) : Default font color. You can override this value by adding to json file (at ``path``). Defaults to ``(0,0,0)``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [type]: [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">typing_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+        <span class="n">typing_texts</span> <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;typing&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span>
+        <span class="n">num_typing_texts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">typing_texts</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="p">)</span>
+        <span class="n">span</span><span class="p">:</span><span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">)</span><span class="o">/</span><span class="n">num_typing_texts</span>
+        <span class="c1"># Keyword Arguments for pycharmers.utils.pil_utils.draw_text_in_pil</span>
+        <span class="n">ttfontname</span> <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;ttfontname&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">get_random_ttfontname</span><span class="p">()</span>
+        <span class="n">fontsize</span>   <span class="o">=</span> <span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fontsize&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">)</span>
+        <span class="n">textRGB</span>    <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">typing_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;textRGB&quot;</span><span class="p">,</span> <span class="n">textRGB</span><span class="p">))</span>
+        <span class="n">textBGR</span>    <span class="o">=</span> <span class="n">textRGB</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">def</span> <span class="nf">draw_typing_text</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">curt_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">&lt;=</span><span class="n">curt_frame_count</span><span class="o">&lt;=</span><span class="n">e</span><span class="p">:</span>
+                <span class="n">img</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">draw_text_in_pil</span><span class="p">(</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">typing_texts</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">curt_frame_count</span><span class="o">//</span><span class="n">span</span><span class="p">),</span> <span class="n">num_typing_texts</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)],</span>
+                    <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">ttfontname</span><span class="o">=</span><span class="n">ttfontname</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">textRGB</span><span class="o">=</span><span class="n">textBGR</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">typing_data</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">img</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawing_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">draw_typing_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="s1">&#39;[TypeWriter]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">        * ttfontname             : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">ttfontname</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * fontsize               : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">fontsize</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * textRGB                : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">textRGB</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Number of Typing Texts : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">num_typing_texts</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        * Move to the next typing every </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">span</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> from the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="si">}</span><span class="s2">th to the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">th</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TypeWriter.draw_typing_texts"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_typing.html#pycharmers.cli.video_of_typing.TypeWriter.draw_typing_texts">[docs]</a>    <span class="k">def</span> <span class="nf">draw_typing_texts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">:</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">curt_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Apply each drawing function in ``self.drawing_functions``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img (Image.Image)      : Input image object.</span>
+<span class="sd">            curt_frame_count (int) : Current Frame Count</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image.Image: Image object with typing texts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawing_functions</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">curt_frame_count</span><span class="o">=</span><span class="n">curt_frame_count</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_typing</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

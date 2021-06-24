@@ -4,10 +4,12 @@ import re
 import sys
 import json
 import math
+import random
 import urllib
 import datetime
 import webbrowser
 from pathlib import Path
+from typing import Optional
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
@@ -818,3 +820,30 @@ def verbose2print(verbose=True):
         return print
     else:
         return lambda *args,**kwargs: None
+
+def get_random_ttfontname(random_state:Optional[int]=None) -> str:
+    """Get a ttfont randomly from fonts installed on your system.
+
+    Args:
+        random_state (Optional[int], optional) : Random State. Defaults to ``None``.
+
+    Returns:
+        str: Path to the ttfont.
+
+    Examples:
+        >>> from pycharmers.utils import get_random_ttfontname
+        >>> get_random_ttfontname()
+        '/System/Library/Fonts/ArialHB.ttc'
+        >>> get_random_ttfontname()
+        '/System/Library/Fonts/AppleSDGothicNeo.ttc'
+        >>> get_random_ttfontname(0)
+        '/System/Library/Fonts/Palatino.ttc'
+        >>> get_random_ttfontname(0)
+        '/System/Library/Fonts/Palatino.ttc'
+    """
+    rnd = random.Random(random_state)
+    if sys.platform.startswith('win'):
+        font_dir = "C:\Windows\Fonts"
+    else:
+        font_dir = "/System/Library/Fonts/"
+    return os.path.join(font_dir, rnd.choice(os.listdir(font_dir)))

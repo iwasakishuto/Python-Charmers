@@ -55,10 +55,12 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">._colorings</span> <span class="kn">import</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
 <span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="ne">KeyError</span>
@@ -869,6 +871,33 @@
         <span class="k">return</span> <span class="nb">print</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_random_ttfontname"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.get_random_ttfontname">[docs]</a><span class="k">def</span> <span class="nf">get_random_ttfontname</span><span class="p">(</span><span class="n">random_state</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get a ttfont randomly from fonts installed on your system.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        random_state (Optional[int], optional) : Random State. Defaults to ``None``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Path to the ttfont.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import get_random_ttfontname</span>
+<span class="sd">        &gt;&gt;&gt; get_random_ttfontname()</span>
+<span class="sd">        &#39;/System/Library/Fonts/ArialHB.ttc&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_random_ttfontname()</span>
+<span class="sd">        &#39;/System/Library/Fonts/AppleSDGothicNeo.ttc&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_random_ttfontname(0)</span>
+<span class="sd">        &#39;/System/Library/Fonts/Palatino.ttc&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_random_ttfontname(0)</span>
+<span class="sd">        &#39;/System/Library/Fonts/Palatino.ttc&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rnd</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;win&#39;</span><span class="p">):</span>
+        <span class="n">font_dir</span> <span class="o">=</span> <span class="s2">&quot;C:\Windows\Fonts&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">font_dir</span> <span class="o">=</span> <span class="s2">&quot;/System/Library/Fonts/&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">font_dir</span><span class="p">,</span> <span class="n">rnd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">font_dir</span><span class="p">)))</span></div>
 </pre></div>
 
             <div class="clearer"></div>

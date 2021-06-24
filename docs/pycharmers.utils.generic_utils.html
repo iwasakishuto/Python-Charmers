@@ -787,6 +787,35 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.get_random_ttfontname">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">get_random_ttfontname</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">random_state</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#get_random_ttfontname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.get_random_ttfontname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a ttfont randomly from fonts installed on your system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>random_state</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Random State. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the ttfont.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">get_random_ttfontname</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_random_ttfontname</span><span class="p">()</span>
+<span class="go">&#39;/System/Library/Fonts/ArialHB.ttc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_random_ttfontname</span><span class="p">()</span>
+<span class="go">&#39;/System/Library/Fonts/AppleSDGothicNeo.ttc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_random_ttfontname</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;/System/Library/Fonts/Palatino.ttc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_random_ttfontname</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;/System/Library/Fonts/Palatino.ttc&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

@@ -1,0 +1,7 @@
+pycharmers.cli.video\_of\_lyric module
+======================================
+
+.. automodule:: pycharmers.cli.video_of_lyric
+   :members:
+   :undoc-members:
+   :show-inheritance:

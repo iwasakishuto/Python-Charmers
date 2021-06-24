@@ -14,7 +14,6 @@ Submodules
    pycharmers.cli.cvWindow
    pycharmers.cli.form_auto_fill_in
    pycharmers.cli.jupyter_arrange
-   pycharmers.cli.lyricVideo
    pycharmers.cli.openBrowser
    pycharmers.cli.pdfmine
    pycharmers.cli.regexp_replacement
@@ -24,6 +23,8 @@ Submodules
    pycharmers.cli.show
    pycharmers.cli.tweetile
    pycharmers.cli.video2gif
+   pycharmers.cli.video_of_lyric
+   pycharmers.cli.video_of_typing
 
 Module contents
 ---------------

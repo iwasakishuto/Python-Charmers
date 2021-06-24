@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="pycharmers.cli.video_of_typing module" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.cli.video_of_typing.html" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
+  <meta property="og:site_name" content="Python-Charmers" />
+<meta name="twitter:site" content="@cabernet_rock" />
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+    <title>pycharmers.cli.video_of_typing module &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pycharmers.matplotlib package" href="pycharmers.matplotlib.html" />
+    <link rel="prev" title="pycharmers.cli.video_of_lyric module" href="pycharmers.cli.video_of_lyric.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.video_of_lyric.html" title="pycharmers.cli.video_of_lyric module"
+             accesskey="P">previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" accesskey="U">pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_typing module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pycharmers.cli.video_of_typing">
+<span id="pycharmers-cli-video-of-typing-module"></span><h1>pycharmers.cli.video_of_typing module<a class="headerlink" href="#module-pycharmers.cli.video_of_typing" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.video_of_typing.video_of_typing">
+<code class="sig-prename descclassname">pycharmers.cli.video_of_typing.</code><code class="sig-name descname">video_of_typing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#video_of_typing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.video_of_typing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a typing video. Before using this program, please do the following things</p>
+<ul class="simple">
+<li><p>Create a typing json file easily at <a class="reference external" href="https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html">JS.35 タイピング風動画を楽に作成する</a></p></li>
+<li><p>Add some keyword arguments for <a class="reference internal" href="pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text_in_pil" title="pycharmers.utils.pil_utils.draw_text_in_pil"><code class="xref py py-func docutils literal notranslate"><span class="pre">draw_text_in_pil</span></code></a>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>--typing</strong> (<em>Tuple</em><em>[</em><em>str</em><em>]</em>) – Path to typing text file(s).</p></li>
+<li><p><strong>--typing-fontname</strong> (<em>str</em>) – Default Typing Font name</p></li>
+<li><p><strong>--size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Output video image size. Defaults to <code class="docutils literal notranslate"><span class="pre">[1080,1920]</span></code>.</p></li>
+<li><p><strong>--bgRGB</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – The color of background image. (RGB) Defaults to <code class="docutils literal notranslate"><span class="pre">[255,255,255]</span></code>.</p></li>
+<li><p><strong>--video</strong> (<em>str</em>) – The path to video to paste. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>--image</strong> (<em>str</em>) – The path to image to paste. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>--sec</strong> (<em>float</em>) – The length of the created video. This value is used when <code class="docutils literal notranslate"><span class="pre">--video</span></code> is NOT specified. Defaults to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p><strong>--fps</strong> (<em>float</em>) – The fps of the created video. This value is used when <code class="docutils literal notranslate"><span class="pre">--video</span></code> is NOT specified. Defaults to <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p></li>
+<li><p><strong>--margin</strong> (<em>int</em>) – The margin size for pasting video or image. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>--align</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Horizontal and vertical alignment of the content (video/image).</p></li>
+<li><p><strong>--out</strong> (<em>str</em>) – The filename of created typing video. Defaults to <code class="docutils literal notranslate"><span class="pre">f&quot;typing_video_{now_str()}.mp4&quot;</span></code>.</p></li>
+<li><p><strong>--quiet</strong> (<em>bool</em>) – Whether to make the output quiet.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ video_of_typing --typing /path/to/typing1.json \
+                           /path/to/typing2.json \
+                           /path/to/typing3.json \
+                  --video /path/to/video.mp4 \
+                  --bgRGB &quot;[48,105,152]&quot; \
+                  --align &quot;[center,middle]&quot;
+[Output Typing Video]
+* Frame Count              : 285
+* Frame Length             : 4.8[s]
+* Size (W,H)               : [1080, 1920]
+* Background Color (RGB)   : [48, 105, 152]
+* Output Typing Video Path : typing_video_2021-06-24@23.34.01.mp4
+[Image or Video data to paste]
+* Data              : /path/to/video.mp4
+* Size (W,H)        : (1034, 1590)
+* Margin (top,left) : (165, 23)
+[TypeWriter](/path/tp/typing1.json)
+* ttfontname             : /path/to/851MkPOP_002.ttf
+* fontsize               : 70
+* textRGB                : (0, 0, 0)
+* Number of Typing Texts : 62
+* Move to the next typing every 4.6 from the 0th to the 285th
+[TypeWriter](/path/tp/typing2.json)
+* ttfontname             : /path/to/851MkPOP_002.ttf
+* fontsize               : 100
+* textRGB                : (255, 212, 59)
+* Number of Typing Texts : 1
+* Move to the next typing every 285.0 from the 0th to the 285th
+[TypeWriter](/path/tp/typing3.json)
+* ttfontname             : /path/to/851MkPOP_002.ttf
+* fontsize               : 50
+* textRGB                : (255, 212, 59)
+* Number of Typing Texts : 1
+* Move to the next typing every 285.0 from the 0th to the 285th
+Video of Typing 285/285 [####################]100.00% - 14.107[s]
+Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4
+</pre></div>
+</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Sample</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/cli.video_of_typing.gif" src="_images/cli.video_of_typing.gif" />
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.cli.video_of_typing.TypeWriter">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.cli.video_of_typing.</code><code class="sig-name descname">TypeWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">typing_json_paths</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#TypeWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.TypeWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="pycharmers.cli.video_of_typing.TypeWriter.set_typing_data">
+<code class="sig-name descname">set_typing_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 0, 0</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#TypeWriter.set_typing_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.TypeWriter.set_typing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a drawing function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_path</strong> (<em>str</em>) – <p>Json file which contains typing data. You can easily create this file at <a class="reference external" href="https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html">JS.35 タイピング風動画を楽に作成する</a></p>
+</p></li>
+<li><p><strong>total_frame_count</strong> (<em>int</em>) – Total frame count of Typing video.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Default font size. You can override this value by adding to json file (at <code class="docutils literal notranslate"><span class="pre">path</span></code>). Defaults to <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p></li>
+<li><p><strong>textRGB</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>,</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Default font color. You can override this value by adding to json file (at <code class="docutils literal notranslate"><span class="pre">path</span></code>). Defaults to <code class="docutils literal notranslate"><span class="pre">(0,0,0)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.video_of_typing.TypeWriter.draw_typing_texts">
+<code class="sig-name descname">draw_typing_texts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">curt_frame_count</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#TypeWriter.draw_typing_texts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.TypeWriter.draw_typing_texts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply each drawing function in <code class="docutils literal notranslate"><span class="pre">self.drawing_functions</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>Image.Image</em>) – Input image object.</p></li>
+<li><p><strong>curt_frame_count</strong> (<em>int</em>) – Current Frame Count</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Image object with typing texts.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pycharmers.html">pycharmers package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pycharmers.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.api.html">pycharmers.api package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pycharmers.cli.html">pycharmers.cli package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pycharmers.cli.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.book2img.html">pycharmers.cli.book2img module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvCascades.html">pycharmers.cli.cvCascades module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPaperScanner.html">pycharmers.cli.cvPaperScanner module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvPencilSketch.html">pycharmers.cli.cvPencilSketch module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.cvWindow.html">pycharmers.cli.cvWindow module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.form_auto_fill_in.html">pycharmers.cli.form_auto_fill_in module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.jupyter_arrange.html">pycharmers.cli.jupyter_arrange module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.openBrowser.html">pycharmers.cli.openBrowser module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.pdfmine.html">pycharmers.cli.pdfmine module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.regexp_replacement.html">pycharmers.cli.regexp_replacement module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.render_template.html">pycharmers.cli.render_template module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.requirements.html">pycharmers.cli.requirements module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.revise_text.html">pycharmers.cli.revise_text module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.show.html">pycharmers.cli.show module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.tweetile.html">pycharmers.cli.tweetile module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video2gif.html">pycharmers.cli.video2gif module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.cli.video_of_lyric.html">pycharmers.cli.video_of_lyric module</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.cli.video_of_typing module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.cli.html#module-pycharmers.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.matplotlib.html">pycharmers.matplotlib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pycharmers.html#module-pycharmers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pycharmers.cli.video_of_lyric.html"
+                        title="previous chapter">pycharmers.cli.video_of_lyric module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pycharmers.matplotlib.html"
+                        title="next chapter">pycharmers.matplotlib package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycharmers.cli.video_of_typing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.matplotlib.html" title="pycharmers.matplotlib package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pycharmers.cli.video_of_lyric.html" title="pycharmers.cli.video_of_lyric module"
+             >previous</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="pycharmers.html" >pycharmers package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pycharmers.cli.html" >pycharmers.cli package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_typing module</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

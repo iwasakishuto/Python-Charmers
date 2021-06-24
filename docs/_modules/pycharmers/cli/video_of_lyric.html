@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.cli.video_of_lyric &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_lyric</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.cli.video_of_lyric</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
+<span class="kn">from</span> <span class="nn">..utils.argparse_utils</span> <span class="kn">import</span> <span class="n">ListParamProcessorCreate</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span>
+<span class="kn">from</span> <span class="nn">..utils.monitor_utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
+<span class="kn">from</span> <span class="nn">..utils.pil_utils</span> <span class="kn">import</span> <span class="n">draw_text_in_pil</span>
+
+<div class="viewcode-block" id="video_of_lyric"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_lyric.html#pycharmers.cli.video_of_lyric.video_of_lyric">[docs]</a><span class="k">def</span> <span class="nf">video_of_lyric</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot;Create a lyric Video.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        json (str)            : Path to parameter json file.</span>
+<span class="sd">        --ttfontname (str)    : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.</span>
+<span class="sd">        --margin (int)        : The margin size.</span>
+<span class="sd">        --mode (str)          : Optional mode to use for color values.</span>
+<span class="sd">        --fontsize (int)      : The font size.</span>
+<span class="sd">        --fontwidth (int)     : The font width.</span>
+<span class="sd">        --fontheight (int)    : The font height.</span>
+<span class="sd">        --img-size (tuple)    : The image size.</span>
+<span class="sd">        --bgRGB (tuple)       : he color of background image. (RGB)</span>
+<span class="sd">        --textRGB (tuple)     : The color of text. (RGB)</span>
+<span class="sd">        --alpha-range (float) : How many seconds to set alpha to 1 (maximum).</span>
+<span class="sd">        --fps (float)         : The video fps.</span>
+<span class="sd">        --span (int)          : The span between lyrics.</span>
+
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; # Create a json.</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; def func(word, start, end, indent=&#39;\\t&#39;*4):</span>
+<span class="sd">        ...     print(f&#39;{indent}&quot;words&quot;: &quot;{word}&quot;,&#39;)</span>
+<span class="sd">        ...     print(f&#39;{indent}&quot;seconds&quot;: {[round(e,3) for e in np.linspace(start, end, len(word))]},&#39;)</span>
+
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; import json</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.utils import dumps_json</span>
+<span class="sd">        &gt;&gt;&gt; with open(&quot;era-it-doo/era-it.json&quot;) as f:</span>
+<span class="sd">        ...     data = json.load(f)</span>
+<span class="sd">        &gt;&gt;&gt; print(dumps_json(data))</span>
+<span class="sd">        {</span>
+<span class="sd">          &quot;kwargs&quot;: {</span>
+<span class="sd">            &quot;ttfontname&quot;: &quot;/Users/iwasakishuto/Library/Fonts/851MkPOP_002.ttf&quot;,</span>
+<span class="sd">            &quot;img_size&quot;: [</span>
+<span class="sd">              360,</span>
+<span class="sd">              640</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;fontsize&quot;: 38,</span>
+<span class="sd">            &quot;fontwidth&quot;: 30,</span>
+<span class="sd">            &quot;margin&quot;: 10,</span>
+<span class="sd">            &quot;bgRGB&quot;: [</span>
+<span class="sd">              0,</span>
+<span class="sd">              0,</span>
+<span class="sd">              0,</span>
+<span class="sd">              255</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;mode&quot;: &quot;RGBA&quot;,</span>
+<span class="sd">            &quot;ret_position&quot;: &quot;line&quot;</span>
+<span class="sd">          },</span>
+<span class="sd">          &quot;texts&quot;: [</span>
+<span class="sd">            [{&quot;words&quot;:&quot;１日今日も、&quot;,&quot;seconds&quot;:[2.4, 2.624, 2.848, 3.072, 3.296, 3.52],&quot;x&quot;:-1,&quot;y&quot;:50},{&quot;words&quot;:&quot;こなした労働、&quot;,&quot;seconds&quot;:[4.1, 4.317, 4.533, 4.75, 4.967, 5.183, 5.4],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;辛かったけど&quot;,&quot;seconds&quot;:[5.7, 5.96, 6.22, 6.48, 6.74, 7.0],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;本当がんばったじゃん&quot;,&quot;seconds&quot;:[7.0, 7.222, 7.444, 7.667, 7.889, 8.111, 8.333, 8.556, 8.778, 9.0],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;１日今日も、&quot;,&quot;seconds&quot;:[9.1, 9.38, 9.66, 9.94, 10.22, 10.5],&quot;x&quot;:-1,&quot;y&quot;:260},{&quot;words&quot;:&quot;いちいちどうこう、&quot;,&quot;seconds&quot;:[10.8, 10.962, 11.125, 11.288, 11.45, 11.612, 11.775, 11.938, 12.1],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;いわれたけど&quot;,&quot;seconds&quot;:[12.3, 12.52, 12.74, 12.96, 13.18, 13.4],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;本当にがんばったじゃん&quot;,&quot;seconds&quot;:[13.4, 13.59, 13.78, 13.97, 14.16, 14.35, 14.54, 14.73, 14.92, 15.11, 15.3],&quot;x&quot;:-1,&quot;y&quot;:-1}]</span>
+<span class="sd">          ]</span>
+<span class="sd">        }         </span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        When you run from the command line, execute as follows::</span>
+<span class="sd">        </span>
+<span class="sd">        $ video_of_lyric dodo-era-it.json --audio dodo-era-it.mp4[.mp3]</span>
+
+<span class="sd">    +--------------------------------------------+</span>
+<span class="sd">    |                Sample                      |</span>
+<span class="sd">    +============================================+</span>
+<span class="sd">    | .. image:: _images/cli.video_of_lyric.gif  |</span>
+<span class="sd">    +--------------------------------------------+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;video_of_lyric&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Create a lyric Video.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>                <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to parameter json file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ttfontname&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--margin&quot;</span><span class="p">,</span>      <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The margin size.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span>        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Optional mode to use for color values.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fontsize&quot;</span><span class="p">,</span>    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The font size.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fontwidth&quot;</span><span class="p">,</span>   <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The font width.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fontheight&quot;</span><span class="p">,</span>  <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The font height.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--img-size&quot;</span><span class="p">,</span>    <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The image size.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bgRGB&quot;</span><span class="p">,</span>       <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The color of background image. (RGB)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--textRGB&quot;</span><span class="p">,</span>     <span class="n">action</span><span class="o">=</span><span class="n">ListParamProcessorCreate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The color of text. (RGB)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--alpha-range&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The video length [s].&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fps&quot;</span><span class="p">,</span>         <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The video fps.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">30.</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--span&quot;</span><span class="p">,</span>        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The span between lyrics&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--audio&quot;</span><span class="p">,</span>       <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The audio path.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">json_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">json</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">args_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">_get_kwargs</span><span class="p">())</span>
+    <span class="n">data_kwargs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">get_kwargs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span><span class="n">args_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="n">img_size</span>   <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;img_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">360</span><span class="p">,</span><span class="mi">640</span><span class="p">])[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">bgRGB</span>      <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;bgRGB&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)))</span>
+    <span class="n">textRGB</span>    <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;textRGB&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)))</span>
+    <span class="n">mode</span>       <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+    <span class="n">margin</span>     <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;margin&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">fontsize</span>   <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;fontsize&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">fontwidth</span>  <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;fontwidth&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">fontheight</span> <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;fontheight&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">span</span>       <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;span&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">audio_path</span> <span class="o">=</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">alpha_range</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">alpha_range</span>
+    <span class="n">fps</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">fps</span>
+    <span class="n">spf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">fps</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ttfontname&quot;</span><span class="p">:</span> <span class="n">get_kwargs</span><span class="p">(</span><span class="s2">&quot;ttfontname&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;img_size&quot;</span><span class="p">:</span> <span class="n">img_size</span><span class="p">,</span>
+        <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="n">fontsize</span><span class="p">,</span>
+        <span class="s2">&quot;fontwidth&quot;</span><span class="p">:</span> <span class="n">fontwidth</span><span class="p">,</span>
+        <span class="s2">&quot;fontheight&quot;</span><span class="p">:</span> <span class="n">fontheight</span><span class="p">,</span>
+        <span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="n">margin</span><span class="p">,</span>
+        <span class="s2">&quot;bgRGB&quot;</span><span class="p">:</span> <span class="n">bgRGB</span><span class="p">,</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">mode</span><span class="p">,</span>
+        <span class="c1"># &quot;ret_position&quot;: &quot;line&quot;,</span>
+    <span class="p">}</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;texts&quot;</span><span class="p">,</span> <span class="p">[[]])</span>
+    <span class="n">num_texts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_data</span><span class="p">)</span>
+    <span class="n">sec_filter</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text_data</span><span class="p">):</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1e16</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+            <span class="n">secs</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="o">*</span><span class="n">secs</span><span class="p">)</span><span class="o">-</span><span class="n">alpha_range</span>
+            <span class="n">end</span>   <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="o">*</span><span class="n">secs</span><span class="p">)</span>
+        <span class="n">sec_filter</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="o">+</span><span class="n">alpha_range</span><span class="o">+</span><span class="n">span</span><span class="p">])</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">sec_filter</span><span class="p">])</span> <span class="o">+</span> <span class="n">alpha_range</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">num_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="o">*</span><span class="n">fps</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">set_fontcolor</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">sec</span><span class="p">,</span> <span class="n">textRGB</span><span class="p">,</span> <span class="n">alpha_range</span><span class="p">):</span>
+        <span class="n">fc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span>
+        <span class="n">fc</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">textRGB</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">fc</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">sec</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">/</span><span class="n">alpha_range</span><span class="o">*</span><span class="mi">255</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fc</span><span class="p">)</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;duration&quot;</span> <span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+        <span class="s2">&quot;alpha range&quot;</span> <span class="p">:</span> <span class="n">alpha_range</span><span class="p">,</span>
+        <span class="s2">&quot;FPS&quot;</span><span class="p">:</span> <span class="n">fps</span><span class="p">,</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="n">span</span><span class="p">,</span>
+        <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="n">audio_path</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Parameters]&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span>
+    <span class="n">video_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">now_str</span><span class="p">()</span><span class="si">}</span><span class="s2">.mp4&quot;</span>
+    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">out_video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">video_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">num_frames</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;Editing&quot;</span><span class="p">)</span>
+    <span class="n">it</span> <span class="o">=</span> <span class="n">sec</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">it</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">img_size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bgRGB</span><span class="p">)</span>
+        <span class="n">sec</span> <span class="o">+=</span> <span class="n">spf</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;=</span> <span class="n">sec</span> <span class="o">&lt;</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sec_filter</span><span class="p">):</span>
+            <span class="n">texts</span> <span class="o">=</span> <span class="n">text_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">init_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">margin</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+                <span class="n">words</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;words&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">startSecs</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">set_pos</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">line</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">set_pos</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">line</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">w</span><span class="p">,</span><span class="n">start</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">startSecs</span><span class="p">):</span>
+                    <span class="n">fc</span> <span class="o">=</span> <span class="n">set_fontcolor</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">sec</span><span class="p">,</span> <span class="n">textRGB</span><span class="p">,</span> <span class="n">alpha_range</span><span class="p">)</span>
+                    <span class="n">bg</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">draw_text_in_pil</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="n">ret_position</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span> <span class="n">textRGB</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">+=</span> <span class="n">fontsize</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">init_x</span>
+            <span class="k">break</span>
+        <span class="n">out_video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">bg</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)))</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sec</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_texts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sec</span><span class="o">&gt;</span><span class="n">duration</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">out_video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="n">monitor</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> (No Sound) is created.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">audio_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span><span class="o">!=</span><span class="s2">&quot;.mp3&quot;</span><span class="p">:</span>
+            <span class="n">audio_clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">()</span>
+            <span class="n">audio_path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="s2">&quot;.mp3&quot;</span>
+            <span class="n">audio_clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">write_audiofile</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Audio file (</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span><span class="si">}</span><span class="s2">) is created.&quot;</span><span class="p">)</span>
+        <span class="n">video_with_audio_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_audio&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">video_path</span><span class="p">))</span>
+        <span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">()</span>
+        <span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span>
+            <span class="n">video_with_audio_path</span><span class="p">,</span> 
+            <span class="n">audio</span><span class="o">=</span><span class="n">audio_path</span><span class="p">,</span> 
+            <span class="n">codec</span><span class="o">=</span><span class="s1">&#39;libx264&#39;</span><span class="p">,</span> 
+            <span class="n">audio_codec</span><span class="o">=</span><span class="s1">&#39;aac&#39;</span><span class="p">,</span> 
+            <span class="n">temp_audiofile</span><span class="o">=</span><span class="s1">&#39;temp-audio.m4a&#39;</span><span class="p">,</span> 
+            <span class="n">remove_temp</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video_path</span><span class="p">,</span> 
+            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">,</span> 
+            <span class="s2">&quot;-c:v&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;-c:a&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+            <span class="n">video_with_audio_path</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ffmpeg.log&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_with_audio_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> (With Sound) is created.&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.cli.video_of_lyric</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

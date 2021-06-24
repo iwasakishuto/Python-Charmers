@@ -15,7 +15,7 @@ from ..utils.generic_utils import now_str
 from ..utils.monitor_utils import ProgressMonitor
 from ..utils.pil_utils import draw_text_in_pil
 
-def lyricVideo(argv=sys.argv[1:]):
+def video_of_lyric(argv=sys.argv[1:]):
     """Create a lyric Video.
 
     Args:
@@ -76,15 +76,15 @@ def lyricVideo(argv=sys.argv[1:]):
     Note:
         When you run from the command line, execute as follows::
         
-        $ lyricVideo dodo-era-it.json --audio dodo-era-it.mp4[.mp3]
+        $ video_of_lyric dodo-era-it.json --audio dodo-era-it.mp4[.mp3]
 
-    +----------------------------------------+
-    |                Sample                  |
-    +========================================+
-    | .. image:: _images/cli.lyricVideo.gif  |
-    +----------------------------------------+
+    +--------------------------------------------+
+    |                Sample                      |
+    +============================================+
+    | .. image:: _images/cli.video_of_lyric.gif  |
+    +--------------------------------------------+
     """
-    parser = argparse.ArgumentParser(prog="lyricVideo", description="Create a lyric Video.", add_help=True)
+    parser = argparse.ArgumentParser(prog="video_of_lyric", description="Create a lyric Video.", add_help=True)
     parser.add_argument("json",                type=str, help="Path to parameter json file.")
     parser.add_argument("--ttfontname",  type=str, default=None, help="A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.")
     parser.add_argument("--margin",      type=int, default=None, help="The margin size.")
@@ -99,8 +99,7 @@ def lyricVideo(argv=sys.argv[1:]):
     parser.add_argument("--fps",         type=float, help="The video fps.", default=30.)
     parser.add_argument("--span",        type=int,   help="The span between lyrics", default=None)
     parser.add_argument("--audio",       type=str,   help="The audio path.", default=None)
-
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     json_path = args.json
     with open(json_path, mode="r") as f:
