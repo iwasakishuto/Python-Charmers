@@ -3,12 +3,17 @@ import os
 import sys
 import argparse
 
-from ..utils._path import REPO_DIR
+from ..utils._path import REPO_DIR, CLI_DIR
 from ..utils.generic_utils import str_strip
 from ..utils.print_utils import Table
+from ..utils.soup_utils import get_soup
 
-with open(os.path.join(REPO_DIR, "console_scripts.txt"), mode="r") as f:
-    CONSOLE_SCRIPTS = [line.strip("\n") for line in f.readlines() if line[0]!=("#")]
+target_path = os.path.join(REPO_DIR, "console_scripts.txt")
+if not os.path.exists(target_path):
+    lines = get_soup(url="https://raw.githubusercontent.com/iwasakishuto/Python-Charmers/master/console_scripts.txt").get_text().split("\n")
+else:
+    with open(target_path, mode="r") as f: lines = f.readlines()
+CONSOLE_SCRIPTS = [line.strip("\n") for line in lines if line[0]!=("#")]
 
 def show_command_line_programs(argv=sys.argv[1:]):
     """Show all Python-Charmers's command line programs.
@@ -26,63 +31,73 @@ def show_command_line_programs(argv=sys.argv[1:]):
 
     Examples:
         >>> $ pycharmers-show
-        +---------------------+------------------------------------------------------+
-        |       command       |                         path                         |
-        +=====================+======================================================+
-        |            book2img | pycharmers.cli.book2img:book2img                     |
-        +---------------------+------------------------------------------------------+
-        |         cv-cascades | pycharmers.cli.cvCascades:cvCascades                 |
-        +---------------------+------------------------------------------------------+
-        |    cv-paper-scanner | pycharmers.cli.cvPaperScanner:cvPaperScanner         |
-        +---------------------+------------------------------------------------------+
-        |    cv-pencil-sketch | pycharmers.cli.cvPencilSketch:cvPencilSketch         |
-        +---------------------+------------------------------------------------------+
-        |           cv-window | pycharmers.cli.cvWindow:cvWindow                     |
-        +---------------------+------------------------------------------------------+
-        |          lyricVideo | pycharmers.cli.lyricVideo:lyricVideo                 |
-        +---------------------+------------------------------------------------------+
-        |   form-auto-fill-in | pycharmers.cli.form_auto_fill_in:form_auto_fill_in   |
-        +---------------------+------------------------------------------------------+
-        |         openBrowser | pycharmers.cli.openBrowser:openBrowser               |
-        +---------------------+------------------------------------------------------+
-        |             pdfmine | pycharmers.cli.pdfmine:pdfmine                       |
-        +---------------------+------------------------------------------------------+
-        |  regexp-replacement | pycharmers.cli.regexp_replacement:regexp_replacement |
-        +---------------------+------------------------------------------------------+
-        |     render-template | pycharmers.cli.render_template:render_template       |
-        +---------------------+------------------------------------------------------+
-        | requirements-create | pycharmers.cli.requirements:requirements_create      |
-        +---------------------+------------------------------------------------------+
-        |     pycharmers-show | pycharmers.cli.show:show_command_line_programs       |
-        +---------------------+------------------------------------------------------+
-        |            tweetile | pycharmers.cli.tweetile:tweetile                     |
-        +---------------------+------------------------------------------------------+
-        |           video2gif | pycharmers.cli.video2gif:video2gif                   |
-        +---------------------+------------------------------------------------------+
+        +---------------------+----------------------------------------------------------------------------------+
+        |       command       |                                   description                                    |
+        +=====================+==================================================================================+
+        |            book2img | Convert Book into Sequential Images.                                             |
+        +---------------------+----------------------------------------------------------------------------------+
+        |         cv-cascades | Control the OpenCV cascade Examples.                                             |
+        +---------------------+----------------------------------------------------------------------------------+
+        |    cv-paper-scanner | Paper Scanner using OpenCV.                                                      |
+        +---------------------+----------------------------------------------------------------------------------+
+        |    cv-pencil-sketch | Convert the image like a pencil drawing.                                         |
+        +---------------------+----------------------------------------------------------------------------------+
+        |           cv-window | Use :meth:`cvWindow <pycharmers.opencv.windows.cvWindow>` to control frames.     |
+        +---------------------+----------------------------------------------------------------------------------+
+        |   form-auto-fill-in | Auto fill in your form using your saved information (or answer on the spot).     |
+        +---------------------+----------------------------------------------------------------------------------+
+        |     jupyter-arrange | Arrange Jupyter Notebook.                                                        |
+        +---------------------+----------------------------------------------------------------------------------+
+        |         openBrowser | Display url using the default browser.                                           |
+        +---------------------+----------------------------------------------------------------------------------+
+        |             pdfmine | Analyze PDF and extract various elements.                                        |
+        +---------------------+----------------------------------------------------------------------------------+
+        |  regexp-replacement | String replacement in a file using regular expression                            |
+        +---------------------+----------------------------------------------------------------------------------+
+        |     render-template | Render templates.                                                                |
+        +---------------------+----------------------------------------------------------------------------------+
+        | requirements-create | Create a ``requirements.text``                                                   |
+        +---------------------+----------------------------------------------------------------------------------+
+        |         revise_text | Revise word file.                                                                |
+        +---------------------+----------------------------------------------------------------------------------+
+        |     pycharmers-show | Show all Python-Charmers's command line programs.                                |
+        +---------------------+----------------------------------------------------------------------------------+
+        |            tweetile | Divide one image into three so that you can tweet beautifully.                   |
+        +---------------------+----------------------------------------------------------------------------------+
+        |      video_of_lyric | Create a lyric Video.                                                            |
+        +---------------------+----------------------------------------------------------------------------------+
+        |     video_of_typing | Create a typing video. Before using this program, please do the following things |
+        +---------------------+----------------------------------------------------------------------------------+
+        |           video2gif | Convert Video into Gif.                                                          |
+        +---------------------+----------------------------------------------------------------------------------+
     """
     parser = argparse.ArgumentParser(prog="pycharmers-show", add_help=True)
     parser.add_argument("-H", "--head",  type=int, help="Show the first ``head`` rows for the table.")
     parser.add_argument("-W", "--width", type=int, help="Table width.")
     parser.add_argument("--description", action="store_true", help="Whether to show description or path. (default= ``False`` )")
     parser.add_argument("--tablefmt", choices=Table.SUPPORTED_FORMATS, default="github", help="The format of table.")
+    parser.add_argument("--sphinx",  action="store_true", help="Whether to create for sphinx rst file.")
     args = parser.parse_args(argv)
 
     head = args.head
     table_width = args.width
-    # mark = args.mark
+    sphinx = args.sphinx
+    tablefmt = "rst" if sphinx else args.tablefmt
 
     paths       = []
     commands    = []
     descriptons = []
     for console_script in CONSOLE_SCRIPTS:
         command, path = [str_strip(e) for e in console_script.split("=")]
-        commands.append(command)
-        paths.append(path)
         f,i = path.split(":")
         exec(f"from {f} import {i}")
         descriptons.append(eval(f"{i}.__doc__.split('\\n')[0]"))
+        if args.sphinx:
+            command = f":func:`{command} <{f}.{i}>`"
+        commands.append(command)
+        paths.append(path)
 
-    table = Table(tablefmt=args.tablefmt)
+    table = Table(tablefmt=tablefmt)
     table.set_cols(values=commands, colname="command", color="GREEN")
     if args.description:
         table.set_cols(values=descriptons, colname="description", color="BLUE", align="left")

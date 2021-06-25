@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+from typing import Dict,Tuple,Callable
 
 __all__ = [
     "toACCENT", "toBLACK", "toRED", "toGREEN", "toYELLOW", "toBLUE", 
@@ -9,14 +10,14 @@ __all__ = [
     "check_all_toCOLOR"
 ]
 
-def _enable_vts():
+def _enable_vts() -> bool:
     """Enable Virtual Terminal Sequences (ANSI escape sequences) in Windows10."""
     INVALID_HANDLE_VALUE = -1
-    STD_INPUT_HANDLE     = -10
+    # STD_INPUT_HANDLE     = -10
     STD_OUTPUT_HANDLE    = -11
-    STD_ERROR_HANDLE     = -12
+    # STD_ERROR_HANDLE     = -12
     ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
-    ENABLE_LVB_GRID_WORLDWIDE = 0x0010
+    # ENABLE_LVB_GRID_WORLDWIDE = 0x0010
     try:
         from ctypes import windll, wintypes, byref
         from functools import reduce
@@ -38,7 +39,7 @@ except NameError:
     else:
         __WINDOWS_VTS_SETUP__ = True
 
-SUPPORTED_COLORINGS = {
+SUPPORTED_COLORINGS:Dict[str,Tuple[str,str]] = {
     "ACCENT"        : ('\x1b[01m', '\x1b[01m'),
     "BLACK"         : ('\x1b[30m', '\x1b[40m'),
     "RED"           : ('\x1b[31m', '\x1b[41m'),
@@ -60,7 +61,7 @@ SUPPORTED_COLORINGS = {
     # "END"           : ('\x1b[0m',  '\x1b[0m'),
 }
 
-def _toCOLOR_create(color=""):
+def _toCOLOR_create(color:str="") -> Callable[[str,bool],str]:
     color = color.upper()
     if __WINDOWS_VTS_SETUP__ and (color in SUPPORTED_COLORINGS.keys()):
         charcode = SUPPORTED_COLORINGS[color]

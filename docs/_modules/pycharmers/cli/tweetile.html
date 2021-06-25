@@ -18,6 +18,7 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/language_data.js"></script>
+    <script src="https://platform.twitter.com/widgets.js"></script>
     <script src="../../../_static/custom.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
@@ -50,32 +51,112 @@
             
   <h1>Source code for pycharmers.cli.tweetile</h1><div class="highlight"><pre>
 <span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span><span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">nptyping</span> <span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span><span class="n">toGREEN</span>
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">filenaming</span>
-<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span>
+<span class="kn">from</span> <span class="nn">..utils.monitor_utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
 
 <div class="viewcode-block" id="tweetile"><a class="viewcode-back" href="../../../pycharmers.cli.tweetile.html#pycharmers.cli.tweetile.tweetile">[docs]</a><span class="k">def</span> <span class="nf">tweetile</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
     <span class="sd">&quot;&quot;&quot;Divide one image into three so that you can tweet beautifully.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str) : Path to the input image.</span>
+<span class="sd">        path (str)      : Path to the input image.</span>
+<span class="sd">        --quality (int) : The image quality, on a scale from ``1`` (worst) to ``95`` (best). Defaults to ``95``.</span>
+<span class="sd">        --loop (int)    : How many times gif image loops. Defaults to ``0``. (infinite loop.)</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        When you run from the command line, execute as follows::</span>
 <span class="sd">        </span>
-<span class="sd">        $ tweetile path/to/image.jpg</span>
+<span class="sd">        $ tweetile path/to/filename.jpg --quality 75</span>
+<span class="sd">        $ tweetile path/to/filename.gif --loop 0</span>
 
-<span class="sd">    +--------------------------------------------+--------------------------------------------+--------------------------------------------+</span>
-<span class="sd">    |                                                                  Size                                                                |</span>
-<span class="sd">    +============================================+============================================+============================================+</span>
-<span class="sd">    |                                                .. image:: _images/cli.tweetile-size.jpg                                              |</span>
-<span class="sd">    +--------------------------------------------+--------------------------------------------+--------------------------------------------+</span>
+<span class="sd">    +-----------------------------------------------+-----------------------------------------------+</span>
+<span class="sd">    |                                            Example                                            |</span>
+<span class="sd">    +===============================================+===============================================+</span>
+<span class="sd">    | .. image:: _images/cli.tweetile-shingeki1.gif | .. image:: _images/cli.tweetile-shingeki2.gif |</span>
+<span class="sd">    +                                               +-----------------------------------------------+</span>
+<span class="sd">    |                                               | .. image:: _images/cli.tweetile-shingeki3.gif |</span>
+<span class="sd">    +-----------------------------------------------+-----------------------------------------------+</span>
+<span class="sd">    </span>
+<span class="sd">    This movie is from :tw:`@anime_shingeki`</span>
 
+<span class="sd">    .. tweet:: https://twitter.com/anime_shingeki/status/1376196378624282625</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;tweetile&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tile one image for tweet.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>      <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the input image.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--quality&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The image quality, on a scale from 1 (worst) to 95 (best). Defaults to 95.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--loop&quot;</span><span class="p">,</span>    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;How many times gif image loops. Defaults to 0. (infinite loop.)&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    
+    <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span>
+    <span class="n">quality</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">quality</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">loop</span>
+    <span class="n">root</span><span class="p">,</span><span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">filenaming</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;.gif&quot;</span><span class="p">:</span>
+        <span class="n">images_list</span> <span class="o">=</span> <span class="p">[[],[],[]]</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">frame_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">))</span>
+        <span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">frame_count</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;tweetile&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">frame_count</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">is_ok</span><span class="p">,</span><span class="n">img_bgr</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_ok</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">img_bgr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_bgr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="n">divideInto3forTweet</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images_list</span><span class="p">)):</span>
+                <span class="n">images_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">monitor</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">monitor</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">images</span><span class="p">,</span><span class="n">path</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">images_list</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
+            <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+                <span class="n">fp</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;gif&quot;</span><span class="p">,</span> 
+                <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                <span class="n">append_images</span><span class="o">=</span><span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> 
+                <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved gif at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1132</span><span class="p">,</span> <span class="mi">636</span><span class="p">),</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">divideInto3forTweet</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">img</span><span class="p">,</span><span class="n">path</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="n">quality</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved image at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="divideInto3forTweet"><a class="viewcode-back" href="../../../pycharmers.cli.tweetile.html#pycharmers.cli.tweetile.divideInto3forTweet">[docs]</a><span class="k">def</span> <span class="nf">divideInto3forTweet</span><span class="p">(</span><span class="n">img_arr</span><span class="p">:</span><span class="n">NDArray</span><span class="p">[(</span><span class="mi">636</span><span class="p">,</span><span class="mi">1132</span><span class="p">,</span><span class="n">Any</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Divide Image into 3 for Tweet</span>
+
+<span class="sd">    +--------------------------------------------+</span>
+<span class="sd">    |                     Size                   |</span>
+<span class="sd">    +============================================+</span>
+<span class="sd">    |   .. image:: _images/cli.tweetile-size.jpg |</span>
+<span class="sd">    +--------------------------------------------+</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img_arr (NDArray[(636,1132,Any), np.uint8]): Input image array (RGB)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[Image.Image,Image.Image,Image.Image]: A tuple of each Image object divided into three.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import cv2</span>
+<span class="sd">        &gt;&gt;&gt; from pycharmers.cli.tweetile import divideInto3forTweet</span>
+<span class="sd">        &gt;&gt;&gt; img_bgr = cv2.imread(&quot;cli.tweetile-before.jpg&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)</span>
+<span class="sd">        &gt;&gt;&gt; for i,img in enumerate(divideInto3forTweet(img_rgb), start=1):</span>
+<span class="sd">        ...     img.save(f&quot;cli.tweetile-after{i}.jpg&quot;, quality=95)</span>
 
 <span class="sd">    +--------------------------------------------+--------------------------------------------+--------------------------------------------+</span>
 <span class="sd">    |                                                               Example                                                                |</span>
@@ -87,21 +168,12 @@
 <span class="sd">    |                                            |                                            | .. image:: _images/cli.tweetile-after3.jpg |</span>
 <span class="sd">    +--------------------------------------------+--------------------------------------------+--------------------------------------------+</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;tweetile&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tile one image for tweet.&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the input image.&quot;</span><span class="p">)</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
-    
-    <span class="n">path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span>
-    <span class="n">img_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1132</span><span class="p">,</span> <span class="mi">636</span><span class="p">),</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
-    <span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img_pil</span><span class="p">)</span>
-
-    <span class="n">root_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">img_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">filenaming</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;.</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_ext</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">img_paths</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Save image at </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">img_arr</span><span class="p">[:,:</span><span class="mi">564</span><span class="p">]</span>   <span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">img_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
-    <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">img_arr</span><span class="p">[:</span><span class="mi">316</span><span class="p">,</span><span class="mi">568</span><span class="p">:]))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">img_paths</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
-    <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">img_arr</span><span class="p">[</span><span class="mi">320</span><span class="p">:,</span><span class="mi">568</span><span class="p">:]))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">img_paths</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span></div>
+    <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">ch</span> <span class="o">=</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">h</span><span class="o">!=</span><span class="mi">636</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">w</span><span class="o">!=</span><span class="mi">1132</span><span class="p">)):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Resize the input image from </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">ch</span><span class="p">))</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="mi">636</span><span class="p">,</span><span class="mi">1132</span><span class="p">,</span><span class="n">ch</span><span class="p">))</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">img_arr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="p">(</span><span class="mi">1132</span><span class="p">,</span><span class="mi">636</span><span class="p">))</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">img_arr</span><span class="p">[:,:</span><span class="mi">564</span><span class="p">],</span> <span class="n">img_arr</span><span class="p">[:</span><span class="mi">316</span><span class="p">,</span><span class="mi">568</span><span class="p">:],</span> <span class="n">img_arr</span><span class="p">[</span><span class="mi">320</span><span class="p">:,</span><span class="mi">568</span><span class="p">:]]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">img</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>
