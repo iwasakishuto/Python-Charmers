@@ -143,7 +143,7 @@ def video_of_typing(argv=sys.argv[1:]):
         * Margin (top,left) : {toGREEN((mt,ml))}   
         """))
     
-    type_writer = TypeWriter(frame_count=n, typing_json_paths=args.typing, verbose=verbose)
+    type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
     fourcc = cv2.VideoWriter_fourcc(*"MP4V")
     out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
     monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
@@ -212,19 +212,21 @@ class TypeWriter():
         num_typing_texts = len(typing_texts)
         s = typing_data.pop("start", 0)
         e = typing_data.pop("end", total_frame_count)
+        last = typing_data.pop("last", False)
         span:float = (e-s)/num_typing_texts
         # Keyword Arguments for pycharmers.utils.pil_utils.draw_text_in_pil
-        ttfontname = typing_data.pop("ttfontname") or get_random_ttfontname()
+        ttfontname = typing_data.pop("ttfontname", get_random_ttfontname())
         fontsize   = typing_data.pop("fontsize", fontsize)
         textRGB    = tuple(typing_data.pop("textRGB", textRGB))
         textBGR    = textRGB[::-1]
         def draw_typing_text(img, curt_frame_count:int):
-            if s<=curt_frame_count<=e:
-                img,_ = draw_text_in_pil(
-                    text=typing_texts[max(min(int(curt_frame_count//span), num_typing_texts-1), 0)],
-                    img=img, ttfontname=ttfontname, fontsize=fontsize, textRGB=textBGR,
-                    **typing_data
-                )
+            if s<=curt_frame_count:
+                if last or curt_frame_count<=e:
+                    img,_ = draw_text_in_pil(
+                        text=typing_texts[max(min(int((curt_frame_count-s)//span), num_typing_texts-1), 0)],
+                        img=img, ttfontname=ttfontname, fontsize=fontsize, textRGB=textBGR,
+                        **typing_data
+                    )
             return img
         self.drawing_functions.append(draw_typing_text)
         self.print(*pretty_3quote(f"""

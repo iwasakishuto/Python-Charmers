@@ -817,6 +817,64 @@
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.html_decode">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">html_decode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#html_decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.html_decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the ASCII decoded version of the given HTML string. This does NOT remove normal HTML tags like <code class="docutils literal notranslate"><span class="pre">&lt;p&gt;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – HTML string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ASCII decoded string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">html_decode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">html_decode</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&gt; print(&quot;Hello, world!&quot;)&#39;</span><span class="p">)</span>
+<span class="go">&#39;&gt;&gt;&gt; print(&quot;Hello, world!&quot;)&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">html_decode</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&amp;gt;&amp;gt; print(&quot;Hello, world!&quot;)&#39;</span><span class="p">)</span>
+<span class="go">&#39;&gt;&gt;&gt; print(&quot;Hello, world!&quot;)&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.utils.generic_utils.split_code">
+<code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">split_code</code><span class="sig-paren">(</span><em class="sig-param">code: str</em>, <em class="sig-param">lexer: pygments.lexer.Lexer = &lt;pygments.lexers.PythonLexer&gt;</em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#split_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.split_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split code based on code higlighting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<em>str</em>) – A programming code.</p></li>
+<li><p><strong>lexer</strong> (<em>Lexer</em><em>, </em><em>optional</em>) – A <code class="docutils literal notranslate"><span class="pre">Lexer</span></code> for a specific language. Defaults to <code class="docutils literal notranslate"><span class="pre">PythonLexer()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dual list of code and class. <code class="docutils literal notranslate"><span class="pre">[[code,class]]</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[List[str,str]]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">split_code</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">splitted_code</span> <span class="o">=</span> <span class="n">split_code</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s2">&gt;&gt;&gt; try:</span>
+<span class="gp">... </span><span class="s2">...     from iwasakishuto import portfolio</span>
+<span class="gp">... </span><span class="s2">&gt;&gt;&gt; except ModuleNotFoundError:</span>
+<span class="gp">... </span><span class="s2">...     print(f&quot;Nice to meet you :)&quot;)</span>
+<span class="gp">... </span><span class="s2">&gt;&gt;&gt; portfolio.load()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">code</span><span class="p">,</span><span class="bp">cls</span> <span class="ow">in</span> <span class="n">splitted_code</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 

@@ -65,6 +65,7 @@ def tweetile(argv=sys.argv[1:]):
             images = divideInto3forTweet(img_rgb)
             for j in range(len(images_list)):
                 images_list[j].append(images[j])
+                images[j].save(f"{j}/{i:>03}.png")
             monitor.report(i)
         monitor.remove()
         for images,path in zip(images_list, paths):

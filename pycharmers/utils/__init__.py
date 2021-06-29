@@ -93,6 +93,8 @@ from .generic_utils import assign_trbl
 from .generic_utils import relative_import
 from .generic_utils import verbose2print
 from .generic_utils import get_random_ttfontname
+from .generic_utils import html_decode
+from .generic_utils import split_code
 
 from .inspect_utils import get_imported_members
 from .inspect_utils import get_defined_members

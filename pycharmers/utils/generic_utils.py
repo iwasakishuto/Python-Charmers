@@ -8,8 +8,13 @@ import random
 import urllib
 import datetime
 import webbrowser
+from pygments import highlight
+from pygments.lexer import Lexer
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
 from pathlib import Path
-from typing import Optional
+
+from typing import Optional,List
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
@@ -847,3 +852,63 @@ def get_random_ttfontname(random_state:Optional[int]=None) -> str:
     else:
         font_dir = "/System/Library/Fonts/"
     return os.path.join(font_dir, rnd.choice(os.listdir(font_dir)))
+
+def html_decode(s:str) -> str:
+    """Returns the ASCII decoded version of the given HTML string. This does NOT remove normal HTML tags like ``<p>``.
+
+    Args:
+        s (str): HTML string.
+
+    Returns:
+        str: ASCII decoded string.
+
+    Examples:
+        >>> from pycharmers.utils import html_decode
+        >>> html_decode('>>> print("Hello, world!")')
+        '>>> print("Hello, world!")'
+        >>> html_decode('&gt;&gt;&gt; print("Hello, world!")')
+        '>>> print("Hello, world!")'
+    """
+    htmlCodes = (
+        ("'", '&#39;'),
+        ('"', '&quot;'),
+        ('>', '&gt;'),
+        ('<', '&lt;'),
+        ('&', '&amp;')
+    )
+    for new,old in htmlCodes:
+        s = s.replace(old, new)
+    return s
+
+def split_code(code:str, lexer:Lexer=PythonLexer()) -> List[List[str]]:
+    """Split code based on code higlighting.
+
+    Args:
+        code (str)               : A programming code.
+        lexer (Lexer, optional)  : A ``Lexer`` for a specific language. Defaults to ``PythonLexer()``.
+
+    Returns:
+        List[List[str,str]]: A dual list of code and class. ``[[code,class]]``.
+
+    Examples:
+        >>> from pycharmers.utils import split_code
+        >>> splitted_code = split_code(\"\"\"
+        ... >>> try:
+        ... ...     from iwasakishuto import portfolio
+        ... >>> except ModuleNotFoundError:
+        ... ...     print(f"Nice to meet you :)")
+        ... >>> portfolio.load()
+        >>> \"\"\")
+        >>> for code,cls in splitted_code:
+        ...     print(code, end="")
+    """
+    code = highlight(code=code, lexer=lexer, formatter=HtmlFormatter())
+    code = html_decode(code)
+    data = []
+    for span in code.split("</span>")[1:-1]:
+        b,a = span.split("<span ")
+        if len(b)>0:
+            data.append([b, ""])
+        m = re.search(pattern='class="(.+)">', string=a)
+        data.append([a[m.end():], m.group(1)])
+    return data
