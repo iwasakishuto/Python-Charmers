@@ -10,7 +10,7 @@ import numpy as np
 from tqdm import tqdm
 from PIL import Image, ImageFont
 
-from typing import Optional,List,Tuple
+from typing import Optional,List,Tuple,Callable
 
 from ..utils._colorings import toBLUE, toGREEN, toACCENT
 from ..utils.color_utils import hex2rgb
@@ -93,7 +93,7 @@ def video_of_typing(argv=sys.argv[1:]):
     parser.add_argument("--bgRGB",  action=ListParamProcessorCreate(type=int), default=[255,255,255], help="The color of background image. (RGB)")
     parser.add_argument("--video",  type=str, default=None, help="The path to input video.")
     parser.add_argument("--sec",    type=float, default=5,  help="The length of the created video. This value is used when 'video' is NOT specified.")
-    parser.add_argument("--fps",    type=float, default=30, help="The fps of the created video. This value is used when 'video' is NOT specified.")
+    parser.add_argument("--fps",    type=float, default=None, help="The fps of the created video. This value is used when 'video' is NOT specified.")
     parser.add_argument("--image",  type=str, default=None, help="The path to input image.")
     parser.add_argument("--margin", type=int, default=0, help="The margin size for pasting video or image.")
     parser.add_argument("--align",  action=ListParamProcessorCreate(type=str), default=None, help="horizontal and vertical alignment of the content (video/image).")
@@ -107,18 +107,18 @@ def video_of_typing(argv=sys.argv[1:]):
     bgRGB = args.bgRGB
     bgBGR = bgRGB[::-1]
     align = args.align
+    fps = args.fps
     verbose = not args.quiet
     args_kwargs = dict(args._get_kwargs())
 
     if video_path is not None:
         cap = cv2.VideoCapture(video_path)
-        fps = cap.get(cv2.CAP_PROP_FPS)
+        fps = fps or cap.get(cv2.CAP_PROP_FPS)
         h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     else:
         cap = _VideoCaptureMimic(image_path)
-        fps = args.fps
         h,w,_ = cap.frame.shape
         n = int(args.sec*fps)
 
@@ -154,7 +154,7 @@ def video_of_typing(argv=sys.argv[1:]):
         * Margin (top,left) : {toGREEN((mt,ml))}   
         """))
     
-    type_writer = CodeTypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
+    type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
     fourcc = cv2.VideoWriter_fourcc(*"H264")
     out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
     monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
@@ -187,7 +187,7 @@ class _VideoCaptureMimic():
     def release(self):
         pass
 
-class TypeWriter():
+class BaseTypeWriter():
     def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
         """Useful class for drawing typing text.
 
@@ -202,16 +202,22 @@ class TypeWriter():
         self.print:callable = verbose2print(verbose)
         self.drawing_functions:List[callable] = []
         for path in typing_json_paths:
-            self.set_typing_data(json_path=path, total_frame_count=total_frame_count)
+            drawing_func, messages = self.typing_data_create(json_path=path, total_frame_count=total_frame_count)
+            self.print(*messages)
+            self.drawing_functions.append(drawing_func)
 
-    def set_typing_data(self, json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> None:
-        """Set a drawing function.
+    @staticmethod
+    def typing_data_create(json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> Tuple[Callable[[Image.Image, int], Image.Image], List[str]]:
+        """Create a drawing function.
 
         Args:
             json_path (str)                        : Json file which contains typing data. You can easily create this file at `JS.35 タイピング風動画を楽に作成する <https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html>`_
             total_frame_count (int)                : Total frame count of Typing video.
             fontsize (int, optional)               : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.
             textRGB (Tuple[int,int,int], optional) : Default font color. You can override this value by adding to json file (at ``path``). Defaults to ``(0,0,0)``.
+
+        Returns:
+            Tuple[Callable[[Image.Image, int], Image.Image], List[str]]: Tuple of Drawing function and its settings.
         """
         with open(json_path) as f:
             typing_data = json.load(f)
@@ -236,8 +242,7 @@ class TypeWriter():
                         **typing_data
                     )
             return img
-        self.drawing_functions.append(draw_typing_text)
-        self.print(*pretty_3quote(f"""
+        return (draw_typing_text, pretty_3quote(f"""
         {toACCENT('[TypeWriter]')}({toBLUE(json_path)})
         * ttfontname             : {toGREEN(ttfontname)}
         * fontsize               : {toGREEN(fontsize)}
@@ -260,7 +265,7 @@ class TypeWriter():
             img = func(img=img, curt_frame_count=curt_frame_count)
         return img
 
-class CodeTypeWriter(TypeWriter):
+class CodeTypeWriter(BaseTypeWriter):
     """Useful class for drawing typing programming code"""
     def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
         super().__init__(
@@ -269,13 +274,18 @@ class CodeTypeWriter(TypeWriter):
             verbose=verbose,
         )
 
-    def set_typing_data(self, json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> None:
-        """Set a drawing function for programming code.
+    @staticmethod
+    def typing_data_create(json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> Tuple[Callable[[Image.Image, int], Image.Image], List[str]]:
+        """Create a drawing function for programming code.
 
         Args:
-            json_path (str)          : Json file which contains programming code data.
-            total_frame_count (int)  : Total frame count of Typing video.
-            fontsize (int, optional) : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.
+            json_path (str)                        : Json file which contains typing data. You can easily create this file at `JS.35 タイピング風動画を楽に作成する <https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html>`_
+            total_frame_count (int)                : Total frame count of Typing video.
+            fontsize (int, optional)               : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.
+            textRGB (Tuple[int,int,int], optional) : Default font color. You can override this value by adding to json file (at ``path``). Defaults to ``(0,0,0)``.
+
+        Returns:
+            Tuple[Callable[[Image.Image, int], Image.Image], List[str]]: Tuple of Drawing function and its settings.
         """
         with open(json_path) as f:
             typing_data = json.load(f)
@@ -324,13 +334,29 @@ class CodeTypeWriter(TypeWriter):
                             x = X
                             y += fontheight
             return img
-        self.drawing_functions.append(draw_typing_text)
-        self.print(*pretty_3quote(f"""
+        return (draw_typing_text, pretty_3quote(f"""
         {toACCENT('[Code TypeWriter]')}({toBLUE(json_path)})
         * ttfontname             : {toGREEN(ttfontname)}
         * pygments.css           : {toGREEN(pygments_theme)}
         * fontsize               : {toGREEN(fontsize)}
         * Number of Typing Texts : {toGREEN(num_typing_texts)}
         * Move to the next typing every {toGREEN(f"{span:.1f}")} from the {toGREEN(s)}th to the {toGREEN(e)}th
-        """))
+        """)
+        )
 
+class TypeWriter(BaseTypeWriter):
+    def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
+        super().__init__(
+            total_frame_count=total_frame_count, 
+            typing_json_paths=typing_json_paths,
+            verbose=verbose,
+        )
+
+    @staticmethod
+    def typing_data_create(json_path, **kwargs):
+        with open(json_path) as f:
+            typing_data = json.load(f)
+        if "pygments-theme" in typing_data:
+            return CodeTypeWriter.typing_data_create(json_path=json_path, **kwargs)
+        else:
+            return BaseTypeWriter.typing_data_create(json_path=json_path, **kwargs)

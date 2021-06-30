@@ -90,8 +90,11 @@ def show_command_line_programs(argv=sys.argv[1:]):
     for console_script in CONSOLE_SCRIPTS:
         command, path = [str_strip(e) for e in console_script.split("=")]
         f,i = path.split(":")
-        exec(f"from {f} import {i}")
-        descriptons.append(eval(f"{i}.__doc__.split('\\n')[0]"))
+        try:
+            exec(f"from {f} import {i}")
+            descriptons.append(eval(f"{i}.__doc__.split('\\n')[0]"))
+        except Exception as e:
+            descriptons.append(f"Could not import it [{e.__class__.__name__}] {e}")
         if args.sphinx:
             command = f":func:`{command} <{f}.{i}>`"
         commands.append(command)

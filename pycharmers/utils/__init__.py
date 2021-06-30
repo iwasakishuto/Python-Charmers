@@ -18,7 +18,7 @@ from . import print_utils
 from . import soup_utils
 from . import subprocess_utils
 from . import templates
-from . import tkinter_utils
+# from . import tkinter_utils
 
 
 from ._colorings import *
@@ -146,4 +146,4 @@ from .subprocess_utils import get_monitor_size
 from .templates import render_template
 from .templates import defFunction
 
-from .tkinter_utils import PortionSelector
+# from .tkinter_utils import PortionSelector
