@@ -1,8 +1,7 @@
 name: Upload to PyPI with setup.py (deprecated)
 
 on:
-  release:
-    types: [ created ]
+  workflow_dispatch:
 
 jobs:
   deploy:
