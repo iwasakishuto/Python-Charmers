@@ -1,4 +1,4 @@
-name: Upload to PyPI
+name: Upload to PyPI with Poetry
 
 on:
   release:
