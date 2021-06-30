@@ -7,6 +7,7 @@ import math
 import random
 import urllib
 import datetime
+import warnings
 import webbrowser
 from pygments import highlight
 from pygments.lexer import Lexer
@@ -18,6 +19,7 @@ from typing import Optional,List
 
 from ._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ._exceptions import KeyError
+from ._warnings import PythonCharmersImprementationWarning
 
 NoneType = type(None)
 
@@ -848,9 +850,15 @@ def get_random_ttfontname(random_state:Optional[int]=None) -> str:
     """
     rnd = random.Random(random_state)
     if sys.platform.startswith('win'):
-        font_dir = "C:\Windows\Fonts"
+        font_dirs = ["C:\Windows\Fonts"]
     else:
-        font_dir = "/System/Library/Fonts/"
+        font_dirs = ["/System/Library/Fonts/", "/Library/Fonts/", "~/Library/Fonts/"]
+    for font_dir in font_dirs + [""]:
+        if os.path.exists(font_dir):
+            break
+        if font_dir == "":
+            warnings.warn("Colud not find the font directory.", category=PythonCharmersImprementationWarning)
+            return None
     return os.path.join(font_dir, rnd.choice(os.listdir(font_dir)))
 
 def html_decode(s:str) -> str:

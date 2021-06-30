@@ -98,9 +98,10 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
         img_size = img.size
     if ttfontname is None:
         raise TypeError(*pretty_3quote(f"""
-            Please define the {toGREEN('ttfontname')}. If you dont't know where the font file is, check the 
+            Please define the {toGREEN('ttfontname')}. If you dont't know where the font file is, check the
             * {toBLUE('fonts/')} directory on Windows
             * {toBLUE('/Library/Fonts/')}, {toBLUE('/System/Library/Fonts/')}, or {toBLUE('~/Library/Fonts/')} on macOS
+            or, use {toGREEN('pycharmers.utils.generic_urils.get_random_ttfontname')} to get the path to a random font file.
             """))
     handleKeyError(lst=["line", "word"], ret_position=ret_position)
     
