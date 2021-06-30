@@ -1,17 +1,20 @@
 #coding: utf-8
 import os
+import re
 import sys
 import cv2
 import json
+import warnings
 import argparse
 import numpy as np
 from tqdm import tqdm
-from PIL import Image
+from PIL import Image, ImageFont
 
 from typing import Optional,List,Tuple
 
 from ..utils._colorings import toBLUE, toGREEN, toACCENT
-from ..utils.generic_utils import assign_trbl, now_str, verbose2print, get_random_ttfontname
+from ..utils.color_utils import hex2rgb
+from ..utils.generic_utils import assign_trbl, now_str, verbose2print, get_random_ttfontname, split_code
 from ..utils.argparse_utils import ListParamProcessorCreate
 from ..utils.pil_utils import draw_text_in_pil
 from ..utils.print_utils import pretty_3quote
@@ -26,7 +29,7 @@ def video_of_typing(argv=sys.argv[1:]):
     Args:
         --typing (Tuple[str])   : Path to typing text file(s).
         --typing-fontname (str) : Default Typing Font name
-        --size (List[int])      : Output video image size. Defaults to ``[1080,1920]``.
+        --size (List[int])      : Output video image size (width, height). Defaults to ``[1080,1920]``.
         --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``. 
         --video (str)           : The path to video to paste. Defaults to ``None``.
         --image (str)           : The path to image to paste. Defaults to ``None``.
@@ -86,7 +89,7 @@ def video_of_typing(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(prog="video_of_typing", description="Create a typing Video.", add_help=True)
     parser.add_argument("--typing", type=str, help="Path to typing text file(s).", nargs="*")
     parser.add_argument("--typing-fontname", type=str, help="Default Typing Font name")
-    parser.add_argument("--size",   action=ListParamProcessorCreate(type=int), default=[1080,1920], help="The image size.")
+    parser.add_argument("--size",   action=ListParamProcessorCreate(type=int), default=[1080,1920], help="The image size. (W,H)")
     parser.add_argument("--bgRGB",  action=ListParamProcessorCreate(type=int), default=[255,255,255], help="The color of background image. (RGB)")
     parser.add_argument("--video",  type=str, default=None, help="The path to input video.")
     parser.add_argument("--sec",    type=float, default=5,  help="The length of the created video. This value is used when 'video' is NOT specified.")
@@ -101,7 +104,6 @@ def video_of_typing(argv=sys.argv[1:]):
     video_path = args.video
     image_path = args.image
     out_path = args.out
-    size = W,H = args.size
     bgRGB = args.bgRGB
     bgBGR = bgRGB[::-1]
     align = args.align
@@ -119,6 +121,15 @@ def video_of_typing(argv=sys.argv[1:]):
         fps = args.fps
         h,w,_ = cap.frame.shape
         n = int(args.sec*fps)
+
+    W,H = args.size
+    if W < w:
+        warnings.warn(f"The output f{toGREEN('width')} is smaller than that of the media, so expand it from {toGREEN(W)} to {toGREEN(w)}.")
+        W = w
+    if H < h:
+        warnings.warn(f"The output f{toGREEN('height')} is smaller than that of the media, so expand it from {toGREEN(H)} to {toGREEN(h)}.")
+        H=h
+    size = (W,H)
 
     mt,ml,_,_ = assign_trbl(data=args_kwargs, name="margin")
     if align is not None:
@@ -143,8 +154,8 @@ def video_of_typing(argv=sys.argv[1:]):
         * Margin (top,left) : {toGREEN((mt,ml))}   
         """))
     
-    type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
-    fourcc = cv2.VideoWriter_fourcc(*"MP4V")
+    type_writer = CodeTypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
+    fourcc = cv2.VideoWriter_fourcc(*"H264")
     out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
     monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
     for i in range(1,n+1):
@@ -193,7 +204,7 @@ class TypeWriter():
         for path in typing_json_paths:
             self.set_typing_data(json_path=path, total_frame_count=total_frame_count)
 
-    def set_typing_data(self, json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0)) -> None:
+    def set_typing_data(self, json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> None:
         """Set a drawing function.
 
         Args:
@@ -201,13 +212,10 @@ class TypeWriter():
             total_frame_count (int)                : Total frame count of Typing video.
             fontsize (int, optional)               : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.
             textRGB (Tuple[int,int,int], optional) : Default font color. You can override this value by adding to json file (at ``path``). Defaults to ``(0,0,0)``.
-
-        Returns:
-            [type]: [description]
         """
         with open(json_path) as f:
             typing_data = json.load(f)
-        _ = typing_data.pop("date")
+        _ = typing_data.pop("date", None)
         typing_texts = typing_data.pop("typing", [""])
         num_typing_texts = len(typing_texts)
         s = typing_data.pop("start", 0)
@@ -251,3 +259,78 @@ class TypeWriter():
         for func in self.drawing_functions:
             img = func(img=img, curt_frame_count=curt_frame_count)
         return img
+
+class CodeTypeWriter(TypeWriter):
+    """Useful class for drawing typing programming code"""
+    def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
+        super().__init__(
+            total_frame_count=total_frame_count, 
+            typing_json_paths=typing_json_paths,
+            verbose=verbose,
+        )
+
+    def set_typing_data(self, json_path:str, total_frame_count:int, fontsize:int=30, textRGB:Tuple[int,int,int]=(0,0,0), **kwargs) -> None:
+        """Set a drawing function for programming code.
+
+        Args:
+            json_path (str)          : Json file which contains programming code data.
+            total_frame_count (int)  : Total frame count of Typing video.
+            fontsize (int, optional) : Default font size. You can override this value by adding to json file (at ``path``). Defaults to ``30``.
+        """
+        with open(json_path) as f:
+            typing_data = json.load(f)
+        _ = typing_data.pop("date", None)
+        typing_texts = typing_data.pop("typing", "")
+        num_typing_texts = len(typing_texts)
+        s = typing_data.pop("start", 0)
+        e = typing_data.pop("end", total_frame_count)
+        last = typing_data.pop("last", False)
+        span:float = (e-s)/num_typing_texts
+        # Keyword Arguments for pycharmers.utils.pil_utils.draw_text_in_pil
+        ttfontname = typing_data.pop("ttfontname", get_random_ttfontname())
+        fontsize   = typing_data.pop("fontsize", fontsize)
+        font = ImageFont.truetype(font=ttfontname, size=fontsize)
+        _,fh = font.getsize("hello")
+        fontheight = typing_data.pop("fontheight", typing_data.pop("lineheight", fh))
+        pygments_theme = typing_data.pop("pygments-theme")
+        textRGB = tuple(typing_data.pop("textRGB", textRGB))
+        textBGR = textRGB[::-1]
+        X = typing_data.pop("X", 0)
+        Y = typing_data.pop("Y", 0)
+        Xspan = typing_data.pop("Xspan", 0)
+
+        cls2bgr = {}
+        with open(pygments_theme) as f:
+            for cls,hex in re.findall(
+                pattern=r"\.highlight\s+(?:(?:\.((?:\w|-|_)+))?)\s?{.?color:\s*?((?:\w|#)+)", 
+                string="".join(f.readlines())):
+                rgb = hex2rgb(hex, max_val=255)
+                bgr = tuple([int(e) for e in rgb[::-1]])
+                cls2bgr[cls] = bgr
+            
+        def draw_typing_text(img, curt_frame_count:int):
+            if s<=curt_frame_count:
+                if last or curt_frame_count<=e:
+                    x,y = (X,Y)
+                    text = typing_texts[:max(min(int((curt_frame_count-s)//span), num_typing_texts), 0)]
+                    for code, cls in split_code(text):
+                        img,(x,y) = draw_text_in_pil(
+                            text=code, img=img, x=x, y=y,
+                            ttfontname=ttfontname, fontsize=fontsize, textRGB=cls2bgr.get(cls, textBGR),
+                            ret_position="word", **typing_data
+                        )
+                        x += Xspan
+                        if "\n" in code:
+                            x = X
+                            y += fontheight
+            return img
+        self.drawing_functions.append(draw_typing_text)
+        self.print(*pretty_3quote(f"""
+        {toACCENT('[Code TypeWriter]')}({toBLUE(json_path)})
+        * ttfontname             : {toGREEN(ttfontname)}
+        * pygments.css           : {toGREEN(pygments_theme)}
+        * fontsize               : {toGREEN(fontsize)}
+        * Number of Typing Texts : {toGREEN(num_typing_texts)}
+        * Move to the next typing every {toGREEN(f"{span:.1f}")} from the {toGREEN(s)}th to the {toGREEN(e)}th
+        """))
+

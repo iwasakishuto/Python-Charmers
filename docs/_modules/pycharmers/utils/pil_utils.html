@@ -112,27 +112,29 @@
 <div class="viewcode-block" id="draw_text_in_pil"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text_in_pil">[docs]</a><span class="k">def</span> <span class="nf">draw_text_in_pil</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttfontname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">text_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                      <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">line_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                     <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">line_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                      <span class="n">bgRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">textRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
                      <span class="n">ret_position</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw text in ``PIL.Image`` object.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        text (str)        : Text to be drawn to ``img``.</span>
-<span class="sd">        img (PIL.Image)   : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.</span>
-<span class="sd">        ttfontname (str)  : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.</span>
-<span class="sd">        img_size (tuple)  : The image size.</span>
-<span class="sd">        text_width (int)  : The length of characters in one line.</span>
-<span class="sd">        fontsize (int)    : The requested size, in points.</span>
-<span class="sd">        fontwidth (int)   : The font width. (If not given, automatically calculated.)</span>
-<span class="sd">        fontheight (int)  : The font height. (If not given, automatically calculated.)</span>
-<span class="sd">        margin (int)      : The margin size.</span>
-<span class="sd">        line_height (int) : The line height. If not specify, use ``font.getsize(string.ascii_letters)``</span>
-<span class="sd">        bgRGB (tuple)     : The color of background image. (RGB)</span>
-<span class="sd">        textRGB (tuple)   : The color of text. (RGB)</span>
-<span class="sd">        mode (str)        : Optional mode to use for color values.</span>
-<span class="sd">        \*\*kwargs (dict) : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .</span>
+<span class="sd">        text (str)             : Text to be drawn to ``img``.</span>
+<span class="sd">        img (PIL.Image)        : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.</span>
+<span class="sd">        ttfontname (str)       : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.</span>
+<span class="sd">        img_size (tuple)       : The image size.</span>
+<span class="sd">        text_width (int)       : The length of characters in one line.</span>
+<span class="sd">        fontsize (int)         : The requested size, in points.</span>
+<span class="sd">        fontwidth (int)        : The font width. (If not given, automatically calculated.)</span>
+<span class="sd">        fontheight (int)       : The font height. (If not given, automatically calculated.)</span>
+<span class="sd">        margin (int)           : The margin size.</span>
+<span class="sd">        line_height (int)      : The line height. If not specify, use ``font.getsize(string.ascii_letters)``</span>
+<span class="sd">        drop_whitespace (bool) : If ``True``, whitespace at the beginning and ending of every line. Defaults to ``False``.</span>
+<span class="sd">        bgRGB (tuple)          : The color of background image. (RGB)</span>
+<span class="sd">        textRGB (tuple)        : The color of text. (RGB)</span>
+<span class="sd">        mode (str)             : Optional mode to use for color values.</span>
+<span class="sd">        ret_position (str)     : Type of the position of next text to be returned. Please choose from ``[&quot;line&quot;, &quot;word&quot;]``. Defaults to ``&quot;line&quot;``.</span>
+<span class="sd">        \*\*kwargs (dict)      : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple (PIL.Image, pos): img, Position of next text ( ``x`` , ``y`` ).</span>
@@ -166,7 +168,9 @@
     
     <span class="n">max_text_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">iw</span><span class="o">-</span><span class="p">(</span><span class="n">mr</span><span class="o">+</span><span class="n">ml</span><span class="p">))</span><span class="o">//</span><span class="n">fw</span>
     <span class="n">text_width</span> <span class="o">=</span> <span class="n">text_width</span> <span class="ow">or</span> <span class="n">max_text_width</span>
-    <span class="n">wrapped_lines</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">([</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">text_width</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+    <span class="n">wrapped_lines</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">([</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">text_width</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="n">drop_whitespace</span>
+    <span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
     <span class="n">max_text_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">ih</span><span class="o">-</span><span class="p">(</span><span class="n">mt</span><span class="o">+</span><span class="n">mb</span><span class="p">))</span><span class="o">//</span><span class="n">fh</span>
     
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">textRGB</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="n">mode</span><span class="o">==</span><span class="s2">&quot;RGBA&quot;</span><span class="p">:</span>
@@ -175,10 +179,12 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">mt</span><span class="o">-</span><span class="n">fh</span><span class="p">;</span> <span class="n">line</span><span class="o">=</span><span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wrapped_lines</span><span class="p">):</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">fh</span><span class="o">+</span><span class="n">mt</span>
-        <span class="n">draw</span><span class="o">.</span><span class="n">multiline_text</span><span class="p">((</span><span class="n">ml</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">line</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">textRGB</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrapped_lines</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wrapped_lines</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">fh</span><span class="o">+</span><span class="n">mt</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">multiline_text</span><span class="p">((</span><span class="n">ml</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">line</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">textRGB</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">mt</span><span class="p">;</span> <span class="n">line</span><span class="o">=</span><span class="p">[]</span>
     <span class="k">if</span> <span class="n">ret_position</span> <span class="o">==</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">ml</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">fh</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">ret_position</span> <span class="o">==</span> <span class="s2">&quot;word&quot;</span><span class="p">:</span>

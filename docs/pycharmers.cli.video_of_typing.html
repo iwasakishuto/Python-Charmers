@@ -82,7 +82,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>--typing</strong> (<em>Tuple</em><em>[</em><em>str</em><em>]</em>) – Path to typing text file(s).</p></li>
 <li><p><strong>--typing-fontname</strong> (<em>str</em>) – Default Typing Font name</p></li>
-<li><p><strong>--size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Output video image size. Defaults to <code class="docutils literal notranslate"><span class="pre">[1080,1920]</span></code>.</p></li>
+<li><p><strong>--size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Output video image size (width, height). Defaults to <code class="docutils literal notranslate"><span class="pre">[1080,1920]</span></code>.</p></li>
 <li><p><strong>--bgRGB</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – The color of background image. (RGB) Defaults to <code class="docutils literal notranslate"><span class="pre">[255,255,255]</span></code>.</p></li>
 <li><p><strong>--video</strong> (<em>str</em>) – The path to video to paste. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>--image</strong> (<em>str</em>) – The path to image to paste. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
@@ -159,7 +159,7 @@ Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt id="pycharmers.cli.video_of_typing.TypeWriter.set_typing_data">
-<code class="sig-name descname">set_typing_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 0, 0</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#TypeWriter.set_typing_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.TypeWriter.set_typing_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_typing_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#TypeWriter.set_typing_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.TypeWriter.set_typing_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a drawing function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -170,12 +170,6 @@ Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4
 <li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Default font size. You can override this value by adding to json file (at <code class="docutils literal notranslate"><span class="pre">path</span></code>). Defaults to <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p></li>
 <li><p><strong>textRGB</strong> (<em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>,</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Default font color. You can override this value by adding to json file (at <code class="docutils literal notranslate"><span class="pre">path</span></code>). Defaults to <code class="docutils literal notranslate"><span class="pre">(0,0,0)</span></code>.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -196,6 +190,28 @@ Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycharmers.cli.video_of_typing.CodeTypeWriter">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.cli.video_of_typing.</code><code class="sig-name descname">CodeTypeWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">typing_json_paths</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#CodeTypeWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.CodeTypeWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycharmers.cli.video_of_typing.TypeWriter" title="pycharmers.cli.video_of_typing.TypeWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.cli.video_of_typing.TypeWriter</span></code></a></p>
+<p>Useful class for drawing typing programming code</p>
+<dl class="py method">
+<dt id="pycharmers.cli.video_of_typing.CodeTypeWriter.set_typing_data">
+<code class="sig-name descname">set_typing_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">total_frame_count</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">fontsize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">textRGB</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 0, 0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/pycharmers/cli/video_of_typing.html#CodeTypeWriter.set_typing_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video_of_typing.CodeTypeWriter.set_typing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a drawing function for programming code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_path</strong> (<em>str</em>) – Json file which contains programming code data.</p></li>
+<li><p><strong>total_frame_count</strong> (<em>int</em>) – Total frame count of Typing video.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Default font size. You can override this value by adding to json file (at <code class="docutils literal notranslate"><span class="pre">path</span></code>). Defaults to <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

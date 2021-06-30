@@ -60,27 +60,29 @@ def roughen_img(img=None, path=None, rrate=5):
 def draw_text_in_pil(text, img=None, ttfontname=None,
                      img_size=(250, 250), text_width=None, 
                      fontsize=16, fontwidth=None, fontheight=None,
-                     margin=10, line_height=None, 
+                     margin=10, line_height=None, drop_whitespace:bool=False,
                      bgRGB=(255,255,255), textRGB=(0,0,0), mode="RGB",
                      ret_position="line",
                      **kwargs):
     """Draw text in ``PIL.Image`` object.
 
     Args:
-        text (str)        : Text to be drawn to ``img``.
-        img (PIL.Image)   : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
-        ttfontname (str)  : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.
-        img_size (tuple)  : The image size.
-        text_width (int)  : The length of characters in one line.
-        fontsize (int)    : The requested size, in points.
-        fontwidth (int)   : The font width. (If not given, automatically calculated.)
-        fontheight (int)  : The font height. (If not given, automatically calculated.)
-        margin (int)      : The margin size.
-        line_height (int) : The line height. If not specify, use ``font.getsize(string.ascii_letters)``
-        bgRGB (tuple)     : The color of background image. (RGB)
-        textRGB (tuple)   : The color of text. (RGB)
-        mode (str)        : Optional mode to use for color values.
-        \*\*kwargs (dict) : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .
+        text (str)             : Text to be drawn to ``img``.
+        img (PIL.Image)        : The image to draw in. If this argment is ``None``, img will be created using ``img_size`` and ``bgRGB`` arguments.
+        ttfontname (str)       : A filename or file-like object containing a TrueType font. If the file is not found in this filename, the loader may also search in other directories, such as the ``fonts/`` directory on Windows or ``/Library/Fonts/`` , ``/System/Library/Fonts/`` and ``~/Library/Fonts/`` on macOS.
+        img_size (tuple)       : The image size.
+        text_width (int)       : The length of characters in one line.
+        fontsize (int)         : The requested size, in points.
+        fontwidth (int)        : The font width. (If not given, automatically calculated.)
+        fontheight (int)       : The font height. (If not given, automatically calculated.)
+        margin (int)           : The margin size.
+        line_height (int)      : The line height. If not specify, use ``font.getsize(string.ascii_letters)``
+        drop_whitespace (bool) : If ``True``, whitespace at the beginning and ending of every line. Defaults to ``False``.
+        bgRGB (tuple)          : The color of background image. (RGB)
+        textRGB (tuple)        : The color of text. (RGB)
+        mode (str)             : Optional mode to use for color values.
+        ret_position (str)     : Type of the position of next text to be returned. Please choose from ``["line", "word"]``. Defaults to ``"line"``.
+        \*\*kwargs (dict)      : Specify ``margin_top`` , ``margin_right`` , ``margin_bottom`` , ``margin_left`` .
 
     Returns:
         tuple (PIL.Image, pos): img, Position of next text ( ``x`` , ``y`` ).
@@ -114,7 +116,9 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     
     max_text_width = (iw-(mr+ml))//fw
     text_width = text_width or max_text_width
-    wrapped_lines = flatten_dual([textwrap.wrap(text=t, width=text_width) for t in text.split("\n")])
+    wrapped_lines = flatten_dual([textwrap.wrap(
+        text=t, width=text_width, drop_whitespace=drop_whitespace
+    ) for t in text.split("\n")])
     max_text_height = (ih-(mt+mb))//fh
     
     if len(textRGB)>3 and mode=="RGBA":
@@ -123,10 +127,12 @@ def draw_text_in_pil(text, img=None, ttfontname=None,
     else:
         draw = ImageDraw.Draw(im=img, mode=mode)
 
-    y = mt-fh; line=[]
-    for i,line in enumerate(wrapped_lines):
-        y = i*fh+mt
-        draw.multiline_text((ml, y), line, fill=textRGB, font=font)
+    if len(wrapped_lines)>0:
+        for i,line in enumerate(wrapped_lines):
+            y = i*fh+mt
+            draw.multiline_text((ml, y), line, fill=textRGB, font=font)
+    else:
+        y = mt; line=[]
     if ret_position == "line":
         pos = (ml,y+fh)
     elif ret_position == "word":
