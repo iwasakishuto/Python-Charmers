@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pycharmers"
-version = "0.1.0"
+version = "0.2.0"
 description = "A collection of useful python programs."
 authors = ["iwasakishuto <cabernet.rock@gmail.com>"]
 license = "MIT"

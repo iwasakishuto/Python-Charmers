@@ -127,6 +127,7 @@ def video_of_typing(argv=sys.argv[1:]):
     else:
         cap = _VideoCaptureMimic(image_path)
         h,w,_ = cap.frame.shape
+        fps = fps or 30
         n = int(args.sec*fps)
 
     W,H = args.size

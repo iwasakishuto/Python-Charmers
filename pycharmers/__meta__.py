@@ -8,8 +8,8 @@ __all__ = [
 
 __package_name__    = "Python-Charmers"
 __module_name__     = "pycharmers"
-__copyright__       = "Copyright (C) 2021 Shuto Iwasaki"
-__version__         = "0.1.1"
+__copyright__       = "Copyright (C) 2021 iwasakishuto"
+__version__         = "0.2.0"
 __project_name__    = f"{__package_name__} (v.{__version__})"
 __license__         = "MIT"
 __author__          = "Shuto Iwasaki"
