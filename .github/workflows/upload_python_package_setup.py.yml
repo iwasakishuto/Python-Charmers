@@ -1,4 +1,4 @@
-name: Upload to PyPI with setup.py (deprecated)
+name: deprecated Upload to PyPI with setuptools
 
 on:
   release:

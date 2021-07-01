@@ -3,8 +3,8 @@
 [![header](https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true)](https://github.com/iwasakishuto/Python-Charmers)
 [![PyPI version](https://badge.fury.io/py/Python-Charmers.svg)](https://pypi.org/project/Python-Charmers/)
 [![GitHub version](https://badge.fury.io/gh/iwasakishuto%2FPython-Charmers.svg)](https://github.com/iwasakishuto/Python-Charmers)
-![Python package](https://github.com/iwasakishuto/Python-Charmers/workflows/Python%20package/badge.svg)
-![Upload Python Package](https://github.com/iwasakishuto/Python-Charmers/workflows/Upload%20Python%20Package/badge.svg)
+[![Execute Python-Charmers](https://github.com/iwasakishuto/Python-Charmers/actions/workflows/execute_python_package.yml/badge.svg)](https://github.com/iwasakishuto/Python-Charmers/actions/workflows/execute_python_package.yml)
+[![Upload to PyPI with Poetry](https://github.com/iwasakishuto/Python-Charmers/actions/workflows/upload_python_package_poetry.yml/badge.svg)](https://github.com/iwasakishuto/Python-Charmers/actions/workflows/upload_python_package_poetry.yml)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/iwasakishuto/Python-Charmers/blob/master/LICENSE)
 
 A collection of useful python programs.

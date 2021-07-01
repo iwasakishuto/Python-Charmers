@@ -7,6 +7,21 @@ license = "MIT"
 repository = "https://github.com/iwasakishuto/Python-Charmers"
 homepage = "https://iwasakishuto.github.io/Python-Charmers/"
 readme = "README.md"
+classifiers=[
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Environment :: Console",
+    "Environment :: MacOS X",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/iwasakishuto/PythonUtils/issues"
+"Source Code" = "https://github.com/iwasakishuto/PythonUtils"
+"Say Thanks!" = "https://twitter.com/cabernet_rock"
 
 [tool.poetry.dependencies]
 python = "^3.8"
