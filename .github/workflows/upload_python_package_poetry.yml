@@ -9,9 +9,9 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8]
         poetry-version: [1.1.6]
-        platform: [ubuntu-latest, macos-latest]
+        platform: [ubuntu-latest]
 
     env:
       XAUTHORITY: /run/user/1000/gdm/Xauthority

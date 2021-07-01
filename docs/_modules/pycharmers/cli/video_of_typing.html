@@ -179,6 +179,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cap</span> <span class="o">=</span> <span class="n">_VideoCaptureMimic</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
         <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span> <span class="ow">or</span> <span class="mi">30</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sec</span><span class="o">*</span><span class="n">fps</span><span class="p">)</span>
 
     <span class="n">W</span><span class="p">,</span><span class="n">H</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">size</span>

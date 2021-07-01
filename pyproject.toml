@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pycharmers"
+name = "Python-Charmers"
 version = "0.2.0"
 description = "A collection of useful python programs."
 authors = ["iwasakishuto <cabernet.rock@gmail.com>"]
@@ -16,6 +16,9 @@ classifiers=[
     "Environment :: Console",
     "Environment :: MacOS X",
     "Topic :: Software Development :: Libraries :: Python Modules",
+]
+packages = [
+    {include = "pycharmers"}
 ]
 
 [tool.poetry.urls]

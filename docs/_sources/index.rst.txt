@@ -6,7 +6,7 @@
 Welcome to Python-Charmers's documentation!
 ===========================================
 
-|header| |PyPI version| |GitHub version| |Python package| |Upload Python Package| |license|
+|header| |PyPI version| |GitHub version| |Execute Python-Charmers| |Upload to PyPI with Poetry| |license|
 
 A collection of useful python programs.
 
@@ -16,8 +16,10 @@ A collection of useful python programs.
    :target: https://pypi.org/project/Python-Charmers/
 .. |GitHub version| image:: https://badge.fury.io/gh/iwasakishuto%2FPython-Charmers.svg
    :target: https://github.com/iwasakishuto/Python-Charmers
-.. |Python package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Python%20package/badge.svg
-.. |Upload Python Package| image:: https://github.com/iwasakishuto/Python-Charmers/workflows/Upload%20Python%20Package/badge.svg
+.. |Execute Python-Charmers| image:: https://github.com/iwasakishuto/Python-Charmers/actions/workflows/execute_python_package.yml/badge.svg
+   :target: https://github.com/iwasakishuto/Python-Charmers/actions/workflows/execute_python_package.yml
+.. |Upload to PyPI with Poetry| image:: https://github.com/iwasakishuto/Python-Charmers/actions/workflows/upload_python_package_poetry.yml/badge.svg
+   :target: https://github.com/iwasakishuto/Python-Charmers/actions/workflows/upload_python_package_poetry.yml
 .. |license| image:: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
    :target: https://github.com/iwasakishuto/Python-Charmers/blob/master/LICENSE
 
