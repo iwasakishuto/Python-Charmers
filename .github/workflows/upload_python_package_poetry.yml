@@ -1,4 +1,4 @@
-name: Upload to PyPI with setup.py (deprecated)
+name: Upload to PyPI with Poetry
 
 on:
   workflow_dispatch:
@@ -13,10 +13,10 @@ jobs:
         poetry-version: [1.1.6]
         platform: [ubuntu-latest, macos-latest]
 
-  env:
-    XAUTHORITY: /run/user/1000/gdm/Xauthority
+    env:
+      XAUTHORITY: /run/user/1000/gdm/Xauthority
 
-  steps:
+    steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
