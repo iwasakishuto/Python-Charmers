@@ -1,19 +1,16 @@
 #coding: utf-8
 import os
+import re
 import sys
 import argparse
 
+from ..__meta__ import __documentation__ as BASE_URL
 from ..utils._path import REPO_DIR, CLI_DIR
 from ..utils.generic_utils import str_strip
 from ..utils.print_utils import Table
 from ..utils.soup_utils import get_soup
 
-target_path = os.path.join(REPO_DIR, "console_scripts.txt")
-if not os.path.exists(target_path):
-    lines = get_soup(url="https://raw.githubusercontent.com/iwasakishuto/Python-Charmers/master/console_scripts.txt").get_text().split("\n")
-else:
-    with open(target_path, mode="r") as f: lines = f.readlines()
-CONSOLE_SCRIPTS = [line.strip("\n") for line in lines if line[0]!=("#")]
+from typing import List, Tuple
 
 def show_command_line_programs(argv=sys.argv[1:]):
     """Show all Python-Charmers's command line programs.
@@ -77,6 +74,7 @@ def show_command_line_programs(argv=sys.argv[1:]):
     parser.add_argument("--description", action="store_true", help="Whether to show description or path. (default= ``False`` )")
     parser.add_argument("--tablefmt", choices=Table.SUPPORTED_FORMATS, default="github", help="The format of table.")
     parser.add_argument("--sphinx",  action="store_true", help="Whether to create for sphinx rst file.")
+    parser.add_argument("--github",  action="store_true", help="Whether to create for github README.md file.")
     args = parser.parse_args(argv)
 
     head = args.head
@@ -87,8 +85,8 @@ def show_command_line_programs(argv=sys.argv[1:]):
     paths       = []
     commands    = []
     descriptons = []
-    for console_script in CONSOLE_SCRIPTS:
-        command, path = [str_strip(e) for e in console_script.split("=")]
+    console_scripts = get_console_scripts()
+    for command, path in console_scripts:
         f,i = path.split(":")
         try:
             exec(f"from {f} import {i}")
@@ -97,6 +95,8 @@ def show_command_line_programs(argv=sys.argv[1:]):
             descriptons.append(f"Could not import it [{e.__class__.__name__}] {e}")
         if args.sphinx:
             command = f":func:`{command} <{f}.{i}>`"
+        elif args.github:
+            command = f"[`{command}`]({BASE_URL}/{f}.html#{f}.{i})"
         commands.append(command)
         paths.append(path)
 
@@ -107,3 +107,31 @@ def show_command_line_programs(argv=sys.argv[1:]):
     else:
         table.set_cols(values=paths, colname="path", color="BLUE", align="left")
     table.show(head=head, table_width=table_width)
+
+def get_console_scripts(target:str="pyproject.toml") -> List[Tuple[str,str]]:
+    """Get console script list.
+
+    Args:
+        target (str, optional) : Target filename. Defaults to ``"pyproject.toml"``.
+
+    Returns:
+        List[Tuple[str,str]]: List of console scripts (``(command, path)``).
+    """
+    results = []
+    target_path = os.path.join(REPO_DIR, target)
+    if os.path.exists(target_path):
+        with open(target_path, mode="r") as f: 
+            lines = f.readlines()
+    else:
+        lines = get_soup(url=f"https://raw.githubusercontent.com/iwasakishuto/Python-Charmers/master/{target}").get_text().split("\n")
+    is_cmd_scrip = False
+    for line in lines:
+        if line=="\n": 
+            is_cmd_scrip = False
+        if is_cmd_scrip:
+            m = re.search(pattern=r"^(.+?)\s+=\s?\"(.+?)\"\n$", string=line)
+            if m is not None:
+                results.append(m.groups())
+        if line.startswith("[tool.poetry.scripts]"):
+            is_cmd_scrip = True
+    return results

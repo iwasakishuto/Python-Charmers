@@ -80,11 +80,18 @@ def video_of_typing(argv=sys.argv[1:]):
             Video of Typing 285/285 [####################]100.00% - 14.107[s]
             Typing Video is saved at typing_video_2021-06-24@23.34.01.mp4
 
-    +---------------------------------------------+
-    |                Sample                       |
-    +=============================================+
-    | .. image:: _images/cli.video_of_typing.gif  |
-    +---------------------------------------------+
+    +----------------------------------------------------------------------------------------------------------------------------------------------------+
+    |                                                                     Example                                                                        |
+    +=========================================================================+==========================================================================+
+    | :class:`BaseTypeWriter <pycharmers.cli.video_of_typing.BaseTypeWriter>` | :class:`CodeTypeWriter <pycharmers.cli.video_of_typing.CodeTypeWriter>`  |
+    +-------------------------------------------------------------------------+--------------------------------------------------------------------------+
+    |                           |Form-Auto-Fill-In|                           |                        |DNA-Lifetime|                                    |
+    +-------------------------------------------------------------------------+--------------------------------------------------------------------------+
+
+    .. |Form-Auto-Fill-In| image:: _images/cli.video_of_typing_text.gif
+       :target: https://iwasakishuto.github.io/Form-Auto-Fill-In/UTokyo_Health_Management_Report_Form.html
+    .. |DNA-Lifetime| image:: _images/cli.video_of_typing_code.gif
+       :target: https://github.com/iwasakishuto/iwasakishuto.github.io/blob/master/.github/workflows/draw-dna-lifetime.yml
     """
     parser = argparse.ArgumentParser(prog="video_of_typing", description="Create a typing Video.", add_help=True)
     parser.add_argument("--typing", type=str, help="Path to typing text file(s).", nargs="*")
