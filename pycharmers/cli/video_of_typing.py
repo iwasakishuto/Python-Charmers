@@ -141,47 +141,45 @@ def video_of_typing(argv=sys.argv[1:]):
         warnings.warn(f"The output f{toGREEN('height')} is smaller than that of the media, so expand it from {toGREEN(H)} to {toGREEN(h)}.")
         H=h
     is_ok, out_video, out_path = VideoWriterCreate(out_path=out_path, codec=codec, fps=fps, size=(W,H), verbose=True)
-    if not is_ok:
-        sys.exit(-1)
+    if is_ok:
+        mt,ml,_,_ = assign_trbl(data=args_kwargs, name="margin")
+        if align is not None:
+            if "left"   in align: ml = 0
+            if "center" in align: ml = (W-w)//2
+            if "right"  in align: ml = W-w
+            if "top"    in align: mt = 0
+            if "middle" in align: mt = (H-h)//2
+            if "bottom" in align: mt = H-h
 
-    mt,ml,_,_ = assign_trbl(data=args_kwargs, name="margin")
-    if align is not None:
-        if "left"   in align: ml = 0
-        if "center" in align: ml = (W-w)//2
-        if "right"  in align: ml = W-w
-        if "top"    in align: mt = 0
-        if "middle" in align: mt = (H-h)//2
-        if "bottom" in align: mt = H-h
-
-    if verbose:
-        print(*pretty_3quote(f"""
-        {toACCENT('[Output Typing Video]')}
-        * Frame Count              : {toGREEN(n)}
-        * Frame Length             : {toGREEN(f"{n/fps:.1f}[s]")}
-        * Background Color (RGB)   : {toGREEN(bgRGB)}
-        {toACCENT('[Image or Video data to paste]')}
-        * Data              : {toBLUE(video_path or image_path)}
-        * Size (W,H)        : {toGREEN((w,h))}   
-        * Margin (top,left) : {toGREEN((mt,ml))}   
-        """))
-    
-    type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
-    monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
-    for i in range(1,n+1):
-        bg = np.full(shape=(H,W,3), fill_value=bgBGR, dtype=np.uint8)
-        is_ok,frame = cap.read()
-        if (not is_ok) or (frame is None): 
-            break
-        bg[mt:mt+h,ml:ml+w,:] = frame
-        bg_img = Image.fromarray(bg)
-        bg_img = type_writer.draw_typing_texts(img=bg_img, curt_frame_count=i)
-        bg_img = np.asarray(bg_img.convert("RGB"), dtype=np.uint8)
-        out_video.write(bg_img)
-        monitor.report(it=i)
-    monitor.remove()
-    cap.release()
-    out_video.release()
-    if verbose: print(f"Typing Video is saved at {toBLUE(out_path)}")
+        if verbose:
+            print(*pretty_3quote(f"""
+            {toACCENT('[Output Typing Video]')}
+            * Frame Count              : {toGREEN(n)}
+            * Frame Length             : {toGREEN(f"{n/fps:.1f}[s]")}
+            * Background Color (RGB)   : {toGREEN(bgRGB)}
+            {toACCENT('[Image or Video data to paste]')}
+            * Data              : {toBLUE(video_path or image_path)}
+            * Size (W,H)        : {toGREEN((w,h))}   
+            * Margin (top,left) : {toGREEN((mt,ml))}   
+            """))
+        
+        type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
+        monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
+        for i in range(1,n+1):
+            bg = np.full(shape=(H,W,3), fill_value=bgBGR, dtype=np.uint8)
+            is_ok,frame = cap.read()
+            if (not is_ok) or (frame is None): 
+                break
+            bg[mt:mt+h,ml:ml+w,:] = frame
+            bg_img = Image.fromarray(bg)
+            bg_img = type_writer.draw_typing_texts(img=bg_img, curt_frame_count=i)
+            bg_img = np.asarray(bg_img.convert("RGB"), dtype=np.uint8)
+            out_video.write(bg_img)
+            monitor.report(it=i)
+        monitor.remove()
+        cap.release()
+        out_video.release()
+        if verbose: print(f"Typing Video is saved at {toBLUE(out_path)}")
 
 class _VideoCaptureMimic():
     def __init__(self, image_path:Optional[str]=None):
