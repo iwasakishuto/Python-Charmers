@@ -75,6 +75,6 @@ _makedirs(name=PYCHARMERS_HTML_DIR)
 # Icon 
 PYCHARMERS_ICON = os.path.join(os.path.join(PYCHARMERS_DIR, "icon.png")) # /Users/<username>/.pycharmers/icon.png
 _download_sample_data(
-    url="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/favicon.png?raw=true", 
+    url="https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png", 
     path=PYCHARMERS_ICON,
 )
