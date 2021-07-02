@@ -197,26 +197,42 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="pycharmers.opencv.video_image_handler.create_VideoWriter">
-<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">create_VideoWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_path</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fps</span><span class="o">=</span><span class="default_value">30</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#create_VideoWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.create_VideoWriter" title="Permalink to this definition">¶</a></dt>
+<dt id="pycharmers.opencv.video_image_handler.VideoWriterCreate">
+<code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">VideoWriterCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_path</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">out_path</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">codec</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'MP4V'</span></em>, <em class="sig-param"><span class="n">fps</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None, None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#VideoWriterCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.VideoWriterCreate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code> which creates a video whose option is same as that of input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>in_path</strong> (<em>str</em>) – Input path. (fn: video / directory: images)</p></li>
-<li><p><strong>out_path</strong> (<em>str</em>) – Output path.</p></li>
-<li><p><strong>fps</strong> (<em>int</em>) – Frames Per Second.</p></li>
+<li><p><strong>input_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Input media path for video/image file or image directory. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>out_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Output path for the created video. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>codec</strong> (<em>str</em><em>, </em><em>optional</em>) – A video codec for the created output video.</p></li>
+<li><p><strong>fps</strong> (<em>float</em><em>, </em><em>optional</em>) – Frames Per Second. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>size</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – frame size for the created video. Defaults to <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">None)</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print the created <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code> info. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A instance of <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>cv2.VideoWriter</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">create_VideoWriter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span><span class="s2">&quot;./data/images&quot;</span><span class="p">)</span>
-<span class="go">cv2.VideoWriter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">create_VideoWriter</span><span class="p">(</span><span class="s2">&quot;./data/video/sample.mp4&quot;</span><span class="p">)</span>
-<span class="go">cv2.VideoWriter</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">VideoWriterCreate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_ok</span><span class="p">,</span> <span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">VideoWriterCreate</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mf">30.</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">480</span><span class="p">)</span>
+<span class="go">(True, &lt;VideoWriter 0x12597def0&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_ok</span><span class="p">,</span> <span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">VideoWriterCreate</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="s2">&quot;path/to/video.mp4&quot;</span><span class="p">)</span>
+<span class="go">(True, &lt;VideoWriter 0x125345050&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_ok</span><span class="p">,</span> <span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">VideoWriterCreate</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="s2">&quot;path/to/image_dir&quot;</span><span class="p">)</span>
+<span class="go">(True, &lt;VideoWriter 0x125345d70&gt;)</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – When not enough information such as <code class="docutils literal notranslate"><span class="pre">fps</span></code>, <code class="docutils literal notranslate"><span class="pre">width</span></code>, or <code class="docutils literal notranslate"><span class="pre">height</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -252,7 +268,33 @@
 <dl class="py function">
 <dt id="pycharmers.opencv.video_image_handler.videocodec2ext">
 <code class="sig-prename descclassname">pycharmers.opencv.video_image_handler.</code><code class="sig-name descname">videocodec2ext</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">codec</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/pycharmers/opencv/video_image_handler.html#videocodec2ext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.video_image_handler.videocodec2ext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert video codec to video extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>codec</strong> (<em>Union</em><em>[</em><em>tuple</em><em>, </em><em>str</em><em>]</em>) – Video Codec.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Ideal file extension.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">videocodec2ext</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videocodec2ext</span><span class="p">(</span><span class="s2">&quot;MP4V&quot;</span><span class="p">)</span>
+<span class="go">&#39;.mp4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videocodec2ext</span><span class="p">(</span><span class="s2">&quot;mp4v&quot;</span><span class="p">)</span>
+<span class="go">&#39;.mov&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videocodec2ext</span><span class="p">(</span><span class="s2">&quot;VP80&quot;</span><span class="p">)</span>
+<span class="go">&#39;.webm&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videocodec2ext</span><span class="p">(</span><span class="s2">&quot;XVID&quot;</span><span class="p">)</span>
+<span class="go">&#39;.avi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videocodec2ext</span><span class="p">(</span><span class="s2">&quot;☺️&quot;</span><span class="p">)</span>
+<span class="go">&#39;.mp4&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </div>
 

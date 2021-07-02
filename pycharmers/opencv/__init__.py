@@ -68,7 +68,7 @@ from .tracking import BBoxLogger
 
 from .video_image_handler import count_frame_num
 from .video_image_handler import basenaming
-from .video_image_handler import create_VideoWriter
+from .video_image_handler import VideoWriterCreate
 from .video_image_handler import mono_frame_generator
 from .video_image_handler import multi_frame_generator_concat
 from .video_image_handler import multi_frame_generator_sepa

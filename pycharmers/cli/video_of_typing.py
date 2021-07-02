@@ -19,7 +19,7 @@ from ..utils.argparse_utils import ListParamProcessorCreate
 from ..utils.pil_utils import draw_text_in_pil
 from ..utils.print_utils import pretty_3quote
 from ..utils.monitor_utils import ProgressMonitor
-from ..opencv.video_image_handler import videocodec2ext
+from ..opencv.video_image_handler import videocodec2ext, VideoWriterCreate
 
 def video_of_typing(argv=sys.argv[1:]):
     """Create a typing video. Before using this program, please do the following things
@@ -140,17 +140,9 @@ def video_of_typing(argv=sys.argv[1:]):
     if H < h:
         warnings.warn(f"The output f{toGREEN('height')} is smaller than that of the media, so expand it from {toGREEN(H)} to {toGREEN(h)}.")
         H=h
-    size = (W,H)
-
-    fourcc = cv2.VideoWriter_fourcc(*codec)
-    root,ori_ext = os.path.splitext(out_path)
-    ideal_ext = videocodec2ext(codec)
-    if ori_ext!=ideal_ext:
-        warnings.warn(f"Change the file extension from {toRED(ori_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).")
-        out_path = root + ideal_ext
-    out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
-    if not out_video.isOpened():
-        raise ValueError("Could not make a typing video because VideoWriter was not created successfully. Look at the warning text from OpenCV above and do what you need to do.")
+    is_ok, out_video = VideoWriterCreate(out_path=out_path, codec=codec, fps=fps, size=(W,H), verbose=True)
+    if not is_ok:
+        sys.exit(-1)
 
     mt,ml,_,_ = assign_trbl(data=args_kwargs, name="margin")
     if align is not None:
@@ -166,9 +158,7 @@ def video_of_typing(argv=sys.argv[1:]):
         {toACCENT('[Output Typing Video]')}
         * Frame Count              : {toGREEN(n)}
         * Frame Length             : {toGREEN(f"{n/fps:.1f}[s]")}
-        * Size (W,H)               : {toGREEN(size)}
         * Background Color (RGB)   : {toGREEN(bgRGB)}
-        * Output Typing Video Path : {toBLUE(out_path)} 
         {toACCENT('[Image or Video data to paste]')}
         * Data              : {toBLUE(video_path or image_path)}
         * Size (W,H)        : {toGREEN((w,h))}   
@@ -263,7 +253,7 @@ class BaseTypeWriter():
             return img
         return (draw_typing_text, pretty_3quote(f"""
         {toACCENT('[TypeWriter]')}({toBLUE(json_path)})
-        * ttfontname             : {toGREEN(ttfontname)}
+        * ttfontname             : {toBLUE(ttfontname)}
         * fontsize               : {toGREEN(fontsize)}
         * textRGB                : {toGREEN(textRGB)}
         * Number of Typing Texts : {toGREEN(num_typing_texts)}
@@ -355,8 +345,8 @@ class CodeTypeWriter(BaseTypeWriter):
             return img
         return (draw_typing_text, pretty_3quote(f"""
         {toACCENT('[Code TypeWriter]')}({toBLUE(json_path)})
-        * ttfontname             : {toGREEN(ttfontname)}
-        * pygments.css           : {toGREEN(pygments_theme)}
+        * ttfontname             : {toBLUE(ttfontname)}
+        * pygments.css           : {toBLUE(pygments_theme)}
         * fontsize               : {toGREEN(fontsize)}
         * Number of Typing Texts : {toGREEN(num_typing_texts)}
         * Move to the next typing every {toGREEN(f"{span:.1f}")} from the {toGREEN(s)}th to the {toGREEN(e)}th

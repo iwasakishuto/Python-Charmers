@@ -2,11 +2,16 @@
 import os
 import re
 import cv2
+import warnings
 import numpy as np
 
 from .editing import vconcat_resize_min, hconcat_resize_min
+from ..utils._colorings import toRED, toGREEN, toBLUE
 from ..utils.generic_utils import calc_rectangle_size, now_str
+from ..utils.print_utils import pretty_3quote
 from ._cvpath import save_dir_create
+
+from typing import Union,Optional,Tuple
 
 IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
 
@@ -154,42 +159,84 @@ def basenaming(path):
         name = os.path.basename(path)
     return name
 
-def create_VideoWriter(in_path, out_path=None, fps=30):
+def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None, codec:str="MP4V", fps:Optional[float]=None, size:Tuple[int,int]=(None,None), verbose:bool=False, **kwargs):
     """Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.
 
     Args:
-        in_path (str)  : Input path. (fn: video / directory: images)
-        out_path (str) : Output path.
-        fps (int)      : Frames Per Second.
+        input_path (Optional[str], optional) : Input media path for video/image file or image directory. Defaults to ``None``.
+        out_path (Optional[str], optional)   : Output path for the created video. Defaults to ``None``.
+        codec (str, optional)                : A video codec for the created output video.
+        fps (float, optional)                : Frames Per Second. Defaults to ``None``.
+        size (Tuple[int, int], optional)     : frame size for the created video. Defaults to ``(None, None)``.
+        verbose (bool, optional)             : Whether to print the created ``cv2.VideoWriter`` info. Defaults to ``False``.
+
+    Returns:
+        cv2.VideoWriter : A instance of ``cv2.VideoWriter``.
 
     Examples:
-        >>> from pycharmers.opencv import create_VideoWriter
-        >>> VideoWriter = create_VideoWriter("./data/images")
-        cv2.VideoWriter
-        >>> VideoWriter = create_VideoWriter("./data/video/sample.mp4")
-        cv2.VideoWriter
+        >>> from pycharmers.opencv import VideoWriterCreate
+        >>> is_ok, VideoWriter = VideoWriterCreate(input_path=None, fps=30., height=360, width=480)
+        (True, <VideoWriter 0x12597def0>)
+        >>> is_ok, VideoWriter = VideoWriterCreate(input_path="path/to/video.mp4")
+        (True, <VideoWriter 0x125345050>)
+        >>> is_ok, VideoWriter = VideoWriterCreate(input_path="path/to/image_dir")
+        (True, <VideoWriter 0x125345d70>)
+
+    Raises:
+        TypeError: When not enough information such as ``fps``, ``width``, or ``height``.
     """
-    if out_path is None:
-        out_path = save_dir_create(dirname=None, video=True)[0]
-    if os.path.isfile(in_path):
-        if re.search(pattern=IMAGE_FILE_PATTERN, string=in_path, flags=re.IGNORECASE):
-            img = cv2.imread(in_path)
+    W, H = size
+    if (input_path is None) or (not os.path.exists(input_path)):
+        W = W or kwargs.get("width",  kwargs.get("W"))
+        H = H or kwargs.get("height", kwargs.get("H"))
+        if (W is None) or (H is None):
+            raise TypeError(f"Please specify the {toGREEN('size')}(width,height) of the output video.")
+    elif os.path.isfile(input_path):
+        if re.search(pattern=IMAGE_FILE_PATTERN, string=input_path, flags=re.IGNORECASE):
+            img = cv2.imread(input_path)
             H,W = img.shape[:2]
         else:
-            video = cv2.VideoCapture(in_path)
-            W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-            H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            fps = video.get(cv2.CAP_PROP_FPS)
-    else:
-        for fn in os.listdir(in_path):
-            img_path = os.path.join(in_path, fn)
+            video = cv2.VideoCapture(input_path)
+            W = W or int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+            H = H or int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = fps or video.get(cv2.CAP_PROP_FPS)
+    else: # os.path.isdir(input_path):
+        for fn in os.listdir(input_path):
+            img_path = os.path.join(input_path, fn)
             img = cv2.imread(img_path)
             if img is not None:
                 break
-        H,W = img.shape[:2]
-    fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+        W = W or img.shape[1]
+        H = H or img.shape[0]
+    if fps is None:
+        raise TypeError(f"Please specify the {toGREEN('fps')} of the output video.")
+    fourcc = cv2.VideoWriter_fourcc(*codec)
+    ideal_ext = videocodec2ext(codec)
+    if out_path is None:
+        out_path = now_str() + ideal_ext
+    else:
+        root,original_ext = os.path.splitext(out_path)
+        if original_ext != ideal_ext:
+            warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).", category=RuntimeWarning)
+            out_path = root + ideal_ext
     out_video = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
-    return out_video
+    is_ok = out_video.isOpened()
+    if not is_ok:
+        warnings.warn(*pretty_3quote(toRED("""
+        Could not make a typing video because VideoWriter was not created successfully. 
+        Look at the warning text from OpenCV above and do what you need to do.
+        """)))
+        flag, status = (toRED("[failure]"), "can")
+    else:
+        flag, status = (toGREEN("[success]"), "can't")
+    if verbose:
+        print(*pretty_3quote(f"""
+        {flag} {toGREEN("VideoWriter")} {status} be created.
+        * Size (W,H)  : ({toGREEN(W)},{toGREEN(H)})
+        * Video Codec : {toGREEN(codec)}
+        * Output Path : {toBLUE(out_path)} 
+        """))
+    return (is_ok, out_video)
 
 def VideoCaptureCreate(path=None, cam=0):
     """Create a VideoCapture (mimic) object.
@@ -236,16 +283,43 @@ def VideoCaptureCreate(path=None, cam=0):
     return cap
 
 def videocodec2ext(*codec) -> str:
+    """Convert video codec to video extension.
+
+    Args:
+        codec (Union[tuple, str]) : Video Codec.    
+
+    Returns:
+        str: Ideal file extension.
+
+    Examples:
+        >>> from pycharmers.opencv import videocodec2ext
+        >>> videocodec2ext("MP4V")
+        '.mp4'
+        >>> videocodec2ext("mp4v")
+        '.mov'
+        >>> videocodec2ext("VP80")
+        '.webm'
+        >>> videocodec2ext("XVID")
+        '.avi
+        >>> videocodec2ext("☺️")
+        '.mp4'
+    """
     if len(codec)==1 and isinstance(codec[0], str):
         codec = codec[0]
     else:
         codec = "".join(codec)
-    codec = codec.upper()
     return {
         "VP80": ".webm",
+        "MP4S": ".mp4",
         "MP4V": ".mp4",
+        "mp4v": ".mov",
         "H264": ".mp4",
         "X264": ".mp4",
-        "THEO": ".ogg",
+        "DIV3": ".avi",
+        "DIVX": ".avi",
+        "IYUV": ".avi",
+        "MJPG": ".avi",
         "XVID": ".avi",
+        "THEO": ".ogg",
+        "H263": ".wmv",
     }.get(codec, ".mp4")

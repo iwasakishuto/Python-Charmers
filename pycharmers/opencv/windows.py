@@ -76,7 +76,7 @@ import sys
 import cv2
 
 from ._cvpath import save_dir_create
-from .video_image_handler import basenaming, mono_frame_generator, multi_frame_generator_concat, count_frame_num, create_VideoWriter
+from .video_image_handler import basenaming, mono_frame_generator, multi_frame_generator_concat, count_frame_num, VideoWriterCreate
 from .drawing import draw_text_with_bg, draw_bboxes_create
 from .tracking import tracker_create, BBoxLogger
 from ..utils.generic_utils import now_str, flatten_dual, int2ordinal, handleKeyError
@@ -829,7 +829,7 @@ class FrameWindow(cvWindow):
                     print(f"Take a screenshots from {int2ordinal(start)} frame to {int2ordinal(end)} frame.")
                     break
                 elif key == cvKey.TAKE_VIDEO_KEY_ORD:
-                    out_video = create_VideoWriter(
+                    out_video = VideoWriterCreate(
                         in_path=self.input_path[0],
                         out_path=os.path.join(self.video_save_dir, self.fnaming(start, end, ext=".mp4"))
                     )
