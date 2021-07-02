@@ -286,6 +286,21 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cap</span></div>
+
+<div class="viewcode-block" id="videocodec2ext"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.videocodec2ext">[docs]</a><span class="k">def</span> <span class="nf">videocodec2ext</span><span class="p">(</span><span class="o">*</span><span class="n">codec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">codec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">codec</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span>
+    <span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;VP80&quot;</span><span class="p">:</span> <span class="s2">&quot;.webm&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MP4V&quot;</span><span class="p">:</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;H264&quot;</span><span class="p">:</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;X264&quot;</span><span class="p">:</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;THEO&quot;</span><span class="p">:</span> <span class="s2">&quot;.ogg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;XVID&quot;</span><span class="p">:</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codec</span><span class="p">,</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

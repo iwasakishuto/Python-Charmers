@@ -234,3 +234,18 @@ def VideoCaptureCreate(path=None, cam=0):
     else:
         cap = cv2.VideoCapture(path)
     return cap
+
+def videocodec2ext(*codec) -> str:
+    if len(codec)==1 and isinstance(codec[0], str):
+        codec = codec[0]
+    else:
+        codec = "".join(codec)
+    codec = codec.upper()
+    return {
+        "VP80": ".webm",
+        "MP4V": ".mp4",
+        "H264": ".mp4",
+        "X264": ".mp4",
+        "THEO": ".ogg",
+        "XVID": ".avi",
+    }.get(codec, ".mp4")

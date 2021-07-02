@@ -12,13 +12,14 @@ from PIL import Image, ImageFont
 
 from typing import Optional,List,Tuple,Callable
 
-from ..utils._colorings import toBLUE, toGREEN, toACCENT
+from ..utils._colorings import toRED, toBLUE, toGREEN, toACCENT
 from ..utils.color_utils import hex2rgb
 from ..utils.generic_utils import assign_trbl, now_str, verbose2print, get_random_ttfontname, split_code
 from ..utils.argparse_utils import ListParamProcessorCreate
 from ..utils.pil_utils import draw_text_in_pil
 from ..utils.print_utils import pretty_3quote
 from ..utils.monitor_utils import ProgressMonitor
+from ..opencv.video_image_handler import videocodec2ext
 
 def video_of_typing(argv=sys.argv[1:]):
     """Create a typing video. Before using this program, please do the following things
@@ -105,12 +106,14 @@ def video_of_typing(argv=sys.argv[1:]):
     parser.add_argument("--margin", type=int, default=0, help="The margin size for pasting video or image.")
     parser.add_argument("--align",  action=ListParamProcessorCreate(type=str), default=None, help="horizontal and vertical alignment of the content (video/image).")
     parser.add_argument("--out",    type=str, default=f"typing_video_{now_str()}.mp4", help="The filename of created typing video.")
+    parser.add_argument("--codec",  type=str, default="MP4V", help="A video codec for output video.")
     parser.add_argument("--quiet",  action="store_true", help="Whether to make the output quiet.")
     args = parser.parse_args(argv)
 
     video_path = args.video
     image_path = args.image
     out_path = args.out
+    codec = args.codec
     bgRGB = args.bgRGB
     bgBGR = bgRGB[::-1]
     align = args.align
@@ -139,6 +142,16 @@ def video_of_typing(argv=sys.argv[1:]):
         H=h
     size = (W,H)
 
+    fourcc = cv2.VideoWriter_fourcc(*codec)
+    root,ori_ext = os.path.splitext(out_path)
+    ideal_ext = videocodec2ext(codec)
+    if ori_ext!=ideal_ext:
+        warnings.warn(f"Change the file extension from {toRED(ori_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).")
+        out_path = root + ideal_ext
+    out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
+    if not out_video.isOpened():
+        raise ValueError("Could not make a typing video because VideoWriter was not created successfully. Look at the warning text from OpenCV above and do what you need to do.")
+
     mt,ml,_,_ = assign_trbl(data=args_kwargs, name="margin")
     if align is not None:
         if "left"   in align: ml = 0
@@ -163,12 +176,6 @@ def video_of_typing(argv=sys.argv[1:]):
         """))
     
     type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
-    for codec in ["H264", "mp4v"]:
-        fourcc = cv2.VideoWriter_fourcc(*codec)
-        out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
-        if out_video.isOpened(): break
-    if not out_video.isOpened():
-        raise ValueError("Could not make a typing video because VideoWriter was not created successfully. Look at the warning text from OpenCV above and do what you need to do.")
     monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
     for i in range(1,n+1):
         bg = np.full(shape=(H,W,3), fill_value=bgBGR, dtype=np.uint8)
