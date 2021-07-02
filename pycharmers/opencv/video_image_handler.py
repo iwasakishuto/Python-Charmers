@@ -159,7 +159,7 @@ def basenaming(path):
         name = os.path.basename(path)
     return name
 
-def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None, codec:str="MP4V", fps:Optional[float]=None, size:Tuple[int,int]=(None,None), verbose:bool=False, **kwargs):
+def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None, codec:str="MP4V", fps:Optional[float]=None, size:Tuple[int,int]=(None,None), verbose:bool=False, **kwargs) -> Tuple[bool, cv2.VideoWriter, str]:
     """Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.
 
     Args:
@@ -171,7 +171,10 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         verbose (bool, optional)             : Whether to print the created ``cv2.VideoWriter`` info. Defaults to ``False``.
 
     Returns:
-        cv2.VideoWriter : A instance of ``cv2.VideoWriter``.
+        Tuple[bool, cv2.VideoWriter, str]: A tuple of three elements.
+                                           - flag if ``VideoWriter`` is created correctly, , A instance of ``cv2.VideoWriter``.
+                                           - A instance of created ``VideoWriter``.
+                                           - Output path for ``VideoWriter``.
 
     Examples:
         >>> from pycharmers.opencv import VideoWriterCreate
@@ -219,8 +222,8 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         if original_ext != ideal_ext:
             warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).", category=RuntimeWarning)
             out_path = root + ideal_ext
-    out_video = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
-    is_ok = out_video.isOpened()
+    VideoWriter = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
+    is_ok = VideoWriter.isOpened()
     if not is_ok:
         warnings.warn(*pretty_3quote(toRED("""
         Could not make a typing video because VideoWriter was not created successfully. 
@@ -236,7 +239,7 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         * Video Codec : {toGREEN(codec)}
         * Output Path : {toBLUE(out_path)} 
         """))
-    return (is_ok, out_video)
+    return (is_ok, VideoWriter, out_path)
 
 def VideoCaptureCreate(path=None, cam=0):
     """Create a VideoCapture (mimic) object.

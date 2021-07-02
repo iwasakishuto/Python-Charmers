@@ -140,7 +140,7 @@ def video_of_typing(argv=sys.argv[1:]):
     if H < h:
         warnings.warn(f"The output f{toGREEN('height')} is smaller than that of the media, so expand it from {toGREEN(H)} to {toGREEN(h)}.")
         H=h
-    is_ok, out_video = VideoWriterCreate(out_path=out_path, codec=codec, fps=fps, size=(W,H), verbose=True)
+    is_ok, out_video, out_path = VideoWriterCreate(out_path=out_path, codec=codec, fps=fps, size=(W,H), verbose=True)
     if not is_ok:
         sys.exit(-1)
 
