@@ -149,3 +149,7 @@ div.sphinxsidebarwrapper span.package-subtitle {
   color:white;
   text-decoration: underline;
 }
+
+img.full-width {
+  width: 100%;
+}

@@ -305,7 +305,7 @@ class CodeTypeWriter(BaseTypeWriter):
         last = typing_data.pop("last", False)
         span:float = (e-s)/num_typing_texts
         # Keyword Arguments for pycharmers.utils.pil_utils.draw_text_in_pil
-        ttfontname = typing_data.pop("ttfontname", get_random_ttfontname())
+        ttfontname = typing_data.pop("ttfontname", None) or get_random_ttfontname()
         fontsize   = typing_data.pop("fontsize", fontsize)
         font = ImageFont.truetype(font=ttfontname, size=fontsize)
         _,fh = font.getsize("hello")

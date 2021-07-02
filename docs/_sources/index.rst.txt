@@ -10,8 +10,9 @@ Welcome to Python-Charmers's documentation!
 
 A collection of useful python programs.
 
-.. |header| image:: https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true
+.. |header| image:: _images/header.png
    :target: https://github.com/iwasakishuto/Python-Charmers
+   :class: full-width
 .. |PyPI version| image:: https://badge.fury.io/py/Python-Charmers.svg
    :target: https://pypi.org/project/Python-Charmers/
 .. |GitHub version| image:: https://badge.fury.io/gh/iwasakishuto%2FPython-Charmers.svg
