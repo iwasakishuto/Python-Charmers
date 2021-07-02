@@ -1,0 +1,21 @@
+version: "3"
+services:
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: 'selenium'
+    ports:
+      - "4444:4444"
+  pycharmers:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      TZ: Japan
+    volumes:
+      - .:/opt/data-volume
+    ports:
+      - "8888:8888"
+    links:
+      - selenium
+    depends_on:
+      - selenium

@@ -165,6 +165,8 @@ def video_of_typing(argv=sys.argv[1:]):
     type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
     fourcc = cv2.VideoWriter_fourcc(*"H264")
     out_video = cv2.VideoWriter(out_path, fourcc, fps, size)
+    if not out_video.isOpened():
+        raise ValueError("Could not make a typing video because VideoWriter was not created successfully. Look at the warning text from OpenCV above and do what you need to do.")
     monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
     for i in range(1,n+1):
         bg = np.full(shape=(H,W,3), fill_value=bgBGR, dtype=np.uint8)
