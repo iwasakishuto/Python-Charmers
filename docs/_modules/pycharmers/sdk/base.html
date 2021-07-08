@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycharmers.sdk.base &#8212; Python-Charmers  documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/solid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/brands.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/font-awesome/css/fontawesome.css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="https://platform.twitter.com/widgets.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.base</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pycharmers.sdk.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base class for Python-Charmers&#39; SDK &quot;&quot;&quot;</span>
+<span class="c1">#coding: utf-8</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">..utils._path</span> <span class="kn">import</span> <span class="n">DOTENV_PATH</span>
+<span class="kn">from</span> <span class="nn">..utils.environ_utils</span> <span class="kn">import</span> <span class="n">name2envname</span><span class="p">,</span> <span class="n">load_environ</span><span class="p">,</span> <span class="n">check_environ</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">verbose2print</span><span class="p">,</span> <span class="n">handleKeyError</span>
+<span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toRED</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span><span class="n">Optional</span><span class="p">,</span><span class="n">Callable</span><span class="p">,</span><span class="n">Union</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Tuple</span><span class="p">,</span><span class="n">Dict</span>
+
+<div class="viewcode-block" id="PycharmersSDK"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSDK">[docs]</a><span class="k">class</span> <span class="nc">PycharmersSDK</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract Class for Python-Charmers API</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        env_path (str)     : path/to/.env (default= ``DOTENV_PATH``)</span>
+<span class="sd">        service_name (str) : The service name.</span>
+<span class="sd">        verbose (bool)     : Whether to print message or not. (default= ``False``)</span>
+<span class="sd">        \*\*kwargs (dict)    : Required Keywords.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        print (function)             : Print function based on ``verbose``</span>
+<span class="sd">        service_name (str)           : The service name</span>
+<span class="sd">        required_env_varnames (list) : The required env varnames.</span>
+<span class="sd">        kwargs (dict)                : Keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env_path</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="n">DOTENV_PATH</span><span class="p">,</span> <span class="n">api_name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_name</span> <span class="o">=</span> <span class="n">api_name</span>
+        <span class="n">required_keynames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">required_env_varnames</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">keyname2envname</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_keynames</span><span class="p">]</span>
+        <span class="n">load_environ</span><span class="p">(</span>
+            <span class="n">dotenv_path</span><span class="o">=</span><span class="n">env_path</span><span class="p">,</span>
+            <span class="n">env_varnames</span><span class="o">=</span><span class="n">required_env_varnames</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="n">verbose2print</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required_keynames</span> <span class="o">=</span> <span class="n">required_keynames</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required_env_varnames</span> <span class="o">=</span> <span class="n">required_env_varnames</span>
+
+<div class="viewcode-block" id="PycharmersSDK.keyname2envname"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSDK.keyname2envname">[docs]</a>    <span class="k">def</span> <span class="nf">keyname2envname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert keyname to environment varname.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">            keyname (str) : Keyname for method.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk._base import PycharmersSDK</span>
+<span class="sd">            &gt;&gt;&gt; sdk = PycharmersSDK()</span>
+<span class="sd">            &gt;&gt;&gt; sdk.keyname2envname(&quot;id&quot;)</span>
+<span class="sd">            &#39;TRANSLATION_GUMMY_GATEWAY_USELESS_NAME&#39;</span>
+<span class="sd">            &gt;&gt;&gt; sdk.keyname2envname(&quot;hoge&quot;)</span>
+<span class="sd">            &#39;TRANSLATION_GUMMY_GATEWAY_USELESS_HOGE&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name2envname</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">keyname</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">api_name</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="s2">&quot;sdk&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSDK.get_val"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSDK.get_val">[docs]</a>    <span class="k">def</span> <span class="nf">get_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the value from ``gatewaykwargs`` or an environment variable.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keyname (str)     : Keyname for each method.</span>
+<span class="sd">            \*\*kwargs (dict)   : Given ``kwargs``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk._base import PycharmersSDK</span>
+<span class="sd">            &gt;&gt;&gt; sdk = PycharmersSDK()</span>
+<span class="sd">            &gt;&gt;&gt; print(sdk.get_val(&quot;hoge&quot;))</span>
+<span class="sd">            None</span>
+<span class="sd">            &gt;&gt;&gt; print(sdk.get_val(&quot;username&quot;))</span>
+<span class="sd">            USERNAME_IN_ENVFILE</span>
+<span class="sd">            &gt;&gt;&gt; print(gateway.get_val(&quot;username&quot;, username=&quot;:)&quot;))</span>
+<span class="sd">            :)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyname2envname</span><span class="p">(</span><span class="n">keyname</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="PycharmersSQL"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL">[docs]</a><span class="k">class</span> <span class="nc">PycharmersSQL</span><span class="p">(</span><span class="n">PycharmersSDK</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper class for Sqlite.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        database (Optional[str], optional) : database to use. Defaults to ``None``.</span>
+<span class="sd">        verbose (bool, optional)           : Whether to print message or not Defaults to ``False``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;SQL&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">api_name</span><span class="o">=</span><span class="n">api_name</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PycharmersSQL.format_data"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.format_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">Any</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Format python data to match sql data format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (Any): Python any data.</span>
+<span class="sd">            type (str): SQL data type. (ex. ``&quot;int(11)&quot;``, ``&quot;varchar(100)&quot;``)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Correctly formatted python data.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; import datetime</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersSQL.format_data(data=1, type=&quot;int(8)&quot;)</span>
+<span class="sd">                &#39;1&#39;</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersSQL.format_data(data=1, type=&quot;varchar(10)&quot;)</span>
+<span class="sd">                &#39;&quot;1&quot;&#39;</span>
+<span class="sd">            &gt;&gt;&gt; PycharmersSQL.format_data(data=datetime.datetime(1998,7,3), type=&quot;datetime&quot;)</span>
+<span class="sd">                &#39;&quot;1998-07-03 00:00:00&quot;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;now()&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.connect"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.connect">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Create a connection to the database, and close it after excuting ``func`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable[[Any], Union[pd.DataFrame, Tuple[tuple], None]) : The function you want to execute. Receive ``cursor`` as the first argument.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[pd.DataFrame, Tuple[tuple], None]: Return value from ``func``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_environ</span><span class="p">(</span>
+            <span class="n">required_keynames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_keynames</span><span class="p">,</span>
+            <span class="n">required_env_varnames</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_env_varnames</span><span class="p">,</span>
+            <span class="c1"># database=database,</span>
+        <span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="s2">&quot;Create a connection to the database.&quot;</span> <span class="c1"># XXX.connect(</span>
+        <span class="c1">#     database=self.get_val(&quot;database&quot;, database=database),</span>
+        <span class="c1"># )</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="c1"># (cursor=XXX_cursor, **kwargs)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.execute"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute a SQL query.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str)                   : Query to execute on server.</span>
+<span class="sd">            columns (List[str], optional) : If this value is fiven, Return value will be as a ``pd.DataFrame`` format. Defaults to ``[]``.</span>
+<span class="sd">            verbose (bool, optional)      : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[pd.DataFrame, Tuple[tuple], None]: Return value of query.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.execute(&quot;show databases;&quot;)</span>
+<span class="sd">                ((&#39;information_schema&#39;,),</span>
+<span class="sd">                 (&#39;mysql&#39;,),</span>
+<span class="sd">                 (&#39;performance_schema&#39;,),</span>
+<span class="sd">                 (&#39;remody&#39;,),</span>
+<span class="sd">                 (&#39;sys&#39;,))</span>
+<span class="sd">            &gt;&gt;&gt; # Receive as a DataFrame.</span>
+<span class="sd">            &gt;&gt;&gt; df = sql.execute(&quot;show databases;&quot;, columns=[&quot;name&quot;])</span>
+<span class="sd">            &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">                |    | name               |</span>
+<span class="sd">                |---:|:-------------------|</span>
+<span class="sd">                |  0 | information_schema |</span>
+<span class="sd">                |  1 | mysql              |</span>
+<span class="sd">                |  2 | performance_schema |</span>
+<span class="sd">                |  3 | remody             |</span>
+<span class="sd">                |  4 | sys                |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">execute_query</span><span class="p">(</span><span class="n">cursor</span><span class="p">:</span><span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+            <span class="sd">&quot;&quot;&quot;Execute a query and</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                cursor (Any) : Database cursor to use.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                Tuple[tuple]: Return value of ``query``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">execute_query</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">ret</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.create"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">column_info</span><span class="o">=</span><span class="p">{})</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a Table named ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+<span class="sd">            columninfo (dict)        : Key value style column information.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.create(table=&quot;pycharmers_user&quot;, column_info={</span>
+<span class="sd">            ...     &quot;id&quot;      : &#39;int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT &quot;ID&quot;&#39;,</span>
+<span class="sd">            ...     &quot;username&quot;: &#39;VARCHAR(100) NOT NULL COMMENT &quot;ユーザー名&quot;&#39;,</span>
+<span class="sd">            ...     &quot;created&quot; : &#39;datetime DEFAULT NULL COMMENT &quot;登録日&quot;&#39; ,</span>
+<span class="sd">            &gt;&gt;&gt; })</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CREATE TABLE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">` </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">column_info</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span><span class="si">}</span><span class="s2">);&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.drop"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Drop the ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.drop(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DROP TABLE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.describe"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get table structure.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Table structure.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; df = sql.describe(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">            |    | Field    | Type         | Null   | Key   | Default   | Extra          |</span>
+<span class="sd">            |---:|:---------|:-------------|:-------|:------|:----------|:---------------|</span>
+<span class="sd">            |  0 | id       | int(11)      | NO     | PRI   |           | auto_increment |</span>
+<span class="sd">            |  1 | username | varchar(100) | NO     |       |           |                |</span>
+<span class="sd">            |  2 | created  | datetime     | YES    |       |           |                |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DESCRIBE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Field&quot;</span><span class="p">,</span><span class="s2">&quot;Type&quot;</span><span class="p">,</span><span class="s2">&quot;Null&quot;</span><span class="p">,</span><span class="s2">&quot;Key&quot;</span><span class="p">,</span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="s2">&quot;Extra&quot;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.insert"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">columns</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="p">[],</span> <span class="n">col_type</span><span class="o">=</span><span class="s2">&quot;input_field&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Insert a record to specified ``table``</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of the table.</span>
+<span class="sd">            data (List[list])        : Data to be inserted.</span>
+<span class="sd">            columns (list, optional) : Column names to be inserted values. Defaults to ``[]``.</span>
+<span class="sd">            col_type (str, optional) : If ``columns`` has no data, use :meth:`get_colnames &lt;pycharmers.sdk.mysql.PycharmersSQL.get_colnames&gt;` to decide which columns to be inseted. Defaults to ``&quot;input_field&quot;``.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of rows in ``table``</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; import datetime</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.insert(table=&quot;pycharmers_user&quot;, data=[</span>
+<span class="sd">            ...     [&quot;iwasaki&quot;, &quot;now()&quot;],</span>
+<span class="sd">            ...     [&quot;shuto&quot;, datetime.datetime(1998,7,3)]</span>
+<span class="sd">            &gt;&gt;&gt; ], columns=[&quot;username&quot;, &quot;created&quot;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_colnames</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">col_type</span><span class="o">=</span><span class="n">col_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+        <span class="n">df_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">coltypes</span> <span class="o">=</span> <span class="n">df_field</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Type</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">coltypes</span><span class="p">)])</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">) VALUES </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.update"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">old_column</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">old_value</span><span class="p">:</span><span class="n">Any</span><span class="p">,</span> <span class="n">new_columns</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">new_values</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update records.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            old_column (str)         : [description]</span>
+<span class="sd">            old_value (Any)          :</span>
+<span class="sd">            new_columns (List[str])  : [description]</span>
+<span class="sd">            new_values (List[Any])   :</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; print(sql.selectAll(table=&quot;pycharmers_user&quot;).to_markdown())</span>
+<span class="sd">                |    |   id | username   | created             |</span>
+<span class="sd">                |---:|-----:|:-----------|:--------------------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="sd">                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="sd">            &gt;&gt;&gt; sql.update(table=&quot;pycharmers_user&quot;, old_column=&quot;username&quot;, old_value=&quot;iwasaki&quot;, new_column=&quot;created&quot;, new_value=&quot;now()&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(sql.selectAll(table=&quot;pycharmers_user&quot;).to_markdown())</span>
+<span class="sd">                |    |   id | username   | created             |</span>
+<span class="sd">                |---:|-----:|:-----------|:--------------------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    | 2021-05-22 07:28:09 |</span>
+<span class="sd">                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">old_type</span> <span class="o">=</span> <span class="n">df_field</span><span class="p">[</span><span class="n">df_field</span><span class="o">.</span><span class="n">Field</span><span class="o">==</span><span class="n">old_column</span><span class="p">]</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new_coltypes</span> <span class="o">=</span> <span class="n">df_field</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="n">new_columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Type</span>
+        <span class="n">update_values</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="nb">type</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_columns</span><span class="p">,</span> <span class="n">new_values</span><span class="p">,</span> <span class="n">new_coltypes</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;UPDATE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> SET </span><span class="si">{</span><span class="n">update_values</span><span class="si">}</span><span class="s2"> WHERE </span><span class="si">{</span><span class="n">old_column</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">old_value</span><span class="p">,</span> <span class="n">old_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.delete"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">Any</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete the records whose ``column`` is ``value`` from the table named ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            column (str)             :</span>
+<span class="sd">            value (Any)              :</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; print(sql.select(table=&quot;pycharmers_user&quot;).to_markdown())</span>
+<span class="sd">                |    |   id | username   | created             |</span>
+<span class="sd">                |---:|-----:|:-----------|:--------------------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="sd">                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="sd">            &gt;&gt;&gt; sql.delete(table=&quot;pycharmers_user&quot;, column=&quot;username&quot;, value=&quot;shuto&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(sql.select(table=&quot;pycharmers_user&quot;).to_markdown())</span>
+<span class="sd">                |    |   id | username   | created             |</span>
+<span class="sd">                |---:|-----:|:-----------|:--------------------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">df_field</span><span class="p">[</span><span class="n">df_field</span><span class="o">.</span><span class="n">Field</span><span class="o">==</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DELETE FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.merge"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table1info</span><span class="p">:</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">table2info</span><span class="p">:</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Select values from table1 and table2 using ``method`` JOIN</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table1info (Dict[str,List[str]]) : Table1 information ( ``key`` : table name, ``value`` : selected columns (0th column is used for merging.))</span>
+<span class="sd">            table2info (Dict[str,List[str]]) : Table2 information ( ``key`` : table name, ``value`` : selected columns (0th column is used for merging.))</span>
+<span class="sd">            method (str, optional)           : How to merge two tables. Defaults to ``&quot;inner&quot;``.</span>
+<span class="sd">            verbose (bool, optional)         : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Merged table records.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql.merge(</span>
+<span class="sd">            ...     table1info={&quot;user&quot;: [&quot;id&quot;, &quot;name&quot;, &quot;job_id&quot;]},</span>
+<span class="sd">            ...     table2info={&quot;jobs&quot;: [&quot;id&quot;, &quot;job_name&quot;]},</span>
+<span class="sd">            ...     method=&quot;inner&quot;, verbose=True</span>
+<span class="sd">            &gt;&gt;&gt; )</span>
+<span class="sd">            &gt;&gt;&gt; SELECT user.name, user.job_id, jobs.job_name FROM user INNER JOIN jobs ON user.id = jobs.id;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table1</span><span class="p">,</span><span class="n">columns1</span> <span class="o">=</span> <span class="n">table1info</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+        <span class="n">table2</span><span class="p">,</span><span class="n">columns2</span> <span class="o">=</span> <span class="n">table2info</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+        <span class="n">col_merge1</span> <span class="o">=</span> <span class="n">columns1</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">col_merge2</span> <span class="o">=</span> <span class="n">columns2</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">table1</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">table2</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns2</span><span class="p">])</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table1</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> JOIN </span><span class="si">{</span><span class="n">table2</span><span class="si">}</span><span class="s2"> ON </span><span class="si">{</span><span class="n">table1</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">col_merge1</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">table2</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">col_merge2</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns1</span><span class="o">+</span><span class="n">columns2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.get_colnames"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.get_colnames">[docs]</a>    <span class="k">def</span> <span class="nf">get_colnames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">col_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get column names in the specified ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            col_type (str, optional) : What types columns to extract. Defaults to ``&quot;all&quot;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Extracted Columns.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.get_colnames(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; [&#39;id&#39;, &#39;username&#39;, &#39;created&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;input_field&quot;</span><span class="p">],</span> <span class="n">col_type</span><span class="o">=</span><span class="n">col_type</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;minimum&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">Extra</span><span class="o">!=</span><span class="s2">&quot;auto_increment&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Null</span><span class="o">==</span><span class="s2">&quot;NO&quot;</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">col_type</span><span class="o">==</span><span class="s2">&quot;input_field&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Extra</span><span class="o">!=</span><span class="s2">&quot;auto_increment&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.select"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span> <span class="n">where</span><span class="p">:</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Any</span><span class="p">]</span><span class="o">=</span><span class="p">{},</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get selected records.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)                     : The name of table.</span>
+<span class="sd">            columns (List[str], optional)   : Selected Columns. If you don&#39;t specify any columns, extract all columns. Defaults to ``[]``.</span>
+<span class="sd">            where (Dict[str,Any], optional) : Specify the condition of the column to be extracted. { ``colname`` : ``value`` }</span>
+<span class="sd">            verbose (bool, optional)        : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Selected Records.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; df = sql.select(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">                |    |   id | username   | created             |</span>
+<span class="sd">                |---:|-----:|:-----------|:--------------------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    | 2021-05-22 07:23:10 |</span>
+<span class="sd">                |  1 |    2 | shuto      | 1998-07-03 00:00:00 |</span>
+<span class="sd">            &gt;&gt;&gt; df = sql.select(table=&quot;pycharmers_user&quot;, columns=[&quot;id&quot;, &quot;username&quot;])</span>
+<span class="sd">            &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">                |    |   id | username   |</span>
+<span class="sd">                |---:|-----:|:-----------|</span>
+<span class="sd">                |  0 |    1 | iwasaki    |</span>
+<span class="sd">                |  1 |    2 | shuto      |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_colnames</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">col_type</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">where</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">df_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">coltypes</span> <span class="o">=</span> <span class="n">df_field</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Field&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">where</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Type</span>
+            <span class="n">WHERE</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;WHERE </span><span class="si">{</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="nb">type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="nb">type</span><span class="p">,(</span><span class="n">key</span><span class="p">,</span><span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">coltypes</span><span class="p">,</span><span class="n">where</span><span class="o">.</span><span class="n">items</span><span class="p">())])</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WHERE</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">WHERE</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.count_rows"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.count_rows">[docs]</a>    <span class="k">def</span> <span class="nf">count_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the number of rows in the ``table`` .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of rows in the specified ``table`` .</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; sql.count_rows(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">                2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.show_tables"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.show_tables">[docs]</a>    <span class="k">def</span> <span class="nf">show_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show all tables.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Information for all Tables.</span>
+
+<span class="sd">        &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">        &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">        &gt;&gt;&gt; df = sql.show_tables()</span>
+<span class="sd">        &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">            |    | Name            | Engine   |   Version | Row_format   |   Rows |   Avg_row_length |   Data_length |   Max_data_length |   Index_length |   Data_free |   Auto_increment | Create_time         | Update_time         | Check_time   | Collation       | Checksum   | Create_options   | Comment   |</span>
+<span class="sd">            |---:|:----------------|:---------|----------:|:-------------|-------:|-----------------:|--------------:|------------------:|---------------:|------------:|-----------------:|:--------------------|:--------------------|:-------------|:----------------|:-----------|:-----------------|:----------|</span>
+<span class="sd">            |  0 | pycharmers_user | InnoDB   |        10 | Dynamic      |      0 |                0 |         16384 |                 0 |              0 |           0 |                1 | 2021-05-22 07:06:17 | NaT                 |              | utf8_general_ci |            |                  |           |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;show table status;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Engine&#39;</span><span class="p">,</span> <span class="s1">&#39;Version&#39;</span><span class="p">,</span> <span class="s1">&#39;Row_format&#39;</span><span class="p">,</span> <span class="s1">&#39;Rows&#39;</span><span class="p">,</span> <span class="s1">&#39;Avg_row_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Data_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Max_data_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Index_length&#39;</span><span class="p">,</span> <span class="s1">&#39;Data_free&#39;</span><span class="p">,</span> <span class="s1">&#39;Auto_increment&#39;</span><span class="p">,</span> <span class="s1">&#39;Create_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Update_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Check_time&#39;</span><span class="p">,</span> <span class="s1">&#39;Collation&#39;</span><span class="p">,</span> <span class="s1">&#39;Checksum&#39;</span><span class="p">,</span> <span class="s1">&#39;Create_options&#39;</span><span class="p">,</span> <span class="s1">&#39;Comment&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PycharmersSQL.explain"><a class="viewcode-back" href="../../../pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL.explain">[docs]</a>    <span class="k">def</span> <span class="nf">explain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Explain records</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table (str)              : The name of table.</span>
+<span class="sd">            verbose (bool, optional) : Whether to display the query or not. Defaults to ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Explanation for records.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from pycharmers.sdk import PycharmersSQL</span>
+<span class="sd">            &gt;&gt;&gt; sql = PycharmersSQL()</span>
+<span class="sd">            &gt;&gt;&gt; df = sql.explain(table=&quot;pycharmers_user&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; print(df.to_markdown())</span>
+<span class="sd">            |    |   id | select_type   | table           | partition   | type   | possible_keys   | key   | key_len   | ref   |   rows |   filtered | Extra   |</span>
+<span class="sd">            |---:|-----:|:--------------|:----------------|:------------|:-------|:----------------|:------|:----------|:------|-------:|-----------:|:--------|</span>
+<span class="sd">            |  0 |    1 | SIMPLE        | pycharmers_user |             | ALL    |                 |       |           |       |      2 |        100 |         |</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EXPLAIN SELECT * FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span><span class="s2">&quot;select_type&quot;</span><span class="p">,</span><span class="s2">&quot;table&quot;</span><span class="p">,</span><span class="s2">&quot;partition&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">,</span><span class="s2">&quot;possible_keys&quot;</span><span class="p">,</span><span class="s2">&quot;key&quot;</span><span class="p">,</span><span class="s2">&quot;key_len&quot;</span><span class="p">,</span><span class="s2">&quot;ref&quot;</span><span class="p">,</span><span class="s2">&quot;rows&quot;</span><span class="p">,</span><span class="s2">&quot;filtered&quot;</span><span class="p">,</span><span class="s2">&quot;Extra&quot;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+  <h4>Other contents</h4>
+  <ul class="social">
+    
+    <li><a href="https://iwasakishuto.github.io/Blog/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Blog.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/University/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/University.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Front-End/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Front-End.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Kerasy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Kerasy.png"></a></li>
+    
+    <li><a href="https://iwasakishuto.github.io/Translation-Gummy/index.html"><img src="https://iwasakishuto.github.io/images/apple-touch-icon/Translation-Gummy.png"></a></li>
+    
+  </ul>
+  <h4>Social link</h4>
+  <ul class="social">
+    
+    <li><a class="sc-twitter" href="https://twitter.com/cabernet_rock">
+      <i class="fab fa-twitter" aria-hidden="true"></i>
+    </a></li>
+    
+    <li><a class="sc-github" href="https://github.com/iwasakishuto">
+      <i class="fab fa-github" aria-hidden="true"></i>
+    </a></li>
+    
+  </ul>
+
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pycharmers.html">pycharmers package</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+    <li><i class="fas fa-home"></i><a href="https://iwasakishuto.github.io/">Portfolio Top</a> &raquo;</li>
+    
+        <li class="nav-item nav-item-0"><a href="../../../index.html">Python-Charmers  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pycharmers.sdk.base</a></li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shuto.
+    </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164333757-7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-164333757-7');
+</script>
+
+  </body>
+</html>

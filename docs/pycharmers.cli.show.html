@@ -67,8 +67,91 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-show-module">
-<h1>pycharmers.cli.show module<a class="headerlink" href="#pycharmers-cli-show-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.show">
+<span id="pycharmers-cli-show-module"></span><h1>pycharmers.cli.show module<a class="headerlink" href="#module-pycharmers.cli.show" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.show.show_command_line_programs">
+<code class="sig-prename descclassname">pycharmers.cli.show.</code><code class="sig-name descname">show_command_line_programs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/show.html#show_command_line_programs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.show.show_command_line_programs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show all Python-Charmers’s command line programs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-H/--head</strong> (<em>str</em>) – Show the first <code class="docutils literal notranslate"><span class="pre">head</span></code> rows for the table.</p></li>
+<li><p><strong>-W/--width</strong> (<em>int</em>) – Table width.</p></li>
+<li><p><strong>--description</strong> (<em>bool</em>) – Whether to show description or path. (default= <code class="docutils literal notranslate"><span class="pre">False</span></code> )</p></li>
+<li><p><strong>--tablefmt</strong> (<em>str</em>) – Table format.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pycharmers-show
+</pre></div>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; $ pycharmers-show
++---------------------+----------------------------------------------------------------------------------+
+|       command       |                                   description                                    |
++=====================+==================================================================================+
+|            book2img | Convert Book into Sequential Images.                                             |
++---------------------+----------------------------------------------------------------------------------+
+|         cv-cascades | Control the OpenCV cascade Examples.                                             |
++---------------------+----------------------------------------------------------------------------------+
+|    cv-paper-scanner | Paper Scanner using OpenCV.                                                      |
++---------------------+----------------------------------------------------------------------------------+
+|    cv-pencil-sketch | Convert the image like a pencil drawing.                                         |
++---------------------+----------------------------------------------------------------------------------+
+|           cv-window | Use :meth:`cvWindow &lt;pycharmers.opencv.windows.cvWindow&gt;` to control frames.     |
++---------------------+----------------------------------------------------------------------------------+
+|   form-auto-fill-in | Auto fill in your form using your saved information (or answer on the spot).     |
++---------------------+----------------------------------------------------------------------------------+
+|     jupyter-arrange | Arrange Jupyter Notebook.                                                        |
++---------------------+----------------------------------------------------------------------------------+
+|         openBrowser | Display url using the default browser.                                           |
++---------------------+----------------------------------------------------------------------------------+
+|             pdfmine | Analyze PDF and extract various elements.                                        |
++---------------------+----------------------------------------------------------------------------------+
+|  regexp-replacement | String replacement in a file using regular expression                            |
++---------------------+----------------------------------------------------------------------------------+
+|     render-template | Render templates.                                                                |
++---------------------+----------------------------------------------------------------------------------+
+| requirements-create | Create a ``requirements.text``                                                   |
++---------------------+----------------------------------------------------------------------------------+
+|         revise_text | Revise word file.                                                                |
++---------------------+----------------------------------------------------------------------------------+
+|     pycharmers-show | Show all Python-Charmers&#39;s command line programs.                                |
++---------------------+----------------------------------------------------------------------------------+
+|            tweetile | Divide one image into three so that you can tweet beautifully.                   |
++---------------------+----------------------------------------------------------------------------------+
+|      video_of_lyric | Create a lyric Video.                                                            |
++---------------------+----------------------------------------------------------------------------------+
+|     video_of_typing | Create a typing video. Before using this program, please do the following things |
++---------------------+----------------------------------------------------------------------------------+
+|           video2gif | Convert Video into Gif.                                                          |
++---------------------+----------------------------------------------------------------------------------+
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.cli.show.get_console_scripts">
+<code class="sig-prename descclassname">pycharmers.cli.show.</code><code class="sig-name descname">get_console_scripts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'pyproject.toml'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/pycharmers/cli/show.html#get_console_scripts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.show.get_console_scripts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get console script list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target</strong> (<em>str</em><em>, </em><em>optional</em>) – Target filename. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;pyproject.toml&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of console scripts (<code class="docutils literal notranslate"><span class="pre">(command,</span> <span class="pre">path)</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[str,str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

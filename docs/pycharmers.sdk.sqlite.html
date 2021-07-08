@@ -67,8 +67,44 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-sdk-sqlite-module">
-<h1>pycharmers.sdk.sqlite module<a class="headerlink" href="#pycharmers-sdk-sqlite-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.sdk.sqlite">
+<span id="pycharmers-sdk-sqlite-module"></span><h1>pycharmers.sdk.sqlite module<a class="headerlink" href="#module-pycharmers.sdk.sqlite" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.sdk.sqlite.PycharmersSQLite">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.sdk.sqlite.</code><code class="sig-name descname">PycharmersSQLite</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/sqlite.html#PycharmersSQLite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.sqlite.PycharmersSQLite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL" title="pycharmers.sdk.base.PycharmersSQL"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.sdk.base.PycharmersSQL</span></code></a></p>
+<p>Wrapper class for Sqlite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – database to use. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print message or not Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.sdk.sqlite.PycharmersSQLite.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">database</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>Tuple<span class="p">[</span>tuple<span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/pycharmers/sdk/sqlite.html#PycharmersSQLite.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.sqlite.PycharmersSQLite.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <code class="docutils literal notranslate"><span class="pre">MySQLdb.connect</span></code> to create a connection to the database, and close it after excuting <code class="docutils literal notranslate"><span class="pre">func</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em>) – The function you want to execute. Receive <code class="docutils literal notranslate"><span class="pre">cursor</span></code> as the first argument.</p></li>
+<li><p><strong>database</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – database to ues. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – See a table below.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return value of <code class="docutils literal notranslate"><span class="pre">func</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -124,7 +160,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.trello.html">pycharmers.sdk.trello module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-pycharmers.sdk">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

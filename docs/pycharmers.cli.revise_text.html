@@ -67,8 +67,32 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-revise-text-module">
-<h1>pycharmers.cli.revise_text module<a class="headerlink" href="#pycharmers-cli-revise-text-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.revise_text">
+<span id="pycharmers-cli-revise-text-module"></span><h1>pycharmers.cli.revise_text module<a class="headerlink" href="#module-pycharmers.cli.revise_text" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.revise_text.revise_text">
+<code class="sig-prename descclassname">pycharmers.cli.revise_text.</code><code class="sig-name descname">revise_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/revise_text.html#revise_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.revise_text.revise_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revise word file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-W/--word</strong> (<em>str</em>) – Path to the word file.</p></li>
+<li><p><strong>-E/--excel</strong> (<em>str</em>) – Path to the excel file.</p></li>
+<li><p><strong>--sheet-name</strong> (<em>str</em>) – SheetName for the Excel.</p></li>
+<li><p><strong>--NG</strong> (<em>str</em>) – The column name which indicates NG words. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;NG&quot;</span></code></p></li>
+<li><p><strong>--OK</strong> (<em>str</em>) – The column name which indicates OK words. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;OK&quot;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ revise-text --word sample.docx --excel wordlist.xlsx
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
 </div>
 
 

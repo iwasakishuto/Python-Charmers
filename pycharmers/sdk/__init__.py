@@ -15,4 +15,6 @@ from .mysql import PycharmersMySQL
 
 from .slack import SlackClient
 
+from .sqlite import PycharmersSQLite
+
 from .trello import Trello

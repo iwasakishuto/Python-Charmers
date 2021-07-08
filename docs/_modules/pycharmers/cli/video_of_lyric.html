@@ -58,11 +58,11 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toBLUE</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toACCENT</span>
 <span class="kn">from</span> <span class="nn">..utils.argparse_utils</span> <span class="kn">import</span> <span class="n">ListParamProcessorCreate</span>
+<span class="kn">from</span> <span class="nn">..utils.audio_utils</span> <span class="kn">import</span> <span class="n">synthesize_audio</span>
 <span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">now_str</span>
 <span class="kn">from</span> <span class="nn">..utils.monitor_utils</span> <span class="kn">import</span> <span class="n">ProgressMonitor</span>
 <span class="kn">from</span> <span class="nn">..utils.pil_utils</span> <span class="kn">import</span> <span class="n">draw_text_in_pil</span>
@@ -86,7 +86,7 @@
 <span class="sd">        --span (int)          : The span between lyrics.</span>
 
 <span class="sd">    .. code-block:: python</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; # Create a json.</span>
 <span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; def func(word, start, end, indent=&#39;\\t&#39;*4):</span>
@@ -123,11 +123,11 @@
 <span class="sd">          &quot;texts&quot;: [</span>
 <span class="sd">            [{&quot;words&quot;:&quot;１日今日も、&quot;,&quot;seconds&quot;:[2.4, 2.624, 2.848, 3.072, 3.296, 3.52],&quot;x&quot;:-1,&quot;y&quot;:50},{&quot;words&quot;:&quot;こなした労働、&quot;,&quot;seconds&quot;:[4.1, 4.317, 4.533, 4.75, 4.967, 5.183, 5.4],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;辛かったけど&quot;,&quot;seconds&quot;:[5.7, 5.96, 6.22, 6.48, 6.74, 7.0],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;本当がんばったじゃん&quot;,&quot;seconds&quot;:[7.0, 7.222, 7.444, 7.667, 7.889, 8.111, 8.333, 8.556, 8.778, 9.0],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;１日今日も、&quot;,&quot;seconds&quot;:[9.1, 9.38, 9.66, 9.94, 10.22, 10.5],&quot;x&quot;:-1,&quot;y&quot;:260},{&quot;words&quot;:&quot;いちいちどうこう、&quot;,&quot;seconds&quot;:[10.8, 10.962, 11.125, 11.288, 11.45, 11.612, 11.775, 11.938, 12.1],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;いわれたけど&quot;,&quot;seconds&quot;:[12.3, 12.52, 12.74, 12.96, 13.18, 13.4],&quot;x&quot;:-1,&quot;y&quot;:-1},{&quot;words&quot;:&quot;本当にがんばったじゃん&quot;,&quot;seconds&quot;:[13.4, 13.59, 13.78, 13.97, 14.16, 14.35, 14.54, 14.73, 14.92, 15.11, 15.3],&quot;x&quot;:-1,&quot;y&quot;:-1}]</span>
 <span class="sd">          ]</span>
-<span class="sd">        }         </span>
+<span class="sd">        }</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        When you run from the command line, execute as follows::</span>
-<span class="sd">        </span>
+
 <span class="sd">        $ video_of_lyric dodo-era-it.json --audio dodo-era-it.mp4[.mp3]</span>
 
 <span class="sd">    +--------------------------------------------+</span>
@@ -196,7 +196,7 @@
         <span class="n">sec_filter</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="o">+</span><span class="n">alpha_range</span><span class="o">+</span><span class="n">span</span><span class="p">])</span>
     <span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">sec_filter</span><span class="p">])</span> <span class="o">+</span> <span class="n">alpha_range</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">num_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="o">*</span><span class="n">fps</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">p</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">default</span>
@@ -253,33 +253,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> (No Sound) is created.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">audio_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ext</span><span class="o">!=</span><span class="s2">&quot;.mp3&quot;</span><span class="p">:</span>
-            <span class="n">audio_clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">()</span>
-            <span class="n">audio_path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="s2">&quot;.mp3&quot;</span>
-            <span class="n">audio_clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">write_audiofile</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Audio file (</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span><span class="si">}</span><span class="s2">) is created.&quot;</span><span class="p">)</span>
-        <span class="n">video_with_audio_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_audio&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">video_path</span><span class="p">))</span>
-        <span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">video_path</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">()</span>
-        <span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span>
-            <span class="n">video_with_audio_path</span><span class="p">,</span> 
-            <span class="n">audio</span><span class="o">=</span><span class="n">audio_path</span><span class="p">,</span> 
-            <span class="n">codec</span><span class="o">=</span><span class="s1">&#39;libx264&#39;</span><span class="p">,</span> 
-            <span class="n">audio_codec</span><span class="o">=</span><span class="s1">&#39;aac&#39;</span><span class="p">,</span> 
-            <span class="n">temp_audiofile</span><span class="o">=</span><span class="s1">&#39;temp-audio.m4a&#39;</span><span class="p">,</span> 
-            <span class="n">remove_temp</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;-y&quot;</span><span class="p">,</span> 
-            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video_path</span><span class="p">,</span> 
-            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">,</span> 
-            <span class="s2">&quot;-c:v&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span> 
-            <span class="s2">&quot;-c:a&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
-            <span class="n">video_with_audio_path</span><span class="p">,</span>
-        <span class="p">]</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ffmpeg.log&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_with_audio_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> (With Sound) is created.&quot;</span><span class="p">)</span></div>
+        <span class="n">synthesize_audio</span><span class="p">(</span><span class="n">video_path</span><span class="o">=</span><span class="n">video_path</span><span class="p">,</span> <span class="n">audio_path</span><span class="o">=</span><span class="n">audio_path</span><span class="p">)</span></div>
 </pre></div>
 
             <div class="clearer"></div>

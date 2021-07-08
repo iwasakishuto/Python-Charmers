@@ -6,11 +6,11 @@ import json
 import argparse
 import subprocess
 import numpy as np
-import moviepy.editor as mp
 from PIL import Image
 
 from ..utils._colorings import toBLUE, toGREEN, toACCENT
 from ..utils.argparse_utils import ListParamProcessorCreate
+from ..utils.audio_utils import synthesize_audio
 from ..utils.generic_utils import now_str
 from ..utils.monitor_utils import ProgressMonitor
 from ..utils.pil_utils import draw_text_in_pil
@@ -34,7 +34,7 @@ def video_of_lyric(argv=sys.argv[1:]):
         --span (int)          : The span between lyrics.
 
     .. code-block:: python
-    
+
         >>> # Create a json.
         >>> import numpy as np
         >>> def func(word, start, end, indent='\\t'*4):
@@ -71,11 +71,11 @@ def video_of_lyric(argv=sys.argv[1:]):
           "texts": [
             [{"words":"１日今日も、","seconds":[2.4, 2.624, 2.848, 3.072, 3.296, 3.52],"x":-1,"y":50},{"words":"こなした労働、","seconds":[4.1, 4.317, 4.533, 4.75, 4.967, 5.183, 5.4],"x":-1,"y":-1},{"words":"辛かったけど","seconds":[5.7, 5.96, 6.22, 6.48, 6.74, 7.0],"x":-1,"y":-1},{"words":"本当がんばったじゃん","seconds":[7.0, 7.222, 7.444, 7.667, 7.889, 8.111, 8.333, 8.556, 8.778, 9.0],"x":-1,"y":-1},{"words":"１日今日も、","seconds":[9.1, 9.38, 9.66, 9.94, 10.22, 10.5],"x":-1,"y":260},{"words":"いちいちどうこう、","seconds":[10.8, 10.962, 11.125, 11.288, 11.45, 11.612, 11.775, 11.938, 12.1],"x":-1,"y":-1},{"words":"いわれたけど","seconds":[12.3, 12.52, 12.74, 12.96, 13.18, 13.4],"x":-1,"y":-1},{"words":"本当にがんばったじゃん","seconds":[13.4, 13.59, 13.78, 13.97, 14.16, 14.35, 14.54, 14.73, 14.92, 15.11, 15.3],"x":-1,"y":-1}]
           ]
-        }         
+        }
 
     Note:
         When you run from the command line, execute as follows::
-        
+
         $ video_of_lyric dodo-era-it.json --audio dodo-era-it.mp4[.mp3]
 
     +--------------------------------------------+
@@ -144,7 +144,7 @@ def video_of_lyric(argv=sys.argv[1:]):
         sec_filter.append([i,start,end+alpha_range+span])
     duration = max([e[2] for e in sec_filter]) + alpha_range + 1
     num_frames = int(duration*fps)
-    
+
     def set_pos(data, name, default):
         p = data.get(name, -1)
         if p==-1: p = default
@@ -201,30 +201,4 @@ def video_of_lyric(argv=sys.argv[1:]):
     print(f"{toBLUE(video_path)} (No Sound) is created.")
 
     if audio_path is not None:
-        root, ext = os.path.splitext(audio_path)
-        if ext!=".mp3":
-            audio_clip = mp.VideoFileClip(audio_path).subclip()
-            audio_path = root + ".mp3"
-            audio_clip.audio.write_audiofile(audio_path)
-            print(f"Audio file ({toBLUE(audio_path)}) is created.")
-        video_with_audio_path = f"_audio".join(os.path.splitext(video_path))
-        clip = mp.VideoFileClip(video_path).subclip()
-        clip.write_videofile(
-            video_with_audio_path, 
-            audio=audio_path, 
-            codec='libx264', 
-            audio_codec='aac', 
-            temp_audiofile='temp-audio.m4a', 
-            remove_temp=True
-        )
-        command = [
-            "ffmpeg", "-y", 
-            "-i", video_path, 
-            "-i", audio_path, 
-            "-c:v", "copy", 
-            "-c:a", "copy",
-            video_with_audio_path,
-        ]
-        with open("ffmpeg.log", 'w') as f:
-            process = subprocess.Popen(command, stderr=f)
-        print(f"{toBLUE(video_with_audio_path)} (With Sound) is created.")
+        synthesize_audio(video_path=video_path, audio_path=audio_path)

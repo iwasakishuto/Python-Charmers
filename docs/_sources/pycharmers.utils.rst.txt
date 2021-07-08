@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    pycharmers.utils.argparse_utils
+   pycharmers.utils.audio_utils
    pycharmers.utils.color_utils
    pycharmers.utils.download_utils
    pycharmers.utils.driver_utils

@@ -4,6 +4,7 @@ from . import _exceptions
 from . import _path
 from . import _warnings
 from . import argparse_utils
+from . import audio_utils
 from . import color_utils
 from . import download_utils
 from . import environ_utils
@@ -31,6 +32,8 @@ from .argparse_utils import DictParamProcessor
 from .argparse_utils import KwargsParamProcessor
 from .argparse_utils import cv2ArgumentParser
 from .argparse_utils import define_neg_sides
+
+from .audio_utils import synthesize_audio
 
 from .color_utils import detect_color_code_type
 from .color_utils import toHEX

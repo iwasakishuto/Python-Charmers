@@ -8,7 +8,7 @@
   <meta property="og:title" content="pycharmers.sdk.trello module" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.sdk.trello.html" />
-  <meta property="og:description" content="" />
+  <meta property="og:description" content="A wrapper class for Trello API" />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
@@ -67,8 +67,100 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-sdk-trello-module">
-<h1>pycharmers.sdk.trello module<a class="headerlink" href="#pycharmers-sdk-trello-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.sdk.trello">
+<span id="pycharmers-sdk-trello-module"></span><h1>pycharmers.sdk.trello module<a class="headerlink" href="#module-pycharmers.sdk.trello" title="Permalink to this headline">¶</a></h1>
+<p>A wrapper class for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/">Trello API</a></p>
+<dl class="py class">
+<dt id="pycharmers.sdk.trello.Trello">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.sdk.trello.</code><code class="sig-name descname">Trello</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSDK" title="pycharmers.sdk.base.PycharmersSDK"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.sdk.base.PycharmersSDK</span></code></a></p>
+<p>A wrapper class for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/">Trello API</a></p>
+<p>Visit <a class="reference external" href="https://trello.com/app-key">https://trello.com/app-key</a> to get an API key and Token. (NOTE: You have to login before visiting)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> (<em>str</em>) – API-key.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – Token.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print logs or not.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.api_call">
+<code class="sig-name descname">api_call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.api_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.api_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about the memberships users have to the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – URL to which the API sends the request.</p></li>
+<li><p><strong>api_key</strong> (<em>str</em>) – API-key.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – Token.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.show_results">
+<em class="property">static </em><code class="sig-name descname">show_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result</span></em>, <em class="sig-param"><span class="n">keynames</span><span class="o">=</span><span class="default_value">['name', 'id']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.show_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.show_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static Method for displaying result beautifullly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>list</em>) – Result.</p></li>
+<li><p><strong>keynames</strong> (<em>list</em>) – The keyname to extract and display the value from the <code class="docutils literal notranslate"><span class="pre">result</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.sdk</span> <span class="kn">import</span> <span class="n">Trello</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Trello</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="s2">&quot;slack&quot;</span><span class="p">,</span>  <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">]},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;api&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;post&quot;</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">],</span> <span class="n">keynames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">])</span>
+<span class="go">+--------+------+</span>
+<span class="go">|  api   |  b   |</span>
+<span class="go">+========+======+</span>
+<span class="go">|  slack | None |</span>
+<span class="go">+--------+------+</span>
+<span class="go">| github | None |</span>
+<span class="go">+--------+------+</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.setup_show_func">
+<code class="sig-name descname">setup_show_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.setup_show_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.setup_show_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the <code class="docutils literal notranslate"><span class="pre">show_XXX</span></code> funciton.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.get_memberships_of_a_board">
+<code class="sig-name descname">get_memberships_of_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.get_memberships_of_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.get_memberships_of_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-memberships-get">Get Memberships of a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.get_lists_on_a_board">
+<code class="sig-name descname">get_lists_on_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">board_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.get_lists_on_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.get_lists_on_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-lists-get">Get Lists on a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.get_cards_on_a_board">
+<code class="sig-name descname">get_cards_on_a_board</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">board_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.get_cards_on_a_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.get_cards_on_a_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-boards/#api-boards-id-cards-get">Get Cards on a Board</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.sdk.trello.Trello.get_cards_in_a_list">
+<code class="sig-name descname">get_cards_in_a_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">board_id</span></em>, <em class="sig-param"><span class="n">apikey</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/trello.html#Trello.get_cards_in_a_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.trello.Trello.get_cards_in_a_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>API wrapper for <a class="reference external" href="https://developer.atlassian.com/cloud/trello/rest/api-group-lists/#api-lists-id-cards-get">Get Cards in a List</a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -124,7 +216,7 @@
 <li class="toctree-l5 current"><a class="current reference internal" href="#">pycharmers.sdk.trello module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-pycharmers.sdk">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

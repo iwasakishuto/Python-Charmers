@@ -1,0 +1,7 @@
+pycharmers.utils.audio\_utils module
+====================================
+
+.. automodule:: pycharmers.utils.audio_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -67,8 +67,88 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-book2img-module">
-<h1>pycharmers.cli.book2img module<a class="headerlink" href="#pycharmers-cli-book2img-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.book2img">
+<span id="pycharmers-cli-book2img-module"></span><h1>pycharmers.cli.book2img module<a class="headerlink" href="#module-pycharmers.cli.book2img" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.cli.book2img.guiOperations">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.cli.book2img.</code><code class="sig-name descname">guiOperations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ops</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/book2img.html#guiOperations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.book2img.guiOperations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Packaged Gui Operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ops</strong> (<em>dict/str</em>) – Operations.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pycharmers.cli.book2img.guiOperations.HEADER_KEYS">
+<code class="sig-name descname">HEADER_KEYS</code><em class="property"> = ['description']</em><a class="headerlink" href="#pycharmers.cli.book2img.guiOperations.HEADER_KEYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.book2img.guiOperations.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ops</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/book2img.html#guiOperations.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.book2img.guiOperations.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the operation instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycharmers.cli.book2img.guiOperations.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/book2img.html#guiOperations.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.book2img.guiOperations.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the packaged operations.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.cli.book2img.book2img">
+<code class="sig-prename descclassname">pycharmers.cli.book2img.</code><code class="sig-name descname">book2img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/book2img.html#book2img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.book2img.book2img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Book into Sequential Images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-N/--num</strong> (<em>int</em>) – Number of screenshots to take.</p></li>
+<li><p><strong>-I/--interval</strong> (<em>int</em>) – Interval to take screenshots.</p></li>
+<li><p><strong>-OP/--operations</strong> (<em>str</em>) – Path or Abbreviation for Operations.</p></li>
+<li><p><strong>-O/--output</strong> (<em>str</em>) – Path to the output directory.</p></li>
+<li><p><strong>-S/--sec</strong> (<em>int</em>) – Time to take a screenshot.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ book2img -N 10 -I 1 -OP KindleApp
+</pre></div>
+</div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ cat ~/.pycharmers/cli/book2img/kindleApp.json
+<span class="o">{</span>
+  <span class="s2">&quot;description&quot;</span>: <span class="s2">&quot;Operations for KindleApp (Examples)&quot;</span>,
+  <span class="s2">&quot;1&quot;</span>: <span class="o">{</span>
+    <span class="s2">&quot;method&quot;</span>: <span class="s2">&quot;keyDown&quot;</span>,
+    <span class="s2">&quot;args&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;right&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;kwargs&quot;</span>: <span class="o">{}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Sample</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/cli.book2img.gif" src="_images/cli.book2img.gif" />
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 

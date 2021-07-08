@@ -67,8 +67,84 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-regexp-replacement-module">
-<h1>pycharmers.cli.regexp_replacement module<a class="headerlink" href="#pycharmers-cli-regexp-replacement-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.regexp_replacement">
+<span id="pycharmers-cli-regexp-replacement-module"></span><h1>pycharmers.cli.regexp_replacement module<a class="headerlink" href="#module-pycharmers.cli.regexp_replacement" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.regexp_replacement.regexp_replacement">
+<code class="sig-prename descclassname">pycharmers.cli.regexp_replacement.</code><code class="sig-name descname">regexp_replacement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/regexp_replacement.html#regexp_replacement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.regexp_replacement.regexp_replacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>String replacement in a file using regular expression</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.json</span></code> path can be specified by “<code class="docutils literal notranslate"><span class="pre">json-dir</span></code> / <code class="docutils literal notranslate"><span class="pre">json-file</span></code>” or “<code class="docutils literal notranslate"><span class="pre">json-path</span></code>”</p></li>
+<li><p>output file path can be specified by “<code class="docutils literal notranslate"><span class="pre">output-path</span></code>” or “<code class="docutils literal notranslate"><span class="pre">input-path</span></code> + <code class="docutils literal notranslate"><span class="pre">suffix</span></code>”</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>-I/--input-path</strong> (<em>str</em>) – Path/to/input file.</p></li>
+<li><p><strong>-O/--output-path</strong> (<em>str</em>) – Path/to/output file.</p></li>
+<li><p><strong>-jd/--json-dir</strong> (<em>str</em>) – Path/to/json directory.</p></li>
+<li><p><strong>-jf/--json-file</strong> (<em>str</em>) – File name in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code>.</p></li>
+<li><p><strong>-jp/--json-path</strong> (<em>str</em>) – Path/to/json file.</p></li>
+<li><p><strong>-suf/--suffix</strong> (<em>str</em>) – Suffix of output filename.</p></li>
+<li><p><strong>-ext/--extension</strong> (<em>str</em>) – When ‘input-path’ is directory, only file in ‘input-path’ with this extension will be replaced.</p></li>
+<li><p><strong>--show-all</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show all json file descriptions in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code></p></li>
+<li><p><strong>--show</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show the content of a specified json file.</p></li>
+<li><p><strong>--quiet</strong> (<em>bool</em>) – Whether to make the output quiet.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ regexp_replacement -I sample.md -jf sample.json
+$ regexp_replacement --show-all
+$ regexp_replacement -jf sample.json --show
+</pre></div>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<ul>
+<li><dl>
+<dt>Replace Input file using regular expression.</dt><dd><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement -I sample.md -jf sample.json
+    Json   file : /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json
+    Input  file : sample.md
+    Output file : sample.md
+$ regexp-replacement -I sample.md -jf sample.json -suf suffix
+    Json: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/labbooks.json
+    Input path : sample.md
+    Output path: sample_suffix.md
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p>Show all json file in <code class="docutils literal notranslate"><span class="pre">json-dir</span></code></p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement --show-all
+Json directory: /Users/iwasakishuto/.pycharmers/cli/regexp_replacement
+* sample.json: Sample Json
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Show the content of the file at <code class="docutils literal notranslate"><span class="pre">json-path</span></code></p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ regexp-replacement -jf sample.json --show
+Json:  /Users/iwasakishuto/.pycharmers/cli/regexp_replacement/sample.json
+<span class="o">{</span>
+    <span class="s2">&quot;description&quot;</span> : <span class="s2">&quot;Sample Json&quot;</span>,
+    <span class="s2">&quot;patterns&quot;</span> : <span class="o">[</span>
+        <span class="o">[</span><span class="s2">&quot;`(.*?)`&quot;</span>, <span class="s2">&quot;&lt;span class=&quot;</span>code<span class="s2">&quot;&gt;\1&lt;/span&gt;&quot;</span><span class="o">]</span>,
+        <span class="o">[</span><span class="s2">&quot;+(.*?)+&quot;</span>, <span class="s2">&quot;&lt;span class=&quot;</span>strong<span class="s2">&quot;&gt;\1&lt;/span&gt;&quot;</span><span class="o">]</span>
+    <span class="o">]</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</dd></dl>
+
 </div>
 
 

@@ -118,11 +118,11 @@ class PycharmersSQL(PycharmersSDK):
         return data
 
     @abstractmethod
-    def connect(self, func:Callable[Any, [Union[pd.DataFrame, Tuple[tuple], None]]], **kwargs) -> Union[pd.DataFrame, Tuple[tuple], None]:
+    def connect(self, func:Callable[[Any], Union[pd.DataFrame, Tuple[tuple], None]], **kwargs) -> Union[pd.DataFrame, Tuple[tuple], None]:
         """Create a connection to the database, and close it after excuting ``func`` .
 
         Args:
-            func (Callable[Any, [Union[pd.DataFrame, Tuple[tuple], None]]]) : The function you want to execute. Receive ``cursor`` as the first argument.
+            func (Callable[[Any], Union[pd.DataFrame, Tuple[tuple], None]) : The function you want to execute. Receive ``cursor`` as the first argument.
 
         Returns:
             Union[pd.DataFrame, Tuple[tuple], None]: Return value from ``func``

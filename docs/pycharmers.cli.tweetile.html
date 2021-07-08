@@ -67,8 +67,118 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-tweetile-module">
-<h1>pycharmers.cli.tweetile module<a class="headerlink" href="#pycharmers-cli-tweetile-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.tweetile">
+<span id="pycharmers-cli-tweetile-module"></span><h1>pycharmers.cli.tweetile module<a class="headerlink" href="#module-pycharmers.cli.tweetile" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.tweetile.tweetile">
+<code class="sig-prename descclassname">pycharmers.cli.tweetile.</code><code class="sig-name descname">tweetile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/tweetile.html#tweetile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.tweetile.tweetile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide one image into three so that you can tweet beautifully.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to the input image.</p></li>
+<li><p><strong>--quality</strong> (<em>int</em>) – The image quality, on a scale from <code class="docutils literal notranslate"><span class="pre">1</span></code> (worst) to <code class="docutils literal notranslate"><span class="pre">95</span></code> (best). Defaults to <code class="docutils literal notranslate"><span class="pre">95</span></code>.</p></li>
+<li><p><strong>--loop</strong> (<em>int</em>) – How many times gif image loops. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>. (infinite loop.)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tweetile path/to/filename.jpg --quality 75
+$ tweetile path/to/filename.gif --loop 0
+</pre></div>
+</div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><img alt="_images/cli.tweetile-shingeki1.gif" src="_images/cli.tweetile-shingeki1.gif" />
+</td>
+<td><img alt="_images/cli.tweetile-shingeki2.gif" src="_images/cli.tweetile-shingeki2.gif" />
+</td>
+</tr>
+<tr class="row-odd"><td><img alt="_images/cli.tweetile-shingeki3.gif" src="_images/cli.tweetile-shingeki3.gif" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>This movie is from <a href="https://twitter.com/anime_shingeki">@anime_shingeki</a></p>
+<blockquote class="twitter-tweet" data-conversation="none"><a href="https://twitter.com/anime_shingeki/status/1376196378624282625">https://twitter.com/anime_shingeki/status/1376196378624282625</a></blockquote></dd></dl>
+
+<dl class="py function">
+<dt id="pycharmers.cli.tweetile.divideInto3forTweet">
+<code class="sig-prename descclassname">pycharmers.cli.tweetile.</code><code class="sig-name descname">divideInto3forTweet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/tweetile.html#divideInto3forTweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.tweetile.divideInto3forTweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide Image into 3 for Tweet</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="_images/cli.tweetile-size.jpg" src="_images/cli.tweetile-size.jpg" />
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_arr</strong> (<em>NDArray</em><em>[</em><em>(</em><em>636</em><em>,</em><em>1132</em><em>,</em><em>Any</em><em>)</em><em>, </em><em>np.uint8</em><em>]</em>) – Input image array (RGB)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of each Image object divided into three.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[Image.Image,Image.Image,Image.Image]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.cli.tweetile</span> <span class="kn">import</span> <span class="n">divideInto3forTweet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_bgr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;cli.tweetile-before.jpg&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_bgr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">divideInto3forTweet</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cli.tweetile-after</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" colspan="3"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Before</p></td>
+<td colspan="2"><p>After</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><img alt="_images/cli.tweetile-before.jpg" src="_images/cli.tweetile-before.jpg" />
+</td>
+<td rowspan="2"><img alt="_images/cli.tweetile-after1.jpg" src="_images/cli.tweetile-after1.jpg" />
+</td>
+<td><img alt="_images/cli.tweetile-after2.jpg" src="_images/cli.tweetile-after2.jpg" />
+</td>
+</tr>
+<tr class="row-even"><td><img alt="_images/cli.tweetile-after3.jpg" src="_images/cli.tweetile-after3.jpg" />
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 

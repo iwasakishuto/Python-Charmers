@@ -7,7 +7,7 @@ from ..utils._path import DOTENV_PATH
 from ..utils.environ_utils import name2envname, check_environ
 from ..utils.json_utils import dumps_json
 from ..utils.print_utils import tabulate
-from ._base import PycharmersSDK
+from .base import PycharmersSDK
 
 class Trello(PycharmersSDK):
     """A wrapper class for `Trello API <https://developer.atlassian.com/cloud/trello/>`_
@@ -17,12 +17,12 @@ class Trello(PycharmersSDK):
     Args:
         api_key (str)  : API-key.
         token (str)    : Token.
-        verbose (bool) : Whether to print logs or not. 
+        verbose (bool) : Whether to print logs or not.
 
     """
     def __init__(self, apikey=None, token=None, verbose=True):
         super().__init__(
-            api_name="Trello", 
+            api_name="Trello",
             verbose=verbose,
             apikey=apikey, token=token,
         )
@@ -37,7 +37,7 @@ class Trello(PycharmersSDK):
             token (str)    : Token.
         """
         check_environ(
-            required_keynames=self.required_keynames, 
+            required_keynames=self.required_keynames,
             required_env_varnames=self.required_env_varnames,
             apikey=apikey,
             token=token,
@@ -49,7 +49,7 @@ class Trello(PycharmersSDK):
             },
             params={
                 "key"   : self.get_val("apikey", apikey=apikey),
-                "token" : self.get_val("token", token=token), 
+                "token" : self.get_val("token", token=token),
             },
         )
         return json.loads(response.text)
@@ -57,7 +57,7 @@ class Trello(PycharmersSDK):
     @staticmethod
     def show_results(result, keynames=["name", "id"]):
         """Static Method for displaying result beautifullly.
-        
+
         Args:
             result (list)   : Result.
             keynames (list) : The keyname to extract and display the value from the ``result``

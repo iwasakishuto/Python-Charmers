@@ -67,8 +67,33 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-cli-video2gif-module">
-<h1>pycharmers.cli.video2gif module<a class="headerlink" href="#pycharmers-cli-video2gif-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.cli.video2gif">
+<span id="pycharmers-cli-video2gif-module"></span><h1>pycharmers.cli.video2gif module<a class="headerlink" href="#module-pycharmers.cli.video2gif" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pycharmers.cli.video2gif.video2gif">
+<code class="sig-prename descclassname">pycharmers.cli.video2gif.</code><code class="sig-name descname">video2gif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">argv</span><span class="o">=</span><span class="default_value">['-M', 'html', '.', '_build']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/cli/video2gif.html#video2gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.cli.video2gif.video2gif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Video into Gif.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>video</strong> (<em>str</em>) – Path to the video.</p></li>
+<li><p><strong>--gif</strong> (<em>str</em>) – Path to the output image.</p></li>
+<li><p><strong>--resize</strong> (<em>int</em>) – Enter a size separated by a comma ( <code class="docutils literal notranslate"><span class="pre">width</span></code> , <code class="docutils literal notranslate"><span class="pre">height</span></code> )</p></li>
+<li><p><strong>--loop</strong> (<em>int</em>) – How many times gif image loops.</p></li>
+<li><p><strong>--speed</strong> (<em>int</em>) – How many images will pass to get one. (The higher the number, the faster the speed).</p></li>
+<li><p><strong>--twitter</strong> (<em>bool</em>) – Whether you want to run for tweet. ( <code class="docutils literal notranslate"><span class="pre">resize</span></code> will be ( <code class="docutils literal notranslate"><span class="pre">1300</span></code> , <code class="docutils literal notranslate"><span class="pre">730</span></code> ) )</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you run from the command line, execute as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ video2gif path/to/video.mp4 --gif path/to/gif.gif --twitter
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
 </div>
 
 

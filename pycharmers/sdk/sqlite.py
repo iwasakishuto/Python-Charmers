@@ -7,7 +7,7 @@ from typing import Any,Optional,Callable,Union,List,Tuple,Dict
 from ..utils._colorings import toBLUE, toGREEN, toRED
 from ..utils.environ_utils import check_environ
 from ..utils.generic_utils import handleKeyError
-from ._base import PycharmersSQL
+from .base import PycharmersSQL
 
 class PycharmersSQLite(PycharmersSQL):
     """Wrapper class for Sqlite.

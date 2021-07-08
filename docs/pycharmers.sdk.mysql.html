@@ -67,8 +67,146 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pycharmers-sdk-mysql-module">
-<h1>pycharmers.sdk.mysql module<a class="headerlink" href="#pycharmers-sdk-mysql-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pycharmers.sdk.mysql">
+<span id="pycharmers-sdk-mysql-module"></span><h1>pycharmers.sdk.mysql module<a class="headerlink" href="#module-pycharmers.sdk.mysql" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pycharmers.sdk.mysql.PycharmersMySQL">
+<em class="property">class </em><code class="sig-prename descclassname">pycharmers.sdk.mysql.</code><code class="sig-name descname">PycharmersMySQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">database</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/sdk/mysql.html#PycharmersMySQL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.mysql.PycharmersMySQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pycharmers.sdk.base.html#pycharmers.sdk.base.PycharmersSQL" title="pycharmers.sdk.base.PycharmersSQL"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycharmers.sdk.base.PycharmersSQL</span></code></a></p>
+<p>Wrapper class for MySQL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – host to connect. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>password</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – user to connect as. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>user</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – password to use. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>database</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – database to use. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print message or not Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycharmers.sdk.mysql.PycharmersMySQL.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">host</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">database</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>Tuple<span class="p">[</span>tuple<span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/pycharmers/sdk/mysql.html#PycharmersMySQL.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.sdk.mysql.PycharmersMySQL.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <code class="docutils literal notranslate"><span class="pre">MySQLdb.connect</span></code> to create a connection to the database, and close it after excuting <code class="docutils literal notranslate"><span class="pre">func</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em>) – The function you want to execute. Receive <code class="docutils literal notranslate"><span class="pre">cursor</span></code> as the first argument.</p></li>
+<li><p><strong>host</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – host to connect. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>password</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – user to connect as. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>user</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – password to use. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>database</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – database to ues. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – See a table below.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return value of <code class="docutils literal notranslate"><span class="pre">func</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p>Keyword arguments for <code class="docutils literal notranslate"><span class="pre">MySQLdb.connect</span></code> is below.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 3%" />
+<col style="width: 89%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">port</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>TCP/IP port to connect to</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unix_socket</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>location of unix_socket to use</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">conv</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td><p>conversion dictionary, see MySQLdb.converters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">connect_timeout</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>number of seconds to wait before the connection attempt fails.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compress</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>if set, compression is enabled</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">named_pipe</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>if set, a named pipe is used to connect (Windows only)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">init_command</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>command which is run once the connection is created</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">read_default_file</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>file from which default client values are read</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">read_default_group</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>configuration group to use from the default file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cursorclass</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p>class object, used to create cursors (keyword only)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">use_unicode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, text-like columns are returned as unicode objects using the connection``’s character set. Otherwise, text-like columns are returned as bytes. Unicode objects will always be encoded to the connection’<code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">character</span> <span class="pre">set</span> <span class="pre">regardless</span> <span class="pre">of</span> <span class="pre">this</span> <span class="pre">setting.</span> <span class="pre">Default</span> <span class="pre">to</span> <span class="pre">``True</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">charset</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>If supplied, the connection character set will be changed to this character set.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auth_plugin</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>If supplied, the connection default authentication plugin will be changed to this value. Example values are <code class="docutils literal notranslate"><span class="pre">mysql_native_password</span></code> or <code class="docutils literal notranslate"><span class="pre">caching_sha2_password</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sql_mode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>If supplied, the session SQL mode will be changed to this setting. For more details and legal values, see the MySQL documentation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">client_flag</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>flags to use or 0 (see MySQL docs or constants/CLIENTS.py)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ssl_mode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>specify the security settings for connection to the server; see the MySQL documentation for more details (mysql_option(), MYSQL_OPT_SSL_MODE). Only one of <code class="docutils literal notranslate"><span class="pre">'DISABLED'</span></code>, <code class="docutils literal notranslate"><span class="pre">'PREFERRED'</span></code>, <code class="docutils literal notranslate"><span class="pre">'REQUIRED'</span></code>, <code class="docutils literal notranslate"><span class="pre">'VERIFY_CA'</span></code>, <code class="docutils literal notranslate"><span class="pre">'VERIFY_IDENTITY'</span></code> can be specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ssl</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict</span></code></p></td>
+<td><p>dictionary or mapping contains SSL connection parameters; see the MySQL documentation for more details (mysql_ssl_set()).  If this is set, and the client does not support SSL, NotSupportedError will be raised.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">local_infile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>enables LOAD LOCAL INFILE; zero disables</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">autocommit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>If False (default), autocommit is disabled. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, autocommit is enabled. If None, autocommit isn’t set and server default is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">binary_prefix</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>If set, the <code class="docutils literal notranslate"><span class="pre">'_binary'</span></code> prefix will be used for raw byte query arguments (e.g. Binary). This is disabled by default.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -124,7 +262,7 @@
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.trello.html">pycharmers.sdk.trello module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.sdk.html#module-pycharmers.sdk">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>

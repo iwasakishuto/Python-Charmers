@@ -83,7 +83,7 @@
 <span class="sd">        --typing (Tuple[str])   : Path to typing text file(s).</span>
 <span class="sd">        --typing-fontname (str) : Default Typing Font name</span>
 <span class="sd">        --size (List[int])      : Output video image size (width, height). Defaults to ``[1080,1920]``.</span>
-<span class="sd">        --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``. </span>
+<span class="sd">        --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``.</span>
 <span class="sd">        --video (str)           : The path to video to paste. Defaults to ``None``.</span>
 <span class="sd">        --image (str)           : The path to image to paste. Defaults to ``None``.</span>
 <span class="sd">        --sec (float)           : The length of the created video. This value is used when ``--video`` is NOT specified. Defaults to ``5``.</span>
@@ -92,10 +92,10 @@
 <span class="sd">        --align (List[str])     : Horizontal and vertical alignment of the content (video/image).</span>
 <span class="sd">        --out (str)             : The filename of created typing video. Defaults to ``f&quot;typing_video_{now_str()}.mp4&quot;``.</span>
 <span class="sd">        --quiet (bool)          : Whether to make the output quiet.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Note:</span>
 <span class="sd">        When you run from the command line, execute as follows::</span>
-<span class="sd">                </span>
+
 <span class="sd">            $ video_of_typing --typing /path/to/typing1.json \\</span>
 <span class="sd">                                       /path/to/typing2.json \\</span>
 <span class="sd">                                       /path/to/typing3.json \\</span>
@@ -211,16 +211,16 @@
 <span class="s2">            * Background Color (RGB)   : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">bgRGB</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            </span><span class="si">{</span><span class="n">toACCENT</span><span class="p">(</span><span class="s1">&#39;[Image or Video data to paste]&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            * Data              : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">video_path</span> <span class="ow">or</span> <span class="n">image_path</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">            * Size (W,H)        : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">))</span><span class="si">}</span><span class="s2">   </span>
-<span class="s2">            * Margin (top,left) : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">mt</span><span class="p">,</span><span class="n">ml</span><span class="p">))</span><span class="si">}</span><span class="s2">   </span>
+<span class="s2">            * Size (W,H)        : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">))</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            * Margin (top,left) : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">((</span><span class="n">mt</span><span class="p">,</span><span class="n">ml</span><span class="p">))</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
-        
+
         <span class="n">type_writer</span> <span class="o">=</span> <span class="n">TypeWriter</span><span class="p">(</span><span class="n">total_frame_count</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">typing_json_paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">typing</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="n">monitor</span> <span class="o">=</span> <span class="n">ProgressMonitor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">barname</span><span class="o">=</span><span class="s2">&quot;Video of Typing&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">bg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">bgBGR</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
             <span class="n">is_ok</span><span class="p">,</span><span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_ok</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span> 
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_ok</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="k">break</span>
             <span class="n">bg</span><span class="p">[</span><span class="n">mt</span><span class="p">:</span><span class="n">mt</span><span class="o">+</span><span class="n">h</span><span class="p">,</span><span class="n">ml</span><span class="p">:</span><span class="n">ml</span><span class="o">+</span><span class="n">w</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">frame</span>
             <span class="n">bg_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">bg</span><span class="p">)</span>
@@ -254,7 +254,7 @@
 <span class="sd">            total_frame_count (int)                  : Total frame count of Typing video.</span>
 <span class="sd">            typing_json_paths (Tuple[str], optional) : Path to typing text file(s). Defaults to ``()``.</span>
 <span class="sd">            verbose (bool, optional)                 : Whether to output the typing file information. Defaults to ``True``.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Attributes:</span>
 <span class="sd">            drawing_functions (List[callable]) : A list of drawing functions for each typing file in ``typing_json_paths``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -328,7 +328,7 @@
     <span class="sd">&quot;&quot;&quot;Useful class for drawing typing programming code&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing_json_paths</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">(),</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">total_frame_count</span><span class="o">=</span><span class="n">total_frame_count</span><span class="p">,</span> 
+            <span class="n">total_frame_count</span><span class="o">=</span><span class="n">total_frame_count</span><span class="p">,</span>
             <span class="n">typing_json_paths</span><span class="o">=</span><span class="n">typing_json_paths</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
@@ -371,12 +371,12 @@
         <span class="n">cls2bgr</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pygments_theme</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span><span class="nb">hex</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-                <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\.highlight\s+(?:(?:\.((?:\w|-|_)+))?)\s?{.?color:\s*?((?:\w|#)+)&quot;</span><span class="p">,</span> 
+                <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\.highlight\s+(?:(?:\.((?:\w|-|_)+))?)\s?{.?color:\s*?((?:\w|#)+)&quot;</span><span class="p">,</span>
                 <span class="n">string</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">())):</span>
                 <span class="n">rgb</span> <span class="o">=</span> <span class="n">hex2rgb</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
                 <span class="n">bgr</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
                 <span class="n">cls2bgr</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="n">bgr</span>
-            
+
         <span class="k">def</span> <span class="nf">draw_typing_text</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">curt_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">s</span><span class="o">&lt;=</span><span class="n">curt_frame_count</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">last</span> <span class="ow">or</span> <span class="n">curt_frame_count</span><span class="o">&lt;=</span><span class="n">e</span><span class="p">:</span>
@@ -406,7 +406,7 @@
 <div class="viewcode-block" id="TypeWriter"><a class="viewcode-back" href="../../../pycharmers.cli.video_of_typing.html#pycharmers.cli.video_of_typing.TypeWriter">[docs]</a><span class="k">class</span> <span class="nc">TypeWriter</span><span class="p">(</span><span class="n">BaseTypeWriter</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_frame_count</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">typing_json_paths</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">(),</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">total_frame_count</span><span class="o">=</span><span class="n">total_frame_count</span><span class="p">,</span> 
+            <span class="n">total_frame_count</span><span class="o">=</span><span class="n">total_frame_count</span><span class="p">,</span>
             <span class="n">typing_json_paths</span><span class="o">=</span><span class="n">typing_json_paths</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
