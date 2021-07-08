@@ -1,0 +1,7 @@
+pycharmers.sdk.sqlite module
+============================
+
+.. automodule:: pycharmers.sdk.sqlite
+   :members:
+   :undoc-members:
+   :show-inheritance:

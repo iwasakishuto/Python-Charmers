@@ -164,17 +164,20 @@
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;[\s 　]+&quot;</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="now_str"><a class="viewcode-back" href="../../../pycharmers.utils.generic_utils.html#pycharmers.utils.generic_utils.now_str">[docs]</a><span class="k">def</span> <span class="nf">now_str</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">@%H.%M.%S&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns new datetime string representing current time local to tz under the control of an explicit format string.</span>
+    <span class="sd">&quot;&quot;&quot;Returns new datetime string representing current time local to ``tz`` under the control of an explicit format string.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        tz (datetime.timezone) : Timezone object. If no ``tz`` is specified, uses local timezone.</span>
-<span class="sd">        fmt (str)              : format string. See `Python Documentation &lt;https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes&gt;`_</span>
+<span class="sd">        tz (Optional[datetime.timezone], optional): Timezone object. If no ``tz`` is specified, uses local timezone. Defaults to ``None``.</span>
+<span class="sd">        fmt (str, optional)                       : A format string. See `Python Documentation &lt;https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes&gt;`_. Defaults to ``&quot;%Y-%m-%d@%H.%M.%S&quot;``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A datetime string representing current time local to ``tz``.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import now_str</span>
 <span class="sd">        &gt;&gt;&gt; now_str()</span>
 <span class="sd">        &#39;2020-09-14@22.31.17&#39;</span>
-<span class="sd">        &gt;&gt;&gt;now_str(fmt=&quot;%A, %d. %B %Y %I:%M%p&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; now_str(fmt=&quot;%A, %d. %B %Y %I:%M%p&quot;)</span>
 <span class="sd">        Monday, 14. September 2020 10:31PM&#39;</span>
 <span class="sd">        &gt;&gt;&gt; now_str(tz=datetime.timezone.utc)</span>
 <span class="sd">        &#39;2020-09-14@13.31.17&#39;</span>

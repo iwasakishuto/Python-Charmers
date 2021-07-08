@@ -8,7 +8,7 @@
   <meta property="og:title" content="pycharmers.sdk package" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://iwasakishuto.github.io/Python-Charmers/pycharmers.sdk.html" />
-  <meta property="og:description" content="Submodules: pycharmers.sdk.github module, pycharmers.sdk.google_drive module, pycharmers.sdk.mysql module, pycharmers.sdk.slack module, pycharmers.sdk.trello module. Module contents:" />
+  <meta property="og:description" content="Submodules: pycharmers.sdk.base module, pycharmers.sdk.github module, pycharmers.sdk.google_drive module, pycharmers.sdk.mysql module, pycharmers.sdk.slack module, pycharmers.sdk.sqlite module, pyc..." />
   <meta property="og:image" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png" />
   <meta property="og:site_name" content="Python-Charmers" />
 <meta name="twitter:site" content="@cabernet_rock" />
@@ -34,7 +34,7 @@
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pycharmers.sdk.github module" href="pycharmers.sdk.github.html" />
+    <link rel="next" title="pycharmers.sdk.base module" href="pycharmers.sdk.base.html" />
     <link rel="prev" title="pycharmers.opencv.windows module" href="pycharmers.opencv.windows.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -47,7 +47,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.sdk.github.html" title="pycharmers.sdk.github module"
+          <a href="pycharmers.sdk.base.html" title="pycharmers.sdk.base module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pycharmers.opencv.windows.html" title="pycharmers.opencv.windows module"
@@ -72,16 +72,18 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.base.html">pycharmers.sdk.base module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.github.html">pycharmers.sdk.github module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.google_drive.html">pycharmers.sdk.google_drive module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.mysql.html">pycharmers.sdk.mysql module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.slack.html">pycharmers.sdk.slack module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.sqlite.html">pycharmers.sdk.sqlite module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pycharmers.sdk.trello.html">pycharmers.sdk.trello module</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="module-pycharmers.sdk">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycharmers.sdk" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -129,14 +131,16 @@
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.opencv.html">pycharmers.opencv package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pycharmers.sdk package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.base.html">pycharmers.sdk.base module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.github.html">pycharmers.sdk.github module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.google_drive.html">pycharmers.sdk.google_drive module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.mysql.html">pycharmers.sdk.mysql module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.slack.html">pycharmers.sdk.slack module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.sqlite.html">pycharmers.sdk.sqlite module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.sdk.trello.html">pycharmers.sdk.trello module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pycharmers.sdk">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.utils.html">pycharmers.utils package</a></li>
@@ -151,8 +155,8 @@
   <p class="topless"><a href="pycharmers.opencv.windows.html"
                         title="previous chapter">pycharmers.opencv.windows module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pycharmers.sdk.github.html"
-                        title="next chapter">pycharmers.sdk.github module</a></p>
+  <p class="topless"><a href="pycharmers.sdk.base.html"
+                        title="next chapter">pycharmers.sdk.base module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -184,7 +188,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pycharmers.sdk.github.html" title="pycharmers.sdk.github module"
+          <a href="pycharmers.sdk.base.html" title="pycharmers.sdk.base module"
              >next</a> |</li>
         <li class="right" >
           <a href="pycharmers.opencv.windows.html" title="pycharmers.opencv.windows module"

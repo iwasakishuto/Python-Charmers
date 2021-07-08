@@ -171,20 +171,26 @@
 <dl class="py function">
 <dt id="pycharmers.utils.generic_utils.now_str">
 <code class="sig-prename descclassname">pycharmers.utils.generic_utils.</code><code class="sig-name descname">now_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'%Y-%m-%d&#64;%H.%M.%S'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/utils/generic_utils.html#now_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.utils.generic_utils.now_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns new datetime string representing current time local to tz under the control of an explicit format string.</p>
+<dd><p>Returns new datetime string representing current time local to <code class="docutils literal notranslate"><span class="pre">tz</span></code> under the control of an explicit format string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tz</strong> (<em>datetime.timezone</em>) – Timezone object. If no <code class="docutils literal notranslate"><span class="pre">tz</span></code> is specified, uses local timezone.</p></li>
-<li><p><strong>fmt</strong> (<em>str</em>) – format string. See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">Python Documentation</a></p></li>
+<li><p><strong>tz</strong> (<em>Optional</em><em>[</em><em>datetime.timezone</em><em>]</em><em>, </em><em>optional</em>) – Timezone object. If no <code class="docutils literal notranslate"><span class="pre">tz</span></code> is specified, uses local timezone. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>fmt</strong> (<em>str</em><em>, </em><em>optional</em>) – A format string. See <a class="reference external" href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">Python Documentation</a>. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;%Y-%m-%d&#64;%H.%M.%S&quot;</span></code>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A datetime string representing current time local to <code class="docutils literal notranslate"><span class="pre">tz</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">now_str</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">()</span>
 <span class="go">&#39;2020-09-14@22.31.17&#39;</span>
-<span class="go">&gt;&gt;&gt;now_str(fmt=&quot;%A, %d. %B %Y %I:%M%p&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;%A, </span><span class="si">%d</span><span class="s2">. %B %Y %I:%M%p&quot;</span><span class="p">)</span>
 <span class="go">Monday, 14. September 2020 10:31PM&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now_str</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 <span class="go">&#39;2020-09-14@13.31.17&#39;</span>

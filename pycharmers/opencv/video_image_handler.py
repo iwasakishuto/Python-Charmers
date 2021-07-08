@@ -220,7 +220,7 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
     else:
         root,original_ext = os.path.splitext(out_path)
         if original_ext != ideal_ext:
-            warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).", category=RuntimeWarning)
+            warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).")
             out_path = root + ideal_ext
     VideoWriter = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
     is_ok = VideoWriter.isOpened()

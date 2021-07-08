@@ -31,7 +31,7 @@ def video_of_typing(argv=sys.argv[1:]):
         --typing (Tuple[str])   : Path to typing text file(s).
         --typing-fontname (str) : Default Typing Font name
         --size (List[int])      : Output video image size (width, height). Defaults to ``[1080,1920]``.
-        --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``. 
+        --bgRGB (List[int])     : The color of background image. (RGB) Defaults to ``[255,255,255]``.
         --video (str)           : The path to video to paste. Defaults to ``None``.
         --image (str)           : The path to image to paste. Defaults to ``None``.
         --sec (float)           : The length of the created video. This value is used when ``--video`` is NOT specified. Defaults to ``5``.
@@ -40,10 +40,10 @@ def video_of_typing(argv=sys.argv[1:]):
         --align (List[str])     : Horizontal and vertical alignment of the content (video/image).
         --out (str)             : The filename of created typing video. Defaults to ``f"typing_video_{now_str()}.mp4"``.
         --quiet (bool)          : Whether to make the output quiet.
-    
+
     Note:
         When you run from the command line, execute as follows::
-                
+
             $ video_of_typing --typing /path/to/typing1.json \\
                                        /path/to/typing2.json \\
                                        /path/to/typing3.json \\
@@ -159,16 +159,16 @@ def video_of_typing(argv=sys.argv[1:]):
             * Background Color (RGB)   : {toGREEN(bgRGB)}
             {toACCENT('[Image or Video data to paste]')}
             * Data              : {toBLUE(video_path or image_path)}
-            * Size (W,H)        : {toGREEN((w,h))}   
-            * Margin (top,left) : {toGREEN((mt,ml))}   
+            * Size (W,H)        : {toGREEN((w,h))}
+            * Margin (top,left) : {toGREEN((mt,ml))}
             """))
-        
+
         type_writer = TypeWriter(total_frame_count=n, typing_json_paths=args.typing, verbose=verbose)
         monitor = ProgressMonitor(max_iter=n, barname="Video of Typing")
         for i in range(1,n+1):
             bg = np.full(shape=(H,W,3), fill_value=bgBGR, dtype=np.uint8)
             is_ok,frame = cap.read()
-            if (not is_ok) or (frame is None): 
+            if (not is_ok) or (frame is None):
                 break
             bg[mt:mt+h,ml:ml+w,:] = frame
             bg_img = Image.fromarray(bg)
@@ -202,7 +202,7 @@ class BaseTypeWriter():
             total_frame_count (int)                  : Total frame count of Typing video.
             typing_json_paths (Tuple[str], optional) : Path to typing text file(s). Defaults to ``()``.
             verbose (bool, optional)                 : Whether to output the typing file information. Defaults to ``True``.
-        
+
         Attributes:
             drawing_functions (List[callable]) : A list of drawing functions for each typing file in ``typing_json_paths``.
         """
@@ -276,7 +276,7 @@ class CodeTypeWriter(BaseTypeWriter):
     """Useful class for drawing typing programming code"""
     def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
         super().__init__(
-            total_frame_count=total_frame_count, 
+            total_frame_count=total_frame_count,
             typing_json_paths=typing_json_paths,
             verbose=verbose,
         )
@@ -319,12 +319,12 @@ class CodeTypeWriter(BaseTypeWriter):
         cls2bgr = {}
         with open(pygments_theme) as f:
             for cls,hex in re.findall(
-                pattern=r"\.highlight\s+(?:(?:\.((?:\w|-|_)+))?)\s?{.?color:\s*?((?:\w|#)+)", 
+                pattern=r"\.highlight\s+(?:(?:\.((?:\w|-|_)+))?)\s?{.?color:\s*?((?:\w|#)+)",
                 string="".join(f.readlines())):
                 rgb = hex2rgb(hex, max_val=255)
                 bgr = tuple([int(e) for e in rgb[::-1]])
                 cls2bgr[cls] = bgr
-            
+
         def draw_typing_text(img, curt_frame_count:int):
             if s<=curt_frame_count:
                 if last or curt_frame_count<=e:
@@ -354,7 +354,7 @@ class CodeTypeWriter(BaseTypeWriter):
 class TypeWriter(BaseTypeWriter):
     def __init__(self, total_frame_count:int, typing_json_paths:Tuple[str]=(), verbose:bool=True):
         super().__init__(
-            total_frame_count=total_frame_count, 
+            total_frame_count=total_frame_count,
             typing_json_paths=typing_json_paths,
             verbose=verbose,
         )

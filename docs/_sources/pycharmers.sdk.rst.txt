@@ -7,10 +7,12 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   pycharmers.sdk.base
    pycharmers.sdk.github
    pycharmers.sdk.google_drive
    pycharmers.sdk.mysql
    pycharmers.sdk.slack
+   pycharmers.sdk.sqlite
    pycharmers.sdk.trello
 
 Module contents

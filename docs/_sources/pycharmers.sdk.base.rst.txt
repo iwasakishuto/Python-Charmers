@@ -1,0 +1,7 @@
+pycharmers.sdk.base module
+==========================
+
+.. automodule:: pycharmers.sdk.base
+   :members:
+   :undoc-members:
+   :show-inheritance:

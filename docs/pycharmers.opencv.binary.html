@@ -67,87 +67,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pycharmers.opencv.binary">
-<span id="pycharmers-opencv-binary-module"></span><h1>pycharmers.opencv.binary module<a class="headerlink" href="#module-pycharmers.opencv.binary" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt id="pycharmers.opencv.binary.binarizer_creator">
-<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">binarizer_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span></em>, <em class="sig-param"><span class="n">maxval</span><span class="o">=</span><span class="default_value">255</span></em>, <em class="sig-param"><span class="n">thresh</span><span class="o">=</span><span class="default_value">127</span></em>, <em class="sig-param"><span class="n">thresholdType</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">blockSize</span><span class="o">=</span><span class="default_value">11</span></em>, <em class="sig-param"><span class="n">const</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#binarizer_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.binarizer_creator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a function which performs advanced morphological transformations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<em>str/int</em>) – The identifier of binarization.</p></li>
-<li><p><strong>thresh</strong> (<em>int</em>) – Threshold value used in <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> binarizer.</p></li>
-<li><p><strong>maxval</strong> (<em>int</em>) – The maximum value.</p></li>
-<li><p><strong>thresholdType</strong> (<em>int</em>) – Thresholding type.</p></li>
-<li><p><strong>blockSize</strong> (<em>odd</em>) – Size of a pixel neighborhood that is used to calculate a threshold value for the pixel: <code class="docutils literal notranslate"><span class="pre">3</span></code> , <code class="docutils literal notranslate"><span class="pre">5</span></code> , <code class="docutils literal notranslate"><span class="pre">7</span></code> , and so on.</p></li>
-<li><p><strong>const</strong> (<em>int</em>) – Constant subtracted from the mean or weighted mean (see the details below). Normally, it is positive but may be zero or negative as well.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Binarizer.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>function</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">binarizer_creator</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="n">vconcat_resize_min</span><span class="p">,</span> <span class="n">cv2plot</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv.binary</span> <span class="kn">import</span> <span class="n">OPENCV_BINARYZATIONS</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">gray</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">binarizer_creator</span><span class="p">(</span><span class="n">key</span><span class="p">)(</span><span class="n">gray</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OPENCV_BINARYZATIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv2plot</span><span class="p">(</span><span class="n">vconcat_resize_min</span><span class="p">(</span><span class="o">*</span><span class="n">images</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="n">figkeywargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;figsize&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)})</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.opencv.binary.findBiggestContour">
-<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">findBiggestContour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contours</span></em>, <em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#findBiggestContour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.findBiggestContour" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>contours</strong> (<em>list</em>) – Contours. (e.g. The return of <code class="docutils literal notranslate"><span class="pre">cv2.findContours</span></code> )</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Countour of the biggest area.
-max_area (int)       : Area of the biggest area.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>biggest (np.ndarray)</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.opencv</span> <span class="kn">import</span> <span class="n">findBiggestContour</span><span class="p">,</span> <span class="n">SAMPLE_LENA_IMG</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">img_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">SAMPLE_LENA_IMG</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">img_th</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">img_th</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">biggest</span><span class="p">,</span> <span class="n">max_area</span> <span class="o">=</span> <span class="n">findBiggestContour</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_area</span>
-<span class="go">0 # There is no closed countour.</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycharmers.opencv.binary.reorder_contour">
-<code class="sig-prename descclassname">pycharmers.opencv.binary.</code><code class="sig-name descname">reorder_contour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycharmers/opencv/binary.html#reorder_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycharmers.opencv.binary.reorder_contour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reorder the points created by <code class="docutils literal notranslate"><span class="pre">cv2.approxPolyDP</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>np.ndarray</em>) – Points.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Reordered Points.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ret (np.ndarray)</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <div class="section" id="pycharmers-opencv-binary-module">
+<h1>pycharmers.opencv.binary module<a class="headerlink" href="#pycharmers-opencv-binary-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -206,7 +127,7 @@ max_area (int)       : Area of the biggest area.</p>
 <li class="toctree-l5"><a class="reference internal" href="pycharmers.opencv.windows.html">pycharmers.opencv.windows module</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-pycharmers.opencv">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pycharmers.opencv.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pycharmers.sdk.html">pycharmers.sdk package</a></li>
