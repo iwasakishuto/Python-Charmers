@@ -57,6 +57,7 @@
 <span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
 <span class="kn">from</span> <span class="nn">.generic_utils</span> <span class="kn">import</span> <span class="n">assign_trbl</span><span class="p">,</span> <span class="n">handleKeyError</span><span class="p">,</span> <span class="n">flatten_dual</span>
@@ -64,14 +65,14 @@
 
 <div class="viewcode-block" id="pilread"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.pilread">[docs]</a><span class="k">def</span> <span class="nf">pilread</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Opens and identifies the given image file.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        img (PIL.Image) : PIL Image object</span>
 <span class="sd">        path (str)      : Path or URL to image file.</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">        img (PIL.Image) : PIL Image object</span>
-<span class="sd">        </span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import pilread</span>
 <span class="sd">        &gt;&gt;&gt; img = pilread(img=None, path=&quot;https://iwasakishuto.github.io/Python-Charmers/_static/favicon.png&quot;)</span>
@@ -88,11 +89,11 @@
 
 <div class="viewcode-block" id="roughen_img"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.roughen_img">[docs]</a><span class="k">def</span> <span class="nf">roughen_img</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rrate</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Roughen the Image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        img (PIL.Image) : image file.</span>
 <span class="sd">        path (str)      : Path or URL to image file.</span>
-<span class="sd">        rrate (float)   : Reduction rate. </span>
+<span class="sd">        rrate (float)   : Reduction rate.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">        img (PIL.Image) : Roughened PIL Image object</span>
@@ -109,12 +110,12 @@
     <span class="n">img_size_small</span>  <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">/</span><span class="n">rrate</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">img_size_origin</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">img_size_small</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">img_size_origin</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="draw_text_in_pil"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text_in_pil">[docs]</a><span class="k">def</span> <span class="nf">draw_text_in_pil</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttfontname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">text_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                     <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">line_height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                     <span class="n">bgRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">textRGB</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
-                     <span class="n">ret_position</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="draw_text_in_pil"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_text_in_pil">[docs]</a><span class="k">def</span> <span class="nf">draw_text_in_pil</span><span class="p">(</span><span class="n">text</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">img</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttfontname</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">img_size</span><span class="p">:</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span> <span class="n">text_width</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">fontsize</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontwidth</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">margin</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">line_height</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">bgRGB</span><span class="p">:</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tuple</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">textRGB</span><span class="p">:</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tuple</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">mode</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
+                     <span class="n">ret_position</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw text in ``PIL.Image`` object.</span>
 
@@ -138,7 +139,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple (PIL.Image, pos): img, Position of next text ( ``x`` , ``y`` ).</span>
-<span class="sd">    </span>
+
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.utils import draw_text_in_pil</span>
 <span class="sd">        &gt;&gt;&gt; img, y = draw_text_in_pil(&quot;Hello World!!&quot;)</span>
@@ -146,8 +147,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">img_size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bgRGB</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">img_size</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+
     <span class="k">if</span> <span class="n">ttfontname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            Please define the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;ttfontname&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">. If you dont&#39;t know where the font file is, check the</span>
@@ -156,24 +156,24 @@
 <span class="s2">            or, use </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;pycharmers.utils.generic_urils.get_random_ttfontname&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to get the path to a random font file.</span>
 <span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
     <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">],</span> <span class="n">ret_position</span><span class="o">=</span><span class="n">ret_position</span><span class="p">)</span>
-    
-    <span class="n">iw</span><span class="p">,</span><span class="n">ih</span> <span class="o">=</span> <span class="n">img_size</span>
+
+    <span class="n">iw</span><span class="p">,</span><span class="n">ih</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
     <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;margin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin</span>
     <span class="n">mt</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">mb</span><span class="p">,</span><span class="n">ml</span> <span class="o">=</span> <span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
     <span class="n">ml</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ml</span><span class="p">);</span> <span class="n">mt</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mt</span><span class="p">)</span>
-    
+
     <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">ttfontname</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
     <span class="n">fw</span><span class="p">,</span><span class="n">fh</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">)</span>
     <span class="n">fw</span> <span class="o">=</span> <span class="n">fontwidth</span> <span class="ow">or</span> <span class="n">fw</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">)</span>
     <span class="n">fh</span> <span class="o">=</span> <span class="n">fontheight</span> <span class="ow">or</span> <span class="n">line_height</span> <span class="ow">or</span> <span class="n">fh</span>
-    
+
     <span class="n">max_text_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">iw</span><span class="o">-</span><span class="p">(</span><span class="n">mr</span><span class="o">+</span><span class="n">ml</span><span class="p">))</span><span class="o">//</span><span class="n">fw</span>
     <span class="n">text_width</span> <span class="o">=</span> <span class="n">text_width</span> <span class="ow">or</span> <span class="n">max_text_width</span>
     <span class="n">wrapped_lines</span> <span class="o">=</span> <span class="n">flatten_dual</span><span class="p">([</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
         <span class="n">text</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">text_width</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="n">drop_whitespace</span>
     <span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
     <span class="n">max_text_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">ih</span><span class="o">-</span><span class="p">(</span><span class="n">mt</span><span class="o">+</span><span class="n">mb</span><span class="p">))</span><span class="o">//</span><span class="n">fh</span>
-    
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">textRGB</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span> <span class="ow">and</span> <span class="n">mode</span><span class="o">==</span><span class="s2">&quot;RGBA&quot;</span><span class="p">:</span>
         <span class="n">text_canvas</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">text_canvas</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
@@ -197,7 +197,7 @@
 
 <div class="viewcode-block" id="draw_cross"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_cross">[docs]</a><span class="k">def</span> <span class="nf">draw_cross</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color_mode</span><span class="o">=</span><span class="s2">&quot;RGBA&quot;</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw Cross Mark.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        img (PIL.Image)    : Pillow Image.</span>
 <span class="sd">        size (int/tuple)   : Cross mark size. (width,Height)</span>
@@ -205,9 +205,9 @@
 <span class="sd">        fill_color (tuple) : The color in the line.</span>
 <span class="sd">        outline (tuple)    : The color of the edge of the line.</span>
 <span class="sd">        color_mode (str)   : Color Mode (ex. ``&quot;RGBA&quot;`` , ``&quot;P&quot;`` )</span>
-<span class="sd">        margin (int/list)  : Specify the position. </span>
+<span class="sd">        margin (int/list)  : Specify the position.</span>
 <span class="sd">        \*\*kwargs (dict)  : Specify the individual margin ( ``margin_top`` , ``margin_right`` )</span>
-<span class="sd">        </span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG</span>
@@ -220,7 +220,7 @@
     <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">color_mode</span><span class="p">)</span>
     <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
     <span class="n">W</span><span class="p">,</span><span class="n">H</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
-    
+
     <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;margin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">margin</span>
     <span class="n">mt</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">mb</span><span class="p">,</span><span class="n">ml</span> <span class="o">=</span> <span class="n">assign_trbl</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;margin&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">):</span>
@@ -233,7 +233,7 @@
     <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">-</span><span class="n">mt</span><span class="o">-</span><span class="n">mb</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="n">mt</span>
     <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
     <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    
+
     <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="p">((</span><span class="n">cx</span><span class="o">-</span><span class="n">sx</span><span class="o">-</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">-</span><span class="n">sy</span><span class="o">+</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">+</span><span class="n">sx</span><span class="o">-</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">+</span><span class="n">sy</span><span class="o">+</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">+</span><span class="n">sx</span><span class="o">+</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">+</span><span class="n">sy</span><span class="o">-</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">-</span><span class="n">sx</span><span class="o">+</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">-</span><span class="n">sy</span><span class="o">-</span><span class="n">dy</span><span class="p">)),</span>
         <span class="p">((</span><span class="n">cx</span><span class="o">+</span><span class="n">sx</span><span class="o">-</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">-</span><span class="n">sy</span><span class="o">-</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">+</span><span class="n">sx</span><span class="o">+</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">-</span><span class="n">sy</span><span class="o">+</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">-</span><span class="n">sx</span><span class="o">+</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">+</span><span class="n">sy</span><span class="o">+</span><span class="n">dy</span><span class="p">),(</span><span class="n">cx</span><span class="o">-</span><span class="n">sx</span><span class="o">-</span><span class="n">dx</span><span class="p">,</span><span class="n">cy</span><span class="o">+</span><span class="n">sy</span><span class="o">-</span><span class="n">dy</span><span class="p">))</span>
@@ -247,13 +247,13 @@
 
 <div class="viewcode-block" id="draw_frame"><a class="viewcode-back" href="../../../pycharmers.utils.pil_utils.html#pycharmers.utils.pil_utils.draw_frame">[docs]</a><span class="k">def</span> <span class="nf">draw_frame</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">border_color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">is_radius</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw Frame with Image.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        img (PIL.Image)      : Pillow Image.</span>
 <span class="sd">        width (int)          : The width of the border.</span>
 <span class="sd">        border_color (tuple) : The color in the border.</span>
 <span class="sd">        is_radius (bool)     : Whether to round the corners.</span>
-<span class="sd">        </span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import SAMPLE_LENA_IMG</span>
@@ -263,23 +263,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
     <span class="n">hw</span> <span class="o">=</span> <span class="n">width</span><span class="o">//</span><span class="mi">2</span>
-    
+
     <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="n">border_color</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">width</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">is_radius</span><span class="p">:</span>
         <span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">w</span><span class="o">-</span><span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">width</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
-    
+
     <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">l</span><span class="p">,</span><span class="n">hw</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">hw</span><span class="o">-</span><span class="mi">1</span><span class="p">),(</span><span class="n">w</span><span class="o">-</span><span class="n">hw</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">w</span><span class="o">-</span><span class="n">hw</span><span class="p">,</span><span class="n">b</span><span class="p">),(</span><span class="n">r</span><span class="p">,</span><span class="n">h</span><span class="o">-</span><span class="n">hw</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">h</span><span class="o">-</span><span class="n">hw</span><span class="p">),(</span><span class="n">hw</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">hw</span><span class="p">,</span><span class="n">t</span><span class="p">)]:</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        
+
     <span class="k">if</span> <span class="n">is_radius</span><span class="p">:</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span>   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">draw</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>    
-    
+        <span class="n">draw</span><span class="o">.</span><span class="n">arc</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">img</span></div>
 </pre></div>
 

@@ -88,6 +88,12 @@
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
 </dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – When <code class="docutils literal notranslate"><span class="pre">audio_path</span></code> is not found.</p></li>
+<li><p><strong>TypeError</strong> – When there is no audio in <code class="docutils literal notranslate"><span class="pre">audio_path</span></code></p></li>
+</ul>
+</dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycharmers.utils</span> <span class="kn">import</span> <span class="n">synthesize_audio</span>

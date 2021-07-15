@@ -67,7 +67,7 @@ def draw_bboxes_create(coord_type="xywh"):
         return frame
     dict_infos = '{"color":(255,0,0),"text": "person1"},{"color":(0,255,0),"text": "person2"}'
     draw_bboxes.__doc__ = f"""Drawing Inference results on frame.
-    
+
     Args:
         frame (ndarray) : Image. shape=(H,W,ch)
         bboxes (list)   : Each element is the coordinate (x,y,w,h)
@@ -79,8 +79,8 @@ def draw_bboxes_create(coord_type="xywh"):
         >>> from pycharmers.opencv import draw_bboxes_{coord_type}, cv2read_mpl
         >>> img = cv2read_mpl("path/to/img.png")
         >>> draw_bboxes_{coord_type}(
-        ...     frame=img, 
-        ...     bboxes=[(120,250,60,80),(220,40,80,100)], 
+        ...     frame=img,
+        ...     bboxes=[(120,250,60,80),(220,40,80,100)],
         ...     infos=[{dict_infos}]
         ... )
         >>> plt.imshow(img)
@@ -93,21 +93,21 @@ draw_bboxes_ltrb = draw_bboxes_create(coord_type="ltrb")
 
 def cv2read_mpl(filename, *flags):
     """loads an image from the specified file and returns it as RGB format.
-    
+
     Args:
         filename (str): Name of file to be loaded.
         flags (int)   : Flags.
     """
-    return cv2.cvtColor(cv2.imread(filename, *flags), cv2.COLOR_BGR2RGB) 
+    return cv2.cvtColor(cv2.imread(filename, *flags), cv2.COLOR_BGR2RGB)
 
-def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, figkeywargs={}, plotkeywargs={}):
+def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=True, figkeywargs={}, plotkeywargs={}):
     """Plot Image using OpenCV
 
     Args:
         x (str/np.ndarray)  : path to an image, or image. (BGR)
         ax (Axes)           : The ``Axes`` instance.
         clear_pos (list)    : Positions to clean a grid
-        cmap (str)          : 
+        cmap (str)          :
         is_cv2 (bool)       : Whether ``x`` is BGR (OpenCV format) or not.
         figkeywargs (dict)  : Keyword arguments for :meth:`FigAxes_create <pycharmers.matplotlib.layout.FigAxes_create>`
         plotkeywargs (dict) : Keyword arguments for ``ax.imshow`` .
@@ -121,7 +121,7 @@ def cv2plot(x, ax=None, clear_pos=["l","t","r","b"], cmap=None, is_cv2=False, fi
     if isinstance(x, str):
         x = cv2read_mpl(x)
     elif is_cv2:
-        x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB) 
+        x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     ax.imshow(X=x, cmap=cmap, **plotkeywargs)
     ax = clear_grid(ax, pos=clear_pos)
     return ax
@@ -142,7 +142,7 @@ def draw_text_with_bg(img, text, org=(10,10), offset=(10, 10),
         thickness (int)         : Thickness of the lines used to draw a text.
         lineType (int)          : Line type.
         bottomLeftOrigin (bool) : When ``True`, the image data origin is at the bottom-left corner. Otherwise, it is at the top-left corner.
-    
+
     Examples:
         >>> import matplotlib.pyplot as plt
         >>> from pycharmers.opencv import draw_text_with_bg, cv2read_mpl, SAMPLE_LENA_IMG
@@ -161,7 +161,7 @@ def draw_text_with_bg(img, text, org=(10,10), offset=(10, 10),
     org_x, org_y = org
 
     box_coords = (
-        (org_x          - text_off_x, org_y          + text_off_y), 
+        (org_x          - text_off_x, org_y          + text_off_y),
         (org_x + text_W + text_off_x, org_y - text_H - text_off_y)
     )
     cv2.rectangle(img, *box_coords, bgcolor, cv2.FILLED)

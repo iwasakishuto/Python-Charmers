@@ -2,7 +2,7 @@
 import os
 import subprocess
 import moviepy.editor as mp
-from ._colorings import toBLUE
+from ._colorings import toBLUE, toRED
 
 from typing import Optional
 
@@ -18,6 +18,10 @@ def synthesize_audio(video_path:str, audio_path:str, out_path:Optional[str]=None
     Returns:
         str: The path to the created video (with audio) file.
 
+    Raises:
+        FileNotFoundError: When ``audio_path`` is not found.
+        TypeError        : When there is no audio in ``audio_path``
+
     Examples:
         >>> from pycharmers.utils import synthesize_audio
         >>> # Prepare Audio file (.mp3)
@@ -27,11 +31,15 @@ def synthesize_audio(video_path:str, audio_path:str, out_path:Optional[str]=None
     """
     root, ext = os.path.splitext(audio_path)
     if ext not in [".mp3", ".wav"]:
+        if not os.path.exists(audio_path):
+            raise FileNotFoundError(f"No such file '{toBLUE(audio_path)}'")
         audio_clip = mp.VideoFileClip(audio_path).subclip()
         audio_path = root + ".mp3"
+        if audio_clip.audio is None:
+            raise TypeError(f"There is no audio in {toBLUE(audio_path)}")
         audio_clip.audio.write_audiofile(audio_path)
         print(f"Audio file (at {toBLUE(audio_path)}) is created.")
-    if out_path is not None:
+    if out_path is None:
         out_path = f"_synthesized".join(os.path.splitext(video_path))
     if use_moviepy:
         clip = mp.VideoFileClip(video_path).subclip()

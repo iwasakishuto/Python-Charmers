@@ -59,7 +59,7 @@
 
 <span class="kn">from</span> <span class="nn">.editing</span> <span class="kn">import</span> <span class="n">vconcat_resize_min</span><span class="p">,</span> <span class="n">hconcat_resize_min</span>
 <span class="kn">from</span> <span class="nn">..utils._colorings</span> <span class="kn">import</span> <span class="n">toRED</span><span class="p">,</span> <span class="n">toGREEN</span><span class="p">,</span> <span class="n">toBLUE</span>
-<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span><span class="p">,</span> <span class="n">now_str</span>
+<span class="kn">from</span> <span class="nn">..utils.generic_utils</span> <span class="kn">import</span> <span class="n">calc_rectangle_size</span><span class="p">,</span> <span class="n">now_str</span><span class="p">,</span> <span class="n">handleKeyError</span>
 <span class="kn">from</span> <span class="nn">..utils.print_utils</span> <span class="kn">import</span> <span class="n">pretty_3quote</span>
 <span class="kn">from</span> <span class="nn">._cvpath</span> <span class="kn">import</span> <span class="n">save_dir_create</span>
 
@@ -69,7 +69,7 @@
 
 <div class="viewcode-block" id="mono_frame_generator"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.mono_frame_generator">[docs]</a><span class="k">def</span> <span class="nf">mono_frame_generator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mono frame Generator which displays a single frame in a video or single image in a directory.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
 <span class="sd">        frame_no (int)  : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
@@ -103,7 +103,7 @@
 
 <div class="viewcode-block" id="multi_frame_generator_sepa"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_sepa">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_sepa</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multiple frame generator. (separatory)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        path (str)     : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
 <span class="sd">        frame_no (int) : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
@@ -123,7 +123,7 @@
 
 <div class="viewcode-block" id="multi_frame_generator_concat"><a class="viewcode-back" href="../../../pycharmers.opencv.video_image_handler.html#pycharmers.opencv.video_image_handler.multi_frame_generator_concat">[docs]</a><span class="k">def</span> <span class="nf">multi_frame_generator_concat</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">frame_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multiple frame generator. (In a connected state)</span>
-<span class="sd">        </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``</span>
 <span class="sd">        frame_no (int)  : If specified (``&gt;0``), the image can be displayed from a specific positions.</span>
@@ -185,10 +185,10 @@
 
 <span class="sd">    - If ``path`` indicates video file (``path/to/sample.mp4``) -&gt; ``sample``</span>
 <span class="sd">    - If ``path`` indicates directory (``path/to/sample``) -&gt; ``sample``</span>
-<span class="sd">  </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        path (str) : path to video file, or directory which stores sequential images.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import os</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import basenaming</span>
@@ -265,7 +265,6 @@
         <span class="n">H</span> <span class="o">=</span> <span class="n">H</span> <span class="ow">or</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Please specify the </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s1">&#39;fps&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> of the output video.&quot;</span><span class="p">)</span>
-    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="n">codec</span><span class="p">)</span>
     <span class="n">ideal_ext</span> <span class="o">=</span> <span class="n">videocodec2ext</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">out_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_path</span> <span class="o">=</span> <span class="n">now_str</span><span class="p">()</span> <span class="o">+</span> <span class="n">ideal_ext</span>
@@ -274,11 +273,12 @@
         <span class="k">if</span> <span class="n">original_ext</span> <span class="o">!=</span> <span class="n">ideal_ext</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Change the file extension from </span><span class="si">{</span><span class="n">toRED</span><span class="p">(</span><span class="n">original_ext</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">ideal_ext</span><span class="p">)</span><span class="si">}</span><span class="s2"> according to video codec (</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
             <span class="n">out_path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="n">ideal_ext</span>
+    <span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="n">codec</span><span class="p">)</span>
     <span class="n">VideoWriter</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">H</span><span class="p">))</span>
     <span class="n">is_ok</span> <span class="o">=</span> <span class="n">VideoWriter</span><span class="o">.</span><span class="n">isOpened</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ok</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="o">*</span><span class="n">pretty_3quote</span><span class="p">(</span><span class="n">toRED</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        Could not make a typing video because VideoWriter was not created successfully. </span>
+<span class="s2">        Could not make a typing video because VideoWriter was not created successfully.</span>
 <span class="s2">        Look at the warning text from OpenCV above and do what you need to do.</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">)))</span>
         <span class="n">flag</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="p">(</span><span class="n">toRED</span><span class="p">(</span><span class="s2">&quot;[failure]&quot;</span><span class="p">),</span> <span class="s2">&quot;can&quot;</span><span class="p">)</span>
@@ -289,7 +289,7 @@
 <span class="s2">        </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="s2">&quot;VideoWriter&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2"> be created.</span>
 <span class="s2">        * Size (W,H)  : (</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">W</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">H</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">        * Video Codec : </span><span class="si">{</span><span class="n">toGREEN</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
-<span class="s2">        * Output Path : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span>
+<span class="s2">        * Output Path : </span><span class="si">{</span><span class="n">toBLUE</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">is_ok</span><span class="p">,</span> <span class="n">VideoWriter</span><span class="p">,</span> <span class="n">out_path</span><span class="p">)</span></div>
 
@@ -329,7 +329,7 @@
             <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
             <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>  
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
                 <span class="k">pass</span>
         <span class="n">cap</span> <span class="o">=</span> <span class="n">VideoMimic</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -341,7 +341,7 @@
     <span class="sd">&quot;&quot;&quot;Convert video codec to video extension.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        codec (Union[tuple, str]) : Video Codec.    </span>
+<span class="sd">        codec (Union[tuple, str]) : Video Codec.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Ideal file extension.</span>
@@ -358,12 +358,15 @@
 <span class="sd">        &#39;.avi</span>
 <span class="sd">        &gt;&gt;&gt; videocodec2ext(&quot;☺️&quot;)</span>
 <span class="sd">        &#39;.mp4&#39;</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError: When the file extension cannot be inferred from the video ``codec``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">codec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">codec</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span>
+    <span class="n">codec2ext</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;VP80&quot;</span><span class="p">:</span> <span class="s2">&quot;.webm&quot;</span><span class="p">,</span>
         <span class="s2">&quot;MP4S&quot;</span><span class="p">:</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span>
         <span class="s2">&quot;MP4V&quot;</span><span class="p">:</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span>
@@ -377,7 +380,9 @@
         <span class="s2">&quot;XVID&quot;</span><span class="p">:</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span>
         <span class="s2">&quot;THEO&quot;</span><span class="p">:</span> <span class="s2">&quot;.ogg&quot;</span><span class="p">,</span>
         <span class="s2">&quot;H263&quot;</span><span class="p">:</span> <span class="s2">&quot;.wmv&quot;</span><span class="p">,</span>
-    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codec</span><span class="p">,</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">)</span></div>
+    <span class="p">}</span>
+    <span class="n">handleKeyError</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">codec2ext</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">codec2ext</span><span class="p">[</span><span class="n">codec</span><span class="p">]</span></div>
 </pre></div>
 
             <div class="clearer"></div>

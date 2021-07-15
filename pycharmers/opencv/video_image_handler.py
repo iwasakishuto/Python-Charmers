@@ -7,7 +7,7 @@ import numpy as np
 
 from .editing import vconcat_resize_min, hconcat_resize_min
 from ..utils._colorings import toRED, toGREEN, toBLUE
-from ..utils.generic_utils import calc_rectangle_size, now_str
+from ..utils.generic_utils import calc_rectangle_size, now_str, handleKeyError
 from ..utils.print_utils import pretty_3quote
 from ._cvpath import save_dir_create
 
@@ -17,7 +17,7 @@ IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
 
 def mono_frame_generator(path, frame_no=0):
     """Mono frame Generator which displays a single frame in a video or single image in a directory.
-    
+
     Args:
         path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``
         frame_no (int)  : If specified (``>0``), the image can be displayed from a specific positions.
@@ -51,7 +51,7 @@ def mono_frame_generator(path, frame_no=0):
 
 def multi_frame_generator_sepa(*path, frame_no=0):
     """Multiple frame generator. (separatory)
-    
+
     Args:
         path (str)     : ``path/to/images/directory`` or ``path/to/video.mp4``
         frame_no (int) : If specified (``>0``), the image can be displayed from a specific positions.
@@ -71,7 +71,7 @@ def multi_frame_generator_sepa(*path, frame_no=0):
 
 def multi_frame_generator_concat(*paths, frame_no=0, grid=None):
     """Multiple frame generator. (In a connected state)
-        
+
     Args:
         path (str)      : ``path/to/images/directory`` or ``path/to/video.mp4``
         frame_no (int)  : If specified (``>0``), the image can be displayed from a specific positions.
@@ -133,10 +133,10 @@ def basenaming(path):
 
     - If ``path`` indicates video file (``path/to/sample.mp4``) -> ``sample``
     - If ``path`` indicates directory (``path/to/sample``) -> ``sample``
-  
+
     Args:
         path (str) : path to video file, or directory which stores sequential images.
-    
+
     Examples:
         >>> import os
         >>> from pycharmers.opencv import basenaming
@@ -213,7 +213,6 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         H = H or img.shape[0]
     if fps is None:
         raise TypeError(f"Please specify the {toGREEN('fps')} of the output video.")
-    fourcc = cv2.VideoWriter_fourcc(*codec)
     ideal_ext = videocodec2ext(codec)
     if out_path is None:
         out_path = now_str() + ideal_ext
@@ -222,11 +221,12 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         if original_ext != ideal_ext:
             warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).")
             out_path = root + ideal_ext
+    fourcc = cv2.VideoWriter_fourcc(*codec)
     VideoWriter = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
     is_ok = VideoWriter.isOpened()
     if not is_ok:
         warnings.warn(*pretty_3quote(toRED("""
-        Could not make a typing video because VideoWriter was not created successfully. 
+        Could not make a typing video because VideoWriter was not created successfully.
         Look at the warning text from OpenCV above and do what you need to do.
         """)))
         flag, status = (toRED("[failure]"), "can")
@@ -237,7 +237,7 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
         {flag} {toGREEN("VideoWriter")} {status} be created.
         * Size (W,H)  : ({toGREEN(W)},{toGREEN(H)})
         * Video Codec : {toGREEN(codec)}
-        * Output Path : {toBLUE(out_path)} 
+        * Output Path : {toBLUE(out_path)}
         """))
     return (is_ok, VideoWriter, out_path)
 
@@ -277,7 +277,7 @@ def VideoCaptureCreate(path=None, cam=0):
             def release(self):
                 return True
             def get(self, id):
-                return self.info.get(id)  
+                return self.info.get(id)
             def set(self, id):
                 pass
         cap = VideoMimic(path)
@@ -289,7 +289,7 @@ def videocodec2ext(*codec) -> str:
     """Convert video codec to video extension.
 
     Args:
-        codec (Union[tuple, str]) : Video Codec.    
+        codec (Union[tuple, str]) : Video Codec.
 
     Returns:
         str: Ideal file extension.
@@ -306,12 +306,15 @@ def videocodec2ext(*codec) -> str:
         '.avi
         >>> videocodec2ext("☺️")
         '.mp4'
+
+    Raises:
+        KeyError: When the file extension cannot be inferred from the video ``codec``.
     """
     if len(codec)==1 and isinstance(codec[0], str):
         codec = codec[0]
     else:
         codec = "".join(codec)
-    return {
+    codec2ext = {
         "VP80": ".webm",
         "MP4S": ".mp4",
         "MP4V": ".mp4",
@@ -325,4 +328,6 @@ def videocodec2ext(*codec) -> str:
         "XVID": ".avi",
         "THEO": ".ogg",
         "H263": ".wmv",
-    }.get(codec, ".mp4")
+    }
+    handleKeyError(lst=list(codec2ext.keys()), codec=codec)
+    return codec2ext[codec]

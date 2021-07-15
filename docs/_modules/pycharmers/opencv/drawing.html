@@ -119,7 +119,7 @@
         <span class="k">return</span> <span class="n">frame</span>
     <span class="n">dict_infos</span> <span class="o">=</span> <span class="s1">&#39;{&quot;color&quot;:(255,0,0),&quot;text&quot;: &quot;person1&quot;},{&quot;color&quot;:(0,255,0),&quot;text&quot;: &quot;person2&quot;}&#39;</span>
     <span class="n">draw_bboxes</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Drawing Inference results on frame.</span>
-<span class="s2">    </span>
+
 <span class="s2">    Args:</span>
 <span class="s2">        frame (ndarray) : Image. shape=(H,W,ch)</span>
 <span class="s2">        bboxes (list)   : Each element is the coordinate (x,y,w,h)</span>
@@ -131,8 +131,8 @@
 <span class="s2">        &gt;&gt;&gt; from pycharmers.opencv import draw_bboxes_</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">, cv2read_mpl</span>
 <span class="s2">        &gt;&gt;&gt; img = cv2read_mpl(&quot;path/to/img.png&quot;)</span>
 <span class="s2">        &gt;&gt;&gt; draw_bboxes_</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">(</span>
-<span class="s2">        ...     frame=img, </span>
-<span class="s2">        ...     bboxes=[(120,250,60,80),(220,40,80,100)], </span>
+<span class="s2">        ...     frame=img,</span>
+<span class="s2">        ...     bboxes=[(120,250,60,80),(220,40,80,100)],</span>
 <span class="s2">        ...     infos=[</span><span class="si">{</span><span class="n">dict_infos</span><span class="si">}</span><span class="s2">]</span>
 <span class="s2">        ... )</span>
 <span class="s2">        &gt;&gt;&gt; plt.imshow(img)</span>
@@ -145,21 +145,21 @@
 
 <div class="viewcode-block" id="cv2read_mpl"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.cv2read_mpl">[docs]</a><span class="k">def</span> <span class="nf">cv2read_mpl</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">flags</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;loads an image from the specified file and returns it as RGB format.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): Name of file to be loaded.</span>
 <span class="sd">        flags (int)   : Flags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">flags</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span> </div>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">flags</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="cv2plot"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.cv2plot">[docs]</a><span class="k">def</span> <span class="nf">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_pos</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_cv2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figkeywargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">plotkeywargs</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="cv2plot"><a class="viewcode-back" href="../../../pycharmers.opencv.drawing.html#pycharmers.opencv.drawing.cv2plot">[docs]</a><span class="k">def</span> <span class="nf">cv2plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_pos</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_cv2</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figkeywargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">plotkeywargs</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;Plot Image using OpenCV</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x (str/np.ndarray)  : path to an image, or image. (BGR)</span>
 <span class="sd">        ax (Axes)           : The ``Axes`` instance.</span>
 <span class="sd">        clear_pos (list)    : Positions to clean a grid</span>
-<span class="sd">        cmap (str)          : </span>
+<span class="sd">        cmap (str)          :</span>
 <span class="sd">        is_cv2 (bool)       : Whether ``x`` is BGR (OpenCV format) or not.</span>
 <span class="sd">        figkeywargs (dict)  : Keyword arguments for :meth:`FigAxes_create &lt;pycharmers.matplotlib.layout.FigAxes_create&gt;`</span>
 <span class="sd">        plotkeywargs (dict) : Keyword arguments for ``ax.imshow`` .</span>
@@ -173,7 +173,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">cv2read_mpl</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">is_cv2</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span> 
+        <span class="n">x</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="o">**</span><span class="n">plotkeywargs</span><span class="p">)</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">clear_grid</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">clear_pos</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span></div>
@@ -194,7 +194,7 @@
 <span class="sd">        thickness (int)         : Thickness of the lines used to draw a text.</span>
 <span class="sd">        lineType (int)          : Line type.</span>
 <span class="sd">        bottomLeftOrigin (bool) : When ``True`, the image data origin is at the bottom-left corner. Otherwise, it is at the top-left corner.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">        &gt;&gt;&gt; from pycharmers.opencv import draw_text_with_bg, cv2read_mpl, SAMPLE_LENA_IMG</span>
@@ -213,7 +213,7 @@
     <span class="n">org_x</span><span class="p">,</span> <span class="n">org_y</span> <span class="o">=</span> <span class="n">org</span>
 
     <span class="n">box_coords</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="n">org_x</span>          <span class="o">-</span> <span class="n">text_off_x</span><span class="p">,</span> <span class="n">org_y</span>          <span class="o">+</span> <span class="n">text_off_y</span><span class="p">),</span> 
+        <span class="p">(</span><span class="n">org_x</span>          <span class="o">-</span> <span class="n">text_off_x</span><span class="p">,</span> <span class="n">org_y</span>          <span class="o">+</span> <span class="n">text_off_y</span><span class="p">),</span>
         <span class="p">(</span><span class="n">org_x</span> <span class="o">+</span> <span class="n">text_W</span> <span class="o">+</span> <span class="n">text_off_x</span><span class="p">,</span> <span class="n">org_y</span> <span class="o">-</span> <span class="n">text_H</span> <span class="o">-</span> <span class="n">text_off_y</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">*</span><span class="n">box_coords</span><span class="p">,</span> <span class="n">bgcolor</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILLED</span><span class="p">)</span>
