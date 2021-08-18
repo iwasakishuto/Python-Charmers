@@ -1,0 +1,7 @@
+pycharmers.cli.image2pptx module
+================================
+
+.. automodule:: pycharmers.cli.image2pptx
+   :members:
+   :undoc-members:
+   :show-inheritance:

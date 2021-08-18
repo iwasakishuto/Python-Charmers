@@ -106,7 +106,7 @@ def video_of_typing(argv=sys.argv[1:]):
     parser.add_argument("--margin", type=int, default=0, help="The margin size for pasting video or image.")
     parser.add_argument("--align",  action=ListParamProcessorCreate(type=str), default=None, help="horizontal and vertical alignment of the content (video/image).")
     parser.add_argument("--out",    type=str, default=f"typing_video_{now_str()}.mp4", help="The filename of created typing video.")
-    parser.add_argument("--codec",  type=str, default="MP4V", help="A video codec for output video.")
+    parser.add_argument("--codec",  type=str, default="H264", help="A video codec for output video.")
     parser.add_argument("--quiet",  action="store_true", help="Whether to make the output quiet.")
     args = parser.parse_args(argv)
 
