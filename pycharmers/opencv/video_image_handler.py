@@ -1,19 +1,20 @@
-#coding: utf-8
+# coding: utf-8
 import os
 import re
-import cv2
 import warnings
+from typing import Optional, Tuple, Union
+
+import cv2
 import numpy as np
 
-from .editing import vconcat_resize_min, hconcat_resize_min
-from ..utils._colorings import toRED, toGREEN, toBLUE
-from ..utils.generic_utils import calc_rectangle_size, now_str, handleKeyError
+from ..utils._colorings import toBLUE, toGREEN, toRED
+from ..utils.generic_utils import calc_rectangle_size, handleKeyError, now_str
 from ..utils.print_utils import pretty_3quote
 from ._cvpath import save_dir_create
-
-from typing import Union,Optional,Tuple
+from .editing import hconcat_resize_min, vconcat_resize_min
 
 IMAGE_FILE_PATTERN = r".*\.(jpg|png|bmp|jpeg)"
+
 
 def mono_frame_generator(path, frame_no=0):
     """Mono frame Generator which displays a single frame in a video or single image in a directory.
@@ -49,6 +50,7 @@ def mono_frame_generator(path, frame_no=0):
                 continue
             yield frame
 
+
 def multi_frame_generator_sepa(*path, frame_no=0):
     """Multiple frame generator. (separatory)
 
@@ -68,6 +70,7 @@ def multi_frame_generator_sepa(*path, frame_no=0):
         2 (512, 512, 3)
     """
     return zip(*[mono_frame_generator(p, frame_no=frame_no) for p in path])
+
 
 def multi_frame_generator_concat(*paths, frame_no=0, grid=None):
     """Multiple frame generator. (In a connected state)
@@ -98,15 +101,16 @@ def multi_frame_generator_concat(*paths, frame_no=0, grid=None):
 
     gen = mono_frame_generator(paths[0])
     frame = gen.__next__()
-    balck_frames = tuple(np.zeros_like(frame))*num_black_frame
+    balck_frames = tuple(np.zeros_like(frame)) * num_black_frame
 
     gens = multi_frame_generator_sepa(*paths, frame_no=frame_no)
     for frames in gens:
         frames += balck_frames
-        concated_frame = vconcat_resize_min(*[
-            hconcat_resize_min(*frames[r*ncol:(r+1)*ncol]) for r in range(nrow)
-        ])
+        concated_frame = vconcat_resize_min(
+            *[hconcat_resize_min(*frames[r * ncol : (r + 1) * ncol]) for r in range(nrow)]
+        )
         yield concated_frame
+
 
 def count_frame_num(path):
     """Count the number of frames.
@@ -125,8 +129,15 @@ def count_frame_num(path):
         video = cv2.VideoCapture(path)
         frame_num = video.get(cv2.CAP_PROP_FRAME_COUNT)
     else:
-        frame_num = len(list(filter(lambda fn: re.search(IMAGE_FILE_PATTERN, fn, re.IGNORECASE), os.listdir(path))))
+        frame_num = len(
+            list(
+                filter(
+                    lambda fn: re.search(IMAGE_FILE_PATTERN, fn, re.IGNORECASE), os.listdir(path)
+                )
+            )
+        )
     return int(frame_num)
+
 
 def basenaming(path):
     """Returns the final component of a pathname.
@@ -159,7 +170,16 @@ def basenaming(path):
         name = os.path.basename(path)
     return name
 
-def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None, codec:str="MP4V", fps:Optional[float]=None, size:Tuple[int,int]=(None,None), verbose:bool=False, **kwargs) -> Tuple[bool, cv2.VideoWriter, str]:
+
+def VideoWriterCreate(
+    input_path: Optional[str] = None,
+    out_path: Optional[str] = None,
+    codec: str = "avc1",
+    fps: Optional[float] = None,
+    size: Tuple[int, int] = (None, None),
+    verbose: bool = False,
+    **kwargs,
+) -> Tuple[bool, cv2.VideoWriter, str]:
     """Create a ``cv2.VideoWriter`` which creates a video whose option is same as that of input.
 
     Args:
@@ -190,20 +210,22 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
     """
     W, H = size
     if (input_path is None) or (not os.path.exists(input_path)):
-        W = W or kwargs.get("width",  kwargs.get("W"))
+        W = W or kwargs.get("width", kwargs.get("W"))
         H = H or kwargs.get("height", kwargs.get("H"))
         if (W is None) or (H is None):
-            raise TypeError(f"Please specify the {toGREEN('size')}(width,height) of the output video.")
+            raise TypeError(
+                f"Please specify the {toGREEN('size')}(width,height) of the output video."
+            )
     elif os.path.isfile(input_path):
         if re.search(pattern=IMAGE_FILE_PATTERN, string=input_path, flags=re.IGNORECASE):
             img = cv2.imread(input_path)
-            H,W = img.shape[:2]
+            H, W = img.shape[:2]
         else:
             video = cv2.VideoCapture(input_path)
             W = W or int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
             H = H or int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = fps or video.get(cv2.CAP_PROP_FPS)
-    else: # os.path.isdir(input_path):
+    else:  # os.path.isdir(input_path):
         for fn in os.listdir(input_path):
             img_path = os.path.join(input_path, fn)
             img = cv2.imread(img_path)
@@ -217,29 +239,42 @@ def VideoWriterCreate(input_path:Optional[str]=None, out_path:Optional[str]=None
     if out_path is None:
         out_path = now_str() + ideal_ext
     else:
-        root,original_ext = os.path.splitext(out_path)
+        root, original_ext = os.path.splitext(out_path)
         if original_ext != ideal_ext:
-            warnings.warn(f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)}).")
+            warnings.warn(
+                f"Change the file extension from {toRED(original_ext)} to {toGREEN(ideal_ext)} according to video codec ({toGREEN(codec)})."
+            )
             out_path = root + ideal_ext
     fourcc = cv2.VideoWriter_fourcc(*codec)
-    VideoWriter = cv2.VideoWriter(out_path, fourcc, fps, (W,H))
+    VideoWriter = cv2.VideoWriter(out_path, fourcc, fps, (W, H))
     is_ok = VideoWriter.isOpened()
     if not is_ok:
-        warnings.warn(*pretty_3quote(toRED("""
+        warnings.warn(
+            *pretty_3quote(
+                toRED(
+                    """
         Could not make a typing video because VideoWriter was not created successfully.
         Look at the warning text from OpenCV above and do what you need to do.
-        """)))
+        """
+                )
+            )
+        )
         flag, status = (toRED("[failure]"), "can")
     else:
         flag, status = (toGREEN("[success]"), "can't")
     if verbose:
-        print(*pretty_3quote(f"""
+        print(
+            *pretty_3quote(
+                f"""
         {flag} {toGREEN("VideoWriter")} {status} be created.
         * Size (W,H)  : ({toGREEN(W)},{toGREEN(H)})
         * Video Codec : {toGREEN(codec)}
         * Output Path : {toBLUE(out_path)}
-        """))
+        """
+            )
+        )
     return (is_ok, VideoWriter, out_path)
+
 
 def VideoCaptureCreate(path=None, cam=0):
     """Create a VideoCapture (mimic) object.
@@ -263,27 +298,34 @@ def VideoCaptureCreate(path=None, cam=0):
     if path is None:
         cap = cv2.VideoCapture(cam)
     elif re.search(pattern=IMAGE_FILE_PATTERN, string=path, flags=re.IGNORECASE):
-        class VideoMimic():
+
+        class VideoMimic:
             def __init__(self, path):
                 frame = cv2.imread(path)
                 self.frame = frame
                 self.info = {
-                    cv2.CAP_PROP_FRAME_WIDTH  : frame.shape[1],
-                    cv2.CAP_PROP_FRAME_HEIGHT : frame.shape[0],
-                    cv2.CAP_PROP_FPS          : 30.0,
+                    cv2.CAP_PROP_FRAME_WIDTH: frame.shape[1],
+                    cv2.CAP_PROP_FRAME_HEIGHT: frame.shape[0],
+                    cv2.CAP_PROP_FPS: 30.0,
                 }
+
             def read(self):
                 return True, self.frame
+
             def release(self):
                 return True
+
             def get(self, id):
                 return self.info.get(id)
+
             def set(self, id):
                 pass
+
         cap = VideoMimic(path)
     else:
         cap = cv2.VideoCapture(path)
     return cap
+
 
 def videocodec2ext(*codec) -> str:
     """Convert video codec to video extension.
@@ -310,7 +352,7 @@ def videocodec2ext(*codec) -> str:
     Raises:
         KeyError: When the file extension cannot be inferred from the video ``codec``.
     """
-    if len(codec)==1 and isinstance(codec[0], str):
+    if len(codec) == 1 and isinstance(codec[0], str):
         codec = codec[0]
     else:
         codec = "".join(codec)
@@ -328,6 +370,7 @@ def videocodec2ext(*codec) -> str:
         "XVID": ".avi",
         "THEO": ".ogg",
         "H263": ".wmv",
+        "avc1": ".mp4",
     }
     handleKeyError(lst=list(codec2ext.keys()), codec=codec)
     return codec2ext[codec]
