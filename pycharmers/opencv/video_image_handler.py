@@ -360,7 +360,7 @@ def videocodec2ext(*codec) -> str:
         "VP80": ".webm",
         "MP4S": ".mp4",
         "MP4V": ".mp4",
-        "mp4v": ".mov",
+        "mp4v": ".mp4",
         "H264": ".mp4",
         "X264": ".mp4",
         "DIV3": ".avi",
