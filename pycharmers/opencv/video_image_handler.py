@@ -259,15 +259,15 @@ def VideoWriterCreate(
                 )
             )
         )
-        flag, status = (toRED("[failure]"), "can")
+        flag, status = (toRED("[failure]"), "can NOT")
     else:
-        flag, status = (toGREEN("[success]"), "can't")
+        flag, status = (toGREEN("[success]"), "can")
     if verbose:
         print(
             *pretty_3quote(
                 f"""
         {flag} {toGREEN("VideoWriter")} {status} be created.
-        * Size (W,H)  : ({toGREEN(W)},{toGREEN(H)})
+        * Size (W,H)  : ({toGREEN(W)}, {toGREEN(H)})
         * Video Codec : {toGREEN(codec)}
         * Output Path : {toBLUE(out_path)}
         """

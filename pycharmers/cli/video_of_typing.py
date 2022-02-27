@@ -34,6 +34,27 @@ def video_of_typing(argv=sys.argv[1:]):
     - Create a typing json file easily at `JS.35 タイピング風動画を楽に作成する <https://iwasakishuto.github.io/Front-End/tips/JavaScript-35.html>`_
     - Add some keyword arguments for :func:`draw_text_in_pil <pycharmers.utils.pil_utils.draw_text_in_pil>`.
 
+    .. code-block:: python
+
+        >>> import json
+        >>> from PIL import Image
+        >>> from pycharmers.utils import draw_text_in_pil
+        >>> json_path = "file.json"
+        >>> image_path = "image.png"
+        >>> with open(json_path, mode="r") as f:
+        ...     json_data = json.load(f)
+        >>> img = Image.open(image_path)
+        >>> img, _ = draw_text_in_pil(
+        ...     text=json_data["typing"][-1],
+        ...     ttfontname=json_data["ttfontname"],
+        ...     img=img,
+        ...     fontsize=53,
+        ...     textRGB=(255, 255, 255),
+        ...     xy=(60, 100),
+        >>> )
+        >>> img
+
+
     Args:
         --typing (Tuple[str])   : Path to typing text file(s).
         --typing-fontname (str) : Default Typing Font name
@@ -147,7 +168,7 @@ def video_of_typing(argv=sys.argv[1:]):
         default=f"typing_video_{now_str()}.mp4",
         help="The filename of created typing video.",
     )
-    parser.add_argument("--codec", type=str, default="AVC1", help="A video codec for output video.")
+    parser.add_argument("--codec", type=str, default="avc1", help="A video codec for output video.")
     parser.add_argument("--quiet", action="store_true", help="Whether to make the output quiet.")
     args = parser.parse_args(argv)
 
