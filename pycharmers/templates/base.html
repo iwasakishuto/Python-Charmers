@@ -1,27 +1,32 @@
 {%- if add_base -%}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@cabernet_rock" />
-    <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
-    <meta property="og:url" content="https://github.com/iwasakishuto/Python-Charmers" />
-    <meta property="og:site_name" content="Python-Charmers" />
-    <meta property="og:title" content="Python-Charmers" />
-    <meta property="og:description" content="Translation Gummy is a collection of useful python programs." />
-    <meta property="og:image" content="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true" />
-    <title>{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}</title>
-    <link rel="shortcut icon" href="https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png"/>
-    <link rel="apple-touch-icon" href="https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png" sizes="152x152">
-    {% include 'style.html' %}
-  </head>
-  <body>
-{%- endif -%}
-    {%- block content %}
-    {%- endblock %}
-{%- if add_base -%}
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@cabernet_rock" />
+  <meta name="twitter:image:src" content="https://iwasakishuto.github.io/images/FacebookImage/Python-Charmers.png">
+  <meta property="og:url" content="https://github.com/iwasakishuto/Python-Charmers" />
+  <meta property="og:site_name" content="Python-Charmers" />
+  <meta property="og:title" content="Python-Charmers" />
+  <meta property="og:description" content="Translation Gummy is a collection of useful python programs." />
+  <meta property="og:image"
+    content="https://github.com/iwasakishuto/Python-Charmers/blob/master/image/header.png?raw=true" />
+  <title>{% block title %}{{ SITENAME|striptags|e }}{% endblock title %}</title>
+  <link rel="shortcut icon" href="https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png" />
+  <link rel="apple-touch-icon" href="https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png"
+    sizes="152x152">
+  {% include 'style.html' %}
+</head>
+
+<body>
+  {%- endif -%}
+  {%- block content %}
+  {%- endblock %}
+  {%- if add_base -%}
+</body>
+
 </html>
 {%- endif -%}

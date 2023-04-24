@@ -22,13 +22,13 @@ def test_find_target_id():
     section = BeautifulSoup("""
     <h2>IMAGE</h2>
     <div>
-      <img id="apple-touch-icon" src="https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png">
+      <img id="apple-touch-icon" src="https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png">
     </div>
     """)
     find_target_id(soup=section, name="img", key="id")
     # 'apple-touch-icon'
     find_target_id(soup=section, name="img", key="src")
-    # 'https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png'
+    # 'https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png'
 
 def test_find_target_text():
     from bs4 import BeautifulSoup
@@ -139,4 +139,3 @@ def test_str2soup():
     from bs4 import BeautifulSoup
     BeautifulSoup(string)
     # <html><head><title>Python-Charmers</title></head></html>
-

@@ -32,7 +32,7 @@ def str2soup(string):
         if hasattr(soup, attr) and getattr(soup, attr) is not None:
             getattr(soup, attr).unwrap()
     return soup
-    
+
 def split_section(section, name=None, attrs={}, recursive=True, text=None, **kwargs):
     """ Split ``bs4.BeautifulSoup``.
 
@@ -43,7 +43,7 @@ def split_section(section, name=None, attrs={}, recursive=True, text=None, **kwa
         recursive (bool)            : If this is True, ``.find`` will perform a recursive search of this PageElement's children. Otherwise, only the direct children will be considered.
         text (str)                  : An inner text.
         kwargs (dict)               : A dictionary of filters on attribute values.
-    
+
     Returns:
         list : A list of elements without filter tag elements.
 
@@ -157,8 +157,8 @@ def group_soup_with_head(soup, name=None, attrs={}, recursive=True, text=None, *
         sections.append(section)
     return sections
 
-def replace_soup_tag(soup, 
-    new_name, new_namespace=None, new_nsprefix=None, new_attrs={}, new_sourceline=None, 
+def replace_soup_tag(soup,
+    new_name, new_namespace=None, new_nsprefix=None, new_attrs={}, new_sourceline=None,
     new_sourcepos=None, new_kwattrs={},
     old_name=None, old_attrs={}, old_recursive=True, old_text=None, old_limit=None, old_kwargs={}, **kwargs):
     """Replace Old tag with New tag.
@@ -179,7 +179,7 @@ def replace_soup_tag(soup,
         new_sourceline (str) : The line number where this tag was (purportedly) found in its source document.
         new_sourcepos (str)  : The character position within ``sourceline`` where this tag was (purportedly) found.
         new_kwattrs (dict)   : Keyword arguments for the new Tag's attribute values.
-    
+
     Examples:
         >>> from bs4 import BeautifulSoup
         >>> from pycharmers.utils import replace_soup_tag
@@ -315,13 +315,13 @@ def find_target_id(soup, key, name=None, attrs={}, recursive=True, text=None, de
         >>> section = BeautifulSoup(\"\"\"
         ... <h2>IMAGE</h2>
         ... <div>
-        ...   <img id="apple-touch-icon" src="https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png">
+        ...   <img id="apple-touch-icon" src="https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png">
         ... </div>
         >>> \"\"\")
         >>> find_target_id(soup=section, name="img", key="id")
         'apple-touch-icon'
         >>> find_target_id(soup=section, name="img", key="src")
-        'https://iwasakishuto.github.io/images/apple-touch-icon/Python-Charmers.png'
+        'https://iwasakishuto.github.io/images/contents-icon/Python-Charmers.png'
     """
     target = soup.find(name=name, attrs=attrs, recursive=recursive, text=text, **kwargs)
     if target is None:
